@@ -24,15 +24,29 @@ namesake ball-transfer "portal" feature).
 
 ## Running it
 
-**Virtual (no hardware needed):** from `machinefolder/`, run `mpf` — the config sets
-`virtual_platform_start_active_switches` for the trough so a game can start immediately.
-`gmc.cfg`'s `[keyboard]` section maps a few switches to number keys for manual testing; extend
-that mapping as more of the game gets wired up in code.
+**Setup (one-time):** run `install.ps1` from the repo root — creates a `.venv` and installs
+`mpf==0.80.0` into it (matches `config_version: 6` / the "MPF 0.80" comment in `config.yaml`).
+See `plans/testing-strategy.md` for how this was verified.
 
-**Real hardware:** same command, but MPF auto-detects the `opp` platform from `config.yaml` and
-talks to the boards over `COM4`/`COM5`/`COM6`. Board/port assignments can drift if USB
-enumeration changes — re-run MPF's hardware scan and compare against the pasted scan output in
-`machinefolder/config/hardware-basic.yaml` if switches/coils stop responding.
+**Virtual, no hardware/cabinet needed (recommended for dev):** from `machinefolder/`, run
+`../.venv/Scripts/mpf -X -t -b`. `-X` forces the `smart_virtual` platform regardless of the
+committed `platform: opp`, so no config edits are needed and nothing to accidentally leave
+committed; it auto-simulates ball devices (trough eject, drop-target resets, etc.) so the ball
+routing skeleton works with no manual switch toggling. `-t` disables MPF's console UI (needed in
+non-interactive shells) and `-b` skips the BCP/Godot connection for a pure backend run — drop `-b`
+to run the Godot mpf-gmc app alongside for a full display+audio playtest. `gmc.cfg`'s `[keyboard]`
+section maps a few switches to number keys for manual testing; extend that mapping as more of the
+game gets wired up in code.
+
+**Automated tests, no manual interaction at all:** `.venv/Scripts/python -m unittest discover
+tests` from the repo root. (Not `mpf test` — that command requires `kivy`/legacy `mpf-mc`, which
+this project doesn't use.)
+
+**Real hardware:** `../.venv/Scripts/mpf` (no `-X`) from `machinefolder/` — MPF uses the `opp`
+platform from `config.yaml` and talks to the boards over `COM4`/`COM5`/`COM6`. Board/port
+assignments can drift if USB enumeration changes — re-run MPF's hardware scan and compare against
+the pasted scan output in `machinefolder/config/hardware-basic.yaml` if switches/coils stop
+responding.
 
 **Display:** open `machinefolder/` as a Godot 4 project (it autoloads `mpf_gmc.gd` per
 `project.godot`) and run it alongside a running `mpf` instance — it connects over BCP
@@ -50,6 +64,8 @@ machinefolder/
   data/             # audits.yaml, machine_vars.yaml (runtime state, not hand-edited)
   addons/mpf-gmc/   # the Godot display addon (stock)
   sounds/, images/  # currently placeholder assets, not final
+tests/              # MpfTestCase/MpfGameTestCase suite - run with `python -m unittest discover tests`
+install.ps1          # one-time dev environment setup (.venv + mpf)
 ```
 
 ## Status

@@ -1,0 +1,4 @@
+# Python (test tooling under tests/, local venv)
+__pycache__/
+*.pyc
+.venv/

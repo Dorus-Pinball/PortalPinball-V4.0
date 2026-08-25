@@ -23,3 +23,11 @@ when fixed, not deleted, so resolution history stays visible.
 - [x] Repo hygiene: `machinefolder/logs/` was tracked in git (158 files) with no `.gitignore`
       entry, and a stray 126,607-line log file had been accidentally committed. Logs are now
       gitignored and untracked going forward (existing git history left intact).
+- [x] The local MPF install was completely broken (`mpf.exe` on PATH was a 0-byte stub, `pip show
+      mpf` found nothing) — no form of `mpf`, virtual or real hardware, actually worked. Fixed via
+      `install.ps1` (`.venv` + `mpf==0.80.0`). See `plans/testing-strategy.md`.
+- [x] Corrected two things doc research got wrong for the actually-installed MPF 0.80.0 (both
+      found by running the real thing, not just reading about it): `mpf test` requires
+      `kivy`/legacy `mpf-mc` and fails without it — use `python -m unittest discover tests`
+      instead; there is no `mpf format`/lint command in 0.80.0 at all — a clean `mpf -X -t -b` boot
+      is the fast config-validation check instead. Full detail in `plans/testing-strategy.md`.

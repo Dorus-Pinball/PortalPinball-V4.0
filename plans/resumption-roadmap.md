@@ -265,7 +265,7 @@ MPF's docs (`missionpinball.org/latest/`) turned up capabilities worth folding i
   `audits.yaml`/session logs are the evidence trail (same as the 23-game record from Sept 2024).
 - **Godot side**: launch the mpf-gmc project and confirm each new slide/show renders against a
   running `mpf` instance (BCP connection) before marking a Phase 3/4 mode complete.
-- **Unit tests** (from the docs research above): once Phase 2's shot/logic-block scaffolding
-  exists, add MPF's own test-framework cases for the rules logic (shot completion, ball save
-  arming, achievement state transitions) — a regression check that runs without the cabinet or
-  even a manual `mpf` launch, complementing rather than replacing the real-hardware checkpoint.
+- **Unit tests**: see `plans/testing-strategy.md` for the full, verified design (a working local
+  MPF install, `mpf -X -t -b` for interactive smart_virtual testing, and a real passing example
+  `MpfGameTestCase` in `tests/`) — run without the cabinet or even a manual `mpf` launch,
+  complementing rather than replacing the real-hardware checkpoint.
