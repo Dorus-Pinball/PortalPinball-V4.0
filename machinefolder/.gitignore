@@ -1,3 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# MPF debug logs - regenerated every run, not useful to track
+logs/
