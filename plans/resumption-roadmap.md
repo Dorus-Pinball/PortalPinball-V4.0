@@ -160,6 +160,12 @@ Each feature becomes its own mode under `machinefolder/modes/`, following the ex
 shot-completion or switch events rather than always-on. This directly fulfills the `orbit` and
 `lanes` entries already referenced (commented out) in `config.yaml`'s `modes:` list.
 
+Each of these 8 features now has a living, structured design doc at `design/features/<name>.yaml`
+(schema-validated by `tests/test_design_docs.py`, workflow documented in `design/README.md`) —
+that's the current source for shots/rules/presentation detail on each one, superseding the prose
+below and the xlsx notes it was drawn from. Use `design/README.md`'s workflow for any *new*
+feature idea going forward, not just these 8.
+
 Priority order, driven by wiring status (everything here already has switches/coils/LEDs mapped
 in `hardware-*.yaml` today — no new hardware needed):
 

@@ -1,0 +1,66 @@
+id: portal
+name: Portal ball transfer
+status: designed
+phase: Phase 3
+
+story:
+  hook: >
+    TBD - needs a narrative pass, but this is the game's namesake feature (a ball
+    physically enters a "dropper" and re-emerges via a "portal" exit), so it's the
+    natural anchor point for the machine's central Portal-theme story beat once one
+    is written.
+
+shots:
+  - ref: s-dropper
+    role: ball enters the transfer device here
+  - ref: s-portal-r
+    role: portal transfer switch (right)
+  - ref: s-portal-m
+    role: portal transfer switch (middle)
+  - ref: s-exit-success
+    role: successful exit confirmation switch
+  - ref: led-dropper
+    role: feedback LED
+  - ref: led-portal-r
+    role: feedback LED
+  - ref: led-portal-m
+    role: feedback LED
+  - ref: led-exit-success
+    role: feedback LED
+  - ref: led-exit-open-1
+    role: staged progression LED 1 of 5
+  - ref: led-exit-open-2
+    role: staged progression LED 2 of 5
+  - ref: led-exit-open-3
+    role: staged progression LED 3 of 5
+  - ref: led-exit-open-4
+    role: staged progression LED 4 of 5
+  - ref: led-exit-open-5
+    role: staged progression LED 5 of 5
+
+rules:
+  mode: portal
+  devices:
+    - type: accrual
+      name: portal_sequence
+      notes: >
+        dropper -> portal-r/m -> exit-success must happen in order, not just any N
+        times - an accrual logic block enforces that ordering, per
+        plans/resumption-roadmap.md Phase 2.
+    - type: achievement_group
+      name: portal_stages
+      notes: >
+        the 5-stage "exit open" LED progression (led-exit-open-1..5) maps to 5
+        achievements (enabled -> started -> completed each), tying into a Phase 5
+        wizard-mode gate per plans/resumption-roadmap.md.
+  scoring: TBD
+
+presentation:
+  slide: TBD - no dedicated slide yet
+  show: TBD - an LED chase across led-exit-open-1..5 is a natural fit once built
+  sound: TBD
+
+notes: >
+  Most involved feature in Phase 3 (multi-switch ball-tracking state machine) -
+  build it last, once the simpler shot_group pattern is proven out by lanes/orbits,
+  per plans/resumption-roadmap.md.

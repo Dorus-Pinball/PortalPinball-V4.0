@@ -65,8 +65,15 @@ machinefolder/
   addons/mpf-gmc/   # the Godot display addon (stock)
   sounds/, images/  # currently placeholder assets, not final
 tests/              # MpfTestCase/MpfGameTestCase suite - run with `python -m unittest discover tests`
-install.ps1          # one-time dev environment setup (.venv + mpf)
+design/             # story -> shots -> modes workflow + schema-tracked feature design docs
+install.ps1          # one-time dev environment setup (.venv + mpf + jsonschema)
 ```
+
+## Designing a new feature
+
+See `design/README.md` for the workflow (story idea -> shots -> MPF mode) and the schema-tracked
+design docs in `design/features/*.yaml` — this is the living source for feature design, replacing
+`board Overviews.xlsx`'s "Modes" sheet going forward.
 
 ## Status
 

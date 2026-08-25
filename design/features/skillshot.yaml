@@ -1,0 +1,36 @@
+id: skillshot
+name: Launch skillshot
+status: designed
+phase: Phase 3
+
+story:
+  hook: "TBD - needs a narrative pass"
+
+shots:
+  - ref: s_launch
+    role: player-controlled plunge trigger (bd_plunger's player_controlled_eject_event)
+  - ref: s_plunger_lane
+    role: ball-in-plunger-lane confirmation switch
+  - ref: led-launch
+    role: feedback LED
+  - ref: led-save
+    role: feedback LED near the plunger lane
+
+rules:
+  mode: skillshot
+  devices:
+    - type: shot
+      name: shot_skillshot
+      notes: one-shot at ball start, per plans/resumption-roadmap.md Phase 3.
+  scoring: TBD
+
+presentation:
+  slide: TBD - no dedicated slide yet
+  show: TBD
+  sound: TBD
+
+notes: >
+  Open design question, not yet decided: which specific shot actually counts as
+  "making" the skillshot (e.g. a specific top lane right off the plunge)? The roadmap
+  only specifies the launch/plunger-lane switches, not the scoring target itself -
+  needs a design pass before implementation.

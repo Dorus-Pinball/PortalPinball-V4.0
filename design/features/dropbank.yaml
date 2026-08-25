@@ -1,0 +1,49 @@
+id: dropbank
+name: Drop target bank -> insinerator
+status: designed
+phase: Phase 3
+
+story:
+  hook: "TBD - needs a narrative pass"
+
+shots:
+  - ref: s_drop1
+    role: drop target 1 of 3 (bank device d_drop_target1)
+  - ref: s_drop2
+    role: drop target 2 of 3 (bank device d_drop_target2)
+  - ref: s_drop3
+    role: drop target 3 of 3 (bank device d_drop_target3)
+  - ref: s-insinerator
+    role: downstream target lit by bank completion
+  - ref: s-button
+    role: extra target near the button, per plans/resumption-roadmap.md Phase 3
+  - ref: s-target-l1
+    role: extra target near the button
+  - ref: led-insinerator
+    role: feedback LED
+  - ref: led-button
+    role: feedback LED
+  - ref: led-target-l1
+    role: feedback LED
+
+rules:
+  mode: dropbank
+  devices:
+    - type: drop_target_bank
+      name: db_dropbank
+      notes: already exists as a device in machinefolder/config/hardware-devices.yaml (reset_coils c_drop).
+    - type: shot
+      name: shot_insinerator
+      notes: fired by bank completion, per plans/resumption-roadmap.md Phase 3.
+  scoring: TBD
+
+presentation:
+  slide: TBD - no dedicated slide yet
+  show: TBD
+  sound: TBD
+
+notes: >
+  The 3 raw drop targets (s_drop1-3) have no individual feedback LEDs in
+  hardware-leds.yaml today - only the downstream insinerator/button/target-l1 targets
+  do. Worth confirming whether that's intentional (bank itself isn't meant to light up
+  per-target) before building the mode's LED logic.

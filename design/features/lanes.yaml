@@ -1,0 +1,62 @@
+id: lanes
+name: Top & bottom lanes
+status: designed
+phase: Phase 3
+
+story:
+  hook: "TBD - needs a narrative pass"
+
+shots:
+  - ref: s_toplane1
+    role: top lane shot 1 of 3
+  - ref: s_toplane2
+    role: top lane shot 2 of 3
+  - ref: s_toplane3
+    role: top lane shot 3 of 3
+  - ref: led-toplane1
+    role: feedback LED
+  - ref: led-toplane2
+    role: feedback LED
+  - ref: led-toplane3
+    role: feedback LED
+  - ref: s_bottomlane1
+    role: bottom lane shot 1 of 5
+  - ref: s_bottomlane2
+    role: bottom lane shot 2 of 5
+  - ref: s_bottomlane3
+    role: bottom lane shot 3 of 5
+  - ref: s_bottomlane4
+    role: bottom lane shot 4 of 5
+  - ref: s_bottomlane5
+    role: bottom lane shot 5 of 5
+  - ref: led-lane-b1
+    role: feedback LED
+  - ref: led-lane-b2
+    role: feedback LED
+  - ref: led-lane-b3
+    role: feedback LED
+  - ref: led-lane-b4
+    role: feedback LED
+
+rules:
+  mode: lanes
+  devices:
+    - type: shot_group
+      name: top_lanes
+      notes: >
+        "spell"/2x-hit mechanic per board Overviews.xlsx ("Top Lanes Complete: spells...
+        orange when hit 2x... blinking") - use MPF shot profile states (lit/unlit/flashing)
+        rather than a hand-rolled counter, per plans/resumption-roadmap.md Phase 2.
+    - type: shot_group
+      name: bottom_lanes
+  scoring: TBD - base.yaml currently scores each lane switch a flat 100 as a placeholder.
+
+presentation:
+  slide: TBD - no dedicated slide yet, base/attract currently share one background image
+  show: TBD
+  sound: TBD
+
+notes: >
+  Only 4 "lane-b" LEDs exist (led-lane-b1..b4) for 5 bottom lane switches
+  (s_bottomlane1..5) - one bottom lane currently has no dedicated feedback LED.
+  Worth confirming against the cabinet before finalizing the shot_group's LED mapping.

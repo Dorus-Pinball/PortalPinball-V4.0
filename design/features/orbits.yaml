@@ -1,0 +1,38 @@
+id: orbits
+name: Left & right orbits
+status: designed
+phase: Phase 3
+
+story:
+  hook: "TBD - needs a narrative pass"
+
+shots:
+  - ref: s_orbit-l
+    role: left orbit entry switch
+  - ref: s_orbit-r
+    role: right orbit entry switch
+  - ref: s-orbit-top
+    role: orbit-top switch (right switch bank per board Overviews.xlsx)
+  - ref: led-orbit-l
+    role: feedback LED
+  - ref: led-orbit-r
+    role: feedback LED
+  - ref: led-orbit-t
+    role: feedback LED
+
+rules:
+  mode: orbits
+  devices:
+    - type: shot_group
+      name: orbits
+      notes: reuses the shot_group scaffolding built for lanes.yaml, per plans/resumption-roadmap.md Phase 2.
+  scoring: TBD
+
+presentation:
+  slide: TBD - no dedicated slide yet
+  show: TBD
+  sound: TBD
+
+notes: >
+  `orbit` is already referenced (commented out) in machinefolder/config/config.yaml's
+  modes: list - this feature fulfills that placeholder.

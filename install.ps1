@@ -24,6 +24,10 @@ $ErrorActionPreference = "Stop"
 # actual config - see plans/testing-strategy.md.
 $MpfVersion = "0.80.0"
 
+# jsonschema: only used by tests/test_design_docs.py to validate design/features/*.yaml
+# against design/schema/feature.schema.json - see design/README.md.
+$JsonschemaVersion = "4.26.0"
+
 $RepoRoot = $PSScriptRoot
 $VenvPath = Join-Path $RepoRoot ".venv"
 
@@ -85,6 +89,12 @@ if ($LASTEXITCODE -ne 0) {
     Write-Error "Failed to install mpf==$MpfVersion"
 }
 
+Write-Host "Installing jsonschema==$JsonschemaVersion ..."
+& $VenvPython -m pip install "jsonschema==$JsonschemaVersion"
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to install jsonschema==$JsonschemaVersion"
+}
+
 # --- Verify ---
 Write-Host ""
 Write-Host "Verifying install ..."
@@ -97,6 +107,7 @@ Write-Host ""
 Write-Host "Done. Next steps:"
 Write-Host "  Interactive, no hardware needed:  cd machinefolder; ..\.venv\Scripts\mpf -X -t -b"
 Write-Host "  Automated test suite:             .venv\Scripts\python -m unittest discover tests"
+Write-Host "                                     (includes design/features/*.yaml schema validation)"
 Write-Host "  Real hardware:                    cd machinefolder; ..\.venv\Scripts\mpf"
 Write-Host ""
 Write-Host "Display (Godot 4, installed separately, not handled by this script):"
