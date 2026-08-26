@@ -1,0 +1,52 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  priority: 90
+
+# DRAFT scoring - placeholder point values pending a real game-balance pass with the user.
+# Implements the core namesake mechanic (dropper -> portal transfer -> success exit, in order)
+# as a `sequences:` logic block - CORRECTED from the design doc's "accrual" choice, since
+# accruals complete in ANY order (verified against mpf/devices/logic_blocks.py), same correction
+# already applied to dropbank.yaml's insinerator_finisher.
+#
+# NOT YET IMPLEMENTED: the 5-stage "exit open" achievement_group progression
+# (led-exit-open-1..5). MPF's `achievements:` device only exposes a single generic
+# `achievement_<name>_changed_state` event with a `state` arg by default, not a clean
+# `<name>_completed`-style event to chain stage N's enable off stage N-1's completion - wiring
+# 5 real stages correctly needs more design/verification time than this pass budgeted for.
+# Flagged in TODO.md rather than shipped half-verified.
+
+shots:
+  shot_dropper:
+    switch: s-dropper
+  shot_portal_r:
+    switch: s-portal-r
+  shot_portal_m:
+    switch: s-portal-m
+  shot_exit_success:
+    switch: s-exit-success
+
+sequences:
+  portal_sequence:
+    events:
+      - s-dropper_active
+      - s-portal-r_active, s-portal-m_active
+      - s-exit-success_active
+
+variable_player:
+  shot_dropper_hit:
+    score: 200
+  shot_portal_r_hit:
+    score: 200
+  shot_portal_m_hit:
+    score: 200
+  shot_exit_success_hit:
+    score: 500
+  logicblock_portal_sequence_complete:
+    score: 5000
+
+slide_player:
+  logicblock_portal_sequence_complete:
+    portal_transfer:
+      priority: 200
+      expire: 2s

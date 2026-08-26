@@ -69,3 +69,13 @@ when fixed, not deleted, so resolution history stays visible.
       the first hit, so it can't implement "back-to-back within N seconds" as configured today.
       Needs a real "start a timer on first hit" mechanism (e.g. enable the timeout only via an
       event posted on the first sling hit) before this is a genuine time-limited combo.
+- [ ] `modes/portal/config/portal.yaml`'s 5-stage "exit open" achievement_group progression
+      (`led-exit-open-1..5`, the Phase 5 wizard-mode gate) is not implemented - MPF's
+      `achievements:` device only posts a generic `achievement_(name)_changed_state` event by
+      default, with no clean way (found so far) to chain stage N's enable off stage N-1's
+      completion via plain config. Needs more research into `achievements:`/`achievement_groups:`
+      before this can be built and tested properly. The core dropper->portal->exit sequence
+      scoring is implemented independently of this.
+- [ ] `modes/dropbank/config/dropbank.yaml`'s insinerator shot scores flat, not the "escalating
+      value per repeat completion" pattern from MPF's sequential-drop-banks cookbook recipe
+      referenced in `design/features/dropbank.yaml` - deferred pending a real game-balance pass.

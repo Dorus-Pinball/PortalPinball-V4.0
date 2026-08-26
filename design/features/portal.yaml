@@ -1,6 +1,6 @@
 id: portal
 name: Portal ball transfer
-status: designed
+status: implementing
 phase: Phase 3
 
 story:
@@ -44,27 +44,36 @@ shots:
 rules:
   mode: portal
   devices:
-    - type: accrual
+    - type: sequence
       name: portal_sequence
       notes: >
-        dropper -> portal-r/m -> exit-success must happen in order, not just any N
-        times - an accrual logic block enforces that ordering, per
-        plans/resumption-roadmap.md Phase 2.
+        CORRECTED from the original "accrual" choice: accruals complete in ANY order
+        (verified against the installed MPF's mpf/devices/logic_blocks.py source
+        directly) - the dropper -> portal-r/m -> exit-success ordering needs
+        `sequences:` instead, same correction already applied to
+        dropbank.yaml's insinerator_finisher. Implemented in
+        modes/portal/config/portal.yaml.
     - type: achievement_group
       name: portal_stages
       notes: >
-        the 5-stage "exit open" LED progression (led-exit-open-1..5) maps to 5
-        achievements (enabled -> started -> completed each), tying into a Phase 5
-        wizard-mode gate per plans/resumption-roadmap.md. Pinball design research
-        confirms this is the standard MPF-native way to build a wizard-mode gate
-        (design/research/portal-themes-and-pinball-design.md Part 2) - as the namesake
-        feature, `portal` is a natural choice to be the *last* stage/key required
-        regardless of whether the eventual wizard-mode shape is one big mode or several
-        tiered mini-modes (that shape is still an open decision, not made here).
-  scoring: TBD
+        NOT YET IMPLEMENTED. The 5-stage "exit open" LED progression
+        (led-exit-open-1..5) was meant to map to 5 achievements, but MPF's
+        `achievements:` device only exposes a generic
+        `achievement_(name)_changed_state` event with a `state` arg by default (verified
+        against mpf/devices/achievement.py) - there's no clean `(name)_completed`-style
+        event to chain stage N's enable off stage N-1's completion without more
+        design/verification work than this pass budgeted for. Flagged in TODO.md; the
+        core dropper->portal->exit sequence above is implemented and scored
+        independently of this.
+  scoring: >
+    DRAFT, needs a real game-balance pass with the user: 200/hit for dropper/portal-r/portal-m,
+    500/hit for exit-success, +5000 for the full ordered sequence completing. Implemented in
+    modes/portal/config/portal.yaml. Does NOT yet include any bonus tied to the 5-stage
+    achievement_group progression, since that part isn't built (see rules notes above).
 
 presentation:
-  slide: TBD - no dedicated slide yet
+  slide: modes/portal/slides/portal_transfer.tscn - implemented as a placeholder purple panel
+    (no real art yet), per design/SCREENS.md.
   show: TBD - portal-ring burn-open/close animation on transfer, then an LED chase across led-exit-open-1..5
   sound: TBD - portal-fire whoosh on dropper entry, shimmering "conversion" chime on successful transfer
 
