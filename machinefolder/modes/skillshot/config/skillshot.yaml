@@ -1,0 +1,26 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  stop_events: shot_skillshot_hit
+  priority: 110
+
+# DRAFT scoring - placeholder point value pending a real game-balance pass with the user.
+# Open design question NOT resolved here (design/features/skillshot.yaml notes): which specific
+# lane should count is proposed as "rotate across the 3 top lanes each ball", but that needs the
+# user's sign-off first. This implementation takes the simplest safe baseline instead: ANY of the
+# 3 top lanes counts as the skillshot, once per ball (mode stops itself after the first hit via
+# stop_events above, so it can't score twice on the same ball).
+
+shots:
+  shot_skillshot:
+    switches: s-toplane1, s-toplane2, s-toplane3
+
+variable_player:
+  shot_skillshot_hit:
+    score: 1000
+
+slide_player:
+  shot_skillshot_hit:
+    skillshot_hit:
+      priority: 200
+      expire: 2s
