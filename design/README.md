@@ -51,7 +51,8 @@ cross-check every shot reference against the real hardware config.
 4. **Fill Rules/Mode.** Sketch which MPF device types are needed and name the mode. Set
    `status: designed`.
 5. **Fill Presentation.** At minimum note what slide/show/sound this needs, even as a
-   placeholder.
+   placeholder. See `design/SCREENS.md` for the canonical catalog of screens/slides across all
+   features, so a feature's presentation isn't designed in isolation from it.
 6. **Implement.** Build the real `machinefolder/modes/<name>/config/<name>.yaml` (+ slide/show),
    following the existing `base`/`attract` pattern, and add the mode to `config.yaml`'s `modes:`
    list. Set `status: implementing` while in progress.
