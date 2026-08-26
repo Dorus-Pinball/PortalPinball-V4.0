@@ -9,10 +9,7 @@ slide_player:
         
         
 variable_player:
-    s-left-sling_active:
-        score: 100
-    s-right-sling_active:
-        score: 100
+    # Sling scoring moved to modes/slings/config/slings.yaml's shot devices.
     s-popbumper-1_active:
         score: 100
     s-popbumper-2_active:

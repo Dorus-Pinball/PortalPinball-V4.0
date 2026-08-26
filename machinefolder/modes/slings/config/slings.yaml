@@ -1,0 +1,45 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  priority: 90
+
+# DRAFT scoring - placeholder point values pending a real game-balance pass with the user.
+# "Sling Combo" (board Overviews.xlsx) implemented as a 3-hit `sequences:` logic block: either
+# sling counts for each of the 3 steps (Util.string_to_event_list lets a step accept alternative
+# events), so this is "3 sling hits, either side", not order-specific - verified against the
+# installed MPF's mpf/devices/logic_blocks.py source directly, since the design doc's original
+# "ordered steps" framing doesn't match what a plain N-hits combo needs.
+#
+# NOT YET IMPLEMENTED: a time window ("back-to-back" per the xlsx). `logic_block_timeout` looked
+# like the fit but actually starts ticking from mode/logic-block *enable* (ball start), not from
+# the first hit - confirmed by reading enable()/_logic_block_timer_start() in logic_blocks.py -
+# so it doesn't mean what the name suggests here. Needs a real "start a timer on first hit"
+# mechanism (e.g. enable_events on the first sling hit, disable+reset after logic_block_timeout)
+# before a genuine time-limited combo can be added. Flagged in TODO.md.
+
+shots:
+  shot_sling_l:
+    switch: s-left-sling
+  shot_sling_r:
+    switch: s-right-sling
+
+sequences:
+  sling_combo:
+    events:
+      - s-left-sling_active, s-right-sling_active
+      - s-left-sling_active, s-right-sling_active
+      - s-left-sling_active, s-right-sling_active
+
+variable_player:
+  shot_sling_l_hit:
+    score: 100
+  shot_sling_r_hit:
+    score: 100
+  logicblock_sling_combo_complete:
+    score: 750
+
+slide_player:
+  logicblock_sling_combo_complete:
+    sling_hit:
+      priority: 200
+      expire: 2s

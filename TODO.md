@@ -64,3 +64,8 @@ when fixed, not deleted, so resolution history stays visible.
 - [ ] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
       Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
       physical machine.
+- [ ] `modes/slings/config/slings.yaml`'s sling combo has no real time window yet - MPF's
+      `logic_block_timeout` starts ticking from mode/logic-block enable (ball start), not from
+      the first hit, so it can't implement "back-to-back within N seconds" as configured today.
+      Needs a real "start a timer on first hit" mechanism (e.g. enable the timeout only via an
+      event posted on the first sling hit) before this is a genuine time-limited combo.
