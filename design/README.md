@@ -10,7 +10,9 @@ hardware-planning reference, not deleted.
 Every feature decomposes into 5 layers. Moving a feature from top to bottom *is* the workflow:
 
 1. **Story** — the narrative beat. Can be `"TBD - needs a narrative pass"` while a feature is
-   still mechanic-first — this never blocks progress on the other layers.
+   still mechanic-first — this never blocks progress on the other layers. Draft freely in
+   `design/STORY.md` before it's attached to a specific feature; once confirmed, copy it into
+   that feature's `story.hook`/`story.beats` below.
 2. **Feature** — the named gameplay feature that expresses that beat.
 3. **Shots** — the physical playfield elements involved. Each shot **references real hardware by
    name** (switches/coils/lights already defined in `machinefolder/config/hardware-*.yaml`) — a
