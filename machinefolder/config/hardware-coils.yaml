@@ -4,29 +4,29 @@
 
 coils:
   # Chain PSOC 2-0-x
-  c_sling_right:
+  c-sling-right:
     number: 2-0-0
     default_pulse_ms: 15
-  c_sling_left:
+  c-sling-left:
     number: 2-0-1
     default_pulse_ms: 16
-  c_plunger:
+  c-plunger:
     number: 2-0-2
     default_pulse_ms: 21
-  c_trough_eject:
+  c-trough-eject:
     number: 2-0-3
     default_pulse_ms: 25
        
-  c_popbumper_1:
+  c-popbumper-1:
     number: 2-0-4
     default_pulse_ms: 17
-  c_popbumper_2:
+  c-popbumper-2:
     number: 2-0-5
     default_pulse_ms: 17
-  c_popbumper_3:
+  c-popbumper-3:
     number: 2-0-6
     default_pulse_ms: 17
-  c_drop:              
+  c-drop:              
     number: 2-0-7
     default_pulse_ms: 25
     

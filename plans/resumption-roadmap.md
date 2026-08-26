@@ -81,20 +81,20 @@ documented context) from recurring.
    controller has no visibility into the mechanical EOS at all, so nothing to configure for it):
    ```yaml
    coils:
-     c_flipper_left:
+     c-flipper-left:
        number: 2-1-0
        default_pulse_ms: 25
-     c_flipper_right:
+     c-flipper-right:
        number: 2-1-1
        default_pulse_ms: 25
 
    flippers:
      left_flipper:
-       main_coil: c_flipper_left
-       activation_switch: s_left_flipper
+       main_coil: c-flipper-left
+       activation_switch: s-left-flipper
      right_flipper:
-       main_coil: c_flipper_right
-       activation_switch: s_right_flipper
+       main_coil: c-flipper-right
+       activation_switch: s-right-flipper
    ```
    (Reuses the commented-out `flippers:` stub already sitting in `hardware-devices.yaml` — same
    shape, just filled in and trimmed to match the single-gate-per-side reality.)
@@ -171,13 +171,13 @@ in `hardware-*.yaml` today — no new hardware needed):
 
 1. **`lanes`** — top lane (3) + bottom lane (5) shot groups with the "spell"/2x-hit mechanic
    noted in the xlsx ("Top Lanes Complete: spells... orange when hit 2x... blinking").
-2. **`orbits`** — left/right orbit shots (`s_orbit-l/r`, `s-orbit-top`), reuses shot_group
+2. **`orbits`** — left/right orbit shots (`s-orbit-l/r`, `s-orbit-top`), reuses shot_group
    scaffolding from Phase 2.
 3. **`slings`** — "Sling Combo" mechanic called out explicitly in the xlsx (back-to-back sling
    hits within a window).
-4. **`skillshot`** — plunger-lane-into-lane-switch on `s_launch`/`s_plunger_lane`, one-shot at
+4. **`skillshot`** — plunger-lane-into-lane-switch on `s-launch`/`s-plunger-lane`, one-shot at
    ball start.
-5. **`dropbank`** — drop target bank completion (`db_dropbank` already exists as a device) firing
+5. **`dropbank`** — drop target bank completion (`db-dropbank` already exists as a device) firing
    the "insinerator" target/light and the extra target near the button (`s-button`,
    `s-target-l1`).
 6. **`aerial`** — the "aerial plate" mechanic (`s-aerial`, `led-aerial`), currently just a switch

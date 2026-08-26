@@ -10,10 +10,10 @@ story:
     trampoline). See design/research/portal-themes-and-pinball-design.md.
 
 shots:
-  - ref: s_left_sling
-    role: left sling switch (also drives the ac_sling_left autofire coil)
-  - ref: s_right_sling
-    role: right sling switch (also drives the ac_sling_right autofire coil)
+  - ref: s-left-sling
+    role: left sling switch (also drives the ac-sling-left autofire coil)
+  - ref: s-right-sling
+    role: right sling switch (also drives the ac-sling-right autofire coil)
   - ref: led-sling-l
     role: feedback LED
   - ref: led-sling-r
@@ -37,4 +37,7 @@ presentation:
   show: TBD - a blue springy squash-and-bounce flash on the sling icon, per the Repulsion Gel motif
   sound: TBD - a springy "boing" per hit, building to a distinct combo-complete sting
 
-notes: ""
+notes: >
+  Onshape CAD confirms `Slingshot Rubber Left`/`Slingshot Rubber Right` as real named parts
+  (~2.05" x 4.45" each) in the lower-middle of the playfield near the flipper zone - directly
+  confirms the shots above with no ambiguity. See design/research/onshape-cad-findings.md.

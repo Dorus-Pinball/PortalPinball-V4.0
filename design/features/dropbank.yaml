@@ -13,12 +13,12 @@ story:
     beat. See design/research/portal-themes-and-pinball-design.md.
 
 shots:
-  - ref: s_drop1
-    role: drop target 1 of 3 (bank device d_drop_target1)
-  - ref: s_drop2
-    role: drop target 2 of 3 (bank device d_drop_target2)
-  - ref: s_drop3
-    role: drop target 3 of 3 (bank device d_drop_target3)
+  - ref: s-drop1
+    role: drop target 1 of 3 (bank device d-drop-target1)
+  - ref: s-drop2
+    role: drop target 2 of 3 (bank device d-drop-target2)
+  - ref: s-drop3
+    role: drop target 3 of 3 (bank device d-drop-target3)
   - ref: s-insinerator
     role: downstream target lit by bank completion
   - ref: s-button
@@ -36,8 +36,8 @@ rules:
   mode: dropbank
   devices:
     - type: drop_target_bank
-      name: db_dropbank
-      notes: already exists as a device in machinefolder/config/hardware-devices.yaml (reset_coils c_drop).
+      name: db-dropbank
+      notes: already exists as a device in machinefolder/config/hardware-devices.yaml (reset_coils c-drop).
     - type: shot
       name: shot_insinerator
       notes: >
@@ -46,7 +46,7 @@ rules:
         a cookbook recipe for exactly this (missionpinball.org/latest/cookbook/
         sequential_drop_banks/, uses a `sequence` block). Standard real-machine shape is
         escalating value per repeat completion rather than flat scoring each time, since
-        the bank auto-resets via c_drop.
+        the bank auto-resets via c-drop.
     - type: accrual
       name: insinerator_finisher
       notes: >
@@ -61,7 +61,12 @@ presentation:
   sound: TBD - crackling flame whoosh on insinerator hit; a companion-cube "clunk-chime" per drop target, if the story hook above is confirmed
 
 notes: >
-  The 3 raw drop targets (s_drop1-3) have no individual feedback LEDs in
+  The 3 raw drop targets (s-drop1-3) have no individual feedback LEDs in
   hardware-leds.yaml today - only the downstream insinerator/button/target-l1 targets
   do. Worth confirming whether that's intentional (bank itself isn't meant to light up
   per-target) before building the mode's LED logic.
+
+  Onshape CAD: no part or assembly named for a 3-target drop bank or an "insinerator"
+  mechanism exists anywhere in the document - a genuine open gap, same category as the
+  ball-lock hole-pairing question in portal.yaml. A dedicated `Button` assembly does exist
+  and directly matches s-button. See design/research/onshape-cad-findings.md.

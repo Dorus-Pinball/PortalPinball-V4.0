@@ -67,7 +67,48 @@ Duplicate-Exit red herring above is ruled out.
 
 Confirmed to exist in the document (from `get_elements`), not yet explored: a `spinner` +
 `spinner_bracket` (a spinner mechanism not in any current MPF hardware config or design doc), a
-`popup post` assembly, WPC-style flipper hardware (`Flipper Assembly WPC`, `Flipper Bat 3inch`,
-`Coil SG-23 850-DC`, etc. — real part numbers, relevant to Phase 1 flippers), and a `WPC_Trough`
-assembly matching `bd_trough`. Worth a follow-up pass if flipper/hardware specifics are needed
-later.
+`popup post` assembly (WPC-style solenoid + plunger + bracket, position within the main assembly
+not checked — worth a follow-up if `lanes.yaml`'s "turret gauntlet" hook is pursued), WPC-style
+flipper hardware (`Flipper Assembly WPC`, `Flipper Bat 3inch`, `Coil SG-23 850-DC`, etc. — real
+part numbers, relevant to Phase 1 flippers), and a `WPC_Trough` assembly matching `bd-trough`.
+Worth a follow-up pass if flipper/hardware specifics are needed later.
+
+## Follow-up findings: lanes, orbits, slings, skillshot, dropbank (2026-08-26)
+
+Same document/workspace as above. Used `get_parts` on **Portal Playfield Parts**
+(`a6bfd8eb17f87ad8bf47ca11`) again, plus `get_assembly`/`get_assembly_positions` on the top-level
+**Portal Pinball Assembly** (`d3f79d14fcaf02d7c5b00654`, 26 instances) and a fuller nested listing
+via `Assembly 2` (`4b3f38903ff83cb027552ca6`, 68 instances — effectively every named part in the
+"Portal Playfield Parts" studio placed into the real assembly context), and cross-checked
+positions against the existing `design/research/playfield-schematic.html` bounding-box data.
+
+- **orbits — confirmed.** `right orbit` and `left orbit` are real, large named parts (not just
+  switch numbers) spanning most of the upper third of the playfield — bounding sizes ~10.0" x
+  13.6" (left) and ~2.1" x 12.9" (right) per the schematic's part table. Directly confirms
+  `orbits.yaml`'s shots. Note the two sides are not the same shape/size — worth keeping in mind
+  if the "clean left/right pair" framing in the story hook assumes visual symmetry.
+- **slings — confirmed.** `Slingshot Rubber Left`/`Slingshot Rubber Right` are real named parts,
+  ~2.05" x 4.45" each, sitting in the lower-middle of the playfield near the flipper zone (classic
+  sling placement). Directly confirms `slings.yaml`'s shots with no ambiguity.
+- **lanes — partial.** `toprail` is a large real part spanning nearly the full width of the top
+  ~40% of the playfield (bounds x:4.7"-207.9", y:2.8"-183.9" in schematic space) — consistent with
+  being the backing rail behind the 3 top lanes, though no individual per-lane-channel parts (top
+  or bottom) are separately named anywhere in the document. A single `lane guide` part exists, but
+  it sits mid-playfield next to an 8-instance `Small Post` standup-target grid (unrelated to
+  either lane group), not near the top or bottom lanes. **No turret/rotating/pop-up mechanism was
+  found positioned near the top lanes** — the `popup post` assembly noted above exists in the
+  document but its position wasn't checked, so it neither confirms nor rules out the
+  "turret gauntlet" story hook. Bottom lanes (5) still have zero identified CAD geometry — that
+  open question from `lanes.yaml` stays open.
+- **skillshot — partial.** `shooter ramp` sits directly beside `Rail_Shooterlane`/`Rail_Trough` at
+  the very bottom of the playfield, confirming the physical geometry around `s-launch`/
+  `s-plunger-lane` is exactly where expected. This doesn't resolve `skillshot.yaml`'s open "which
+  lane counts as the skillshot" design question — that's a rules decision, not something CAD
+  geometry can answer.
+- **dropbank — unconfirmed, a genuine gap.** No part or assembly named for a 3-target drop bank or
+  an "insinerator" mechanism exists anywhere in the document — not in the 79-part Part Studio, the
+  fuller 68-instance assembly listing, or any of the 26 top-level assemblies. Two loose `Target 1`/
+  `Target 2` parts exist on the right side of the playfield, but there's no `Target 3`, so they
+  don't cleanly map onto `s-drop1/2/3` either — likely unrelated standup targets, not the drop
+  bank. A dedicated `Button` assembly does exist and directly matches `s-button`. This is the same
+  category of open question as the ball-lock hole-pairing question above — not yet resolved.

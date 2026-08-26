@@ -67,3 +67,6 @@ The 8 features already identified in `plans/resumption-roadmap.md` Phase 3 are p
 several have an explicit `story.hook: "TBD"` and/or open questions noted under `notes:` — those
 are real gaps, not oversights, left for a design pass rather than invented): `lanes`, `orbits`,
 `slings`, `skillshot`, `dropbank`, `aerial`, `portal`, `ramps`.
+
+See `design/onshape-mpf-overview.md` for a single table cross-referencing every feature's Onshape
+CAD part/assembly name(s) against its MPF switch/coil/LED names.

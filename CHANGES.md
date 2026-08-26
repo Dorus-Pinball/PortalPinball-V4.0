@@ -16,3 +16,17 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
    Phase 0 cleanup: stopped tracking `machinefolder/logs/` in git (kept existing history intact),
    added the standard project docs (`README.md`, `TODO.md`, `IDEAS.md`, this file) and a
    project-level `CLAUDE.md`. — **Status: active**.
+4. **Story→shots→modes design docs, live Onshape research, and config naming cleanup**
+   (2026-08-25 – 2026-08-26, commits `4b848f5`..`2ce9fd1`). Added the schema-tracked
+   `design/features/*.yaml` workflow (one file per Phase 3 feature, validated by
+   `tests/test_design_docs.py`) and `design/README.md`'s story→feature→shots→rules→presentation
+   layer model, replacing `board Overviews.xlsx`'s "Modes" sheet as the living feature reference.
+   Connected directly to the "Portal Playfield" Onshape document via `onshape-mcp` and folded
+   real CAD findings into all 8 feature files (`design/research/onshape-cad-findings.md`),
+   confirming aerial/ramps/portal/orbits/slings against real geometry and honestly flagging
+   lanes/skillshot/dropbank's remaining gaps rather than forcing matches. Standardized every
+   switch/coil/device name in `machinefolder/config/hardware-*.yaml` on hyphens (was a mix of
+   underscore and hyphen), fixing the pre-existing `popbumber`/`popbumper` spelling mismatch
+   along the way, verified via a clean `mpf -X -t -b` boot and a green test suite. Added
+   `design/onshape-mpf-overview.md`, a single table cross-referencing every feature's Onshape
+   CAD name(s) against its MPF switch/coil/LED names. — **Status: active**.

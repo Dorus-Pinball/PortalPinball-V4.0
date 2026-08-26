@@ -6,7 +6,7 @@ machine:
   balls_installed: 4
   min_balls: 1
 
-virtual_platform_start_active_switches: s_trough1, s_trough2, s_trough3, s_trough4
+virtual_platform_start_active_switches: s-trough1, s-trough2, s-trough3, s-trough4
 
 
 # mpf hardware scan:

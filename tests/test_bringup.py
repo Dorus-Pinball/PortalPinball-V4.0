@@ -31,5 +31,5 @@ class TestBringup(MpfGameTestCase):
         self.start_game()
         self.assertBallNumber(1)
 
-        self.hit_switch_and_run("s_toplane1", 1)
+        self.hit_switch_and_run("s-toplane1", 1)
         self.assertEqual(100, self.machine.game.player.score)

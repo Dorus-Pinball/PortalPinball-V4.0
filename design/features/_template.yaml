@@ -17,7 +17,7 @@ id: my_new_feature
 #     - ...
 
 # shots:
-#   - ref: s_some_switch          # must be a real name from hardware-*.yaml
+#   - ref: s-some-switch          # must be a real name from hardware-*.yaml
 #     role: primary shot switch
 
 # rules:
