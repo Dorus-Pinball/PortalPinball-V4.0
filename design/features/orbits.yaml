@@ -1,6 +1,6 @@
 id: orbits
 name: Left & right orbits
-status: designed
+status: implementing
 phase: Phase 3
 
 story:
@@ -31,10 +31,14 @@ rules:
     - type: shot_group
       name: orbits
       notes: reuses the shot_group scaffolding built for lanes.yaml, per plans/resumption-roadmap.md Phase 2.
-  scoring: TBD
+  scoring: >
+    DRAFT, needs a real game-balance pass with the user: 750/hit for left/right orbit (major
+    loop shots), 100/hit for the orbit-top rollover, +3000 group-complete bonus for hitting all
+    three at least once. Implemented in modes/orbits/config/orbits.yaml.
 
 presentation:
-  slide: TBD - no dedicated slide yet
+  slide: modes/orbits/slides/orbit_hit.tscn - implemented as a placeholder split blue/orange
+    panel (no real art yet) honoring the left=blue/right=orange motif, per design/SCREENS.md.
   show: TBD - portal-ring "pop" flash on the relevant orbit icon, blue for left / orange for right
   sound: TBD - a rising-pitch whoosh sweep (momentum/speed motif) distinct per side
 

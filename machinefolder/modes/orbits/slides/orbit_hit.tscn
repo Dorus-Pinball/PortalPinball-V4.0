@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://dm3p9wq2h6r1e"]
+
+[ext_resource type="Script" path="res://addons/mpf-gmc/classes/mpf_slide.gd" id="1"]
+
+[node name="orbit_hit" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1900.0
+offset_bottom = 1000.0
+script = ExtResource("1")
+
+[node name="LeftHalf" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 950.0
+offset_bottom = 1000.0
+color = Color(0.1, 0.35, 0.9, 1)
+
+[node name="RightHalf" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 950.0
+offset_right = 1900.0
+offset_bottom = 1000.0
+color = Color(0.95, 0.5, 0.05, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 420.0
+offset_right = 1900.0
+offset_bottom = 580.0
+theme_override_font_sizes/font_size = 120
+text = "ORBIT!"
+horizontal_alignment = 1
+vertical_alignment = 1

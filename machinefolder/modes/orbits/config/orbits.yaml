@@ -1,0 +1,40 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  priority: 90
+
+# DRAFT scoring - placeholder point values pending a real game-balance pass with the user.
+# Per-shot LED feedback (led-orbit-l/r/t) and the blue/orange color split are handled on the
+# display side only (orbit_hit.tscn) for now - not wired to real LEDs yet.
+
+shots:
+  shot_orbit_l:
+    switch: s-orbit-l
+  shot_orbit_r:
+    switch: s-orbit-r
+  shot_orbit_top:
+    switch: s-orbit-top
+
+shot_groups:
+  orbits:
+    shots: shot_orbit_l, shot_orbit_r, shot_orbit_top
+
+variable_player:
+  shot_orbit_l_hit:
+    score: 750
+  shot_orbit_r_hit:
+    score: 750
+  shot_orbit_top_hit:
+    score: 100
+  orbits_complete:
+    score: 3000
+
+slide_player:
+  shot_orbit_l_hit:
+    orbit_hit:
+      priority: 200
+      expire: 2s
+  shot_orbit_r_hit:
+    orbit_hit:
+      priority: 200
+      expire: 2s
