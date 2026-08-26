@@ -1,0 +1,22 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  priority: 90
+
+# DRAFT scoring - placeholder point value pending a real game-balance pass with the user.
+# Simplest feature to implement (design/features/aerial.yaml) - single switch, no coil, no
+# repeat/build pattern, so this is a flat per-hit shot with no group/logic block.
+
+shots:
+  shot_aerial:
+    switch: s-aerial
+
+variable_player:
+  shot_aerial_hit:
+    score: 300
+
+slide_player:
+  shot_aerial_hit:
+    aerial_hit:
+      priority: 200
+      expire: 2s

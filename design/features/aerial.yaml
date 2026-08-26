@@ -1,6 +1,6 @@
 id: aerial
 name: Aerial plate
-status: designed
+status: implementing
 phase: Phase 3
 
 story:
@@ -31,10 +31,15 @@ rules:
         precedent (see research doc) suggests treating this as a mode-qualifying step
         ("step on the plate to light something else") rather than a standalone scoring
         shot, since it has no natural "repeat and build" pattern the way a shot_group does.
-  scoring: TBD
+  scoring: >
+    DRAFT, needs a real game-balance pass with the user: 300/hit flat. Implemented in
+    modes/aerial/config/aerial.yaml as a single flat-scored shot, per the "mode-qualifying
+    step, not a standalone scoring shot" note above being itself still undecided - this is the
+    simplest safe baseline until that design pass happens.
 
 presentation:
-  slide: TBD - no dedicated slide yet
+  slide: modes/aerial/slides/aerial_hit.tscn - implemented as a placeholder light-blue panel
+    (no real art yet), per design/SCREENS.md.
   show: TBD - a springboard/launch flash + brief ballistic-arc trail animation on hit fits the Faith Plate reference directly
   sound: TBD - a quick spring-launch whoosh (distinct from the portal-fire whoosh reserved for skillshot/portal)
 
