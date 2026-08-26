@@ -52,3 +52,15 @@ when fixed, not deleted, so resolution history stays visible.
       `ball_over`, `multiball_start`/jackpot, `game_over`, `high_score_entry` — have no owning
       design doc yet; they aren't playfield "features" in the shots/hardware sense so don't fit
       `design/features/` cleanly. Flagged in `design/SCREENS.md`'s Open items.
+- [ ] Build out the 8 designed-but-unimplemented feature modes (`lanes, orbits, slings,
+      skillshot, dropbank, aerial, portal, ramps`) against `smart_virtual` — see
+      `plans/resumption-roadmap.md` Phase 3 and each feature's Rules layer in
+      `design/features/*.yaml`.
+- [ ] Draft/validate the `flippers:` MPF config skeleton against `smart_virtual` — the real
+      coil-driver wiring is hardware-blocked (see the flippers item above), but the config
+      itself can be written and boot-tested virtually first.
+- [ ] Build real `base`/`attract` Godot slide art, plus the bespoke feature-hit overlays
+      cataloged in `design/SCREENS.md` — runnable via Godot + virtual MPF, no cabinet needed.
+- [ ] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
+      Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
+      physical machine.
