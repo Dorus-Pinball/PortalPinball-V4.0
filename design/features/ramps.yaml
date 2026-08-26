@@ -5,9 +5,10 @@ phase: Phase 3
 
 story:
   hook: >
-    Proposed (from theme research, not yet confirmed with the user): a ramp is a close
-    visual match for Portal 2's Hard Light Bridge - a solid, glowing energy platform you
-    cross. See design/research/portal-themes-and-pinball-design.md.
+    Confirmed via CAD: the physical playfield has parts literally named "light bridge
+    rail right" / "light bridge rail left" flanking the right ramp - the Hard Light
+    Bridge motif proposed from theme research wasn't a guess, it's already built.
+    See design/research/onshape-cad-findings.md.
 
 shots:
   - ref: s-ramp-l1
@@ -31,12 +32,24 @@ rules:
     - type: sequence
       name: ramp_combo
       notes: >
-        pinball design research: 2 switches per ramp (entry+exit) with no diverter
-        hardware most likely just confirms a completed make, not routing. The standard
-        real-machine use for a symmetric L/R ramp pair like this is a `sequence` block
-        rewarding ramp-to-ramp combos (left ramp -> right ramp within N seconds), or a
-        repeat-ramp bonus-multiplier build - either reuses hardware already wired, no new
-        parts needed. See design/research/portal-themes-and-pinball-design.md Part 2.
+        pinball design research: the standard real-machine use for a symmetric L/R ramp
+        pair is a `sequence` block rewarding ramp-to-ramp combos (left ramp -> right ramp
+        within N seconds), or a repeat-ramp bonus-multiplier build. Still applies
+        regardless of the diverter finding below - this scores the *shot*, the diverter
+        controls where the *ball* goes physically. See
+        design/research/portal-themes-and-pinball-design.md Part 2.
+    - type: other
+      name: right_ramp_diverter
+      notes: >
+        CAD correction (design/research/onshape-cad-findings.md): the earlier "no
+        diverter hardware" assumption was wrong. The playfield has a real
+        Diverter_Rod + Diverter_Base + Bridge_Diverter_Cover assembly feeding a Subway
+        tunnel right where the right ramp bottoms out - this is a genuine routing
+        diverter, not just an entry/exit confirmation pair. MPF has a native
+        `diverters:` device type for exactly this. NOT YET BUILDABLE: no diverter coil
+        or subway entry/exit switches exist in hardware-coils.yaml/
+        hardware-switches.yaml today - this needs real electrical wiring first, same
+        gate as Phase 1 flippers. Flagged in TODO.md.
   scoring: TBD
 
 presentation:
@@ -48,6 +61,10 @@ notes: >
   Lowest-priority Phase 3 feature - board Overviews.xlsx's "Modes" sheet notes are
   sparsest here ("right ramp", a bare "?" placeholder). Needs a real design pass with
   the user (what a ramp shot actually does/awards) before implementation, per
-  plans/resumption-roadmap.md Phase 3. If a diverter/servo is ever added to the physical
-  ramp later, standard use is alternating L/R routing to feed a physical ball lock for
-  multiball - a hardware wishlist item, not currently planned.
+  plans/resumption-roadmap.md Phase 3. The diverter/subway isn't a hypothetical
+  wishlist item anymore (as an earlier version of this file assumed) - it's built into
+  the CAD already; standard real-machine use is alternating L/R routing to feed a
+  physical ball lock for multiball, which is now a real near-term option once it's
+  wired, not just a stretch goal. Real dimensions: right ramp bottom ~4.9"x9.6",
+  light bridge rails ~12"-18" long. See design/research/onshape-cad-findings.md and
+  the schematic artifact linked there.

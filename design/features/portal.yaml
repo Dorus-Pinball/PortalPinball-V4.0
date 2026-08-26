@@ -71,4 +71,11 @@ presentation:
 notes: >
   Most involved feature in Phase 3 (multi-switch ball-tracking state machine) -
   build it last, once the simpler shot_group pattern is proven out by lanes/orbits,
-  per plans/resumption-roadmap.md.
+  per plans/resumption-roadmap.md. The playfield schematic
+  (design/research/onshape-cad-findings.md) showed three "Duplicate Exit" fragments
+  near the top-left - confirmed by the user to just be one Exit part split into 3
+  pieces for 3D-printing, not three separate mechanisms. That was a dead end, not a
+  lead: the ball-lock "portal" hole-pairing mechanic the user described (hole A holds
+  a ball, hole B capturing a new ball instantly releases A - giving a teleport effect)
+  is still fully unresolved. Still need to open balldropper/VUK/Exit/DropperAssy
+  directly to actually answer it - not done yet.

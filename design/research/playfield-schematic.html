@@ -1,0 +1,526 @@
+<title>Playfield Schematic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eef2f7;
+    --panel: #ffffff;
+    --panel-2: #f7f9fc;
+    --grid: #d8e1ec;
+    --ink: #16212f;
+    --muted: #5b6b80;
+    --hair: #c7d3e2;
+    --blue: #2e7dbd;
+    --orange: #c9622a;
+    --flag: #a8790a;
+    --magenta: #a6449b;
+    --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --font-body: "Barlow", "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", "Consolas", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a0f16;
+      --panel: #111826;
+      --panel-2: #0d131e;
+      --grid: #1c2636;
+      --ink: #dceafb;
+      --muted: #8497b3;
+      --hair: #263349;
+      --blue: #62b3f2;
+      --orange: #f2925a;
+      --flag: #f6c445;
+      --magenta: #e08bd6;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a0f16;
+    --panel: #111826;
+    --panel-2: #0d131e;
+    --grid: #1c2636;
+    --ink: #dceafb;
+    --muted: #8497b3;
+    --hair: #263349;
+    --blue: #62b3f2;
+    --orange: #f2925a;
+    --flag: #f6c445;
+    --magenta: #e08bd6;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.5;
+  }
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 24px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  header.top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    border-bottom: 2px solid var(--hair);
+    padding-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 4.4vw, 3.1rem);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin: 0 0 6px;
+  }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--muted);
+    display: grid;
+    gap: 3px;
+    text-align: right;
+  }
+  .meta a { color: var(--blue); }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 22px;
+  }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--hair);
+    border-radius: 3px;
+    padding: 18px 20px;
+  }
+  .panel h2 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 1.05rem;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+  .panel h2 .n { color: var(--muted); font-weight: 500; }
+
+  .diagram-shell { padding: 12px 12px 16px; }
+  .diagram-shell svg { display: block; width: 100%; height: auto; }
+  figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 10px;
+    max-width: 60ch;
+  }
+  figure { margin: 0; }
+
+  .legend { display: grid; gap: 9px; }
+  .legend .row { display: flex; align-items: center; gap: 9px; font-size: 0.86rem; }
+  .legend .swatch { width: 13px; height: 13px; border-radius: 2px; flex: none; }
+  .legend .count { margin-left: auto; font-family: var(--font-mono); color: var(--muted); font-size: 0.78rem; }
+
+  .swatch.boundary { background: var(--hair); }
+  .swatch.sling { background: #7fbf6b; }
+  .swatch.orbit { background: var(--blue); }
+  .swatch.diverter { background: var(--orange); }
+  .swatch.target { background: #8a7bd6; }
+  .swatch.light { background: var(--muted); }
+  .swatch.faithplate { background: var(--flag); }
+  .swatch.portal { background: var(--magenta); }
+  .swatch.misc { background: var(--hair); opacity: 0.6; }
+
+  .findings { display: grid; gap: 14px; margin-top: 4px; }
+  .finding { display: grid; grid-template-columns: 12px 1fr; gap: 12px; }
+  .finding .bar { border-radius: 2px; }
+  .finding .bar.confirm { background: var(--flag); }
+  .finding .bar.correct { background: var(--orange); }
+  .finding .bar.open { background: var(--magenta); }
+  .finding h3 {
+    margin: 0 0 3px;
+    font-size: 0.92rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+  }
+  .finding p { margin: 0; font-size: 0.85rem; color: var(--muted); }
+  .finding .tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--panel-2);
+    border: 1px solid var(--hair);
+    padding: 1px 6px;
+    border-radius: 20px;
+    margin-right: 6px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--hair);
+  }
+  th {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  td.num, th.num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--muted);
+  }
+  td.name { font-weight: 600; }
+  .table-scroll { overflow-x: auto; }
+
+  footer {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    border-top: 1px solid var(--hair);
+    padding-top: 14px;
+  }
+
+  /* --- SVG schematic styling --- */
+  svg text { font-family: var(--font-mono); fill: var(--ink); }
+  .frame { fill: none; stroke: var(--hair); stroke-width: 1; }
+  .gridline { stroke: var(--grid); stroke-width: 0.6; }
+  .axislabel { font-size: 6px; fill: var(--muted); letter-spacing: 0.06em; }
+  .orient { font-size: 7px; fill: var(--muted); letter-spacing: 0.12em; }
+
+  rect.p-boundary { fill: none; stroke: var(--hair); stroke-width: 0.8; }
+  rect.p-sling { fill: #7fbf6b33; stroke: #7fbf6b; stroke-width: 0.8; }
+  rect.p-orbit { fill: color-mix(in srgb, var(--blue) 18%, transparent); stroke: var(--blue); stroke-width: 0.9; }
+  rect.p-diverter { fill: color-mix(in srgb, var(--orange) 16%, transparent); stroke: var(--orange); stroke-width: 0.8; }
+  rect.p-target { fill: #8a7bd633; stroke: #8a7bd6; stroke-width: 0.8; }
+  rect.p-light { fill: var(--muted); opacity: 0.35; stroke: none; }
+  rect.p-faithplate { fill: color-mix(in srgb, var(--flag) 22%, transparent); stroke: var(--flag); stroke-width: 1.1; }
+  rect.p-portal { fill: color-mix(in srgb, var(--magenta) 18%, transparent); stroke: var(--magenta); stroke-width: 0.9; stroke-dasharray: 2 1.4; }
+  rect.p-misc { fill: var(--hair); opacity: 0.28; stroke: none; }
+
+  .callout-line { stroke: var(--muted); stroke-width: 0.6; opacity: 0.8; }
+  .callout-dot { fill: var(--muted); }
+  .callout-label { font-size: 6.6px; fill: var(--ink); }
+  .callout-label.blue { fill: var(--blue); }
+  .callout-label.orange { fill: var(--orange); }
+  .callout-label.flag { fill: var(--flag); }
+  .callout-label.magenta { fill: var(--magenta); }
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <p class="kicker">Onshape &rarr; MPF design bridge</p>
+      <h1>Playfield Schematic</h1>
+    </div>
+    <div class="meta">
+      <div>Document: Portal Playfield</div>
+      <div>Element: Portal Playfield Parts (Part Studio)</div>
+      <div>79 solid bodies &middot; extracted via FeatureScript bounding boxes</div>
+      <div>Units: inches &middot; orientation: shooter lane/trough at bottom</div>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <div class="panel diagram-shell">
+      <figure>
+        <svg viewBox="-60 -30 340 500" role="img"
+             aria-label="Top-down schematic of the Portal pinball playfield, showing the outline, rails, orbits, slingshots, the right-side diverter and subway system, the right ramp with its light bridge rails, the Aerial Faith Plate, three duplicated Exit fragments near the top, and a cluster of unnamed small parts, all positioned from real CAD bounding-box data.">
+
+          <!-- orientation labels -->
+          <text class="orient" x="106.3" y="-12" text-anchor="middle">BACK OF PLAYFIELD</text>
+          <text class="orient" x="106.3" y="462" text-anchor="middle">SHOOTER LANE / TROUGH END</text>
+
+          <!-- faint reference grid, every 5 inches -->
+          <g class="gridline">
+            <line x1="0" y1="0" x2="0" y2="433.1"/><line x1="53.15" y1="0" x2="53.15" y2="433.1"/>
+            <line x1="106.3" y1="0" x2="106.3" y2="433.1"/><line x1="159.45" y1="0" x2="159.45" y2="433.1"/>
+            <line x1="212.6" y1="0" x2="212.6" y2="433.1"/>
+            <line x1="0" y1="0" x2="212.6" y2="0"/><line x1="0" y1="108.3" x2="212.6" y2="108.3"/>
+            <line x1="0" y1="216.6" x2="212.6" y2="216.6"/><line x1="0" y1="324.8" x2="212.6" y2="324.8"/>
+            <line x1="0" y1="433.1" x2="212.6" y2="433.1"/>
+          </g>
+
+          <!-- generated parts -->
+          <!-- boundary (14) -->
+          <rect class="p-boundary" x="0.0" y="0.0" width="212.6" height="433.1" data-idx="1" data-name="Playfield"><title>Playfield (#1)</title></rect>
+          <rect class="p-boundary" x="0.0" y="0.0" width="4.7" height="397.7" data-idx="2" data-name="Rail_Left"><title>Rail_Left (#2)</title></rect>
+          <rect class="p-boundary" x="207.9" y="0.0" width="4.7" height="385.9" data-idx="3" data-name="Rail_Right"><title>Rail_Right (#3)</title></rect>
+          <rect class="p-boundary" x="116.3" y="386.0" width="76.2" height="46.7" data-idx="4" data-name="Rail_Right_Bottom"><title>Rail_Right_Bottom (#4)</title></rect>
+          <rect class="p-boundary" x="5.1" y="366.0" width="110.8" height="66.7" data-idx="5" data-name="Rail_Left_Bottom"><title>Rail_Left_Bottom (#5)</title></rect>
+          <rect class="p-boundary" x="189.8" y="243.7" width="4.7" height="122.5" data-idx="6" data-name="Rail_Shooterlane"><title>Rail_Shooterlane (#6)</title></rect>
+          <rect class="p-boundary" x="117.8" y="357.8" width="71.6" height="44.0" data-idx="7" data-name="Rail_Trough"><title>Rail_Trough (#7)</title></rect>
+          <rect class="p-boundary" x="32.0" y="290.1" width="41.6" height="75.9" data-idx="8" data-name="Guide_Left"><title>Guide_Left (#8)</title></rect>
+          <rect class="p-boundary" x="135.6" y="290.1" width="41.6" height="75.9" data-idx="9" data-name="Guide_Right"><title>Guide_Right (#9)</title></rect>
+          <rect class="p-boundary" x="4.7" y="2.8" width="203.2" height="181.1" data-idx="12" data-name="toprail"><title>toprail (#12)</title></rect>
+          <rect class="p-boundary" x="194.5" y="102.2" width="13.0" height="102.6" data-idx="15" data-name="shooter ramp"><title>shooter ramp (#15)</title></rect>
+          <rect class="p-boundary" x="194.5" y="97.7" width="13.0" height="145.7" data-idx="25" data-name="Light rail"><title>Light rail (#25)</title></rect>
+          <rect class="p-boundary" x="192.7" y="241.5" width="1.2" height="33.4" data-idx="45" data-name="rail2"><title>rail2 (#45)</title></rect>
+          <rect class="p-boundary" x="159.8" y="286.6" width="20.0" height="21.3" data-idx="56" data-name="rail3"><title>rail3 (#56)</title></rect>
+          <!-- sling (2) -->
+          <rect class="p-sling" x="47.3" y="287.8" width="20.5" height="44.5" data-idx="10" data-name="Slingshot Rubber Left"><title>Slingshot Rubber Left (#10)</title></rect>
+          <rect class="p-sling" x="141.3" y="287.8" width="20.5" height="44.5" data-idx="11" data-name="Slingshot Rubber Right"><title>Slingshot Rubber Right (#11)</title></rect>
+          <!-- diverter (13) -->
+          <rect class="p-diverter" x="190.0" y="227.2" width="17.4" height="9.2" data-idx="18" data-name="Diverter_Rod"><title>Diverter_Rod (#18)</title></rect>
+          <rect class="p-diverter" x="152.3" y="214.7" width="35.5" height="50.0" data-idx="19" data-name="Subway"><title>Subway (#19)</title></rect>
+          <rect class="p-diverter" x="186.7" y="185.4" width="21.1" height="58.9" data-idx="20" data-name="Diverter_Base"><title>Diverter_Base (#20)</title></rect>
+          <rect class="p-diverter" x="172.0" y="169.3" width="27.4" height="74.2" data-idx="21" data-name="Bridge_Diverter_Cover-Base"><title>Bridge_Diverter_Cover-Base (#21)</title></rect>
+          <rect class="p-diverter" x="172.0" y="214.9" width="22.5" height="28.6" data-idx="22" data-name="Bridge_Diverter_Cover_top"><title>Bridge_Diverter_Cover_top (#22)</title></rect>
+          <rect class="p-diverter" x="141.9" y="73.7" width="49.4" height="96.2" data-idx="23" data-name="right ramp bottom"><title>right ramp bottom (#23)</title></rect>
+          <rect class="p-diverter" x="116.0" y="84.7" width="53.6" height="76.9" data-idx="24" data-name="right of right ramp bottom"><title>right of right ramp bottom (#24)</title></rect>
+          <rect class="p-diverter" x="168.5" y="73.7" width="43.3" height="28.0" data-idx="26" data-name="right ramp top base"><title>right ramp top base (#26)</title></rect>
+          <rect class="p-diverter" x="168.5" y="73.7" width="43.3" height="24.0" data-idx="27" data-name="right ramp top lid"><title>right ramp top lid (#27)</title></rect>
+          <rect class="p-diverter" x="192.7" y="95.8" width="1.2" height="120.3" data-idx="28" data-name="light bridge rail right"><title>light bridge rail right (#28)</title></rect>
+          <rect class="p-diverter" x="208.1" y="95.8" width="1.2" height="179.1" data-idx="29" data-name="light bridge rail left"><title>light bridge rail left (#29)</title></rect>
+          <rect class="p-diverter" x="176.0" y="265.9" width="13.8" height="18.2" data-idx="42" data-name="Rightlowerbase"><title>Rightlowerbase (#42)</title></rect>
+          <rect class="p-diverter" x="194.5" y="243.4" width="13.0" height="31.5" data-idx="43" data-name="Right lower ramp floor"><title>Right lower ramp floor (#43)</title></rect>
+          <!-- orbit (2) -->
+          <rect class="p-orbit" x="170.1" y="32.9" width="21.2" height="128.7" data-idx="13" data-name="right orbit"><title>right orbit (#13)</title></rect>
+          <rect class="p-orbit" x="20.5" y="16.5" width="100.0" height="135.9" data-idx="14" data-name="left orbit"><title>left orbit (#14)</title></rect>
+          <!-- target (3) -->
+          <rect class="p-target" x="168.5" y="221.8" width="3.2" height="9.9" data-idx="16" data-name="Target 1"><title>Target 1 (#16)</title></rect>
+          <rect class="p-target" x="168.5" y="232.8" width="3.2" height="9.9" data-idx="17" data-name="Target 2"><title>Target 2 (#17)</title></rect>
+          <rect class="p-target" x="64.2" y="26.8" width="5.5" height="2.0" data-idx="30" data-name="Target Switch"><title>Target Switch (#30)</title></rect>
+          <!-- light (11) -->
+          <rect class="p-light" x="81.9" y="52.4" width="5.1" height="0.8" data-idx="31" data-name="Light1"><title>Light1 (#31)</title></rect>
+          <rect class="p-light" x="82.5" y="52.4" width="1.2" height="0.8" data-idx="32" data-name="Light2"><title>Light2 (#32)</title></rect>
+          <rect class="p-light" x="82.5" y="52.4" width="1.2" height="0.8" data-idx="33" data-name="Light3"><title>Light3 (#33)</title></rect>
+          <rect class="p-light" x="82.5" y="52.4" width="1.2" height="0.8" data-idx="34" data-name="Light4"><title>Light4 (#34)</title></rect>
+          <rect class="p-light" x="82.5" y="52.4" width="1.2" height="0.8" data-idx="35" data-name="Light5"><title>Light5 (#35)</title></rect>
+          <rect class="p-light" x="82.5" y="52.4" width="1.2" height="0.8" data-idx="36" data-name="Light6"><title>Light6 (#36)</title></rect>
+          <rect class="p-light" x="161.1" y="288.7" width="0.9" height="20.6" data-idx="46" data-name="platformlight1"><title>platformlight1 (#46)</title></rect>
+          <rect class="p-light" x="159.6" y="309.1" width="17.4" height="0.6" data-idx="47" data-name="platformlight2"><title>platformlight2 (#47)</title></rect>
+          <rect class="p-light" x="174.6" y="288.7" width="1.0" height="20.6" data-idx="48" data-name="platformlight3"><title>platformlight3 (#48)</title></rect>
+          <rect class="p-light" x="158.0" y="290.4" width="0.6" height="17.5" data-idx="52" data-name="platformlight4"><title>platformlight4 (#52)</title></rect>
+          <rect class="p-light" x="159.6" y="288.9" width="17.4" height="0.6" data-idx="53" data-name="platformlight5"><title>platformlight5 (#53)</title></rect>
+          <!-- faithplate (1) -->
+          <rect class="p-faithplate" x="30.5" y="53.3" width="47.1" height="82.6" data-idx="59" data-name="Faithplate walls"><title>Faithplate walls (#59)</title></rect>
+          <!-- portal (3) -->
+          <rect class="p-portal" x="29.5" y="23.7" width="22.5" height="29.5" data-idx="39" data-name="Duplicate Exit1"><title>Duplicate Exit1 (#39)</title></rect>
+          <rect class="p-portal" x="52.0" y="23.7" width="35.4" height="29.5" data-idx="40" data-name="Duplicate Exit2"><title>Duplicate Exit2 (#40)</title></rect>
+          <rect class="p-portal" x="87.4" y="17.7" width="24.8" height="35.5" data-idx="41" data-name="Duplicate Exit3"><title>Duplicate Exit3 (#41)</title></rect>
+          <!-- misc (30) -->
+          <rect class="p-misc" x="51.2" y="32.1" width="0.8" height="16.6" data-idx="37" data-name="Part 37"><title>Part 37 (#37)</title></rect>
+          <rect class="p-misc" x="88.6" y="51.2" width="21.2" height="1.2" data-idx="38" data-name="Window"><title>Window (#38)</title></rect>
+          <rect class="p-misc" x="158.5" y="289.3" width="19.6" height="19.7" data-idx="44" data-name="Part 44"><title>Part 44 (#44)</title></rect>
+          <rect class="p-misc" x="181.5" y="268.7" width="3.9" height="3.9" data-idx="49" data-name="platform"><title>platform (#49)</title></rect>
+          <rect class="p-misc" x="158.0" y="288.9" width="20.6" height="20.6" data-idx="50" data-name="platform"><title>platform (#50)</title></rect>
+          <rect class="p-misc" x="160.7" y="268.7" width="24.7" height="40.6" data-idx="51" data-name="platform"><title>platform (#51)</title></rect>
+          <rect class="p-misc" x="179.8" y="274.9" width="28.9" height="34.6" data-idx="54" data-name="Part 54"><title>Part 54 (#54)</title></rect>
+          <rect class="p-misc" x="179.8" y="274.9" width="28.9" height="34.6" data-idx="55" data-name="Part 55"><title>Part 55 (#55)</title></rect>
+          <rect class="p-misc" x="4.7" y="65.8" width="43.3" height="24.1" data-idx="57" data-name="Part 57"><title>Part 57 (#57)</title></rect>
+          <rect class="p-misc" x="27.7" y="80.5" width="44.5" height="81.3" data-idx="58" data-name="Part 58"><title>Part 58 (#58)</title></rect>
+          <rect class="p-misc" x="10.2" y="84.8" width="14.2" height="214.4" data-idx="60" data-name="Part 60"><title>Part 60 (#60)</title></rect>
+          <rect class="p-misc" x="3.7" y="262.1" width="42.1" height="42.2" data-idx="61" data-name="Part 61"><title>Part 61 (#61)</title></rect>
+          <rect class="p-misc" x="4.7" y="65.8" width="43.3" height="24.1" data-idx="62" data-name="Part 62"><title>Part 62 (#62)</title></rect>
+          <rect class="p-misc" x="22.9" y="85.6" width="0.6" height="0.6" data-idx="63" data-name="Part 63"><title>Part 63 (#63)</title></rect>
+          <rect class="p-misc" x="5.1" y="179.8" width="34.3" height="110.6" data-idx="64" data-name="Part 64"><title>Part 64 (#64)</title></rect>
+          <rect class="p-misc" x="6.3" y="195.7" width="18.1" height="17.2" data-idx="65" data-name="Part 65"><title>Part 65 (#65)</title></rect>
+          <rect class="p-misc" x="8.7" y="197.7" width="13.4" height="13.4" data-idx="66" data-name="Part 66"><title>Part 66 (#66)</title></rect>
+          <rect class="p-misc" x="18.6" y="198.1" width="0.6" height="0.6" data-idx="67" data-name="Part 67"><title>Part 67 (#67)</title></rect>
+          <rect class="p-misc" x="18.6" y="197.0" width="0.6" height="0.6" data-idx="68" data-name="Part 68"><title>Part 68 (#68)</title></rect>
+          <rect class="p-misc" x="19.0" y="197.0" width="0.6" height="1.5" data-idx="69" data-name="Part 69"><title>Part 69 (#69)</title></rect>
+          <rect class="p-misc" x="17.1" y="197.0" width="1.2" height="1.4" data-idx="70" data-name="Part 70"><title>Part 70 (#70)</title></rect>
+          <rect class="p-misc" x="17.5" y="197.3" width="0.6" height="0.6" data-idx="71" data-name="Part 71"><title>Part 71 (#71)</title></rect>
+          <rect class="p-misc" x="16.4" y="197.0" width="0.6" height="1.4" data-idx="72" data-name="Part 72"><title>Part 72 (#72)</title></rect>
+          <rect class="p-misc" x="15.8" y="197.0" width="0.6" height="1.4" data-idx="73" data-name="Part 73"><title>Part 73 (#73)</title></rect>
+          <rect class="p-misc" x="14.5" y="197.0" width="1.0" height="1.4" data-idx="74" data-name="Part 74"><title>Part 74 (#74)</title></rect>
+          <rect class="p-misc" x="14.0" y="197.0" width="0.6" height="1.4" data-idx="75" data-name="Part 75"><title>Part 75 (#75)</title></rect>
+          <rect class="p-misc" x="13.1" y="197.0" width="0.6" height="1.5" data-idx="76" data-name="Part 76"><title>Part 76 (#76)</title></rect>
+          <rect class="p-misc" x="12.5" y="197.0" width="0.6" height="1.5" data-idx="77" data-name="Part 77"><title>Part 77 (#77)</title></rect>
+          <rect class="p-misc" x="11.2" y="197.0" width="0.7" height="1.4" data-idx="78" data-name="Part 78"><title>Part 78 (#78)</title></rect>
+          <rect class="p-misc" x="12.0" y="197.0" width="0.6" height="1.4" data-idx="79" data-name="Part 79"><title>Part 79 (#79)</title></rect>
+
+          <!-- callouts: leader line + dot + label -->
+          <g class="callout-label blue">
+            <line class="callout-line" x1="-6" y1="70" x2="70" y2="80"/><circle class="callout-dot" cx="70" cy="80" r="1.3"/>
+            <text x="-8" y="70" text-anchor="end">LEFT ORBIT</text>
+          </g>
+          <g class="callout-label blue">
+            <line class="callout-line" x1="222" y1="95" x2="180" y2="95"/><circle class="callout-dot" cx="180" cy="95" r="1.3"/>
+            <text x="224" y="97" text-anchor="start">RIGHT ORBIT</text>
+          </g>
+          <g class="callout-label flag">
+            <line class="callout-line" x1="-6" y1="145" x2="54" y2="95"/><circle class="callout-dot" cx="54" cy="95" r="1.3"/>
+            <text x="-8" y="147" text-anchor="end">AERIAL FAITH PLATE</text>
+          </g>
+          <g class="callout-label magenta">
+            <line class="callout-line" x1="60" y1="-6" x2="70" y2="30"/><circle class="callout-dot" cx="70" cy="30" r="1.3"/>
+            <text x="60" y="-9" text-anchor="middle">EXIT (3D-PRINT SPLIT &times;3)</text>
+          </g>
+          <g class="callout-label orange">
+            <line class="callout-line" x1="222" y1="210" x2="188" y2="210"/><circle class="callout-dot" cx="188" cy="210" r="1.3"/>
+            <text x="224" y="212" text-anchor="start">DIVERTER + SUBWAY</text>
+          </g>
+          <g class="callout-label orange">
+            <line class="callout-line" x1="222" y1="125" x2="185" y2="118"/><circle class="callout-dot" cx="185" cy="118" r="1.3"/>
+            <text x="224" y="127" text-anchor="start">RIGHT RAMP +</text>
+            <text x="224" y="135" text-anchor="start">LIGHT BRIDGE</text>
+          </g>
+          <g class="callout-label">
+            <line class="callout-line" x1="106.3" y1="450" x2="153" y2="380"/><circle class="callout-dot" cx="153" cy="380" r="1.3"/>
+            <text x="106.3" y="459" text-anchor="middle">TROUGH</text>
+          </g>
+          <g class="callout-label">
+            <line class="callout-line" x1="222" y1="300" x2="196" y2="300"/><circle class="callout-dot" cx="196" cy="300" r="1.3"/>
+            <text x="224" y="302" text-anchor="start">SHOOTER LANE</text>
+          </g>
+          <g class="callout-label">
+            <line class="callout-line" x1="-6" y1="330" x2="57" y2="310"/><circle class="callout-dot" cx="57" cy="310" r="1.3"/>
+            <text x="-8" y="332" text-anchor="end">L. SLING</text>
+          </g>
+          <g class="callout-label">
+            <line class="callout-line" x1="222" y1="330" x2="151" y2="310"/><circle class="callout-dot" cx="151" cy="310" r="1.3"/>
+            <text x="224" y="332" text-anchor="start">R. SLING</text>
+          </g>
+          <g class="callout-label">
+            <line class="callout-line" x1="222" y1="240" x2="170" y2="227"/><circle class="callout-dot" cx="170" cy="227" r="1.3"/>
+            <text x="224" y="242" text-anchor="start">TARGETS 1/2</text>
+          </g>
+          <g class="callout-label">
+            <line class="callout-line" x1="-6" y1="230" x2="15" y2="205"/><circle class="callout-dot" cx="15" cy="205" r="1.3"/>
+            <text x="-8" y="232" text-anchor="end">UNNAMED CLUSTER</text>
+            <text x="-8" y="240" text-anchor="end" style="font-size:5.6px">(~15 small bodies)</text>
+          </g>
+          <g class="callout-label">
+            <line class="callout-line" x1="222" y1="290" x2="180" y2="290"/><circle class="callout-dot" cx="180" cy="290" r="1.3"/>
+            <text x="224" y="292" text-anchor="start">PLATFORM +</text>
+            <text x="224" y="300" text-anchor="start">LIGHTS CLUSTER</text>
+          </g>
+
+          <rect class="frame" x="0" y="0" width="212.6" height="433.1"/>
+        </svg>
+        <figcaption>
+          Top-down schematic, generated directly from the 79 solid-body bounding boxes in
+          <em>Portal Playfield &rarr; Portal Playfield Parts</em> (workspace <code>885dc9fd&hellip;</code>).
+          Boxes are axis-aligned bounding envelopes, not true outlines &mdash; curved parts (orbits, ramps,
+          light-bridge rails) will read as rectangles here even though the physical part is a thin curved
+          lane inside that box. Hover any shape for its exact CAD name and part number.
+        </figcaption>
+      </figure>
+    </div>
+
+    <aside class="panel">
+      <h2>Legend</h2>
+      <div class="legend">
+        <div class="row"><span class="swatch boundary"></span>Structure / rails <span class="count">14</span></div>
+        <div class="row"><span class="swatch sling"></span>Slingshots <span class="count">2</span></div>
+        <div class="row"><span class="swatch orbit"></span>Orbits <span class="count">2</span></div>
+        <div class="row"><span class="swatch diverter"></span>Diverter / ramp system <span class="count">13</span></div>
+        <div class="row"><span class="swatch target"></span>Targets <span class="count">3</span></div>
+        <div class="row"><span class="swatch light"></span>Lights <span class="count">11</span></div>
+        <div class="row"><span class="swatch faithplate"></span>Aerial Faith Plate <span class="count">1</span></div>
+        <div class="row"><span class="swatch portal"></span>Exit (3D-print split) <span class="count">3</span></div>
+        <div class="row"><span class="swatch misc"></span>Unnamed / small <span class="count">30</span></div>
+      </div>
+    </aside>
+
+  </div>
+
+  <div class="panel">
+    <h2>What this confirms and corrects <span class="n">&mdash; vs. design/features/*.yaml</span></h2>
+    <div class="findings">
+      <div class="finding">
+        <div class="bar confirm"></div>
+        <div>
+          <span class="tag">confirmed</span>
+          <h3>Aerial Faith Plate is a real, named part &mdash; "Faithplate walls"</h3>
+          <p>Sits mid-left of the playfield, roughly a third of the way up from the shooter lane. Matches <code>design/features/aerial.yaml</code>'s theme-research finding exactly &mdash; this wasn't a guess, it was already in your CAD.</p>
+        </div>
+      </div>
+      <div class="finding">
+        <div class="bar correct"></div>
+        <div>
+          <span class="tag">correction</span>
+          <h3>The right ramp has a real diverter + subway, not a pass-through</h3>
+          <p><code>Diverter_Rod</code>, <code>Diverter_Base</code>, and a <code>Bridge_Diverter_Cover</code> sit directly beside a <code>Subway</code> tunnel, right where the right ramp bottoms out. <code>design/features/ramps.yaml</code> currently says "no diverter hardware" &mdash; that's wrong and should be fixed.</p>
+        </div>
+      </div>
+      <div class="finding">
+        <div class="bar confirm"></div>
+        <div>
+          <span class="tag">confirmed</span>
+          <h3>"Light bridge rail" parts flank the right ramp</h3>
+          <p>Independently validates the Hard Light Bridge motif proposed for <code>ramps.yaml</code> from Portal-theme research &mdash; you'd already named real geometry after it.</p>
+        </div>
+      </div>
+      <div class="finding">
+        <div class="bar open"></div>
+        <div>
+          <span class="tag">dead end</span>
+          <h3>Three "Duplicate Exit" fragments &mdash; just one part, split for 3D printing</h3>
+          <p>Initially misread as three separate mechanism locations. Confirmed by the user: this is one Exit part cut into 3 pieces to fit a 3D printer bed, not three physical hole locations. No signal on the ball-lock &ldquo;portal&rdquo; hole-pairing question either way &mdash; still need to open <code>balldropper</code> / <code>VUK</code> / <code>Exit</code> / <code>DropperAssy</code> to resolve that.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Named mechanisms <span class="n">&mdash; extracted dimensions</span></h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Part</th><th>Group</th><th class="num">Width (in)</th><th class="num">Height (in)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Playfield</td><td>Structure</td><td class="num">21.26</td><td class="num">43.31</td></tr>
+          <tr><td class="name">left orbit</td><td>Orbit</td><td class="num">10.00</td><td class="num">13.59</td></tr>
+          <tr><td class="name">right orbit</td><td>Orbit</td><td class="num">2.12</td><td class="num">12.87</td></tr>
+          <tr><td class="name">Faithplate walls</td><td>Aerial Faith Plate</td><td class="num">4.71</td><td class="num">8.26</td></tr>
+          <tr><td class="name">Diverter_Rod</td><td>Diverter / ramp</td><td class="num">1.74</td><td class="num">0.92</td></tr>
+          <tr><td class="name">Diverter_Base</td><td>Diverter / ramp</td><td class="num">2.11</td><td class="num">5.89</td></tr>
+          <tr><td class="name">Subway</td><td>Diverter / ramp</td><td class="num">3.55</td><td class="num">5.00</td></tr>
+          <tr><td class="name">right ramp bottom</td><td>Diverter / ramp</td><td class="num">4.94</td><td class="num">9.62</td></tr>
+          <tr><td class="name">light bridge rail right</td><td>Diverter / ramp</td><td class="num">0.12</td><td class="num">12.03</td></tr>
+          <tr><td class="name">light bridge rail left</td><td>Diverter / ramp</td><td class="num">0.12</td><td class="num">17.91</td></tr>
+          <tr><td class="name">Slingshot Rubber Left</td><td>Sling</td><td class="num">2.05</td><td class="num">4.45</td></tr>
+          <tr><td class="name">Slingshot Rubber Right</td><td>Sling</td><td class="num">2.05</td><td class="num">4.45</td></tr>
+          <tr><td class="name">Duplicate Exit1</td><td>Exit (print split)</td><td class="num">2.25</td><td class="num">2.95</td></tr>
+          <tr><td class="name">Duplicate Exit2</td><td>Exit (print split)</td><td class="num">3.54</td><td class="num">2.95</td></tr>
+          <tr><td class="name">Duplicate Exit3</td><td>Exit (print split)</td><td class="num">2.48</td><td class="num">3.55</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    Extracted 2026-08-26 via <code>onshape-mcp</code> &middot; document 8212fe3e618a0fe47cd2c238, workspace 885dc9fd1c559656144e3042,
+    element a6bfd8eb17f87ad8bf47ca11 &middot; coordinates rounded to 0.01in, part order matched by index against the live parts list
+    (verified against 3 structural parts before trusting the full set).
+  </footer>
+
+</div>

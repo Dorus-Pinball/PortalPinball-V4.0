@@ -5,11 +5,14 @@ phase: Phase 3
 
 story:
   hook: >
-    Confirmed by theme research: this is a direct reference to Portal 2's "Aerial Faith
-    Plate," a springboard panel that launches Chell ballistically across a test chamber.
-    A real licensed Multimorphic "Portal" pinball machine has a mechanism with this exact
-    name, so "aerial" here isn't a generic term - it's the Faith Plate.
-    See design/research/portal-themes-and-pinball-design.md.
+    Confirmed twice over: theme research identified this as a direct reference to
+    Portal 2's "Aerial Faith Plate" (a real licensed Multimorphic "Portal" pinball
+    machine has a mechanism with this exact name), and the actual CAD confirms it
+    directly - a part literally named "Faithplate walls" exists on the playfield
+    (~4.7"x8.3", sitting mid-left, roughly a third of the way up from the shooter
+    lane). "Aerial" here isn't a generic term - it's the Faith Plate, by design intent
+    as well as by name. See design/research/portal-themes-and-pinball-design.md and
+    design/research/onshape-cad-findings.md.
 
 shots:
   - ref: s-aerial
