@@ -46,7 +46,7 @@ Verified command, run from `machinefolder/`:
   `machinefolder/logs/*.log` file.
 - **`gmc.cfg`'s `[keyboard]` block** covers manual switch presses for anything smart_virtual
   doesn't auto-drive (lane/target/orbit switches, flipper activation once Phase 1 lands) — today
-  it only maps 4 switches (`s_trough1`, `s_start`, `s_plunger_lane`, `s_toplane1`). Extend this
+  it only maps 4 switches (`s-trough1`, `s-start`, `s-plunger-lane`, `s-toplane1`). Extend this
   incrementally as each Phase 2/3 switch becomes part of active rules.
 
 This tier is the fast-iteration replacement for "play it on the machine" during active
@@ -65,7 +65,7 @@ the plain Python way instead:
 ./.venv/Scripts/python -m unittest discover tests
 ```
 - First test written and passing: `tests/test_bringup.py` — starts a real game against the actual
-  `machinefolder/config.yaml`, fills the trough, confirms ball 1 is in play, hits `s_toplane1`,
+  `machinefolder/config.yaml`, fills the trough, confirms ball 1 is in play, hits `s-toplane1`,
   and asserts the score reaches 100 (matches `base.yaml`'s `variable_player` config). **Verified
   green: `Ran 1 test in 0.271s / OK`.**
 - Key API confirmed by reading the installed `mpf.tests.MpfTestCase`/`MpfGameTestCase` source

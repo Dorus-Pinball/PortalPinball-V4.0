@@ -10,19 +10,19 @@ story:
     intro beat, right as the ball launches. See design/research/portal-themes-and-pinball-design.md.
 
 shots:
-  - ref: s_launch
-    role: player-controlled plunge trigger (bd_plunger's player_controlled_eject_event)
-  - ref: s_plunger_lane
+  - ref: s-launch
+    role: player-controlled plunge trigger (bd-plunger's player_controlled_eject_event)
+  - ref: s-plunger-lane
     role: ball-in-plunger-lane confirmation switch
   - ref: led-launch
     role: feedback LED
   - ref: led-save
     role: feedback LED near the plunger lane
-  - ref: s_toplane1
+  - ref: s-toplane1
     role: candidate skillshot target (rotating-lane proposal, see notes)
-  - ref: s_toplane2
+  - ref: s-toplane2
     role: candidate skillshot target (rotating-lane proposal, see notes)
-  - ref: s_toplane3
+  - ref: s-toplane3
     role: candidate skillshot target (rotating-lane proposal, see notes)
 
 rules:

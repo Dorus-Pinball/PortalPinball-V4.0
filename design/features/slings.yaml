@@ -10,10 +10,10 @@ story:
     trampoline). See design/research/portal-themes-and-pinball-design.md.
 
 shots:
-  - ref: s_left_sling
-    role: left sling switch (also drives the ac_sling_left autofire coil)
-  - ref: s_right_sling
-    role: right sling switch (also drives the ac_sling_right autofire coil)
+  - ref: s-left-sling
+    role: left sling switch (also drives the ac-sling-left autofire coil)
+  - ref: s-right-sling
+    role: right sling switch (also drives the ac-sling-right autofire coil)
   - ref: led-sling-l
     role: feedback LED
   - ref: led-sling-r

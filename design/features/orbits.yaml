@@ -12,9 +12,9 @@ story:
     See design/research/portal-themes-and-pinball-design.md.
 
 shots:
-  - ref: s_orbit-l
+  - ref: s-orbit-l
     role: left orbit entry switch
-  - ref: s_orbit-r
+  - ref: s-orbit-r
     role: right orbit entry switch
   - ref: s-orbit-top
     role: orbit-top switch (right switch bank per board Overviews.xlsx)

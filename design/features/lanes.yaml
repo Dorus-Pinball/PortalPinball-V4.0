@@ -12,11 +12,11 @@ story:
     See design/research/portal-themes-and-pinball-design.md.
 
 shots:
-  - ref: s_toplane1
+  - ref: s-toplane1
     role: top lane shot 1 of 3
-  - ref: s_toplane2
+  - ref: s-toplane2
     role: top lane shot 2 of 3
-  - ref: s_toplane3
+  - ref: s-toplane3
     role: top lane shot 3 of 3
   - ref: led-toplane1
     role: feedback LED
@@ -24,15 +24,15 @@ shots:
     role: feedback LED
   - ref: led-toplane3
     role: feedback LED
-  - ref: s_bottomlane1
+  - ref: s-bottomlane1
     role: bottom lane shot 1 of 5
-  - ref: s_bottomlane2
+  - ref: s-bottomlane2
     role: bottom lane shot 2 of 5
-  - ref: s_bottomlane3
+  - ref: s-bottomlane3
     role: bottom lane shot 3 of 5
-  - ref: s_bottomlane4
+  - ref: s-bottomlane4
     role: bottom lane shot 4 of 5
-  - ref: s_bottomlane5
+  - ref: s-bottomlane5
     role: bottom lane shot 5 of 5
   - ref: led-lane-b1
     role: feedback LED
@@ -63,5 +63,5 @@ presentation:
 
 notes: >
   Only 4 "lane-b" LEDs exist (led-lane-b1..b4) for 5 bottom lane switches
-  (s_bottomlane1..5) - one bottom lane currently has no dedicated feedback LED.
+  (s-bottomlane1..5) - one bottom lane currently has no dedicated feedback LED.
   Worth confirming against the cabinet before finalizing the shot_group's LED mapping.

@@ -5,10 +5,10 @@
 
 switches:
 # Autofire 2-0-0 to 2-0-3
-    s_right_sling:
+    s-right-sling:
         number: 2-0-0
         debounce: quick
-    s_left_sling:
+    s-left-sling:
         number: 2-0-1
         debounce: quick
     #name:              plunger --> NO AUTOLAUNCH SWITCH
@@ -22,11 +22,11 @@ switches:
 # Autofire 2-0-4 to 2-0-7 DO NOT EXIST
     
 # Autofire 2-0-8 to 2-0-11
-    s_popbumber_1:
+    s-popbumper-1:
         number: 2-0-8
-    s_popbumber_2:
+    s-popbumper-2:
         number: 2-0-9
-    s_popbumber_3:
+    s-popbumper-3:
         number: 2-0-10
     #name:              drop --> NO AUTOLAUNCH SWITCH 
     #    number: 2-0-3
@@ -35,49 +35,49 @@ switches:
 
 
 # Direct Switches Launch Section
-    s_plunger_lane:
+    s-plunger-lane:
         number: 2-0-16
-    s_start:
+    s-start:
         number: 2-0-17
         tags: start
-    s_launch:
+    s-launch:
         number: 2-0-18
         tags: launch
  
 
 # Lane Switches
-    s_toplane1:
+    s-toplane1:
         number: 2-0-19   
         type: NO   
-    s_toplane2:
+    s-toplane2:
         number: 2-0-20   
         type: NO 
-    s_toplane3:
+    s-toplane3:
         number: 2-0-21   
         type: NO 
 
-    s_bottomlane1:
+    s-bottomlane1:
         number: 2-0-22   
         type: NO 
-    s_bottomlane2:
+    s-bottomlane2:
         number: 2-0-23   
         type: NO 
-    s_bottomlane3:
+    s-bottomlane3:
         number: 2-0-24   
         type: NO 
-    s_bottomlane4:
+    s-bottomlane4:
         number: 2-0-25  
         type: NO 
-    s_bottomlane5:
+    s-bottomlane5:
         number: 2-0-26   
         type: NO 
 
 
 # Other
-    s_orbit-r:
+    s-orbit-r:
         number: 2-0-27  
         type: NO  
-    s_orbit-l:
+    s-orbit-l:
         number: 2-0-28  
         type: NO  
     s-target-e1:
@@ -98,25 +98,25 @@ switches:
 
 
 # Direct Switches Trough Section
-    s_trough1:
+    s-trough1:
         number: 2-1-16
         type: NC
-    s_trough2:
+    s-trough2:
         number: 2-1-17
         type: NC
-    s_trough3:
+    s-trough3:
         number: 2-1-18
         type: NC
-    s_trough4:
+    s-trough4:
         number: 2-1-19
         type: NC
-    s_trough5:
+    s-trough5:
         number: 2-1-20
         type: NC
-    s_trough6:
+    s-trough6:
         number: 2-1-21
         type: NC
-    s_trough_jam:  
+    s-trough-jam:  
         number: 2-1-22
         type: NC 
 
@@ -124,19 +124,19 @@ switches:
 # Orbit & Ramp switches
 
 # Droptarget Left to Right
-    s_drop1:
+    s-drop1:
         number: 2-1-23
-    s_drop2:
+    s-drop2:
         number: 2-1-24
-    s_drop3:
+    s-drop3:
         number: 2-1-25
 
 # VUK Mid Field
-    s_vukmid:
+    s-vukmid:
         number: 2-1-26
  
 # VUK Left Top 
-    s_vuktop:
+    s-vuktop:
         number: 2-1-27
         
         

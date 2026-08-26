@@ -9,32 +9,32 @@ slide_player:
         
         
 variable_player:
-    s_left_sling_active:
+    s-left-sling_active:
         score: 100
-    s_right_sling_active:
+    s-right-sling_active:
         score: 100
-    s_popbumber_1_active:
+    s-popbumper-1_active:
         score: 100
-    s_popbumber_2_active:
+    s-popbumper-2_active:
         score: 100
-    s_popbumber_3_active:        
+    s-popbumper-3_active:        
         score: 100    
 
-    s_toplane1_active:
+    s-toplane1_active:
         score: 100
-    s_toplane2_active:
+    s-toplane2_active:
         score: 100
-    s_toplane3_active:
+    s-toplane3_active:
         score: 100      
-    s_bottomlane1_active:
+    s-bottomlane1_active:
         score: 100
-    s_bottomlane2_active:
+    s-bottomlane2_active:
         score: 100
-    s_bottomlane3_active:
+    s-bottomlane3_active:
         score: 100
-    s_bottomlane4_active:
+    s-bottomlane4_active:
         score: 100
-    s_bottomlane5_active:
+    s-bottomlane5_active:
         score: 100
 
 

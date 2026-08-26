@@ -147,7 +147,7 @@ implementation.
 - **Drop bank → insinerator**: textbook "bank completion unlocks a shot" pattern — MPF has a
   cookbook recipe for exactly this
   (`missionpinball.org/latest/cookbook/sequential_drop_banks/`), using a `sequence` block.
-  Standard shape: escalating value per repeat completion (bank auto-resets via `c_drop`).
+  Standard shape: escalating value per repeat completion (bank auto-resets via `c-drop`).
 - **Wizard-mode structure**: wrap each of the 8 Phase 3 features in its own `achievement`, put all
   8 in one `achievement_group` — MPF fires the "all complete" event automatically, no custom event
   chain needed. Real machines pick one of the two dominant shapes deliberately (see above) — this
