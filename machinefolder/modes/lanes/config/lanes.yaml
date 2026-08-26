@@ -1,0 +1,69 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  priority: 90
+
+# DRAFT scoring - placeholder point values pending a real game-balance pass with the user.
+# Replaces the flat 100-per-switch placeholder that used to live in modes/base/config/base.yaml.
+# The "spell"/2x-hit lit-orange-blinking mechanic from board Overviews.xlsx is NOT implemented
+# yet - design/features/lanes.yaml flags that story hook as "proposed, not yet confirmed with
+# the user", so this only wires up the basic shot/shot_group scaffolding + per-hit and
+# group-complete scoring. Per-shot LED feedback (led-toplane1..3, led-lane-b1..4) is deferred to
+# that follow-up pass too, since it's tied to the same unconfirmed lit/orange/blinking states.
+
+shots:
+  shot_toplane1:
+    switch: s-toplane1
+  shot_toplane2:
+    switch: s-toplane2
+  shot_toplane3:
+    switch: s-toplane3
+
+  shot_bottomlane1:
+    switch: s-bottomlane1
+  shot_bottomlane2:
+    switch: s-bottomlane2
+  shot_bottomlane3:
+    switch: s-bottomlane3
+  shot_bottomlane4:
+    switch: s-bottomlane4
+  shot_bottomlane5:
+    switch: s-bottomlane5
+
+shot_groups:
+  top_lanes:
+    shots: shot_toplane1, shot_toplane2, shot_toplane3
+  bottom_lanes:
+    shots: shot_bottomlane1, shot_bottomlane2, shot_bottomlane3, shot_bottomlane4, shot_bottomlane5
+
+variable_player:
+  shot_toplane1_hit:
+    score: 500
+  shot_toplane2_hit:
+    score: 500
+  shot_toplane3_hit:
+    score: 500
+  shot_bottomlane1_hit:
+    score: 250
+  shot_bottomlane2_hit:
+    score: 250
+  shot_bottomlane3_hit:
+    score: 250
+  shot_bottomlane4_hit:
+    score: 250
+  shot_bottomlane5_hit:
+    score: 250
+  top_lanes_complete:
+    score: 2500
+  bottom_lanes_complete:
+    score: 1500
+
+slide_player:
+  top_lanes_complete:
+    lanes_hit:
+      priority: 200
+      expire: 2s
+  bottom_lanes_complete:
+    lanes_hit:
+      priority: 200
+      expire: 2s

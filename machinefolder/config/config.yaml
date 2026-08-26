@@ -32,6 +32,6 @@ config:
     
 modes:
 - base
+- lanes
 #- orbit
-#- lanes
 
