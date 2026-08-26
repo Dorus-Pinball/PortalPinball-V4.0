@@ -42,3 +42,13 @@ when fixed, not deleted, so resolution history stays visible.
       `kivy`/legacy `mpf-mc` and fails without it — use `python -m unittest discover tests`
       instead; there is no `mpf format`/lint command in 0.80.0 at all — a clean `mpf -X -t -b` boot
       is the fast config-validation check instead. Full detail in `plans/testing-strategy.md`.
+
+## Not blocked by hardware access
+
+- [ ] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,
+      portal, ramps`) have `scoring: TBD` — needs a scoring-values pass, doesn't require the
+      cabinet.
+- [ ] The "standard pinball moments" every game needs — `ball_start`/match, `tilt_warning`,
+      `ball_over`, `multiball_start`/jackpot, `game_over`, `high_score_entry` — have no owning
+      design doc yet; they aren't playfield "features" in the shots/hardware sense so don't fit
+      `design/features/` cleanly. Flagged in `design/SCREENS.md`'s Open items.
