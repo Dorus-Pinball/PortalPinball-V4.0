@@ -50,3 +50,8 @@ notes: >
   "making" the skillshot? Theme/design research above proposes rotating across the 3 top
   lanes each ball rather than a single fixed lane - a reasonable default, but still needs
   the user's sign-off before implementation.
+
+  Onshape CAD confirms `shooter ramp` sits directly beside `Rail_Shooterlane`/`Rail_Trough`
+  at the bottom of the playfield, exactly where s-launch/s-plunger-lane are expected - but
+  CAD geometry can't resolve the "which lane counts" question above, that's a rules decision.
+  See design/research/onshape-cad-findings.md.

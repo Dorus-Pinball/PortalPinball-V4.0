@@ -65,3 +65,10 @@ notes: >
   Only 4 "lane-b" LEDs exist (led-lane-b1..b4) for 5 bottom lane switches
   (s-bottomlane1..5) - one bottom lane currently has no dedicated feedback LED.
   Worth confirming against the cabinet before finalizing the shot_group's LED mapping.
+
+  Onshape CAD: `toprail` is a real large part spanning nearly the full top ~40% of the
+  playfield, consistent with being the backing rail behind the 3 top lanes - but no
+  individual per-lane parts exist, and no turret/rotating/pop-up mechanism was found near
+  the top lanes, so the "turret gauntlet" story hook above remains unconfirmed by CAD (a
+  `popup post` assembly exists in the document but its position wasn't checked). Bottom
+  lanes still have zero identified CAD geometry. See design/research/onshape-cad-findings.md.

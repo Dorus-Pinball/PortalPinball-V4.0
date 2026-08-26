@@ -41,3 +41,8 @@ presentation:
 notes: >
   `orbit` is already referenced (commented out) in machinefolder/config/config.yaml's
   modes: list - this feature fulfills that placeholder.
+
+  Onshape CAD confirms `left orbit`/`right orbit` as real, large named parts spanning most of
+  the upper third of the playfield (~10.0" x 13.6" left, ~2.1" x 12.9" right) - directly
+  confirms the shots above, though the two sides aren't the same shape/size, worth keeping in
+  mind for the "clean pair" framing. See design/research/onshape-cad-findings.md.

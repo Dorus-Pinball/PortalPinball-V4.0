@@ -65,3 +65,8 @@ notes: >
   hardware-leds.yaml today - only the downstream insinerator/button/target-l1 targets
   do. Worth confirming whether that's intentional (bank itself isn't meant to light up
   per-target) before building the mode's LED logic.
+
+  Onshape CAD: no part or assembly named for a 3-target drop bank or an "insinerator"
+  mechanism exists anywhere in the document - a genuine open gap, same category as the
+  ball-lock hole-pairing question in portal.yaml. A dedicated `Button` assembly does exist
+  and directly matches s-button. See design/research/onshape-cad-findings.md.
