@@ -4,7 +4,12 @@ status: designed
 phase: Phase 3
 
 story:
-  hook: "TBD - needs a narrative pass"
+  hook: >
+    Proposed for the top lanes only (from theme research, not yet confirmed with the
+    user): a "turret gauntlet" - 3 lanes as 3 turrets to knock down, matching the
+    2x-hit/"complete" spell mechanic already planned below (each turret needs a second
+    hit to topple). Bottom lanes (5) still have no proposed hook - genuinely open.
+    See design/research/portal-themes-and-pinball-design.md.
 
 shots:
   - ref: s_toplane1
@@ -53,8 +58,8 @@ rules:
 
 presentation:
   slide: TBD - no dedicated slide yet, base/attract currently share one background image
-  show: TBD
-  sound: TBD
+  show: TBD - turret pop-up-and-topple animation per top lane hit, if the turret-gauntlet hook above is confirmed
+  sound: TBD - turret chirp on first hit, comedic "dying" wobble/cry on the completing second hit
 
 notes: >
   Only 4 "lane-b" LEDs exist (led-lane-b1..b4) for 5 bottom lane switches

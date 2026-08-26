@@ -4,7 +4,12 @@ status: designed
 phase: Phase 3
 
 story:
-  hook: "TBD - needs a narrative pass"
+  hook: >
+    Proposed (from theme research, not yet confirmed with the user): the clean left/right
+    pair maps naturally onto the game's blue/orange portal pairing (e.g. blue = left
+    orbit, orange = right orbit), and a ball looping at speed around an orbit echoes the
+    game's momentum-conservation-through-portals mechanic.
+    See design/research/portal-themes-and-pinball-design.md.
 
 shots:
   - ref: s_orbit-l
@@ -30,8 +35,8 @@ rules:
 
 presentation:
   slide: TBD - no dedicated slide yet
-  show: TBD
-  sound: TBD
+  show: TBD - portal-ring "pop" flash on the relevant orbit icon, blue for left / orange for right
+  sound: TBD - a rising-pitch whoosh sweep (momentum/speed motif) distinct per side
 
 notes: >
   `orbit` is already referenced (commented out) in machinefolder/config/config.yaml's

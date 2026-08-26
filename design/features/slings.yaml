@@ -4,7 +4,10 @@ status: designed
 phase: Phase 3
 
 story:
-  hook: "TBD - needs a narrative pass"
+  hook: >
+    Proposed (from theme research, not yet confirmed with the user): a sling's bounce
+    action is a close match for Portal 2's Repulsion Gel (blue - bounces objects like a
+    trampoline). See design/research/portal-themes-and-pinball-design.md.
 
 shots:
   - ref: s_left_sling
@@ -24,12 +27,14 @@ rules:
       notes: >
         "Sling Combo" mechanic named explicitly in board Overviews.xlsx - back-to-back
         sling hits within a time window. MPF's `sequence` logic block (time-pressure,
-        N hits within a timeout) is the right fit, not a plain counter.
+        N hits within a timeout) is the right fit, not a plain counter - confirmed as the
+        standard real-machine pattern for this kind of combo by the pinball design
+        research (design/research/portal-themes-and-pinball-design.md Part 2).
   scoring: TBD
 
 presentation:
   slide: TBD - no dedicated slide yet
-  show: TBD
-  sound: TBD
+  show: TBD - a blue springy squash-and-bounce flash on the sling icon, per the Repulsion Gel motif
+  sound: TBD - a springy "boing" per hit, building to a distinct combo-complete sting
 
 notes: ""

@@ -4,7 +4,12 @@ status: designed
 phase: Phase 3
 
 story:
-  hook: "TBD - needs a narrative pass"
+  hook: >
+    Confirmed by theme research: this is a direct reference to Portal 2's "Aerial Faith
+    Plate," a springboard panel that launches Chell ballistically across a test chamber.
+    A real licensed Multimorphic "Portal" pinball machine has a mechanism with this exact
+    name, so "aerial" here isn't a generic term - it's the Faith Plate.
+    See design/research/portal-themes-and-pinball-design.md.
 
 shots:
   - ref: s-aerial
@@ -17,15 +22,23 @@ rules:
   devices:
     - type: shot
       name: shot_aerial
-      notes: currently just a switch with no logic - simplest feature to implement, per plans/resumption-roadmap.md Phase 3.
+      notes: >
+        currently just a switch with no logic - simplest feature to implement, per
+        plans/resumption-roadmap.md Phase 3. Given no coil exists here, real-machine
+        precedent (see research doc) suggests treating this as a mode-qualifying step
+        ("step on the plate to light something else") rather than a standalone scoring
+        shot, since it has no natural "repeat and build" pattern the way a shot_group does.
   scoring: TBD
 
 presentation:
   slide: TBD - no dedicated slide yet
-  show: TBD
-  sound: TBD
+  show: TBD - a springboard/launch flash + brief ballistic-arc trail animation on hit fits the Faith Plate reference directly
+  sound: TBD - a quick spring-launch whoosh (distinct from the portal-fire whoosh reserved for skillshot/portal)
 
 notes: >
   board Overviews.xlsx's "Modes" sheet has a bare "aerial plate active" note and
-  nothing else - the mechanic behind this shot (what "aerial" actually means for this
-  machine) needs a design pass with the user before implementation.
+  nothing else - the specific rules still need a design pass with the user. Hardware
+  wishlist (not blocking, not in any phase yet): if an upkicker coil is ever added here,
+  the standard real-machine use for this mechanism type is a multiball-lock feeder or a
+  mode-start scoop (VUK pattern) - see design/research/portal-themes-and-pinball-design.md
+  Part 2.

@@ -20,6 +20,11 @@ when fixed, not deleted, so resolution history stays visible.
 - [ ] `board Overviews.xlsx` "Modes" sheet has several under-specified feature notes (e.g. the
       ramps section is just "right ramp" and a bare "?") that need a design pass with the user
       before they can be implemented.
+- [ ] Hardware wishlist, not blocking, no phase assigned: `design/features/aerial.yaml` notes that
+      the "aerial plate" (`s-aerial`) is a confirmed reference to Portal 2's Aerial Faith Plate,
+      and that adding an upkicker coil there (currently switch-only) would let it work as a
+      real launch mechanism instead of just a mode-qualifying switch. See
+      `design/research/portal-themes-and-pinball-design.md`.
 - [x] Repo hygiene: `machinefolder/logs/` was tracked in git (158 files) with no `.gitignore`
       entry, and a stray 126,607-line log file had been accidentally committed. Logs are now
       gitignored and untracked going forward (existing git history left intact).

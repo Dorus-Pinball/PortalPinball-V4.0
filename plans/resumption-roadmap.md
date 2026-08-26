@@ -218,7 +218,12 @@ Only after Phases 1–4 give a genuinely playable machine:
 - Bonus tally at ball end (xlsx mentions "count to 100").
 - Multiball (natural fit for the trough/plunger ball devices already in place).
 - Wizard mode gated behind full Portal-feature completion, tying Phase 3's `portal` mode into a
-  machine-wide payoff.
+  machine-wide payoff. Open design fork (from pinball design research, see
+  `design/research/portal-themes-and-pinball-design.md` Part 2): real machines build this two
+  ways — one big end-of-game wizard mode gated on all 8 Phase 3 features, or several tiered
+  mini-wizard modes (2-3 features each) feeding one final "super" wizard mode. `portal`, as the
+  namesake feature, is a natural choice for the final required key either way. Not decided yet —
+  needs a deliberate choice before Phase 5 starts, not a default.
 - High score / audits polish (audits.yaml already tracks basics; mpf-gmc ships bonus/high_score
   slides in the addon's own `slides/` folder, currently unused).
 

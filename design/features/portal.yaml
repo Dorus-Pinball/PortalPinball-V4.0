@@ -5,10 +5,13 @@ phase: Phase 3
 
 story:
   hook: >
-    TBD - needs a narrative pass, but this is the game's namesake feature (a ball
+    TBD - needs a full narrative pass, but this is the game's namesake feature (a ball
     physically enters a "dropper" and re-emerges via a "portal" exit), so it's the
     natural anchor point for the machine's central Portal-theme story beat once one
-    is written.
+    is written. Proposed motif (from theme research): the transfer moment maps well onto
+    Portal 2's Conversion Gel (white - makes any surface portal-able), since this is
+    literally the feature where a portal gets made and used.
+    See design/research/portal-themes-and-pinball-design.md.
 
 shots:
   - ref: s-dropper
@@ -52,13 +55,18 @@ rules:
       notes: >
         the 5-stage "exit open" LED progression (led-exit-open-1..5) maps to 5
         achievements (enabled -> started -> completed each), tying into a Phase 5
-        wizard-mode gate per plans/resumption-roadmap.md.
+        wizard-mode gate per plans/resumption-roadmap.md. Pinball design research
+        confirms this is the standard MPF-native way to build a wizard-mode gate
+        (design/research/portal-themes-and-pinball-design.md Part 2) - as the namesake
+        feature, `portal` is a natural choice to be the *last* stage/key required
+        regardless of whether the eventual wizard-mode shape is one big mode or several
+        tiered mini-modes (that shape is still an open decision, not made here).
   scoring: TBD
 
 presentation:
   slide: TBD - no dedicated slide yet
-  show: TBD - an LED chase across led-exit-open-1..5 is a natural fit once built
-  sound: TBD
+  show: TBD - portal-ring burn-open/close animation on transfer, then an LED chase across led-exit-open-1..5
+  sound: TBD - portal-fire whoosh on dropper entry, shimmering "conversion" chime on successful transfer
 
 notes: >
   Most involved feature in Phase 3 (multi-switch ball-tracking state machine) -

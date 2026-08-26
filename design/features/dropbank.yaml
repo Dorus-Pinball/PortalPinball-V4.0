@@ -4,7 +4,13 @@ status: designed
 phase: Phase 3
 
 story:
-  hook: "TBD - needs a narrative pass"
+  hook: >
+    Proposed (inferred from the existing "s-insinerator" hardware name, not yet confirmed
+    with the user): this reads as a direct reference to Portal 1's Companion Cube
+    incineration beat, one of the game's most memorable moments (GLaDOS forces Chell to
+    destroy the cube in an incinerator). Dropping the 3-target bank could represent
+    clearing the cube's supports/path before the shot to the insinerator "completes" that
+    beat. See design/research/portal-themes-and-pinball-design.md.
 
 shots:
   - ref: s_drop1
@@ -34,13 +40,25 @@ rules:
       notes: already exists as a device in machinefolder/config/hardware-devices.yaml (reset_coils c_drop).
     - type: shot
       name: shot_insinerator
-      notes: fired by bank completion, per plans/resumption-roadmap.md Phase 3.
+      notes: >
+        fired by bank completion, per plans/resumption-roadmap.md Phase 3. Pinball design
+        research: this is the textbook "bank completion unlocks a shot" pattern - MPF has
+        a cookbook recipe for exactly this (missionpinball.org/latest/cookbook/
+        sequential_drop_banks/, uses a `sequence` block). Standard real-machine shape is
+        escalating value per repeat completion rather than flat scoring each time, since
+        the bank auto-resets via c_drop.
+    - type: accrual
+      name: insinerator_finisher
+      notes: >
+        pinball design research suggests insinerator + button + target-l1 hit in order
+        within a window as a combo finisher, reusing the `accrual` device type already
+        chosen for the portal feature - no new pattern to learn.
   scoring: TBD
 
 presentation:
   slide: TBD - no dedicated slide yet
-  show: TBD
-  sound: TBD
+  show: TBD - fire/incinerator flame-wipe flash on the insinerator shot, per the theme research's escape/incinerator sting idea
+  sound: TBD - crackling flame whoosh on insinerator hit; a companion-cube "clunk-chime" per drop target, if the story hook above is confirmed
 
 notes: >
   The 3 raw drop targets (s_drop1-3) have no individual feedback LEDs in
