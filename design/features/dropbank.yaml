@@ -1,6 +1,6 @@
 id: dropbank
 name: Drop target bank -> insinerator
-status: designed
+status: implementing
 phase: Phase 3
 
 story:
@@ -47,16 +47,25 @@ rules:
         sequential_drop_banks/, uses a `sequence` block). Standard real-machine shape is
         escalating value per repeat completion rather than flat scoring each time, since
         the bank auto-resets via c-drop.
-    - type: accrual
+    - type: sequence
       name: insinerator_finisher
       notes: >
-        pinball design research suggests insinerator + button + target-l1 hit in order
-        within a window as a combo finisher, reusing the `accrual` device type already
-        chosen for the portal feature - no new pattern to learn.
-  scoring: TBD
+        CORRECTED from the original "accrual" choice: accruals complete in ANY order
+        (verified against the installed MPF's mpf/devices/logic_blocks.py source directly)
+        - an ordered insinerator -> button -> target-l1 finisher needs `sequences:`
+        instead. Same correction will apply to portal.yaml's dropper->portal->exit
+        accrual when that feature is built. No time window enforced yet (flat ordered
+        completion only), matching the same gap noted in slings.yaml.
+  scoring: >
+    DRAFT, needs a real game-balance pass with the user: +1000 for bank completion
+    (drop_target_bank_db-dropbank_down), 500/hit for the insinerator shot (flat, no
+    escalating-value-per-repeat-completion yet), +2000 for the ordered
+    insinerator->button->target-l1 finisher. Implemented in
+    modes/dropbank/config/dropbank.yaml.
 
 presentation:
-  slide: TBD - no dedicated slide yet
+  slide: modes/dropbank/slides/dropbank_hit.tscn - implemented as a placeholder red/orange
+    panel (no real art yet), per design/SCREENS.md.
   show: TBD - fire/incinerator flame-wipe flash on the insinerator shot, per the theme research's escape/incinerator sting idea
   sound: TBD - crackling flame whoosh on insinerator hit; a companion-cube "clunk-chime" per drop target, if the story hook above is confirmed
 

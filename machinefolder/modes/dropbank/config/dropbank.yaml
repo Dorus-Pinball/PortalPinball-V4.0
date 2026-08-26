@@ -1,0 +1,41 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  priority: 90
+
+# DRAFT scoring - placeholder point values pending a real game-balance pass with the user.
+# The "escalating value per repeat completion" cookbook pattern (design/features/dropbank.yaml)
+# is NOT implemented yet - this is flat scoring only. Also note: the design doc calls the
+# insinerator/button/target-l1 finisher an `accrual`, but accruals complete in ANY order (verified
+# against mpf/devices/logic_blocks.py) - an ordered finisher needs `sequences:` instead, which is
+# what's actually used below. Same correction applies to portal.yaml's dropper->portal->exit
+# accrual when that feature is built.
+
+shots:
+  shot_insinerator:
+    switch: s-insinerator
+
+sequences:
+  insinerator_finisher:
+    events:
+      - s-insinerator_active
+      - s-button_active
+      - s-target-l1_active
+
+variable_player:
+  drop_target_bank_db-dropbank_down:
+    score: 1000
+  shot_insinerator_hit:
+    score: 500
+  logicblock_insinerator_finisher_complete:
+    score: 2000
+
+slide_player:
+  drop_target_bank_db-dropbank_down:
+    dropbank_hit:
+      priority: 200
+      expire: 2s
+  logicblock_insinerator_finisher_complete:
+    dropbank_hit:
+      priority: 200
+      expire: 2s
