@@ -7,8 +7,11 @@ when fixed, not deleted, so resolution history stays visible.
       EOS interrupter, no EOS switch back to the controller), but coil driver wiring to the OPP
       boards and the MPF `flippers:` config are still incomplete. Blocks real playtesting.
 - [ ] Tilt is not configured at all — no tilt switch present in `hardware-switches.yaml`.
-- [ ] `config.yaml`'s `modes:` list references `orbit` and `lanes` (commented out) but neither
-      mode folder exists yet under `machinefolder/modes/`.
+- [x] `config.yaml`'s `modes:` list references `orbit` and `lanes` (commented out) but neither
+      mode folder exists yet under `machinefolder/modes/`. Fixed: all 8 Phase 3 feature modes
+      (`lanes, orbits, slings, skillshot, dropbank, aerial, portal, ramps`) are now implemented
+      and listed. See the "Not blocked by hardware access" section below for what's still
+      draft/deferred within each.
 - [ ] `hardware-coils.yaml` has a large commented-out block of unassigned coil numbers on the
       `2-1-x` chain and the Cobra `0-0-x`/`1-0-x` chains — worth confirming what's actually free
       vs. reserved before assigning new features (e.g. flippers) to specific numbers.
@@ -45,22 +48,33 @@ when fixed, not deleted, so resolution history stays visible.
 
 ## Not blocked by hardware access
 
-- [ ] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,
+- [x] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,
       portal, ramps`) have `scoring: TBD` — needs a scoring-values pass, doesn't require the
-      cabinet.
+      cabinet. Fixed: each now has DRAFT point values (clearly marked needs-review, not final
+      game balance) implemented in its `modes/<name>/config/<name>.yaml`.
 - [ ] The "standard pinball moments" every game needs — `ball_start`/match, `tilt_warning`,
       `ball_over`, `multiball_start`/jackpot, `game_over`, `high_score_entry` — have no owning
       design doc yet; they aren't playfield "features" in the shots/hardware sense so don't fit
       `design/features/` cleanly. Flagged in `design/SCREENS.md`'s Open items.
-- [ ] Build out the 8 designed-but-unimplemented feature modes (`lanes, orbits, slings,
+- [x] Build out the 8 designed-but-unimplemented feature modes (`lanes, orbits, slings,
       skillshot, dropbank, aerial, portal, ramps`) against `smart_virtual` — see
       `plans/resumption-roadmap.md` Phase 3 and each feature's Rules layer in
-      `design/features/*.yaml`.
+      `design/features/*.yaml`. Done: all 8 implemented, boot-tested clean, and covered by a
+      passing `tests/test_<name>.py` each (24 tests total). Two design-doc device-type choices
+      were corrected along the way (`accrual` -> `sequences` for dropbank/portal's ordered
+      finishers - accruals complete in any order, verified against MPF's own
+      `logic_blocks.py`). Several nuances deliberately deferred rather than shipped unverified -
+      see the new items below.
 - [ ] Draft/validate the `flippers:` MPF config skeleton against `smart_virtual` — the real
       coil-driver wiring is hardware-blocked (see the flippers item above), but the config
       itself can be written and boot-tested virtually first.
-- [ ] Build real `base`/`attract` Godot slide art, plus the bespoke feature-hit overlays
-      cataloged in `design/SCREENS.md` — runnable via Godot + virtual MPF, no cabinet needed.
+- [ ] Build real `base`/`attract` Godot slide art — still using the shared `mainscreen.jpg`
+      placeholder. The bespoke feature-hit overlays cataloged in `design/SCREENS.md` are now
+      implemented as placeholder colored panels (one per feature, in each mode's `slides/`
+      folder) — not real art, and NOT visually verified in the Godot editor (no Godot
+      executable available in this environment to check headlessly); structurally they match
+      the proven `base.tscn`/`attract.tscn` format exactly (same `MPFSlide` root script,
+      built-in `ColorRect`/`Label` node types only).
 - [ ] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
       Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
       physical machine.
