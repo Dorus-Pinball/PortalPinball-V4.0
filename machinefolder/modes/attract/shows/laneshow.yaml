@@ -1,4 +1,4 @@
-#show_version=6 
+#show_version=6
 - lights:
     (leds): red #-f1s
 - lights:

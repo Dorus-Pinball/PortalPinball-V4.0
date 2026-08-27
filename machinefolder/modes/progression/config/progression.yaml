@@ -1,0 +1,66 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  priority: 90
+
+# Phase 5 wizard-mode gate (plans/resumption-roadmap.md), built per user direction: TIERED
+# mini-wizards, not one big gate - 2-3 of the 7 non-portal Phase 3 features feed each tier, all 3
+# tiers plus portal's own 5-stage exit_open progression (see modes/portal/config/portal.yaml)
+# together gate the final super_wizard mode. Portal, the namesake feature, is the deliberate
+# final required key alongside the 3 tiers, per design/features/portal.yaml's own suggestion.
+#
+# Every device below needs `persist_state: true` - it defaults to false for all logic_blocks
+# (verified in mpf/config_spec.yaml's logic_blocks_common, same finding as portal_sequence's
+# disable_on_complete default), and this progression has to survive across every ball of the
+# game, not reset each ball like a normal per-ball sequence. `accruals:` (any order) is the right
+# device type here, not `sequences:` - nothing about which feature gets completed first matters.
+#
+# DRAFT tier groupings and scoring, needs a real game-balance pass with the user:
+#   Tier A "First Steps": lanes, skillshot, slings
+#   Tier B "Momentum": orbits, ramps
+#   Tier C "Breakthrough": dropbank, aerial
+# "Lanes complete" itself needs both top_lanes_complete AND bottom_lanes_complete (2 separate
+# shot_group-complete events), folded into its own small accrual first so Tier A can treat it as
+# one step like every other feature.
+
+accruals:
+  lanes_both_groups:
+    persist_state: true
+    events:
+      - top_lanes_complete
+      - bottom_lanes_complete
+
+  tier_a:
+    persist_state: true
+    events:
+      - logicblock_lanes_both_groups_complete
+      - shot_skillshot_hit
+      - logicblock_sling_combo_complete
+
+  tier_b:
+    persist_state: true
+    events:
+      - orbits_complete
+      - ramps_complete
+
+  tier_c:
+    persist_state: true
+    events:
+      - logicblock_insinerator_finisher_complete
+      - shot_aerial_hit
+
+  wizard_gate:
+    persist_state: true
+    events:
+      - logicblock_tier_a_complete
+      - logicblock_tier_b_complete
+      - logicblock_tier_c_complete
+      - portal_all_exits_open
+
+variable_player:
+  logicblock_tier_a_complete:
+    score: 5000
+  logicblock_tier_b_complete:
+    score: 5000
+  logicblock_tier_c_complete:
+    score: 5000

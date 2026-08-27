@@ -9,12 +9,70 @@ mode:
 # accruals complete in ANY order (verified against mpf/devices/logic_blocks.py), same correction
 # already applied to dropbank.yaml's insinerator_finisher.
 #
-# NOT YET IMPLEMENTED: the 5-stage "exit open" achievement_group progression
-# (led-exit-open-1..5). MPF's `achievements:` device only exposes a single generic
-# `achievement_<name>_changed_state` event with a `state` arg by default, not a clean
-# `<name>_completed`-style event to chain stage N's enable off stage N-1's completion - wiring
-# 5 real stages correctly needs more design/verification time than this pass budgeted for.
-# Flagged in TODO.md rather than shipped half-verified.
+# The 5-stage "exit open" progression (led-exit-open-1..5) IS implemented below as 5 chained
+# `achievements:` devices, one completion of portal_sequence per stage (persists across balls -
+# Achievement state lives on the player object, not the mode).
+#
+# CORRECTED from the design doc's `achievement_group` device choice, and from the earlier
+# "no clean completed event" finding - both wrong, verified by reading
+# mpf/devices/achievement.py directly:
+#   - achievements: DOES default `events_when_completed` to a clean, distinctly-named
+#     `achievement_<name>_state_completed` event (validate_and_parse_config fills this in
+#     whenever it's not set) - that's exactly the chain-off-completion hook the earlier pass
+#     couldn't find. Each stage's enable_events points at the previous stage's default event.
+#   - achievement_group is the wrong device type here: it's built for "select one achievement
+#     from several and pursue it" (rotation/random-select semantics, see
+#     mpf/devices/achievement_group.py), not a fixed linear unlock chain - using it would add
+#     real behavioral risk (its own enable()/select() logic could fight the manual enable_events
+#     chain) for no benefit, since this feature never needs player selection. A plain set of
+#     achievements chained by their own default completion events is both simpler and a better
+#     semantic fit. events_when_all_completed's "all done" role is instead just stage 5's own
+#     events_when_completed, overridden to portal_all_exits_open - reserved for a future Phase 5
+#     wizard-mode gate (design/features/portal.yaml / plans/resumption-roadmap.md Phase 5), not
+#     consumed anywhere yet.
+#
+# start_events/complete_events both point at the SAME trigger (logicblock_portal_sequence_complete)
+# deliberately: Achievement.event_start is registered at priority 5, event_complete at priority 4
+# (mpf/devices/achievement.py's @event_handler decorators), so a single portal_sequence completion
+# advances whichever stage is currently "enabled" straight through started -> completed in one
+# event dispatch - the same same-event-different-priority trick used for the sling combo timer's
+# restart_events. Each stage only reacts while it's the current one (start()/complete() are no-ops
+# unless the achievement is already in the right state), so this can't skip or double-advance
+# stages even though every stage listens for the same completion event.
+achievements:
+  exit_open_1:
+    start_enabled: true
+    start_events: logicblock_portal_sequence_complete
+    complete_events: logicblock_portal_sequence_complete
+  exit_open_2:
+    enable_events: achievement_exit_open_1_state_completed
+    start_events: logicblock_portal_sequence_complete
+    complete_events: logicblock_portal_sequence_complete
+  exit_open_3:
+    enable_events: achievement_exit_open_2_state_completed
+    start_events: logicblock_portal_sequence_complete
+    complete_events: logicblock_portal_sequence_complete
+  exit_open_4:
+    enable_events: achievement_exit_open_3_state_completed
+    start_events: logicblock_portal_sequence_complete
+    complete_events: logicblock_portal_sequence_complete
+  exit_open_5:
+    enable_events: achievement_exit_open_4_state_completed
+    start_events: logicblock_portal_sequence_complete
+    complete_events: logicblock_portal_sequence_complete
+    events_when_completed: portal_all_exits_open
+
+light_player:
+  achievement_exit_open_1_state_completed:
+    led-exit-open-1: purple
+  achievement_exit_open_2_state_completed:
+    led-exit-open-2: purple
+  achievement_exit_open_3_state_completed:
+    led-exit-open-3: purple
+  achievement_exit_open_4_state_completed:
+    led-exit-open-4: purple
+  portal_all_exits_open:
+    led-exit-open-5: purple
 
 shots:
   shot_dropper:
@@ -28,6 +86,16 @@ shots:
 
 sequences:
   portal_sequence:
+    # disable_on_complete defaults to true for ALL logic_blocks (counters/accruals/sequences alike
+    # - mpf/config_spec.yaml's logic_blocks_common) - a real, easy-to-miss MPF default: by default
+    # a logic block fires its _complete event exactly ONCE per mode instance, ever, then
+    # permanently stops responding to hits (reset_on_complete rearms value back to 0, but
+    # disable_on_complete then immediately disables it again). Needed explicitly false here since
+    # the 5-stage exit_open achievement chain below depends on this sequence completing multiple
+    # times per ball (verified via tests/test_portal.py - without this, only the achievement's
+    # 1st stage ever lit, confirmed via the logicblock_portal_sequence_updated {'enabled': False}
+    # log line right after the first completion).
+    disable_on_complete: false
     events:
       - s-dropper_active
       - s-portal-r_active, s-portal-m_active
@@ -44,6 +112,16 @@ variable_player:
     score: 500
   logicblock_portal_sequence_complete:
     score: 5000
+  achievement_exit_open_1_state_completed:
+    score: 1000
+  achievement_exit_open_2_state_completed:
+    score: 1000
+  achievement_exit_open_3_state_completed:
+    score: 1000
+  achievement_exit_open_4_state_completed:
+    score: 1000
+  portal_all_exits_open:
+    score: 10000
 
 slide_player:
   logicblock_portal_sequence_complete:

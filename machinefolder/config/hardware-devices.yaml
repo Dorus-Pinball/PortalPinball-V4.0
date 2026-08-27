@@ -3,83 +3,104 @@
 # Hardware Configuration: devices
 
 
-# drop target bank    
+# drop target bank
 drop_targets:
-     d-drop-target1:
-         switch: s-drop1
-     d-drop-target2:
-         switch: s-drop2
-     d-drop-target3:
-         switch: s-drop3
-         
+  d-drop-target1:
+    switch: s-drop1
+  d-drop-target2:
+    switch: s-drop2
+  d-drop-target3:
+    switch: s-drop3
+
 drop_target_banks:
-     db-dropbank:
-         drop_targets: d-drop-target1, d-drop-target2, d-drop-target3
-         reset_coils: c-drop
-        # reset_on_complete: 1s
+  db-dropbank:
+    drop_targets: d-drop-target1, d-drop-target2, d-drop-target3
+    reset_coils: c-drop
+    # reset_on_complete: 1s
 
-   
+
 autofire_coils:
-    ac-popbumper-1:
-        coil: c-popbumper-1
-        switch: s-popbumper-1
-    ac-popbumper-2:
-        coil: c-popbumper-2
-        switch: s-popbumper-2
-    ac-popbumper-3:
-        coil: c-popbumper-3
-        switch: s-popbumper-3
+  ac-popbumper-1:
+    coil: c-popbumper-1
+    switch: s-popbumper-1
+  ac-popbumper-2:
+    coil: c-popbumper-2
+    switch: s-popbumper-2
+  ac-popbumper-3:
+    coil: c-popbumper-3
+    switch: s-popbumper-3
 
-    ac-sling-left:
-        coil: c-sling-left
-        switch: s-left-sling
-    ac-sling-right:
-        coil: c-sling-right
-        switch: s-right-sling            
-    
-    
-    
+  ac-sling-left:
+    coil: c-sling-left
+    switch: s-left-sling
+  ac-sling-right:
+    coil: c-sling-right
+    switch: s-right-sling
+
+
+
 ball_devices:
-    bd-trough:
-        ball_switches: s-trough1, s-trough2, s-trough3, s-trough4, s-trough5, s-trough6, s-trough-jam
-        eject_coil: c-trough-eject
-        tags: trough, home, drain
-        jam_switch: s-trough-jam
-        eject_coil_jam_pulse: 25ms
-        eject_targets: bd-plunger
-        debug: yes
+  bd-trough:
+    ball_switches: s-trough1, s-trough2, s-trough3, s-trough4, s-trough5, s-trough6, s-trough-jam
+    eject_coil: c-trough-eject
+    tags: trough, home, drain
+    jam_switch: s-trough-jam
+    eject_coil_jam_pulse: 25ms
+    eject_targets: bd-plunger
+    debug: yes
 
-    bd-plunger:
-        ball_switches: s-plunger-lane
-        eject_coil: c-plunger        
-        player_controlled_eject_event: s-launch_active
-        debug: yes
-        mechanical_eject: true
+  bd-plunger:
+    ball_switches: s-plunger-lane
+    eject_coil: c-plunger
+    player_controlled_eject_event: s-launch_active
+    debug: yes
+    mechanical_eject: true
 
-    # bd-vukmid:
-    #     ball_switches: s-vukmid
-    #     eject_coil: c-vukmid
-    #     eject_timeouts: 2s
+  # bd-vukmid:
+  #     ball_switches: s-vukmid
+  #     eject_coil: c-vukmid
+  #     eject_timeouts: 2s
 
-    # bd-vuktop:
-    #     ball_switches: s-vuktop
-    #     eject_coil: c-vuktop
-    #     eject_timeouts: 2s
-    
+  # bd-vuktop:
+  #     ball_switches: s-vuktop
+  #     eject_coil: c-vuktop
+  #     eject_timeouts: 2s
+
 # DRAFT - single main_coil per side, no hold_coil/eos_switch: the EOS is mechanical/
 # self-contained inside the coil assembly (not wired back to the controller), per
 # plans/resumption-roadmap.md Phase 1. Coil/switch numbers are placeholders pending real board
 # assignment - see the DRAFT notes in hardware-coils.yaml/hardware-switches.yaml and TODO.md.
 flippers:
-    left_flipper:
-        main_coil: c-flipper-left
-        activation_switch: s-left-flipper
-    right_flipper:
-        main_coil: c-flipper-right
-        activation_switch: s-right-flipper
-    
-        
+  left_flipper:
+    main_coil: c-flipper-left
+    activation_switch: s-left-flipper
+  right_flipper:
+    main_coil: c-flipper-right
+    activation_switch: s-right-flipper
+
+# DRAFT right ramp diverter (CAD-confirmed real hardware feeding a Subway tunnel, see
+# design/research/onshape-cad-findings.md and the DRAFT coil/switch comments in
+# hardware-coils.yaml/hardware-switches.yaml). No activate_events/deactivate_events wired - what a
+# diverted shot should actually award/do is a real design question for design/features/ramps.yaml
+# (the sparsest-designed Phase 3 feature), not something this hardware draft answers. Both routes
+# return the ball to the playfield (no separate ball_device exists for the subway - it's a passive
+# tunnel, not a capture point), so targets_when_active/inactive are left at their playfield default.
+diverters:
+  d-ramp-diverter:
+    activation_coil: c-ramp-diverter
+
+
+# Ball search: a real gap that was never configured (not previously flagged) - without it, a ball
+# stuck on a switchless part of the playfield stalls the machine instead of self-recovering.
+# enable_ball_search: true turns it on for this playfield using MPF's stock timing
+# (ball_search_timeout: 15s idle, 3 escalating search phases) - autofire_coils (popbumpers,
+# slings) and drop_target_banks register for ball search unconditionally (no
+# include_in_ball_search toggle exists for those device types in MPF's config_spec, confirmed by
+# reading it directly), so no per-device config was needed beyond this one flag. Flippers default
+# to NOT participating (include_in_ball_search: false is MPF's own default) - left as-is, a
+# repeatedly-pulsing flipper rarely helps free a ball stuck elsewhere on the field.
 playfields:
-    playfield:
-        tags: default
-        default_source_device: bd-plunger  
+  playfield:
+    tags: default
+    default_source_device: bd-plunger
+    enable_ball_search: true

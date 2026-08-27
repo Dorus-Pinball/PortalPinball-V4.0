@@ -16,7 +16,7 @@ coils:
   c-trough-eject:
     number: 2-0-3
     default_pulse_ms: 25
-       
+
   c-popbumper-1:
     number: 2-0-4
     default_pulse_ms: 17
@@ -26,10 +26,10 @@ coils:
   c-popbumper-3:
     number: 2-0-6
     default_pulse_ms: 17
-  c-drop:              
+  c-drop:
     number: 2-0-7
     default_pulse_ms: 25
-    
+
     # Chain PSOC 2-1-x
     # DRAFT flipper coils (Phase 1, plans/resumption-roadmap.md) - single main_coil per side,
     # no hold_coil/eos_switch since the EOS is mechanical/self-contained inside the coil
@@ -53,28 +53,43 @@ coils:
     number: 2-1-1
     default_pulse_ms: 25
     default_hold_power: 1.0
+
+    # DRAFT right ramp diverter coil (CAD-confirmed real hardware - Diverter_Rod/Diverter_Base/
+    # Bridge_Diverter_Cover feeding a Subway tunnel, see
+    # design/research/onshape-cad-findings.md). NOT confirmed against board Overviews.xlsx or a
+    # physical continuity check yet, same status as the flipper coils above. `type: hold` (not
+    # pulse) since a diverter physically holds a gate open/closed rather than firing a one-shot
+    # kick - matches MPF's diverters: default `type: hold`. No game logic wired to it yet
+    # (activate_events/deactivate_events) - what a diverted shot should actually do is a real
+    # design question flagged in design/features/ramps.yaml, not answered by this hardware draft.
+    # default_hold_power: 1.0 needed for the same reason as the flipper coils above - MPF asserts
+    # "Cannot enable driver with hold_power 0.0" for any hold-type driver, confirmed the hard way
+    # here too (ball search tried to pulse this coil and crashed the test event loop without it).
+  c-ramp-diverter:
+    number: 2-1-2
+    default_hold_power: 1.0
     #name:
-    #    number: 2-1-2
+    #    number: 2-1-3
     #    default_pulse_ms: 25
     #name:
     #    number: 2-1-3
     #    default_pulse_ms: 25
-    
-    #name:              
+
+    #name:
     #    number: 2-1-4
     #    default_pulse_ms: 25
-    #name:              
+    #name:
     #    number: 2-1-5
     #    default_pulse_ms: 25
-    #name:              
+    #name:
     #    number: 2-1-6
     #    default_pulse_ms: 25
-    #name:              
+    #name:
     #    number: 2-1-7
     #    default_pulse_ms: 25
 
     # Cobra 0-0- & 1-0-
-    #name:              
+    #name:
     #    number: 0-0-8
     #    default_pulse_ms: 25
     #name:
@@ -98,7 +113,7 @@ coils:
     #name:
     #    number: 0-0-14
     #    default_pulse_ms: 25
-    
+
     #name:
     #    number: 0-0-15
     #    default_pulse_ms: 25
@@ -123,7 +138,7 @@ coils:
     #name:
     #    number: 0-0-1
     #    default_pulse_ms: 25
-    
+
     #name:
     #    number: 1-0-0
     #    default_pulse_ms: 25

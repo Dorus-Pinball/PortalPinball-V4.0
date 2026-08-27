@@ -1,0 +1,19 @@
+#config_version=6
+mode:
+  start_events: logicblock_wizard_gate_complete
+  stop_events: ball_will_end
+  priority: 200
+
+# The Phase 5 wizard-mode payoff, started once modes/progression/config/progression.yaml's
+# wizard_gate accrual completes (all 3 feature tiers + portal's 5-stage exit_open progression).
+#
+# DRAFT (2026-08-27), deliberately kept minimal: this implements the GATING correctly (the whole
+# point of this pass - see TODO.md) but does NOT invent wizard-mode gameplay (a timed
+# super-jackpot shot sequence, its own shots/rules, etc.) - what the payoff should actually
+# involve is a further design question of its own, same category as "what should a diverted ramp
+# shot award" in design/features/ramps.yaml. For now the payoff is a single flat award on start,
+# with the mode staying active (available for a future real ruleset to build on) until the ball
+# ends - real bonus tuning pending a balance pass with the user.
+variable_player:
+  mode_super_wizard_started:
+    score: 50000

@@ -2,12 +2,12 @@
 mode:
   start_events: ball_starting
   priority: 100
-    
+
 
 slide_player:
-  mode_base_started: base    
-        
-        
+  mode_base_started: base
+
+
 variable_player:
     # Sling scoring moved to modes/slings/config/slings.yaml's shot devices.
     s-popbumper-1_active:
@@ -18,3 +18,54 @@ variable_player:
         score: 100
     # Top/bottom lane scoring moved to modes/lanes/config/lanes.yaml's shot devices -
     # this was a flat placeholder, see design/features/lanes.yaml's scoring note.
+
+    # ball_shots_made: a plain per-ball tally (not a counters: device - bonus_mode's
+    # player_score_entry reads a flat player var directly via player[name], not a logic_block's
+    # state object) of every made shot across all 8 feature modes, +1 each. Feeds
+    # modes/bonus/config/bonus.yaml's "count to 100" bonus entry (board Overviews.xlsx's own
+    # phrase for this) - 100 points per shot made this ball. DRAFT: a flat count-of-everything is
+    # the simplest honest interpretation of the xlsx's underspecified note, not a final design.
+    shot_toplane1_hit:
+        ball_shots_made: 1
+    shot_toplane2_hit:
+        ball_shots_made: 1
+    shot_toplane3_hit:
+        ball_shots_made: 1
+    shot_bottomlane1_hit:
+        ball_shots_made: 1
+    shot_bottomlane2_hit:
+        ball_shots_made: 1
+    shot_bottomlane3_hit:
+        ball_shots_made: 1
+    shot_bottomlane4_hit:
+        ball_shots_made: 1
+    shot_bottomlane5_hit:
+        ball_shots_made: 1
+    shot_orbit_l_hit:
+        ball_shots_made: 1
+    shot_orbit_r_hit:
+        ball_shots_made: 1
+    shot_orbit_top_hit:
+        ball_shots_made: 1
+    shot_sling_l_hit:
+        ball_shots_made: 1
+    shot_sling_r_hit:
+        ball_shots_made: 1
+    shot_skillshot_hit:
+        ball_shots_made: 1
+    shot_insinerator_hit:
+        ball_shots_made: 1
+    shot_aerial_hit:
+        ball_shots_made: 1
+    shot_dropper_hit:
+        ball_shots_made: 1
+    shot_portal_r_hit:
+        ball_shots_made: 1
+    shot_portal_m_hit:
+        ball_shots_made: 1
+    shot_exit_success_hit:
+        ball_shots_made: 1
+    shot_ramp_l_hit:
+        ball_shots_made: 1
+    shot_ramp_r_hit:
+        ball_shots_made: 1

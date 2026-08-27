@@ -1,0 +1,36 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  priority: 90
+
+# DRAFT (2026-08-27), needs a real game-balance pass with the user: Phase 5 stretch goal
+# (plans/resumption-roadmap.md). Trigger chosen per user direction - "complete a feature bank" -
+# using db-dropbank specifically since it's the one feature that's literally a bank (the other
+# candidates, lanes/ramps, are shot_groups, not banks) and it already auto-resets
+# (reset_coils: c-drop), so it's naturally repeatable across a game the way a real machine's
+# "complete the bank for multiball" mechanic works. No ball_locks: device exists (no physical lock
+# mechanism on this machine), so source_playfield: playfield (the default) draws extra balls
+# straight from bd-trough via MPF's normal ball-request flow - simplest fit for this hardware.
+#
+# ball_count: 3 (total, not "add 3") - safe within balls_installed: 4 (1 already in play + up to
+# 3 more from the trough). shoot_again: 10s (MPF's own default) gives a grace period to relaunch a
+# drained ball during the multiball without losing it.
+#
+# Real behavior found via tests/test_multiball.py + tests/test_dropbank.py's repeat-completion
+# test: start_events firing again while the multiball is still live is a no-op (MPF's
+# Multiball.start() returns early while balls_live_target > 0 - mpf/devices/multiball.py), so
+# repeat bank completions during an active multiball only escalate the bank's own score, they
+# don't re-trigger or extend it. It re-arms once the multiball actually ends (drains back to 1
+# ball or times out). This wasn't a deliberate design choice, just how MPF's guard behaves -
+# worth a real balance pass with the user if "every completion should extend/restack multiball"
+# turns out to be the wanted behavior instead.
+multiballs:
+  mb-dropbank:
+    ball_count: 3
+    ball_count_type: total
+    shoot_again: 10s
+    start_events: drop_target_bank_db-dropbank_down
+
+variable_player:
+  multiball_mb-dropbank_started:
+    score: 3000
