@@ -80,9 +80,23 @@ when fixed, not deleted, so resolution history stays visible.
       entering the menu posts `service_mode_entered`, and each nav switch posts the
       `service_button` event a connected MC (Godot) would act on - full menu navigation/exit is
       driven by the MC over BCP from there and isn't reproducible in a headless test.
-- [ ] Ball search is not configured anywhere - a real gap, not previously flagged: without it, a
+- [x] Ball search is not configured anywhere - a real gap, not previously flagged: without it, a
       ball stuck on a switchless part of the playfield stalls the machine instead of
-      self-recovering.
+      self-recovering. **Fixed (2026-08-27)**: added `enable_ball_search: true` to the
+      `playfields: playfield:` device in `hardware-devices.yaml`, using MPF's stock timing (15s
+      idle, 3 escalating search phases). `autofire_coils` (popbumpers, slings) and
+      `drop_target_banks` register for ball search unconditionally - no `include_in_ball_search`
+      toggle exists for those device types in MPF's `config_spec.yaml` (confirmed by reading it
+      directly) - so no other per-device config was needed. Flippers keep MPF's own default
+      (`include_in_ball_search: false`) since a repeatedly-pulsing flipper rarely helps free a
+      ball stuck elsewhere on the field. Verified with 2 new tests in `tests/test_ball_search.py`:
+      one confirms `ball_search_started` fires after 15s of no playfield switch activity once a
+      ball is in play, one confirms hitting a playfield switch (sling) postpones it rather than
+      just delaying it once. Real finding along the way: `bd-plunger`'s eject onto the
+      (switchless, from its own perspective) playfield has no confirming switch, so
+      `confirm_eject_type: target` falls back to its ~10s default eject timeout before
+      `playfield.balls` actually updates - worth remembering for any future test that checks
+      playfield ball count right after a launch.
 
 ## Not blocked by hardware access
 

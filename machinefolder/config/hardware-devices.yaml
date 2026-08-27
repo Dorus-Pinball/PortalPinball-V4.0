@@ -79,7 +79,17 @@ flippers:
         activation_switch: s-right-flipper
     
         
+# Ball search: a real gap that was never configured (not previously flagged) - without it, a ball
+# stuck on a switchless part of the playfield stalls the machine instead of self-recovering.
+# enable_ball_search: true turns it on for this playfield using MPF's stock timing
+# (ball_search_timeout: 15s idle, 3 escalating search phases) - autofire_coils (popbumpers,
+# slings) and drop_target_banks register for ball search unconditionally (no
+# include_in_ball_search toggle exists for those device types in MPF's config_spec, confirmed by
+# reading it directly), so no per-device config was needed beyond this one flag. Flippers default
+# to NOT participating (include_in_ball_search: false is MPF's own default) - left as-is, a
+# repeatedly-pulsing flipper rarely helps free a ball stuck elsewhere on the field.
 playfields:
     playfield:
         tags: default
-        default_source_device: bd-plunger  
+        default_source_device: bd-plunger
+        enable_ball_search: true
