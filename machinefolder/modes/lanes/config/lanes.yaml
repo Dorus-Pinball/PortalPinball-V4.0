@@ -133,3 +133,15 @@ show_player:
       priority: 100
       show_tokens:
         led: led-lane-b5
+
+# Real Portal 2 turret sound (extracted by the user, see TODO.md) - a short turret
+# chirp/reaction on every lane hit, matching the turret-gauntlet story hook.
+sound_player:
+  shot_toplane1_hit: lanes_turret_chirp
+  shot_toplane2_hit: lanes_turret_chirp
+  shot_toplane3_hit: lanes_turret_chirp
+  shot_bottomlane1_hit: lanes_turret_chirp
+  shot_bottomlane2_hit: lanes_turret_chirp
+  shot_bottomlane3_hit: lanes_turret_chirp
+  shot_bottomlane4_hit: lanes_turret_chirp
+  shot_bottomlane5_hit: lanes_turret_chirp

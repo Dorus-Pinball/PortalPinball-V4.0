@@ -58,3 +58,10 @@ show_player:
       show_tokens:
         led: led-orbit-t
         color: white
+
+# Real Portal 2 whoosh (extracted by the user, see TODO.md) - one sound for all 3 orbit shots,
+# the show's per-side color already differentiates them visually.
+sound_player:
+  shot_orbit_l_hit: orbits_whoosh
+  shot_orbit_r_hit: orbits_whoosh
+  shot_orbit_top_hit: orbits_whoosh

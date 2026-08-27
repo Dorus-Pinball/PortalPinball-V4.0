@@ -95,7 +95,10 @@ presentation:
     sequence completion. The led-exit-open-1..5 progression is handled separately by the
     achievement chain's own light_player (each stage lights on its own completion), not a
     dedicated chase show.
-  sound: TBD - portal-fire whoosh on dropper entry, shimmering "conversion" chime on successful transfer
+  sound: machinefolder/sounds/sfx/portal_dropper_whoosh.wav (dropper entry) +
+    portal_exit_chime.wav (exit success) - implemented (2026-08-27) from the user's Portal 2
+    sound extract, real portal-gun fire and fizzle SFX. DRAFT pick, user plans to review/adjust
+    manually.
 
 notes: >
   Most involved feature in Phase 3 (multi-switch ball-tracking state machine) -

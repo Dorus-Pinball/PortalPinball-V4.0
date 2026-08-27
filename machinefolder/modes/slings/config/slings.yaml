@@ -72,3 +72,12 @@ show_player:
       priority: 100
       show_tokens:
         led: led-sling-r
+
+# Real Portal 2 sounds (extracted by the user, see TODO.md). No clean "springy boing" exists in
+# the extract (Portal doesn't really have that kind of sound) - a short synth blip stands in for
+# the per-hit sound, with a distinct test-chamber stinger (shared with skillshot's completion
+# sound) for the bigger combo-complete moment.
+sound_player:
+  shot_sling_l_hit: slings_hit
+  shot_sling_r_hit: slings_hit
+  logicblock_sling_combo_complete: skillshot_test_chamber_pos
