@@ -15,26 +15,32 @@ offset_right = 1900.0
 offset_bottom = 1000.0
 color = Color(0.2314, 0.0902, 0.0706, 1)
 
+[node name="Target1" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 330.0
+offset_right = 870.0
+offset_bottom = 430.0
+color = Color(0.9333, 0.9412, 0.9451, 1)
+
+[node name="Target2" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 925.0
+offset_top = 330.0
+offset_right = 975.0
+offset_bottom = 430.0
+color = Color(0.9333, 0.9412, 0.9451, 1)
+
+[node name="Target3" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 1030.0
+offset_top = 330.0
+offset_right = 1080.0
+offset_bottom = 430.0
+color = Color(0.9333, 0.9412, 0.9451, 1)
+
 [node name="Icon" type="Node2D" parent="."]
 position = Vector2(0, 0)
-
-[node name="Target1" type="Line2D" parent="Icon"]
-points = PackedVector2Array(820.00, 330.00, 870.00, 330.00, 870.00, 430.00, 820.00, 430.00, 820.00, 330.00)
-width = 5.0
-default_color = Color(0.9333, 0.9412, 0.9451, 1)
-joint_mode = 1
-
-[node name="Target2" type="Line2D" parent="Icon"]
-points = PackedVector2Array(925.00, 330.00, 975.00, 330.00, 975.00, 430.00, 925.00, 430.00, 925.00, 330.00)
-width = 5.0
-default_color = Color(0.9333, 0.9412, 0.9451, 1)
-joint_mode = 1
-
-[node name="Target3" type="Line2D" parent="Icon"]
-points = PackedVector2Array(1030.00, 330.00, 1080.00, 330.00, 1080.00, 430.00, 1030.00, 430.00, 1030.00, 330.00)
-width = 5.0
-default_color = Color(0.9333, 0.9412, 0.9451, 1)
-joint_mode = 1
 
 [node name="Flame" type="Polygon2D" parent="Icon"]
 polygon = PackedVector2Array(950.00, 320.00, 946.15, 312.72, 943.52, 305.84, 941.97, 299.32, 941.36, 293.12, 941.56, 287.19, 942.44, 281.48, 943.86, 275.95, 945.68, 270.56, 947.77, 265.26, 950.00, 260.00, 952.23, 254.74, 954.32, 249.44, 956.14, 244.05, 957.56, 238.52, 958.44, 232.81, 958.64, 226.88, 958.03, 220.68, 956.48, 214.16, 953.85, 207.28, 950.00, 200.00, 958.48, 204.72, 965.93, 209.84, 972.38, 215.32, 977.84, 221.12, 982.34, 227.19, 985.91, 233.48, 988.56, 239.95, 990.32, 246.56, 991.21, 253.26, 991.25, 260.00, 990.47, 266.74, 988.88, 273.44, 986.51, 280.05, 983.39, 286.52, 979.53, 292.81, 974.96, 298.88, 969.70, 304.68, 963.77, 310.16, 957.20, 315.28, 950.00, 320.00)
