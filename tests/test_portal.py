@@ -114,7 +114,9 @@ class TestPortal(MpfGameTestCase):
         self.hit_and_release_switch("s-launch")
         self.advance_time_and_run(2)
         self.drain_all_balls()
-        self.advance_time_and_run(2)
+        # the bonus mode (ball_ending) now gates the next ball_starting behind ~6s of its own
+        # display_delay_ms sequence - see tests/test_full_game.py's launch_and_drain_ball().
+        self.advance_time_and_run(7)
         self.assertBallNumber(2)
 
         # stage 2 should still be reachable on ball 2 - a fresh completion continues the chain

@@ -33,6 +33,7 @@ config:
 modes:
 - base
 - service
+- bonus
 - lanes
 - orbits
 - slings

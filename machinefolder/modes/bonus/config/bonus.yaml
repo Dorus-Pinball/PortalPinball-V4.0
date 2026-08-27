@@ -1,0 +1,19 @@
+#config_version=6
+
+# Overrides MPF's built-in bonus mode (mpf/modes/bonus/code/bonus.py) with this project's
+# bonus_entries - the mode raises a ValueError at start if bonus_entries isn't configured, so this
+# override is required, not optional, to actually use the mode.
+#
+# DRAFT (2026-08-27), needs a real game-balance pass with the user: board Overviews.xlsx notes a
+# "count to 100" bonus and a "Step #" tally but no further detail. Implemented as the simplest
+# honest reading of that note - 100 points per shot made this ball (ball_shots_made, a flat
+# per-ball tally added in modes/base/config/base.yaml across all 8 feature modes' shots), no
+# multiplier yet (bonus_multiplier isn't set anywhere, so it stays MPF's default of 1 and the
+# multiplier screen is skipped automatically - see bonus.py's _subtotal()).
+mode_settings:
+  bonus_entries:
+    - entry: shots_made
+      text: "Shots Made"
+      player_score_entry: ball_shots_made
+      score: 100
+      reset_player_score_entry: true

@@ -51,7 +51,10 @@ class TestFullGame(MpfGameTestCase):
         self.hit_and_release_switch("s-launch")
         self.advance_time_and_run(2)
         self.drain_all_balls()
-        self.advance_time_and_run(2)
+        # the bonus mode (ball_ending, use_wait_queue: true) now gates the next ball_starting
+        # behind its own display_delay_ms sequence - 3 steps x 2000ms default (bonus_start ->
+        # entry -> total -> end) = ~6s - before the next ball actually starts.
+        self.advance_time_and_run(7)
 
     def test_full_3ball_game_reaches_game_over(self):
         self.fill_troughs_matching_balls_installed()
@@ -74,5 +77,5 @@ class TestFullGame(MpfGameTestCase):
         self.hit_and_release_switch("s-launch")
         self.advance_time_and_run(2)
         self.drain_all_balls()
-        self.advance_time_and_run(3)
+        self.advance_time_and_run(7)
         self.assertGameIsNotRunning()

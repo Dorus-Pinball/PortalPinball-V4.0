@@ -107,6 +107,24 @@ when fixed, not deleted, so resolution history stays visible.
       `playfield.balls` actually updates - worth remembering for any future test that checks
       playfield ball count right after a launch.
 
+- [x] Phase 5 stretch goal (`plans/resumption-roadmap.md`): end-of-ball bonus tally
+      (`board Overviews.xlsx`'s "count to 100" note) was never implemented - MPF ships a bonus
+      mode but it wasn't in `config.yaml`'s `modes:` list and has no default `bonus_entries`
+      (raises at start without them). **Fixed (2026-08-27)**: added `bonus` to `modes:`, a new
+      `modes/bonus/config/bonus.yaml` override with one DRAFT entry (100 points per shot made
+      this ball), and a `ball_shots_made` per-ball tally in `modes/base/config/base.yaml` (+1 on
+      every one of the 20 `shot_*_hit` events across all 8 feature modes - a flat player var, not
+      a `counters:` device, since `bonus_mode`'s `player_score_entry` reads a plain player var by
+      name, not a logic_block's state object). The mpf-gmc addon already ships a default
+      `bonus.tscn` slide, so no Godot-side work was needed. Real finding along the way: the bonus
+      mode's `display_delay_ms` sequence (3 steps × MPF's 2000ms default) adds ~6s between a ball
+      draining and the next one starting - `tests/test_full_game.py` and `tests/test_portal.py`'s
+      cross-ball tests needed their post-drain wait budgets bumped to match. Also found while
+      writing `tests/test_bonus.py`: any top lane switch (`s-toplane1/2/3`) double-counts toward
+      the tally on a ball's first hit, since all 3 are also valid skillshot targets
+      (`shot_skillshot` overlaps them) - correct, intentional behavior, not a bug, but worth
+      knowing when picking test switches.
+
 ## Not blocked by hardware access
 
 - [x] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,

@@ -220,7 +220,7 @@ in `hardware-*.yaml` today — no new hardware needed):
 ## Phase 5 — Progression / stretch goals
 
 Only after Phases 1–4 give a genuinely playable machine:
-- Bonus tally at ball end (xlsx mentions "count to 100").
+- Bonus tally at ball end (xlsx mentions "count to 100"). **Done (2026-08-27)** - see TODO.md.
 - Multiball (natural fit for the trough/plunger ball devices already in place).
 - Wizard mode gated behind full Portal-feature completion, tying Phase 3's `portal` mode into a
   machine-wide payoff. Open design fork (from pinball design research, see
