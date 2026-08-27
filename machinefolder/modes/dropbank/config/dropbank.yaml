@@ -4,12 +4,19 @@ mode:
   priority: 90
 
 # DRAFT scoring - placeholder point values pending a real game-balance pass with the user.
-# The "escalating value per repeat completion" cookbook pattern (design/features/dropbank.yaml)
-# is NOT implemented yet - this is flat scoring only. Also note: the design doc calls the
-# insinerator/button/target-l1 finisher an `accrual`, but accruals complete in ANY order (verified
-# against mpf/devices/logic_blocks.py) - an ordered finisher needs `sequences:` instead, which is
-# what's actually used below. Same correction applies to portal.yaml's dropper->portal->exit
-# accrual when that feature is built.
+# The "escalating value per repeat completion" cookbook pattern (design/features/dropbank.yaml) IS
+# implemented for the bank-completion award: each full-bank completion (the bank auto-resets via
+# reset_coils: c-drop, so it can be completed multiple times per ball) scores 500 more than the
+# last. Uses a plain player var (dropbank_completions) rather than a counters: device since we just
+# need a running tally read back into a score template - player vars auto-init to 0 (see
+# Player.__getattr__), and dict key order within one variable_player event is preserved, so the
+# score line reads the pre-increment count before the increment line below it runs.
+# NOT escalated: the flat 500/hit insinerator shot score - the design doc's escalating-value note
+# is specifically about the bank, not this shot.
+# Also note: the design doc calls the insinerator/button/target-l1 finisher an `accrual`, but
+# accruals complete in ANY order (verified against mpf/devices/logic_blocks.py) - an ordered
+# finisher needs `sequences:` instead, which is what's actually used below. Same correction applies
+# to portal.yaml's dropper->portal->exit accrual when that feature is built.
 
 shots:
   shot_insinerator:
@@ -24,7 +31,8 @@ sequences:
 
 variable_player:
   drop_target_bank_db-dropbank_down:
-    score: 1000
+    score: 1000 + 500 * current_player.dropbank_completions
+    dropbank_completions: 1
   shot_insinerator_hit:
     score: 500
   logicblock_insinerator_finisher_complete:

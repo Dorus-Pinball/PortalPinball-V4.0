@@ -33,6 +33,39 @@ class TestDropbank(MpfGameTestCase):
         self.hit_switch_and_run("s-drop3", 0.1)
         self.assertEqual(1000, self.machine.game.player.score)
 
+    def test_bank_completion_score_escalates_per_repeat(self):
+        # The bank auto-resets (reset_coils: c-drop) after completion, so it can be completed
+        # multiple times per ball - each repeat completion should score 500 more than the last
+        # (design/features/dropbank.yaml's "escalating value per repeat completion" pattern).
+        # smart_virtual doesn't simulate the physical reset knocking switches back open, so
+        # release them manually between completions to simulate that.
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        self.hit_switch_and_run("s-drop1", 0.1)
+        self.hit_switch_and_run("s-drop2", 0.1)
+        self.hit_switch_and_run("s-drop3", 0.1)
+        self.assertEqual(1000, self.machine.game.player.score)
+
+        self.release_switch_and_run("s-drop1", 0.1)
+        self.release_switch_and_run("s-drop2", 0.1)
+        self.release_switch_and_run("s-drop3", 0.1)
+        self.hit_switch_and_run("s-drop1", 0.1)
+        self.hit_switch_and_run("s-drop2", 0.1)
+        self.hit_switch_and_run("s-drop3", 0.1)
+        # 2nd completion: +1500 (1000 + 500 * 1 prior completion)
+        self.assertEqual(1000 + 1500, self.machine.game.player.score)
+
+        self.release_switch_and_run("s-drop1", 0.1)
+        self.release_switch_and_run("s-drop2", 0.1)
+        self.release_switch_and_run("s-drop3", 0.1)
+        self.hit_switch_and_run("s-drop1", 0.1)
+        self.hit_switch_and_run("s-drop2", 0.1)
+        self.hit_switch_and_run("s-drop3", 0.1)
+        # 3rd completion: +2000 (1000 + 500 * 2 prior completions)
+        self.assertEqual(1000 + 1500 + 2000, self.machine.game.player.score)
+
     def test_insinerator_hit_scores(self):
         self.fill_troughs()
         self.start_game()

@@ -149,6 +149,12 @@ when fixed, not deleted, so resolution history stays visible.
       completion via plain config. Needs more research into `achievements:`/`achievement_groups:`
       before this can be built and tested properly. The core dropper->portal->exit sequence
       scoring is implemented independently of this.
-- [ ] `modes/dropbank/config/dropbank.yaml`'s insinerator shot scores flat, not the "escalating
+- [x] `modes/dropbank/config/dropbank.yaml`'s insinerator shot scores flat, not the "escalating
       value per repeat completion" pattern from MPF's sequential-drop-banks cookbook recipe
       referenced in `design/features/dropbank.yaml` - deferred pending a real game-balance pass.
+      **Fixed (2026-08-27)**: the *bank-completion* award (not the insinerator shot itself, which
+      stays flat - the design note was about the bank) now escalates +500 per repeat completion
+      within a ball, via a plain `dropbank_completions` player var read into the score template
+      (`1000 + 500 * current_player.dropbank_completions`) and incremented after. Values are still
+      DRAFT pending a real balance pass. Verified with a new test in `tests/test_dropbank.py`
+      covering 3 repeat completions (1000/1500/2000).
