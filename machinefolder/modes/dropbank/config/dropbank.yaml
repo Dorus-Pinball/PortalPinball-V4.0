@@ -47,3 +47,18 @@ slide_player:
     dropbank_hit:
       priority: 200
       expire: 2s
+
+# No individual feedback LEDs exist for the raw drop targets (s-drop1-3) - only the downstream
+# insinerator/button/target-l1 shots do (design/features/dropbank.yaml's own note) - so the show
+# only covers those.
+show_player:
+  shot_insinerator_hit:
+    dropbank_hit:
+      priority: 100
+      show_tokens:
+        leds: led-insinerator
+  logicblock_insinerator_finisher_complete:
+    dropbank_hit:
+      priority: 110
+      show_tokens:
+        leds: led-insinerator, led-button, led-target-l1

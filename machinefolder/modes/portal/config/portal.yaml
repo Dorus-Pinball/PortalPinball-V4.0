@@ -128,3 +128,16 @@ slide_player:
     portal_transfer:
       priority: 200
       expire: 2s
+
+# The "burn-open" chase across the 4 transfer-path LEDs on full sequence completion
+# (design/features/portal.yaml's show note). The 5-stage exit_open chase is handled separately,
+# per-stage, by the light_player above - each stage lighting on its own achievement completion.
+show_player:
+  logicblock_portal_sequence_complete:
+    portal_transfer:
+      priority: 100
+      show_tokens:
+        led1: led-dropper
+        led2: led-portal-r
+        led3: led-portal-m
+        led4: led-exit-success

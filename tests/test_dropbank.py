@@ -81,6 +81,14 @@ class TestDropbank(MpfGameTestCase):
         self.advance_time_and_run(0.2)
         self.assertEqual(500, self.machine.game.player.score)
 
+    def test_insinerator_hit_show_plays(self):
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        self.hit_switch_and_run("s-insinerator", 0.05)
+        self.assertLightColor("led-insinerator", "red")
+
     def test_insinerator_finisher_requires_order(self):
         self.fill_troughs()
         self.start_game()

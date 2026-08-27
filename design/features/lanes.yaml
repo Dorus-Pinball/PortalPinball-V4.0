@@ -66,7 +66,9 @@ presentation:
     icon (three peaked posts, deliberately abstract given the turret hook is unconfirmed) on a
     dark tinted panel, per the approved "Aperture Display Signage" graphics proposal. Plays on
     both top_lanes_complete/bottom_lanes_complete.
-  show: TBD - turret pop-up-and-topple animation per top lane hit, if the turret-gauntlet hook above is confirmed
+  show: modes/lanes/shows/lanes_hit.yaml - implemented (2026-08-27) as a simple white-pop-to-gold
+    flash per lane hit, layered over the persistent gold light_player state, not the full
+    turret-gauntlet animation (still unconfirmed).
   sound: TBD - turret chirp on first hit, comedic "dying" wobble/cry on the completing second hit
 
 notes: >

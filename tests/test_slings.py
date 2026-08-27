@@ -30,6 +30,14 @@ class TestSlings(MpfGameTestCase):
         self.advance_time_and_run(0.2)
         self.assertEqual(100, self.machine.game.player.score)
 
+    def test_sling_hit_show_plays(self):
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        self.hit_switch_and_run("s-left-sling", 0.04)
+        self.assertLightColor("led-sling-l", "blue")
+
     def test_sling_combo_awards_bonus(self):
         # Uses hit_and_release_switch (not hit_switch_and_run) since the same switch (left sling)
         # is hit twice - hit_switch_and_run leaves it active, so a repeat hit produces no new

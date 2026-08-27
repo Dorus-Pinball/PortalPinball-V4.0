@@ -91,3 +91,45 @@ light_player:
     led-lane-b4: gold
   shot_bottomlane5_hit:
     led-lane-b5: gold
+
+show_player:
+  shot_toplane1_hit:
+    lanes_hit:
+      priority: 100
+      show_tokens:
+        led: led-toplane1
+  shot_toplane2_hit:
+    lanes_hit:
+      priority: 100
+      show_tokens:
+        led: led-toplane2
+  shot_toplane3_hit:
+    lanes_hit:
+      priority: 100
+      show_tokens:
+        led: led-toplane3
+  shot_bottomlane1_hit:
+    lanes_hit:
+      priority: 100
+      show_tokens:
+        led: led-lane-b1
+  shot_bottomlane2_hit:
+    lanes_hit:
+      priority: 100
+      show_tokens:
+        led: led-lane-b2
+  shot_bottomlane3_hit:
+    lanes_hit:
+      priority: 100
+      show_tokens:
+        led: led-lane-b3
+  shot_bottomlane4_hit:
+    lanes_hit:
+      priority: 100
+      show_tokens:
+        led: led-lane-b4
+  shot_bottomlane5_hit:
+    lanes_hit:
+      priority: 100
+      show_tokens:
+        led: led-lane-b5

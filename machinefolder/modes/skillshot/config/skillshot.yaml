@@ -24,3 +24,10 @@ slide_player:
     skillshot_hit:
       priority: 200
       expire: 2s
+
+show_player:
+  shot_skillshot_hit:
+    skillshot_hit:
+      priority: 100
+      show_tokens:
+        leds: led-toplane1, led-toplane2, led-toplane3

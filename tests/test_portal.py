@@ -48,6 +48,19 @@ class TestPortal(MpfGameTestCase):
         # + 1000 (1st exit-open stage, chained off the same sequence completion)
         self.assertEqual(6900, self.machine.game.player.score)
 
+    def test_sequence_complete_plays_the_burn_open_chase(self):
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        self.complete_portal_sequence()
+        # complete_portal_sequence() already advances 0.1s past the exit-success hit that starts
+        # this chase, so by the time control returns here step 1 (led-dropper: white, 0.1s) has
+        # already handed off to step 2 - check the chase's final resting state instead, which
+        # isn't timing-fragile: let the full chase (0.1+0.1+0.1+0.15+0.2 = 0.65s) finish.
+        self.advance_time_and_run(0.7)
+        self.assertLightColor("led-exit-success", "purple")
+
     def test_out_of_order_does_not_complete(self):
         self.fill_troughs()
         self.start_game()

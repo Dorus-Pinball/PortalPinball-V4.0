@@ -29,3 +29,11 @@ class TestAerial(MpfGameTestCase):
         self.hit_and_release_switch("s-aerial")
         self.advance_time_and_run(0.2)
         self.assertEqual(300, self.machine.game.player.score)
+
+    def test_aerial_hit_show_plays(self):
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        self.hit_switch_and_run("s-aerial", 0.05)
+        self.assertLightColor("led-aerial", "white")

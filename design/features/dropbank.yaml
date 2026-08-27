@@ -67,7 +67,10 @@ presentation:
   slide: modes/dropbank/slides/dropbank_hit.tscn - implemented with a flame icon rising behind
     three drop-target blocks on a fire-tinted panel, per the approved "Aperture Display
     Signage" graphics proposal.
-  show: TBD - fire/incinerator flame-wipe flash on the insinerator shot, per the theme research's escape/incinerator sting idea
+  show: modes/dropbank/shows/dropbank_hit.yaml - implemented (2026-08-27) as a red-to-orange
+    flame wipe, on led-insinerator for the flat shot hit and across
+    led-insinerator/led-button/led-target-l1 together for the ordered finisher completing. The
+    raw drop targets (s-drop1-3) have no LEDs to animate, per the note below.
   sound: TBD - crackling flame whoosh on insinerator hit; a companion-cube "clunk-chime" per drop target, if the story hook above is confirmed
 
 notes: >

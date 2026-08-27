@@ -176,6 +176,25 @@ when fixed, not deleted, so resolution history stays visible.
       doesn't exist on multi-channel `subtype: led` lights in this MPF version (`AttributeError`
       - it's `hw_drivers`, plural) - use `assertLightColor(name, "off")` instead for RGB lights.
 
+- [x] All 8 Phase 3 features had `show:` marked TBD in their design docs - every feature hit was
+      silent and static beyond the slide swap. **Implemented (2026-08-27)**: a real MPF `shows:`
+      LED flourish per feature (`modes/<name>/shows/<name>_hit.yaml`), matching each design doc's
+      described motif (turret pop for lanes, blue/orange ring-pop for orbits, blue squash-bounce
+      for slings, chase-flash for skillshot, red-orange flame wipe for dropbank, cyan launch flash
+      for aerial, a 4-LED burn-open chase for portal's sequence completion, orange glow for
+      ramps), wired via `show_player:` in each mode at a higher priority than any persistent
+      `light_player:` state so it flashes on top then falls back correctly (verified for lanes).
+      Each show has its own new regression test (color assertions via `assertLightColor` at the
+      right point in the flash). Real finding confirmed empirically: skillshot's mode has
+      `stop_events: shot_skillshot_hit` - the SAME event that triggers its show - and the show
+      still plays correctly despite the mode stopping (not a race, tested directly). **`sound:`
+      remains TBD for all 8 and was NOT attempted** - the project's only audio assets are 7
+      background music tracks and one generic alarm-sweep loop (`machinefolder/sounds/`), none
+      suitable as the described short stingers (whooshes, chirps, chimes) - this needs a real
+      asset-sourcing pass, per `plans/resumption-roadmap.md` Phase 4's own note that this is "a
+      separate creative task, not something to auto-generate," not something buildable from
+      config alone.
+
 ## Not blocked by hardware access
 
 - [x] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,

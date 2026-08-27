@@ -1,0 +1,24 @@
+#show_version=6
+# "Portal-ring burn-open/close animation on transfer" per design/features/portal.yaml's show
+# note - a chase across the 4 shot LEDs in path order (dropper -> portal-r -> portal-m ->
+# exit-success), played on the full sequence completing. The 5-stage exit_open chase
+# (led-exit-open-1..5) is handled separately, per-stage, by portal.yaml's own light_player
+# (each stage lights on its own achievement completion - no single "chase show" needed there).
+- lights:
+    (led1): white
+  duration: 0.1s
+- lights:
+    (led1): off
+    (led2): white
+  duration: 0.1s
+- lights:
+    (led2): off
+    (led3): white
+  duration: 0.1s
+- lights:
+    (led3): off
+    (led4): white
+  duration: 0.15s
+- lights:
+    (led4): purple
+  duration: 0.2s

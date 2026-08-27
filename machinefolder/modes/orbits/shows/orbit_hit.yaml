@@ -1,0 +1,10 @@
+#show_version=6
+# "Portal-ring 'pop' flash - blue for left / orange for right" per design/features/orbits.yaml's
+# show note. (color) is supplied per-side by modes/orbits/config/orbits.yaml's show_player calls;
+# the top orbit (no color specified in the design doc) defaults to a neutral white.
+- lights:
+    (led): white
+  duration: 0.1s
+- lights:
+    (led): (color)
+  duration: 0.25s

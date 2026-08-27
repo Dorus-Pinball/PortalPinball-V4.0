@@ -20,3 +20,10 @@ slide_player:
     aerial_hit:
       priority: 200
       expire: 2s
+
+show_player:
+  shot_aerial_hit:
+    aerial_hit:
+      priority: 100
+      show_tokens:
+        led: led-aerial
