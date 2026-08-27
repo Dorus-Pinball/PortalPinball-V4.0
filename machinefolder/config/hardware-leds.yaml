@@ -154,7 +154,7 @@ lights:
     number: 0-0-33
     subtype: led
     type: grb
-    
+
   led-exit-success:
     number: 0-0-34
     subtype: led

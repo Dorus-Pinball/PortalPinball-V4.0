@@ -19,17 +19,17 @@ opp:
     2: COM6 # PSOC chain 2-0-x to 2-3-x
 
 
-    
+
 mpf:
   # report_crashes: never
-    
+
 config:
 - hardware-basic.yaml
 - hardware-leds.yaml
 - hardware-coils.yaml
 - hardware-switches.yaml
 - hardware-devices.yaml
-    
+
 modes:
 - base
 - service

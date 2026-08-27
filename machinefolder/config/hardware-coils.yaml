@@ -16,7 +16,7 @@ coils:
   c-trough-eject:
     number: 2-0-3
     default_pulse_ms: 25
-       
+
   c-popbumper-1:
     number: 2-0-4
     default_pulse_ms: 17
@@ -26,10 +26,10 @@ coils:
   c-popbumper-3:
     number: 2-0-6
     default_pulse_ms: 17
-  c-drop:              
+  c-drop:
     number: 2-0-7
     default_pulse_ms: 25
-    
+
     # Chain PSOC 2-1-x
     # DRAFT flipper coils (Phase 1, plans/resumption-roadmap.md) - single main_coil per side,
     # no hold_coil/eos_switch since the EOS is mechanical/self-contained inside the coil
@@ -74,22 +74,22 @@ coils:
     #name:
     #    number: 2-1-3
     #    default_pulse_ms: 25
-    
-    #name:              
+
+    #name:
     #    number: 2-1-4
     #    default_pulse_ms: 25
-    #name:              
+    #name:
     #    number: 2-1-5
     #    default_pulse_ms: 25
-    #name:              
+    #name:
     #    number: 2-1-6
     #    default_pulse_ms: 25
-    #name:              
+    #name:
     #    number: 2-1-7
     #    default_pulse_ms: 25
 
     # Cobra 0-0- & 1-0-
-    #name:              
+    #name:
     #    number: 0-0-8
     #    default_pulse_ms: 25
     #name:
@@ -113,7 +113,7 @@ coils:
     #name:
     #    number: 0-0-14
     #    default_pulse_ms: 25
-    
+
     #name:
     #    number: 0-0-15
     #    default_pulse_ms: 25
@@ -138,7 +138,7 @@ coils:
     #name:
     #    number: 0-0-1
     #    default_pulse_ms: 25
-    
+
     #name:
     #    number: 1-0-0
     #    default_pulse_ms: 25

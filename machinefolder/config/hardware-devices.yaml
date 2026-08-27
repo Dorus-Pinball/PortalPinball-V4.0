@@ -3,22 +3,22 @@
 # Hardware Configuration: devices
 
 
-# drop target bank    
+# drop target bank
 drop_targets:
-     d-drop-target1:
-         switch: s-drop1
-     d-drop-target2:
-         switch: s-drop2
-     d-drop-target3:
-         switch: s-drop3
-         
+    d-drop-target1:
+        switch: s-drop1
+    d-drop-target2:
+        switch: s-drop2
+    d-drop-target3:
+        switch: s-drop3
+
 drop_target_banks:
-     db-dropbank:
-         drop_targets: d-drop-target1, d-drop-target2, d-drop-target3
-         reset_coils: c-drop
+    db-dropbank:
+        drop_targets: d-drop-target1, d-drop-target2, d-drop-target3
+        reset_coils: c-drop
         # reset_on_complete: 1s
 
-   
+
 autofire_coils:
     ac-popbumper-1:
         coil: c-popbumper-1
@@ -35,10 +35,10 @@ autofire_coils:
         switch: s-left-sling
     ac-sling-right:
         coil: c-sling-right
-        switch: s-right-sling            
-    
-    
-    
+        switch: s-right-sling
+
+
+
 ball_devices:
     bd-trough:
         ball_switches: s-trough1, s-trough2, s-trough3, s-trough4, s-trough5, s-trough6, s-trough-jam
@@ -51,7 +51,7 @@ ball_devices:
 
     bd-plunger:
         ball_switches: s-plunger-lane
-        eject_coil: c-plunger        
+        eject_coil: c-plunger
         player_controlled_eject_event: s-launch_active
         debug: yes
         mechanical_eject: true
@@ -65,7 +65,7 @@ ball_devices:
     #     ball_switches: s-vuktop
     #     eject_coil: c-vuktop
     #     eject_timeouts: 2s
-    
+
 # DRAFT - single main_coil per side, no hold_coil/eos_switch: the EOS is mechanical/
 # self-contained inside the coil assembly (not wired back to the controller), per
 # plans/resumption-roadmap.md Phase 1. Coil/switch numbers are placeholders pending real board

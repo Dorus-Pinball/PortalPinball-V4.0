@@ -2,12 +2,12 @@
 mode:
   start_events: ball_starting
   priority: 100
-    
+
 
 slide_player:
-  mode_base_started: base    
-        
-        
+  mode_base_started: base
+
+
 variable_player:
     # Sling scoring moved to modes/slings/config/slings.yaml's shot devices.
     s-popbumper-1_active:

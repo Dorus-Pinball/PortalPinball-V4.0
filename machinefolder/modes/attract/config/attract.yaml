@@ -5,7 +5,7 @@ slide_player:
 
 
 show_player:
-  mode_attract_started: 
+  mode_attract_started:
     laneshow:
       show_tokens:
         leds: led-launch, led-save, led-lane-b1

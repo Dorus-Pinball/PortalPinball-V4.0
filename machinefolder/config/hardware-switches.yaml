@@ -20,7 +20,7 @@ switches:
     #    label:
     #    tags:
 # Autofire 2-0-4 to 2-0-7 DO NOT EXIST
-    
+
 # Autofire 2-0-8 to 2-0-11
     s-popbumper-1:
         number: 2-0-8
@@ -28,7 +28,7 @@ switches:
         number: 2-0-9
     s-popbumper-3:
         number: 2-0-10
-    #name:              drop --> NO AUTOLAUNCH SWITCH 
+    #name:              drop --> NO AUTOLAUNCH SWITCH
     #    number: 2-0-3
 
 # Autofire 2-0-12 to 2-0-15 DO NOT EXIST
@@ -43,52 +43,52 @@ switches:
     s-launch:
         number: 2-0-18
         tags: launch
- 
+
 
 # Lane Switches
     s-toplane1:
-        number: 2-0-19   
-        type: NO   
+        number: 2-0-19
+        type: NO
     s-toplane2:
-        number: 2-0-20   
-        type: NO 
+        number: 2-0-20
+        type: NO
     s-toplane3:
-        number: 2-0-21   
-        type: NO 
+        number: 2-0-21
+        type: NO
 
     s-bottomlane1:
-        number: 2-0-22   
-        type: NO 
+        number: 2-0-22
+        type: NO
     s-bottomlane2:
-        number: 2-0-23   
-        type: NO 
+        number: 2-0-23
+        type: NO
     s-bottomlane3:
-        number: 2-0-24   
-        type: NO 
+        number: 2-0-24
+        type: NO
     s-bottomlane4:
-        number: 2-0-25  
-        type: NO 
+        number: 2-0-25
+        type: NO
     s-bottomlane5:
-        number: 2-0-26   
-        type: NO 
+        number: 2-0-26
+        type: NO
 
 
 # Other
     s-orbit-r:
-        number: 2-0-27  
-        type: NO  
+        number: 2-0-27
+        type: NO
     s-orbit-l:
-        number: 2-0-28  
-        type: NO  
+        number: 2-0-28
+        type: NO
     s-target-e1:
-        number: 2-0-29  
-        type: NO  
+        number: 2-0-29
+        type: NO
     s-target-e2:
-        number: 2-0-30  
-        type: NO  
+        number: 2-0-30
+        type: NO
     s-button:
-        number: 2-0-31  
-        type: NO  
+        number: 2-0-31
+        type: NO
 
 
 # Autofire 2-1-0 to 2-1-3 - DRAFT flipper activation switches (Phase 1, plans/resumption-roadmap.md).
@@ -127,9 +127,9 @@ switches:
     s-trough6:
         number: 2-1-21
         type: NC
-    s-trough-jam:  
+    s-trough-jam:
         number: 2-1-22
-        type: NC 
+        type: NC
 
 
 # Orbit & Ramp switches
@@ -145,12 +145,12 @@ switches:
 # VUK Mid Field
     s-vukmid:
         number: 2-1-26
- 
-# VUK Left Top 
+
+# VUK Left Top
     s-vuktop:
         number: 2-1-27
-        
-        
+
+
 # right switch bank
     s-orbit-top:
         number: 2-1-28
@@ -178,7 +178,7 @@ switches:
         number: 2-3-5
     s-target-l1:
         number: 2-3-6
-    
+
     s-ramp-r1:
         number: 2-3-7
     s-ramp-l1:
