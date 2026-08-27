@@ -104,6 +104,93 @@ normal boot, so **Tier 1's clean-boot check already *is* the fast config-validat
 bad config value fails immediately on `mpf -X -t -b`, before a game can even start. No separate
 tool needed.
 
+## Tier 2 addendum — gotchas found while writing the Phase 3-5 test suite (2026-08-27)
+
+Real findings from writing ~30 additional tests across the feature/bonus/multiball/wizard-gate
+work, kept here so they're not rediscovered the hard way again:
+
+- **`MpfGameTestCase.fill_troughs()` overfills relative to `balls_installed`.** It activates
+  *every* `ball_switch` configured on a trough device — for this project's `bd-trough` that's 7
+  (`s-trough1-6` + `s-trough-jam`, a real trough capacity larger than the 4 balls actually
+  installed), which conflicts with `hardware-basic.yaml`'s `balls_installed: 4` and confuses the
+  ball controller's bookkeeping (logs "Found a new ball which was captured from playfield",
+  known-ball count inflates past what the machine actually has). Any test that runs a full
+  multi-ball-drain game needs a trimmed fill instead, matching
+  `virtual_platform_start_active_switches`:
+  ```python
+  for name in ("s-trough1", "s-trough2", "s-trough3", "s-trough4"):
+      self.hit_switch_and_run(name, 0)
+  self.advance_time_and_run()
+  ```
+- **Launch each ball before draining it.** `bd-plunger` uses `mechanical_eject`, so a ball sits
+  in the plunger lane (not the playfield) until `s-launch` is hit. Calling `drain_all_balls()`
+  before that desyncs `playfield.available_balls`, and every later `ball_starting` hangs forever
+  in `BallController.wait_until_playfields_are_empty()` (a silent hang, not an exception — watch
+  for repeating "Playfields still contain balls" in the log). This was the root cause of an
+  earlier "match/high_score can't be verified, test gets stuck" finding that turned out not to be
+  a real bug at all.
+- **`bd-plunger`'s eject onto the (switchless) playfield has no confirming switch**, so
+  `confirm_eject_type: target` falls back to its ~10s default eject timeout before
+  `playfield.balls` actually updates. A test that checks playfield ball count right after a
+  launch needs to `advance_time_and_run(10+)` first, not just a couple seconds.
+- **The `bonus` mode adds ~6s between a ball draining and the next one starting** once enabled
+  (`display_delay_ms` × 3 steps at MPF's 2000ms default — bonus_start → entry → total → end).
+  Any cross-ball test written before `bonus` was enabled needs its post-drain
+  `advance_time_and_run()` budget bumped accordingly.
+- **`disable_on_complete` defaults to `true` for every `logic_block`** (`counters:`/`accruals:`/
+  `sequences:` — `mpf/config_spec.yaml`'s shared `logic_blocks_common`). A logic block that needs
+  to complete more than once per ball (e.g. feeding a repeat-completion achievement chain) needs
+  `disable_on_complete: false` explicitly, or it silently caps at one completion, ever, per mode
+  instance.
+- **`persist_state` defaults to `false` for every `logic_block`.** Progress that needs to survive
+  across balls within the same game (e.g. a game-long feature-tier tracker) needs
+  `persist_state: true` explicitly — the default resets every ball like a normal per-ball
+  sequence.
+- **`achievements:` DOES default a clean per-stage completion event**
+  (`events_when_completed` → `achievement_<name>_state_completed`, filled in by
+  `validate_and_parse_config` whenever not set explicitly) — don't assume only the generic
+  `achievement_<name>_changed_state` event exists without checking the installed source first.
+- **`achievement_group` is for player-selectable "pick one" mechanics** (rotation/random-select),
+  not a fixed linear chain — chaining N plain `achievements:` by their own default completion
+  events is the right tool for "stage 2 unlocks after stage 1 completes," not
+  `achievement_group`.
+- **`MpfTestCase.assertLightOn`/`assertLightOff` are broken for multi-channel `subtype: led`
+  lights** in this MPF version — they read `light.hw_driver` (singular), which doesn't exist on
+  RGB lights (`AttributeError: 'Light' object has no attribute 'hw_driver'` — it's `hw_drivers`,
+  plural). Use `assertLightColor(name, "off")` / `assertLightColor(name, "on")` instead for any
+  RGB light.
+- **Calling `GMCMedia` (mpf-gmc's sound/slide registry) methods directly outside its normal
+  scene-tree lifecycle hangs indefinitely** rather than erroring — tried this to verify
+  `sound_player:` filenames resolve correctly in Godot (the audio equivalent of the slide
+  screenshot-verification below) and it never completed after 10+ minutes of active CPU use, no
+  output. Killed rather than debugged further. No verified way to check sound-name resolution
+  without a real BCP-connected Godot session exists yet — unlike slides, audio also can't be
+  visually confirmed from a screenshot, so this tier of verification currently just doesn't
+  exist for sound.
+
+## Tier 2.5 — Godot slide verification (verified working, real rendering)
+
+MPF's own boot check (Tier 1) validates `slide_player:`/`show_player:` config syntax but never
+actually renders a `.tscn` slide — that's mpf-gmc/Godot's job. Godot 4.3 is installed on this
+machine (`C:\Program Files (x86)\Godot\Godot_v4.3-stable_win64_console.exe`), so a slide can be
+rendered for real and reviewed as a screenshot:
+
+```
+Godot_v4.3-stable_win64_console.exe --path machinefolder --script capture.gd
+```
+
+where `capture.gd` (a `SceneTree`-extending script, not committed to the repo — write it to the
+scratchpad per-use) loads the `.tscn`, instantiates it, waits a couple of `process_frame`s, and
+saves `get_root().get_texture().get_image()` as a PNG. **Do not pass `--headless`** — that forces
+a null/dummy renderer and produces blank textures; the plain (non-headless) console binary still
+runs to completion non-interactively and renders for real via Vulkan. This caught one genuine
+rendering bug during the original 10-slide art pass (`Line2D` closed-loop rectangles
+triangulating incorrectly — switched to `ColorRect`) and was used again to verify the multiball
+slide and iterate on an icon's scale/position (2026-08-27).
+
+This only verifies *slides* (visual). The equivalent check for *sounds* does not currently exist
+— see the `GMCMedia` finding in the Tier 2 addendum above.
+
 ## Tier 4 (optional, later) — Fuzz testing
 
 MPF ships a fuzz-testing mode (`mpf/tests` includes fuzz-test infrastructure) that randomly hits
