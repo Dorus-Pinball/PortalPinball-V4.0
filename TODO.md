@@ -5,7 +5,17 @@ when fixed, not deleted, so resolution history stays visible.
 
 - [ ] Flippers: mechs are installed and functioning (dual-wound coils, mechanical/self-contained
       EOS interrupter, no EOS switch back to the controller), but coil driver wiring to the OPP
-      boards and the MPF `flippers:` config are still incomplete. Blocks real playtesting.
+      boards is still incomplete (real physical task, board assignment unconfirmed against
+      `board Overviews.xlsx`) - blocks real playtesting. The MPF `flippers:` config itself is now
+      drafted and boot/game-flow tested against `smart_virtual`
+      (`hardware-coils.yaml`/`hardware-switches.yaml`/`hardware-devices.yaml`, all marked DRAFT).
+      Real finding along the way: the roadmap's original assumption that no hold config is
+      needed (mechanical EOS handles it invisibly) was wrong at the MPF-config level - the
+      flipper device always builds a pulse+hold hardware rule and asserts if `hold_power` is
+      0.0, even with no `hold_coil`/`eos_switch`. Fixed with `default_hold_power: 1.0` on each
+      flipper coil (correct here specifically because this hardware's hold winding shares the
+      same activation signal as the power winding - no separate PWM-reduced hold path for the
+      controller to under-power). See the coil comments for the full explanation.
 - [ ] Tilt is not configured at all — no tilt switch present in `hardware-switches.yaml`.
 - [x] `config.yaml`'s `modes:` list references `orbit` and `lanes` (commented out) but neither
       mode folder exists yet under `machinefolder/modes/`. Fixed: all 8 Phase 3 feature modes
@@ -65,9 +75,10 @@ when fixed, not deleted, so resolution history stays visible.
       finishers - accruals complete in any order, verified against MPF's own
       `logic_blocks.py`). Several nuances deliberately deferred rather than shipped unverified -
       see the new items below.
-- [ ] Draft/validate the `flippers:` MPF config skeleton against `smart_virtual` — the real
+- [x] Draft/validate the `flippers:` MPF config skeleton against `smart_virtual` — the real
       coil-driver wiring is hardware-blocked (see the flippers item above), but the config
-      itself can be written and boot-tested virtually first.
+      itself can be written and boot-tested virtually first. Done - see the flippers item above
+      for a real bug this surfaced (hold_power can't be 0.0) and its fix.
 - [ ] Build real `base`/`attract` Godot slide art — still using the shared `mainscreen.jpg`
       placeholder. The bespoke feature-hit overlays cataloged in `design/SCREENS.md` are now
       implemented as placeholder colored panels (one per feature, in each mode's `slides/`

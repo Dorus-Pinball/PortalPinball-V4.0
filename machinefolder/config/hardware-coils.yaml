@@ -30,17 +30,33 @@ coils:
     number: 2-0-7
     default_pulse_ms: 25
     
-    # Chain PSOC 2-1-x  
-    #name:
-    #    number: 2-1-0
-    #    default_pulse_ms: 25
-    #name:
-    #    number: 2-1-1
-    #    default_pulse_ms: 25
+    # Chain PSOC 2-1-x
+    # DRAFT flipper coils (Phase 1, plans/resumption-roadmap.md) - single main_coil per side,
+    # no hold_coil/eos_switch since the EOS is mechanical/self-contained inside the coil
+    # assembly and not wired back to the controller. NOT confirmed against board
+    # Overviews.xlsx or a physical continuity check yet - see TODO.md.
+    #
+    # CORRECTION to the roadmap's original assumption: MPF's flipper device still requires a
+    # nonzero default_hold_power even with no hold_coil/eos_switch - confirmed by reading
+    # mpf/devices/flipper.py directly, it asserts "Cannot enable driver with hold_power 0.0"
+    # and always builds a pulse+hold hardware rule (_enable_single_coil_rule) for this shape of
+    # config. default_hold_power: 1.0 (full, unreduced) is the right value here specifically
+    # because this hardware's hold winding is driven by the SAME activation signal as the power
+    # winding (per the roadmap's own EOS research) - there's no separate PWM-reduced hold
+    # winding for the controller to under-power, so a reduced hold_power would be wrong, not
+    # just unnecessary.
+  c-flipper-left:
+    number: 2-1-0
+    default_pulse_ms: 25
+    default_hold_power: 1.0
+  c-flipper-right:
+    number: 2-1-1
+    default_pulse_ms: 25
+    default_hold_power: 1.0
     #name:
     #    number: 2-1-2
     #    default_pulse_ms: 25
-    #name:              
+    #name:
     #    number: 2-1-3
     #    default_pulse_ms: 25
     
