@@ -62,10 +62,21 @@ when fixed, not deleted, so resolution history stays visible.
       portal, ramps`) have `scoring: TBD` — needs a scoring-values pass, doesn't require the
       cabinet. Fixed: each now has DRAFT point values (clearly marked needs-review, not final
       game balance) implemented in its `modes/<name>/config/<name>.yaml`.
-- [ ] The "standard pinball moments" every game needs — `ball_start`/match, `tilt_warning`,
+- [x] The "standard pinball moments" every game needs — `ball_start`/match, `tilt_warning`,
       `ball_over`, `multiball_start`/jackpot, `game_over`, `high_score_entry` — have no owning
       design doc yet; they aren't playfield "features" in the shots/hardware sense so don't fit
-      `design/features/` cleanly. Flagged in `design/SCREENS.md`'s Open items.
+      `design/features/` cleanly. Fixed: see `design/GAME_MOMENTS.md` — most turned out to be
+      MPF built-in modes (`match`, `high_score`) needing only `config.yaml` registration (now
+      done); `tilt_warning` and `multiball_start` remain genuinely blocked (hardware / open
+      design fork respectively), not just undesigned.
+- [ ] Could not fully verify `match`/`high_score` trigger correctly at a real game-over in an
+      automated test — draining a full 3-ball game via `smart_virtual` in a scratch test got
+      stuck after ball 1 (ball 2 never advanced past `bd-plunger` across repeated
+      `drain_all_balls()` + `hit_and_release_switch("s-launch")` calls, for reasons not yet
+      root-caused; possibly `mechanical_eject`/`player_controlled_eject_event` interaction with
+      the test harness rather than a real bug). Boot is clean and the existing 24-test suite
+      (all single-ball scenarios) still passes with both modes active. Needs follow-up before
+      trusting `match`/`high_score` behavior beyond "loads without erroring."
 - [x] Build out the 8 designed-but-unimplemented feature modes (`lanes, orbits, slings,
       skillshot, dropbank, aerial, portal, ramps`) against `smart_virtual` — see
       `plans/resumption-roadmap.md` Phase 3 and each feature's Rules layer in
