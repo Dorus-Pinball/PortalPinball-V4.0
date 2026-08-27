@@ -77,8 +77,19 @@ flippers:
     right_flipper:
         main_coil: c-flipper-right
         activation_switch: s-right-flipper
-    
-        
+
+# DRAFT right ramp diverter (CAD-confirmed real hardware feeding a Subway tunnel, see
+# design/research/onshape-cad-findings.md and the DRAFT coil/switch comments in
+# hardware-coils.yaml/hardware-switches.yaml). No activate_events/deactivate_events wired - what a
+# diverted shot should actually award/do is a real design question for design/features/ramps.yaml
+# (the sparsest-designed Phase 3 feature), not something this hardware draft answers. Both routes
+# return the ball to the playfield (no separate ball_device exists for the subway - it's a passive
+# tunnel, not a capture point), so targets_when_active/inactive are left at their playfield default.
+diverters:
+    d-ramp-diverter:
+        activation_coil: c-ramp-diverter
+
+
 # Ball search: a real gap that was never configured (not previously flagged) - without it, a ball
 # stuck on a switchless part of the playfield stalls the machine instead of self-recovering.
 # enable_ball_search: true turns it on for this playfield using MPF's stock timing

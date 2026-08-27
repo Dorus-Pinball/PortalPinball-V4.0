@@ -46,16 +46,24 @@ rules:
         Diverter_Rod + Diverter_Base + Bridge_Diverter_Cover assembly feeding a Subway
         tunnel right where the right ramp bottoms out - this is a genuine routing
         diverter, not just an entry/exit confirmation pair. MPF has a native
-        `diverters:` device type for exactly this. NOT YET BUILDABLE: no diverter coil
-        or subway entry/exit switches exist in hardware-coils.yaml/
-        hardware-switches.yaml today - this needs real electrical wiring first, same
-        gate as Phase 1 flippers. Flagged in TODO.md.
+        `diverters:` device type for exactly this.
+        **Electrically drafted (2026-08-27)**: `d-ramp-diverter` (MPF `diverters:` device,
+        `c-ramp-diverter` coil) plus `s-subway-entry`/`s-subway-exit` switches now exist in
+        `hardware-devices.yaml`/`hardware-coils.yaml`/`hardware-switches.yaml`, DRAFT numbers
+        pending real board assignment - same status/pattern as the Phase 1 flipper coils (and hit
+        the identical `default_hold_power: 1.0` requirement MPF asserts for any hold-type driver).
+        Boot/logic-tested against `smart_virtual` only. Deliberately NOT wired to any game
+        logic (`activate_events`/`deactivate_events`, or a subway-passage shot/score) - what a
+        diverted shot should actually award or do is a real design question (this is still the
+        sparsest-designed Phase 3 feature per the xlsx), not something a hardware draft should
+        answer unilaterally.
   scoring: >
     DRAFT, needs a real game-balance pass with the user: 400/hit per ramp (either l1/l2 or
     r1/r2 switch counts), +1500 shot_group-complete bonus for hitting both ramps, +1000 for the
-    2-hit ramp_combo sequence. Implemented in modes/ramps/config/ramps.yaml. Does NOT implement
-    the right_ramp_diverter routing device - genuinely hardware-blocked (no coil/switches wired
-    yet), see TODO.md. No combo time window either, same gap as slings/dropbank/portal.
+    2-hit ramp_combo sequence. Implemented in modes/ramps/config/ramps.yaml. Still does NOT
+    implement any right_ramp_diverter game logic (routing/subway-passage scoring) - the hardware
+    is now electrically drafted (see rules notes above) but what it should actually do needs a
+    design pass with the user first. No combo time window either, same gap as slings/dropbank.
 
 presentation:
   slide: modes/ramps/slides/ramps_hit.tscn - implemented with a solid ramp-shell arc paired

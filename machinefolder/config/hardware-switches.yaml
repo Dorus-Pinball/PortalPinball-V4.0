@@ -219,3 +219,12 @@ switches:
     sw_service_down:
         number: 2-3-17
 
+# DRAFT right ramp subway switches (CAD-confirmed real hardware, see
+# design/research/onshape-cad-findings.md - a Subway tunnel fed by the Diverter_Rod/Diverter_Base
+# assembly). Numbers are placeholders pending real board assignment/a physical continuity check,
+# same status as the flipper/service switches above.
+    s-subway-entry:
+        number: 2-3-18
+    s-subway-exit:
+        number: 2-3-19
+

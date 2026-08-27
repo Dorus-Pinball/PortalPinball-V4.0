@@ -43,12 +43,21 @@ when fixed, not deleted, so resolution history stays visible.
       and that adding an upkicker coil there (currently switch-only) would let it work as a
       real launch mechanism instead of just a mode-qualifying switch. See
       `design/research/portal-themes-and-pinball-design.md`.
-- [ ] Right ramp diverter + subway: confirmed by CAD (`Diverter_Rod`, `Diverter_Base`,
+- [x] Right ramp diverter + subway: confirmed by CAD (`Diverter_Rod`, `Diverter_Base`,
       `Bridge_Diverter_Cover`, `Subway` — see `design/research/onshape-cad-findings.md`) to be a
       real physical mechanism feeding the right ramp, but it has no electrical wiring yet — no
       diverter coil or subway entry/exit switches exist in `hardware-coils.yaml`/
       `hardware-switches.yaml`. Needs board assignment before `design/features/ramps.yaml` can be
       implemented with real diverter logic (same kind of gate as Phase 1 flippers).
+      **Electrically drafted (2026-08-27)**: `d-ramp-diverter` (MPF `diverters:` device),
+      `c-ramp-diverter` coil, and `s-subway-entry`/`s-subway-exit` switches added as DRAFT config
+      (placeholder numbers, same status as the flipper draft) - boot-tested against
+      `smart_virtual`. Hit the same `default_hold_power: 1.0` requirement the flipper coils did
+      (MPF asserts on any hold-type driver with 0.0 hold power - caught by the existing
+      `tests/test_ball_search.py` suite pulsing the coil during a ball-search phase). Deliberately
+      NOT wired to any game logic - what a diverted shot should award/do is still an open design
+      question for `design/features/ramps.yaml` (the sparsest-designed Phase 3 feature), same as
+      before this change.
 - [x] Repo hygiene: `machinefolder/logs/` was tracked in git (158 files) with no `.gitignore`
       entry, and a stray 126,607-line log file had been accidentally committed. Logs are now
       gitignored and untracked going forward (existing git history left intact).
