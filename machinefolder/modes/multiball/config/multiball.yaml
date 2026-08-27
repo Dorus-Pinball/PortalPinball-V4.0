@@ -34,3 +34,13 @@ multiballs:
 variable_player:
   multiball_mb-dropbank_started:
     score: 3000
+
+# Slide design chosen by the user (2026-08-27): dropbank tie-in, ties multiball visually back to
+# its trigger (the bank "overflows" and releases balls) rather than a feature-independent
+# treatment. Reuses dropbank_hit.tscn's exact background tint/flame shape, per the approved
+# concept.
+slide_player:
+  multiball_mb-dropbank_started:
+    multiball_start:
+      priority: 200
+      expire: 2s

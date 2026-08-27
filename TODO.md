@@ -140,10 +140,17 @@ when fixed, not deleted, so resolution history stays visible.
       `tests/test_dropbank.py` repeat-completion assertions updated for the new +3000 side effect.
       No dedicated Godot slide (mpf-gmc ships no default multiball slide, unlike bonus/service) -
       flagged below as a follow-up, not done as part of this pass.
-- [ ] `modes/multiball/config/multiball.yaml` has no dedicated Godot slide - multiball currently
+- [x] `modes/multiball/config/multiball.yaml` has no dedicated Godot slide - multiball currently
       runs with whatever slide was already showing. A real "MULTIBALL!" callout slide would need
       the same design-approval process the 8 Phase 3 feature slides went through (the approved
-      "Aperture Display Signage" proposal), not something to improvise unilaterally.
+      "Aperture Display Signage" proposal), not something to improvise unilaterally. **Fixed
+      (2026-08-27)**: presented 2 concept directions (dropbank fire tie-in vs. a
+      feature-independent gold/white burst), user picked the dropbank tie-in. Built
+      `modes/multiball/slides/multiball_start.tscn` reusing `dropbank_hit.tscn`'s exact
+      background tint and flame shape (scaled 2.4x, recentered), with 3 white ball circles
+      bursting outward around it, wired via `slide_player: multiball_mb-dropbank_started:`.
+      Rendered and visually verified in Godot 4.3 (headless `--script`, real Vulkan rendering -
+      `--headless` alone forces a null renderer, same finding as the original 10-slide pass).
 
 - [x] Phase 5 stretch goal: wizard mode. **Implemented (2026-08-27)** per user direction (tiered
       mini-wizards, not one big gate): `modes/progression/config/progression.yaml` adds 5 chained
