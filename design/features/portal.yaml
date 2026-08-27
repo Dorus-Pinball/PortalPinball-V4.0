@@ -53,23 +53,37 @@ rules:
         `sequences:` instead, same correction already applied to
         dropbank.yaml's insinerator_finisher. Implemented in
         modes/portal/config/portal.yaml.
-    - type: achievement_group
-      name: portal_stages
+    - type: achievement
+      name: exit_open_1..5 (x5, chained by config - NOT wrapped in an achievement_group)
       notes: >
-        NOT YET IMPLEMENTED. The 5-stage "exit open" LED progression
-        (led-exit-open-1..5) was meant to map to 5 achievements, but MPF's
-        `achievements:` device only exposes a generic
-        `achievement_(name)_changed_state` event with a `state` arg by default (verified
-        against mpf/devices/achievement.py) - there's no clean `(name)_completed`-style
-        event to chain stage N's enable off stage N-1's completion without more
-        design/verification work than this pass budgeted for. Flagged in TODO.md; the
-        core dropper->portal->exit sequence above is implemented and scored
-        independently of this.
+        IMPLEMENTED (2026-08-27), correcting two earlier findings on re-verification against
+        mpf/devices/achievement.py and mpf/devices/achievement_group.py directly:
+        (1) `achievements:` DOES default `events_when_completed` to a clean, distinctly-named
+        `achievement_<name>_state_completed` event whenever it's not explicitly set
+        (validate_and_parse_config fills it in) - the earlier "no clean completed event" finding
+        only looked at the generic `changed_state` event and missed this. Each stage's
+        `enable_events` chains off the previous stage's default completion event.
+        (2) `achievement_group` is the wrong device type for a fixed linear chain - it's built for
+        "select one achievement from several and pursue it" (rotation/random-select semantics),
+        not sequential gating, and wrapping the chain in one would risk the group's own
+        enable()/select() logic fighting the manual enable_events chain for no benefit. A plain
+        set of 5 achievements chained by their own default completion events is both simpler and
+        the better semantic fit. Real bug found and fixed along the way: `disable_on_complete`
+        defaults to `true` for ALL logic_blocks (mpf/config_spec.yaml's logic_blocks_common) -
+        portal_sequence needed `disable_on_complete: false` explicitly, or it would only ever
+        complete once per ball (permanently disabling itself right after its one completion),
+        which would have capped this chain at stage 1 forever. Implemented in
+        modes/portal/config/portal.yaml, verified in tests/test_portal.py (5 repeat completions
+        light all 5 stages; progress persists across balls since Achievement state lives on the
+        player, not the mode). `led-exit-open-1..5` are lit via `light_player:` on each stage's
+        completion event (purple, matching the slide's violet accent) - the first `light_player:`
+        usage in this codebase; no other mode drives LEDs yet.
   scoring: >
     DRAFT, needs a real game-balance pass with the user: 200/hit for dropper/portal-r/portal-m,
-    500/hit for exit-success, +5000 for the full ordered sequence completing. Implemented in
-    modes/portal/config/portal.yaml. Does NOT yet include any bonus tied to the 5-stage
-    achievement_group progression, since that part isn't built (see rules notes above).
+    500/hit for exit-success, +5000 for the full ordered sequence completing, +1000 per exit_open
+    stage (1-4), +10000 for the 5th/final stage (`portal_all_exits_open` - reserved for a future
+    Phase 5 wizard-mode gate, not consumed anywhere yet). Implemented in
+    modes/portal/config/portal.yaml.
 
 presentation:
   slide: modes/portal/slides/portal_transfer.tscn - implemented with blue/orange entry-exit

@@ -199,13 +199,23 @@ when fixed, not deleted, so resolution history stays visible.
       rather than a fixed deadline from the first hit. Verified with 2 new tests in
       `tests/test_slings.py`: one confirming a slow gap resets progress, one confirming the
       window correctly extends across hits spaced up to 2.5s apart.
-- [ ] `modes/portal/config/portal.yaml`'s 5-stage "exit open" achievement_group progression
+- [x] `modes/portal/config/portal.yaml`'s 5-stage "exit open" achievement_group progression
       (`led-exit-open-1..5`, the Phase 5 wizard-mode gate) is not implemented - MPF's
       `achievements:` device only posts a generic `achievement_(name)_changed_state` event by
       default, with no clean way (found so far) to chain stage N's enable off stage N-1's
       completion via plain config. Needs more research into `achievements:`/`achievement_groups:`
       before this can be built and tested properly. The core dropper->portal->exit sequence
-      scoring is implemented independently of this.
+      scoring is implemented independently of this. **Fixed (2026-08-27)**: both earlier findings
+      were wrong on re-verification against the installed source. `achievements:` DOES default
+      `events_when_completed` to a clean `achievement_<name>_state_completed` event - the earlier
+      pass only checked the generic `changed_state` event. And `achievement_group` turned out to
+      be the wrong device type entirely (built for player-selectable "pick one" mechanics, not a
+      fixed linear chain) - used 5 plain `achievements:` chained by their own default completion
+      events instead, see `design/features/portal.yaml` for the full corrected reasoning. Real bug
+      found and fixed along the way: `disable_on_complete` defaults to `true` for every
+      `logic_block` (`counters`/`accruals`/`sequences`) - `portal_sequence` needed
+      `disable_on_complete: false` explicitly or it would only ever complete once per ball,
+      capping the chain at stage 1 forever. Verified with 2 new tests in `tests/test_portal.py`.
 - [x] `modes/dropbank/config/dropbank.yaml`'s insinerator shot scores flat, not the "escalating
       value per repeat completion" pattern from MPF's sequential-drop-banks cookbook recipe
       referenced in `design/features/dropbank.yaml` - deferred pending a real game-balance pass.
