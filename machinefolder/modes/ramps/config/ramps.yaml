@@ -1,0 +1,52 @@
+#config_version=6
+mode:
+  start_events: ball_starting
+  priority: 90
+
+# DRAFT scoring - placeholder point values pending a real game-balance pass with the user
+# (design/features/ramps.yaml is explicitly the sparsest-designed Phase 3 feature). Lowest
+# priority per plans/resumption-roadmap.md Phase 3, built last.
+#
+# NOT YET BUILDABLE: the right_ramp_diverter/subway routing device from the design doc has no
+# coil/switches wired in hardware-*.yaml yet - genuinely hardware-blocked (see TODO.md), so this
+# only implements the shot/combo scoring side, not physical ball routing.
+#
+# Either l1/l2 switch counts as a made shot for that side (entry/exit ordering between them is
+# still an open design question per the doc). No combo time window yet, same gap already noted
+# for slings/dropbank/portal - logic_block_timeout doesn't start from the first hit.
+
+shots:
+  shot_ramp_l:
+    switches: s-ramp-l1, s-ramp-l2
+  shot_ramp_r:
+    switches: s-ramp-r1, s-ramp-r2
+
+shot_groups:
+  ramps:
+    shots: shot_ramp_l, shot_ramp_r
+
+sequences:
+  ramp_combo:
+    events:
+      - s-ramp-l1_active, s-ramp-l2_active, s-ramp-r1_active, s-ramp-r2_active
+      - s-ramp-l1_active, s-ramp-l2_active, s-ramp-r1_active, s-ramp-r2_active
+
+variable_player:
+  shot_ramp_l_hit:
+    score: 400
+  shot_ramp_r_hit:
+    score: 400
+  ramps_complete:
+    score: 1500
+  logicblock_ramp_combo_complete:
+    score: 1000
+
+slide_player:
+  shot_ramp_l_hit:
+    ramps_hit:
+      priority: 200
+      expire: 2s
+  shot_ramp_r_hit:
+    ramps_hit:
+      priority: 200
+      expire: 2s

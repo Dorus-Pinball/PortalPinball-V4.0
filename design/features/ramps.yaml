@@ -1,6 +1,6 @@
 id: ramps
 name: Left & right ramps
-status: designed
+status: implementing
 phase: Phase 3
 
 story:
@@ -50,10 +50,16 @@ rules:
         or subway entry/exit switches exist in hardware-coils.yaml/
         hardware-switches.yaml today - this needs real electrical wiring first, same
         gate as Phase 1 flippers. Flagged in TODO.md.
-  scoring: TBD
+  scoring: >
+    DRAFT, needs a real game-balance pass with the user: 400/hit per ramp (either l1/l2 or
+    r1/r2 switch counts), +1500 shot_group-complete bonus for hitting both ramps, +1000 for the
+    2-hit ramp_combo sequence. Implemented in modes/ramps/config/ramps.yaml. Does NOT implement
+    the right_ramp_diverter routing device - genuinely hardware-blocked (no coil/switches wired
+    yet), see TODO.md. No combo time window either, same gap as slings/dropbank/portal.
 
 presentation:
-  slide: TBD - no dedicated slide yet
+  slide: modes/ramps/slides/ramps_hit.tscn - implemented as a placeholder orange panel (no real
+    art yet), per design/SCREENS.md.
   show: TBD - glowing "bridge extends" animation across the ramp icon while lit, per the Hard Light Bridge motif
   sound: TBD - propulsion-gel-style "zip" whoosh (orange gel = frictionless speed boost) as the ramp-make sound
 
