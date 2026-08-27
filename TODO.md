@@ -99,11 +99,16 @@ when fixed, not deleted, so resolution history stays visible.
       ("Aperture Display Signage") before touching any `.tscn` file — see that artifact for the
       full palette/rationale per screen. `images/mainscreen.jpg` is no longer referenced by any
       slide but was left in place, not deleted.
-      **Still NOT visually verified in the Godot editor** (no Godot executable available in this
-      environment to check headlessly) — the geometry was computed precisely and the file
-      structure matches the previously-proven format (`MPFSlide` root script, built-in
-      `ColorRect`/`Line2D`/`Polygon2D`/`Label` node types only, no custom draw scripts), but an
-      actual look in the editor is the real check before calling the art final.
+      **Now visually verified**: found Godot 4.3 actually installed on this machine
+      (`C:\Program Files (x86)\Godot\`), so all 10 slides were rendered for real (headless
+      `--script` capture, real Vulkan rendering — `--headless` alone forces a null/dummy
+      renderer and produces blank textures, worth remembering next time) and reviewed as
+      screenshots. Caught one real bug this way: the dropbank drop-target rectangles, built as
+      closed-loop `Line2D` shapes, rendered as broken glyph-like boxes (a triangulation edge
+      case for an axis-aligned closed rectangle) — fixed by switching to plain `ColorRect`
+      nodes. The other 9 slides matched the approved proposal on the first render. `base.tscn`'s
+      score readout doesn't show in an isolated screenshot since there's no live MPF game
+      supplying the `score` player variable in that test — expected, not a bug.
 - [x] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
       Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
       physical machine. Resolved: the CAD does NOT support hole-pairing - `VUK`/`VUK high`/
