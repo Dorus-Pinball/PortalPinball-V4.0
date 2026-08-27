@@ -56,3 +56,22 @@ class TestLanes(MpfGameTestCase):
         self.hit_switch_and_run("s-toplane3", 0.1)
         # 3 x 500 per-shot + 2500 group-complete bonus
         self.assertEqual(baseline + 4000, self.machine.game.player.score)
+
+    def test_each_lane_lights_its_own_led_on_hit(self):
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        # assertLightOff/On rely on hw_driver (singular), which doesn't exist for multi-channel
+        # subtype: led lights in this MPF version (AttributeError: 'Light' object has no
+        # attribute 'hw_driver' - it's hw_drivers, plural, for RGB lights) - assertLightColor
+        # uses get_color() instead, which works fine here.
+        for switch, led in (
+            ("s-toplane1", "led-toplane1"),
+            ("s-toplane2", "led-toplane2"),
+            ("s-bottomlane1", "led-lane-b1"),
+            ("s-bottomlane5", "led-lane-b5"),
+        ):
+            self.assertLightColor(led, "off")
+            self.hit_switch_and_run(switch, 0.2)
+            self.assertLightColor(led, "gold")

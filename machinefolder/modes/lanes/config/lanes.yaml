@@ -7,9 +7,15 @@ mode:
 # Replaces the flat 100-per-switch placeholder that used to live in modes/base/config/base.yaml.
 # The "spell"/2x-hit lit-orange-blinking mechanic from board Overviews.xlsx is NOT implemented
 # yet - design/features/lanes.yaml flags that story hook as "proposed, not yet confirmed with
-# the user", so this only wires up the basic shot/shot_group scaffolding + per-hit and
-# group-complete scoring. Per-shot LED feedback (led-toplane1..3, led-lane-b1..4) is deferred to
-# that follow-up pass too, since it's tied to the same unconfirmed lit/orange/blinking states.
+# the user", so this doesn't build the full spell state machine.
+#
+# Per-shot LED feedback IS implemented now (2026-08-27), kept deliberately simple rather than
+# guessing at the unconfirmed spell behavior: each lane lights gold (matching the slide's
+# gold iconography) on its first hit and stays lit for the rest of the ball - a plain
+# "have I hit this one yet" indicator, not the 2x-blink spell. Clears automatically at the next
+# ball_starting, since light_player entries are mode-scoped and lanes restarts every ball.
+# led-lane-b5 is a newly-drafted LED (hardware-leds.yaml, chain 1 - previously only 4 existed for
+# 5 bottom lane switches, flagged in design/features/lanes.yaml).
 
 shots:
   shot_toplane1:
@@ -67,3 +73,21 @@ slide_player:
     lanes_hit:
       priority: 200
       expire: 2s
+
+light_player:
+  shot_toplane1_hit:
+    led-toplane1: gold
+  shot_toplane2_hit:
+    led-toplane2: gold
+  shot_toplane3_hit:
+    led-toplane3: gold
+  shot_bottomlane1_hit:
+    led-lane-b1: gold
+  shot_bottomlane2_hit:
+    led-lane-b2: gold
+  shot_bottomlane3_hit:
+    led-lane-b3: gold
+  shot_bottomlane4_hit:
+    led-lane-b4: gold
+  shot_bottomlane5_hit:
+    led-lane-b5: gold

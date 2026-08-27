@@ -164,6 +164,18 @@ when fixed, not deleted, so resolution history stays visible.
       opens the gate and starts `super_wizard`; missing one tier correctly blocks it; tier
       progress correctly persists across a ball drain.
 
+- [x] Lane LED mapping gap: only 4 `led-lane-b*` LEDs existed for 5 `s-bottomlane*` switches
+      (`design/features/lanes.yaml`), and no lane had any LED feedback wired at all yet. **Fixed
+      (2026-08-27)**: added `led-lane-b5` as DRAFT hardware on chain 1 (a second, real, scanned
+      LED-driver board per `hardware-basic.yaml`'s scan comment - chain 0 alone already fills
+      every LED defined so far, `0-0-0`..`0-0-39`), and wired simple `light_player:` feedback for
+      all 8 lane shots in `modes/lanes/config/lanes.yaml` (gold on first hit, stays lit for the
+      rest of the ball) - deliberately not the unconfirmed 2x-blink "spell" mechanic, just a
+      plain progress indicator. Verified with a new test in `tests/test_lanes.py`. Real finding:
+      `MpfTestCase.assertLightOn`/`assertLightOff` read `light.hw_driver` (singular), which
+      doesn't exist on multi-channel `subtype: led` lights in this MPF version (`AttributeError`
+      - it's `hw_drivers`, plural) - use `assertLightColor(name, "off")` instead for RGB lights.
+
 ## Not blocked by hardware access
 
 - [x] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,
