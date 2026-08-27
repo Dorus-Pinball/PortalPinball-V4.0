@@ -31,8 +31,6 @@ class TestSlings(MpfGameTestCase):
         self.assertEqual(100, self.machine.game.player.score)
 
     def test_sling_combo_awards_bonus(self):
-        # NOTE: no time window enforced yet - see the NOT YET IMPLEMENTED comment in
-        # modes/slings/config/slings.yaml. This only verifies 3 hits (either side) complete it.
         # Uses hit_and_release_switch (not hit_switch_and_run) since the same switch (left sling)
         # is hit twice - hit_switch_and_run leaves it active, so a repeat hit produces no new
         # _active event.
@@ -47,4 +45,36 @@ class TestSlings(MpfGameTestCase):
         self.hit_and_release_switch("s-left-sling")
         self.advance_time_and_run(0.2)
         # 3 x 100 per-hit + 750 combo bonus
+        self.assertEqual(1050, self.machine.game.player.score)
+
+    def test_sling_combo_resets_if_hits_are_too_slow(self):
+        # 3 sling hits still happen, but with a >3s gap between the first two - the
+        # sling_combo_window timer should expire and reset progress, so hit 3 only continues a
+        # fresh (1-hit) sequence rather than completing the combo.
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        self.hit_and_release_switch("s-left-sling")
+        self.advance_time_and_run(4)
+        self.hit_and_release_switch("s-right-sling")
+        self.advance_time_and_run(0.2)
+        self.hit_and_release_switch("s-left-sling")
+        self.advance_time_and_run(0.2)
+        # 3 x 100 per-hit, no 750 combo bonus - the timeout reset progress after hit 1
+        self.assertEqual(300, self.machine.game.player.score)
+
+    def test_sling_combo_window_extends_on_each_hit(self):
+        # Each hit restarts the 3s window (sliding, not a fixed deadline from the first hit) - so
+        # 3 hits spaced 2.5s apart (9s total, longer than one 3s window) should still combo.
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        self.hit_and_release_switch("s-left-sling")
+        self.advance_time_and_run(2.5)
+        self.hit_and_release_switch("s-right-sling")
+        self.advance_time_and_run(2.5)
+        self.hit_and_release_switch("s-left-sling")
+        self.advance_time_and_run(0.2)
         self.assertEqual(1050, self.machine.game.player.score)

@@ -10,12 +10,15 @@ mode:
 # installed MPF's mpf/devices/logic_blocks.py source directly, since the design doc's original
 # "ordered steps" framing doesn't match what a plain N-hits combo needs.
 #
-# NOT YET IMPLEMENTED: a time window ("back-to-back" per the xlsx). `logic_block_timeout` looked
-# like the fit but actually starts ticking from mode/logic-block *enable* (ball start), not from
-# the first hit - confirmed by reading enable()/_logic_block_timer_start() in logic_blocks.py -
-# so it doesn't mean what the name suggests here. Needs a real "start a timer on first hit"
-# mechanism (e.g. enable_events on the first sling hit, disable+reset after logic_block_timeout)
-# before a genuine time-limited combo can be added. Flagged in TODO.md.
+# Time window ("back-to-back" per the xlsx) IMPLEMENTED via a `timers:` device rather than
+# `logic_block_timeout` - that setting starts ticking from mode/logic-block *enable* (ball start),
+# not from the first hit (confirmed by reading enable()/_logic_block_timer_start() in
+# logic_blocks.py), so it can't express "N seconds between hits". `sling_combo_window` is a
+# 3-second up-timer that `restart()`s (reset+start) on every sling hit - a sliding window that
+# extends with each hit rather than a fixed deadline from the first one - and resets the sequence's
+# progress via `reset_events` if it ever completes (i.e. 3+ seconds pass with no further hit).
+# `timer.restart()` starts the timer if not already running, so the very first hit both arms the
+# window and registers as sequence step 0 - no separate "arm" event needed.
 
 shots:
   shot_sling_l:
@@ -23,8 +26,22 @@ shots:
   shot_sling_r:
     switch: s-right-sling
 
+timers:
+  sling_combo_window:
+    direction: up
+    tick_interval: 1s
+    end_value: 3
+    control_events:
+      - action: restart
+        event: s-left-sling_active
+      - action: restart
+        event: s-right-sling_active
+      - action: stop
+        event: logicblock_sling_combo_complete
+
 sequences:
   sling_combo:
+    reset_events: timer_sling_combo_window_complete
     events:
       - s-left-sling_active, s-right-sling_active
       - s-left-sling_active, s-right-sling_active

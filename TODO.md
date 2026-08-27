@@ -129,11 +129,19 @@ when fixed, not deleted, so resolution history stays visible.
       Vuk` exit, no second capture point or coordinating linkage anywhere. This validates the
       already-implemented `sequences:`-based portal mode (a strictly ordered single path) rather
       than requiring a rework. See `design/research/onshape-cad-findings.md`.
-- [ ] `modes/slings/config/slings.yaml`'s sling combo has no real time window yet - MPF's
+- [x] `modes/slings/config/slings.yaml`'s sling combo has no real time window yet - MPF's
       `logic_block_timeout` starts ticking from mode/logic-block enable (ball start), not from
       the first hit, so it can't implement "back-to-back within N seconds" as configured today.
       Needs a real "start a timer on first hit" mechanism (e.g. enable the timeout only via an
-      event posted on the first sling hit) before this is a genuine time-limited combo.
+      event posted on the first sling hit) before this is a genuine time-limited combo. **Fixed
+      (2026-08-27)**: added a `timers:` device (`sling_combo_window`, 3s, direction up) that
+      `restart()`s on every sling hit - `restart()` starts the timer if not already running, so
+      the first hit both arms the window and registers as sequence step 0, no separate "arm"
+      event needed - and resets the sequence's progress via `reset_events` if the timer ever
+      completes (3+ seconds with no further hit). This is a sliding window (extends on each hit)
+      rather than a fixed deadline from the first hit. Verified with 2 new tests in
+      `tests/test_slings.py`: one confirming a slow gap resets progress, one confirming the
+      window correctly extends across hits spaced up to 2.5s apart.
 - [ ] `modes/portal/config/portal.yaml`'s 5-stage "exit open" achievement_group progression
       (`led-exit-open-1..5`, the Phase 5 wizard-mode gate) is not implemented - MPF's
       `achievements:` device only posts a generic `achievement_(name)_changed_state` event by
