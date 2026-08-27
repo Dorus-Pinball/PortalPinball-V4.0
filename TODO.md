@@ -74,14 +74,34 @@ when fixed, not deleted, so resolution history stays visible.
       MPF built-in modes (`match`, `high_score`) needing only `config.yaml` registration (now
       done); `tilt_warning` and `multiball_start` remain genuinely blocked (hardware / open
       design fork respectively), not just undesigned.
-- [ ] Could not fully verify `match`/`high_score` trigger correctly at a real game-over in an
+- [x] Could not fully verify `match`/`high_score` trigger correctly at a real game-over in an
       automated test — draining a full 3-ball game via `smart_virtual` in a scratch test got
       stuck after ball 1 (ball 2 never advanced past `bd-plunger` across repeated
       `drain_all_balls()` + `hit_and_release_switch("s-launch")` calls, for reasons not yet
       root-caused; possibly `mechanical_eject`/`player_controlled_eject_event` interaction with
       the test harness rather than a real bug). Boot is clean and the existing 24-test suite
       (all single-ball scenarios) still passes with both modes active. Needs follow-up before
-      trusting `match`/`high_score` behavior beyond "loads without erroring."
+      trusting `match`/`high_score` behavior beyond "loads without erroring." **Root-caused and
+      fixed (2026-08-27)**: not a real bug - the scratch test called `drain_all_balls()`
+      immediately after `start_game()`, before ball 1 was ever launched onto the playfield.
+      Since `bd-plunger` uses `mechanical_eject` (the player must hit `s-launch` - MPF doesn't
+      auto-plunge), ball 1 was still parked in the plunger lane; draining "it" desyncs
+      `playfield.available_balls`, and every later `ball_starting` hangs forever in MPF's
+      `BallController.wait_until_playfields_are_empty()` (confirmed via
+      `machine.playfields["playfield"].balls`/`available_balls` and the repeating "Playfields
+      still contain balls" log line - reading `mpf/modes/game/code/game.py` and
+      `mpf/core/ball_controller.py` directly pinpointed the wait). Launching each ball before
+      draining it (the same order a real player experiences) fixes it completely. Also found
+      along the way: `MpfGameTestCase.fill_troughs()` activates *every* `ball_switch` configured
+      on a trough device (7 here: `s-trough1-6` + `s-trough-jam`, a trough capacity larger than
+      `balls_installed: 4` - normal for the real cabinet), which conflicts with
+      `balls_installed: 4` and inflates the ball controller's known-ball count; a full-game test
+      needs a trimmed fill matching `hardware-basic.yaml`'s
+      `virtual_platform_start_active_switches` instead. New passing test:
+      `tests/test_full_game.py::test_full_3ball_game_reaches_game_over` - drains all 3 balls in
+      order and asserts the game actually ends (`match`/`high_score` run as part of teardown,
+      confirmed clean in the log: `match_no_match`, `mode_high_score_started/stopped`, no
+      errors).
 - [x] Build out the 8 designed-but-unimplemented feature modes (`lanes, orbits, slings,
       skillshot, dropbank, aerial, portal, ramps`) against `smart_virtual` — see
       `plans/resumption-roadmap.md` Phase 3 and each feature's Rules layer in
