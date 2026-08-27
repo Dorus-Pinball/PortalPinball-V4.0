@@ -58,8 +58,9 @@ rules:
     yet), see TODO.md. No combo time window either, same gap as slings/dropbank/portal.
 
 presentation:
-  slide: modes/ramps/slides/ramps_hit.tscn - implemented as a placeholder orange panel (no real
-    art yet), per design/SCREENS.md.
+  slide: modes/ramps/slides/ramps_hit.tscn - implemented with a solid ramp-shell arc paired
+    with a dashed light-bridge energy-beam arc in propulsion-gel orange, on a matching tinted
+    panel, per the approved "Aperture Display Signage" graphics proposal.
   show: TBD - glowing "bridge extends" animation across the ramp icon while lit, per the Hard Light Bridge motif
   sound: TBD - propulsion-gel-style "zip" whoosh (orange gel = frictionless speed boost) as the ramp-make sound
 

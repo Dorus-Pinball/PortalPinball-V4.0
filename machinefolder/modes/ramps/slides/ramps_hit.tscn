@@ -13,15 +13,29 @@ script = ExtResource("1")
 layout_mode = 0
 offset_right = 1900.0
 offset_bottom = 1000.0
-color = Color(0.95, 0.55, 0.1, 1)
+color = Color(0.2588, 0.1412, 0.0627, 1)
+
+[node name="Icon" type="Node2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="Shell" type="Line2D" parent="Icon"]
+points = PackedVector2Array(770.00, 450.00, 800.00, 405.69, 830.00, 369.44, 860.00, 341.25, 890.00, 321.11, 920.00, 309.03, 950.00, 305.00, 980.00, 309.03, 1010.00, 321.11, 1040.00, 341.25, 1070.00, 369.44, 1100.00, 405.69, 1130.00, 450.00)
+width = 7.0
+default_color = Color(0.9333, 0.9412, 0.9451, 1)
+
+[node name="Beam" type="Line2D" parent="Icon"]
+points = PackedVector2Array(810.00, 440.00, 833.33, 406.39, 856.67, 378.89, 880.00, 357.50, 903.33, 342.22, 926.67, 333.06, 950.00, 330.00, 973.33, 333.06, 996.67, 342.22, 1020.00, 357.50, 1043.33, 378.89, 1066.67, 406.39, 1090.00, 440.00)
+width = 4.0
+default_color = Color(1.0000, 0.6039, 0.3020, 0.85)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 0.0
-offset_top = 420.0
+offset_top = 700.0
 offset_right = 1900.0
-offset_bottom = 580.0
+offset_bottom = 880.0
 theme_override_font_sizes/font_size = 110
+theme_override_colors/font_color = Color(0.9333, 0.9412, 0.9451, 1)
 text = "RAMP!"
 horizontal_alignment = 1
 vertical_alignment = 1

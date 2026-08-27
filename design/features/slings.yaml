@@ -39,8 +39,9 @@ rules:
     from mode/logic-block enable, not from the first hit). Flagged in TODO.md.
 
 presentation:
-  slide: modes/slings/slides/sling_hit.tscn - implemented as a placeholder blue panel (no real
-    art yet), per design/SCREENS.md. Plays on the combo-complete event.
+  slide: modes/slings/slides/sling_hit.tscn - implemented with a blue bounce-arc icon (plus a
+    fainter echo arc implying the combo building) on a blue-tinted dark panel, per the approved
+    "Aperture Display Signage" graphics proposal. Plays on the combo-complete event.
   show: TBD - a blue springy squash-and-bounce flash on the sling icon, per the Repulsion Gel motif
   sound: TBD - a springy "boing" per hit, building to a distinct combo-complete sting
 

@@ -90,13 +90,20 @@ when fixed, not deleted, so resolution history stays visible.
       coil-driver wiring is hardware-blocked (see the flippers item above), but the config
       itself can be written and boot-tested virtually first. Done - see the flippers item above
       for a real bug this surfaced (hold_power can't be 0.0) and its fix.
-- [ ] Build real `base`/`attract` Godot slide art — still using the shared `mainscreen.jpg`
-      placeholder. The bespoke feature-hit overlays cataloged in `design/SCREENS.md` are now
-      implemented as placeholder colored panels (one per feature, in each mode's `slides/`
-      folder) — not real art, and NOT visually verified in the Godot editor (no Godot
-      executable available in this environment to check headlessly); structurally they match
-      the proven `base.tscn`/`attract.tscn` format exactly (same `MPFSlide` root script,
-      built-in `ColorRect`/`Label` node types only).
+- [x] Build real `base`/`attract` Godot slide art, plus the bespoke feature-hit overlays
+      cataloged in `design/SCREENS.md`. Fixed: all 10 slides now carry original vector
+      iconography (an aperture-iris mark for `attract`, a lit terminal frame for `base`, and a
+      distinct line-art icon per feature tying back to its `presentation.show` motif) on a
+      dark, per-feature-tinted background, replacing the shared `mainscreen.jpg` and the flat
+      `ColorRect` placeholders. Proposal reviewed and approved first as a published Artifact
+      ("Aperture Display Signage") before touching any `.tscn` file — see that artifact for the
+      full palette/rationale per screen. `images/mainscreen.jpg` is no longer referenced by any
+      slide but was left in place, not deleted.
+      **Still NOT visually verified in the Godot editor** (no Godot executable available in this
+      environment to check headlessly) — the geometry was computed precisely and the file
+      structure matches the previously-proven format (`MPFSlide` root script, built-in
+      `ColorRect`/`Line2D`/`Polygon2D`/`Label` node types only, no custom draw scripts), but an
+      actual look in the editor is the real check before calling the art final.
 - [x] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
       Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
       physical machine. Resolved: the CAD does NOT support hole-pairing - `VUK`/`VUK high`/

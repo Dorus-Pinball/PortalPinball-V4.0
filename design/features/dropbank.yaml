@@ -64,8 +64,9 @@ rules:
     modes/dropbank/config/dropbank.yaml.
 
 presentation:
-  slide: modes/dropbank/slides/dropbank_hit.tscn - implemented as a placeholder red/orange
-    panel (no real art yet), per design/SCREENS.md.
+  slide: modes/dropbank/slides/dropbank_hit.tscn - implemented with a flame icon rising behind
+    three drop-target blocks on a fire-tinted panel, per the approved "Aperture Display
+    Signage" graphics proposal.
   show: TBD - fire/incinerator flame-wipe flash on the insinerator shot, per the theme research's escape/incinerator sting idea
   sound: TBD - crackling flame whoosh on insinerator hit; a companion-cube "clunk-chime" per drop target, if the story hook above is confirmed
 

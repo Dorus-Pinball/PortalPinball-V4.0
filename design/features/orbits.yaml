@@ -37,8 +37,9 @@ rules:
     three at least once. Implemented in modes/orbits/config/orbits.yaml.
 
 presentation:
-  slide: modes/orbits/slides/orbit_hit.tscn - implemented as a placeholder split blue/orange
-    panel (no real art yet) honoring the left=blue/right=orange motif, per design/SCREENS.md.
+  slide: modes/orbits/slides/orbit_hit.tscn - implemented with two interlocked ellipse-ring
+    icons in blue (left)/orange (right) on a matching split-tinted panel, per the approved
+    "Aperture Display Signage" graphics proposal.
   show: TBD - portal-ring "pop" flash on the relevant orbit icon, blue for left / orange for right
   sound: TBD - a rising-pitch whoosh sweep (momentum/speed motif) distinct per side
 
