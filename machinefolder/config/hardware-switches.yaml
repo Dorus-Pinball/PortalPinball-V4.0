@@ -5,196 +5,196 @@
 
 switches:
 # Autofire 2-0-0 to 2-0-3
-    s-right-sling:
-        number: 2-0-0
-        debounce: quick
-    s-left-sling:
-        number: 2-0-1
-        debounce: quick
-    #name:              plunger --> NO AUTOLAUNCH SWITCH
-    #    number: 2-0-2
-    #    label:
-    #    tags:
-    #name:              trough_eject --> NO AUTOLAUNCH SWITCH
-    #    number: 2-0-3
-    #    label:
-    #    tags:
+  s-right-sling:
+    number: 2-0-0
+    debounce: quick
+  s-left-sling:
+    number: 2-0-1
+    debounce: quick
+  #name:              plunger --> NO AUTOLAUNCH SWITCH
+  #    number: 2-0-2
+  #    label:
+  #    tags:
+  #name:              trough_eject --> NO AUTOLAUNCH SWITCH
+  #    number: 2-0-3
+  #    label:
+  #    tags:
 # Autofire 2-0-4 to 2-0-7 DO NOT EXIST
 
 # Autofire 2-0-8 to 2-0-11
-    s-popbumper-1:
-        number: 2-0-8
-    s-popbumper-2:
-        number: 2-0-9
-    s-popbumper-3:
-        number: 2-0-10
-    #name:              drop --> NO AUTOLAUNCH SWITCH
-    #    number: 2-0-3
+  s-popbumper-1:
+    number: 2-0-8
+  s-popbumper-2:
+    number: 2-0-9
+  s-popbumper-3:
+    number: 2-0-10
+  #name:              drop --> NO AUTOLAUNCH SWITCH
+  #    number: 2-0-3
 
 # Autofire 2-0-12 to 2-0-15 DO NOT EXIST
 
 
 # Direct Switches Launch Section
-    s-plunger-lane:
-        number: 2-0-16
-    s-start:
-        number: 2-0-17
-        tags: start
-    s-launch:
-        number: 2-0-18
-        tags: launch
+  s-plunger-lane:
+    number: 2-0-16
+  s-start:
+    number: 2-0-17
+    tags: start
+  s-launch:
+    number: 2-0-18
+    tags: launch
 
 
 # Lane Switches
-    s-toplane1:
-        number: 2-0-19
-        type: NO
-    s-toplane2:
-        number: 2-0-20
-        type: NO
-    s-toplane3:
-        number: 2-0-21
-        type: NO
+  s-toplane1:
+    number: 2-0-19
+    type: NO
+  s-toplane2:
+    number: 2-0-20
+    type: NO
+  s-toplane3:
+    number: 2-0-21
+    type: NO
 
-    s-bottomlane1:
-        number: 2-0-22
-        type: NO
-    s-bottomlane2:
-        number: 2-0-23
-        type: NO
-    s-bottomlane3:
-        number: 2-0-24
-        type: NO
-    s-bottomlane4:
-        number: 2-0-25
-        type: NO
-    s-bottomlane5:
-        number: 2-0-26
-        type: NO
+  s-bottomlane1:
+    number: 2-0-22
+    type: NO
+  s-bottomlane2:
+    number: 2-0-23
+    type: NO
+  s-bottomlane3:
+    number: 2-0-24
+    type: NO
+  s-bottomlane4:
+    number: 2-0-25
+    type: NO
+  s-bottomlane5:
+    number: 2-0-26
+    type: NO
 
 
 # Other
-    s-orbit-r:
-        number: 2-0-27
-        type: NO
-    s-orbit-l:
-        number: 2-0-28
-        type: NO
-    s-target-e1:
-        number: 2-0-29
-        type: NO
-    s-target-e2:
-        number: 2-0-30
-        type: NO
-    s-button:
-        number: 2-0-31
-        type: NO
+  s-orbit-r:
+    number: 2-0-27
+    type: NO
+  s-orbit-l:
+    number: 2-0-28
+    type: NO
+  s-target-e1:
+    number: 2-0-29
+    type: NO
+  s-target-e2:
+    number: 2-0-30
+    type: NO
+  s-button:
+    number: 2-0-31
+    type: NO
 
 
 # Autofire 2-1-0 to 2-1-3 - DRAFT flipper activation switches (Phase 1, plans/resumption-roadmap.md).
 # NOT confirmed against board Overviews.xlsx or a physical continuity check yet - see TODO.md's
 # note on confirming free vs. reserved numbers before wiring. Fine for smart_virtual/boot-test
 # purposes; do not treat these numbers as final for real wiring.
-    s-left-flipper:
-        number: 2-1-0
-        debounce: quick
-        tags: flipper_left
-    s-right-flipper:
-        number: 2-1-1
-        debounce: quick
-        tags: flipper_right
+  s-left-flipper:
+    number: 2-1-0
+    debounce: quick
+    tags: flipper_left
+  s-right-flipper:
+    number: 2-1-1
+    debounce: quick
+    tags: flipper_right
 # Autofire 2-1-4 to 2-1-7 DO NOT EXIST
 # Autofire 2-1-8 to 2-1-11 empty
 # Autofire 2-1-12 to 2-1-15 DO NOT EXIST
 
 
 # Direct Switches Trough Section
-    s-trough1:
-        number: 2-1-16
-        type: NC
-    s-trough2:
-        number: 2-1-17
-        type: NC
-    s-trough3:
-        number: 2-1-18
-        type: NC
-    s-trough4:
-        number: 2-1-19
-        type: NC
-    s-trough5:
-        number: 2-1-20
-        type: NC
-    s-trough6:
-        number: 2-1-21
-        type: NC
-    s-trough-jam:
-        number: 2-1-22
-        type: NC
+  s-trough1:
+    number: 2-1-16
+    type: NC
+  s-trough2:
+    number: 2-1-17
+    type: NC
+  s-trough3:
+    number: 2-1-18
+    type: NC
+  s-trough4:
+    number: 2-1-19
+    type: NC
+  s-trough5:
+    number: 2-1-20
+    type: NC
+  s-trough6:
+    number: 2-1-21
+    type: NC
+  s-trough-jam:
+    number: 2-1-22
+    type: NC
 
 
 # Orbit & Ramp switches
 
 # Droptarget Left to Right
-    s-drop1:
-        number: 2-1-23
-    s-drop2:
-        number: 2-1-24
-    s-drop3:
-        number: 2-1-25
+  s-drop1:
+    number: 2-1-23
+  s-drop2:
+    number: 2-1-24
+  s-drop3:
+    number: 2-1-25
 
 # VUK Mid Field
-    s-vukmid:
-        number: 2-1-26
+  s-vukmid:
+    number: 2-1-26
 
 # VUK Left Top
-    s-vuktop:
-        number: 2-1-27
+  s-vuktop:
+    number: 2-1-27
 
 
 # right switch bank
-    s-orbit-top:
-        number: 2-1-28
+  s-orbit-top:
+    number: 2-1-28
 
 # ball devices
-    s-portal-r:
-        number: 2-1-29
-    s-dropper:
-        number: 2-1-30
-    s-exit-success:
-        number: 2-1-31
+  s-portal-r:
+    number: 2-1-29
+  s-dropper:
+    number: 2-1-30
+  s-exit-success:
+    number: 2-1-31
 
 # more switches available from: 2-3-0 to 2-3-31
-    s-target-r1:
-        number: 2-3-0
-    s-target-r2:
-        number: 2-3-1
-    s-target-m1:
-        number: 2-3-2
-    s-target-m2:
-        number: 2-3-3
-    s-target-m3:
-        number: 2-3-4
-    s-target-m4:
-        number: 2-3-5
-    s-target-l1:
-        number: 2-3-6
+  s-target-r1:
+    number: 2-3-0
+  s-target-r2:
+    number: 2-3-1
+  s-target-m1:
+    number: 2-3-2
+  s-target-m2:
+    number: 2-3-3
+  s-target-m3:
+    number: 2-3-4
+  s-target-m4:
+    number: 2-3-5
+  s-target-l1:
+    number: 2-3-6
 
-    s-ramp-r1:
-        number: 2-3-7
-    s-ramp-l1:
-        number: 2-3-8
-    s-ramp-r2:
-        number: 2-3-9
-    s-ramp-l2:
-        number: 2-3-10
+  s-ramp-r1:
+    number: 2-3-7
+  s-ramp-l1:
+    number: 2-3-8
+  s-ramp-r2:
+    number: 2-3-9
+  s-ramp-l2:
+    number: 2-3-10
 
 
-    s-aerial:
-        number: 2-3-11
-    s-portal-m:
-        number: 2-3-12
-    s-insinerator:
-        number: 2-3-13
+  s-aerial:
+    number: 2-3-11
+  s-portal-m:
+    number: 2-3-12
+  s-insinerator:
+    number: 2-3-13
 
 # DRAFT service mode switches (Phase 2, plans/resumption-roadmap.md). Numbers are placeholders
 # pending real board assignment/a physical continuity check, same as the flipper switches above -
@@ -210,21 +210,21 @@ switches:
 # door_opened_events/door_closed_events aren't consumed anywhere in the code at all in this
 # version either - real entry is the sw_service_enter switch, not a door-open event, so no
 # separate door switch is configured here.
-    sw_service_enter:
-        number: 2-3-14
-    sw_service_esc:
-        number: 2-3-15
-    sw_service_up:
-        number: 2-3-16
-    sw_service_down:
-        number: 2-3-17
+  sw_service_enter:
+    number: 2-3-14
+  sw_service_esc:
+    number: 2-3-15
+  sw_service_up:
+    number: 2-3-16
+  sw_service_down:
+    number: 2-3-17
 
 # DRAFT right ramp subway switches (CAD-confirmed real hardware, see
 # design/research/onshape-cad-findings.md - a Subway tunnel fed by the Diverter_Rod/Diverter_Base
 # assembly). Numbers are placeholders pending real board assignment/a physical continuity check,
 # same status as the flipper/service switches above.
-    s-subway-entry:
-        number: 2-3-18
-    s-subway-exit:
-        number: 2-3-19
+  s-subway-entry:
+    number: 2-3-18
+  s-subway-exit:
+    number: 2-3-19
 
