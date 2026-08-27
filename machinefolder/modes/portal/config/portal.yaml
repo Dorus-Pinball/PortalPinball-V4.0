@@ -141,3 +141,9 @@ show_player:
         led2: led-portal-r
         led3: led-portal-m
         led4: led-exit-success
+
+# Real Portal 2 portal-gun/fizzle sounds (extracted by the user, see TODO.md) - a whoosh on
+# dropper entry, a fizzle chime on successful exit, matching the design doc's cues directly.
+sound_player:
+  shot_dropper_hit: portal_dropper_whoosh
+  shot_exit_success_hit: portal_exit_chime

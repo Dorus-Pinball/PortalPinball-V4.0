@@ -42,7 +42,9 @@ presentation:
     "Aperture Display Signage" graphics proposal.
   show: modes/orbits/shows/orbit_hit.yaml - implemented (2026-08-27) as a white-pop-to-color
     flash, blue for left / orange for right / white for top.
-  sound: TBD - a rising-pitch whoosh sweep (momentum/speed motif) distinct per side
+  sound: machinefolder/sounds/sfx/orbits_whoosh.wav - implemented (2026-08-27) from the user's
+    Portal 2 sound extract, one whoosh for all 3 shots (the show's per-side color already
+    differentiates them). DRAFT pick, user plans to review/adjust manually.
 
 notes: >
   `orbit` is already referenced (commented out) in machinefolder/config/config.yaml's

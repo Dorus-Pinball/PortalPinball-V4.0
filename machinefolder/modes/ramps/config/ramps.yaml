@@ -63,3 +63,9 @@ show_player:
       priority: 100
       show_tokens:
         led: led-ramp-r
+
+# Real Portal 2 light-bridge sound (extracted by the user, see TODO.md), literally labeled for
+# this in the source pack ("light bridge or beam") - matches the Hard Light Bridge motif exactly.
+sound_player:
+  shot_ramp_l_hit: ramps_light_bridge
+  shot_ramp_r_hit: ramps_light_bridge

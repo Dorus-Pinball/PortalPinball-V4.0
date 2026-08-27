@@ -31,3 +31,8 @@ show_player:
       priority: 100
       show_tokens:
         leds: led-toplane1, led-toplane2, led-toplane3
+
+# Real Portal 2 "test chamber" positive stinger (extracted by the user, see TODO.md) - matches
+# the design doc's "test-chamber-style musical stinger" note almost literally.
+sound_player:
+  shot_skillshot_hit: skillshot_test_chamber_pos

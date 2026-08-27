@@ -71,7 +71,10 @@ presentation:
     panel, per the approved "Aperture Display Signage" graphics proposal.
   show: modes/ramps/shows/ramps_hit.yaml - implemented (2026-08-27) as a white-to-orange glow,
     propulsion-gel orange matching the slide's accent color.
-  sound: TBD - propulsion-gel-style "zip" whoosh (orange gel = frictionless speed boost) as the ramp-make sound
+  sound: machinefolder/sounds/sfx/ramps_light_bridge.wav - implemented (2026-08-27) from the
+    user's Portal 2 sound extract, literally labeled "light bridge or beam" in the source pack -
+    matches the Hard Light Bridge motif exactly. DRAFT pick, user plans to review/adjust
+    manually.
 
 notes: >
   Lowest-priority Phase 3 feature - board Overviews.xlsx's "Modes" sheet notes are

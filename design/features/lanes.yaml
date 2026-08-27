@@ -69,7 +69,9 @@ presentation:
   show: modes/lanes/shows/lanes_hit.yaml - implemented (2026-08-27) as a simple white-pop-to-gold
     flash per lane hit, layered over the persistent gold light_player state, not the full
     turret-gauntlet animation (still unconfirmed).
-  sound: TBD - turret chirp on first hit, comedic "dying" wobble/cry on the completing second hit
+  sound: modes/lanes/shows uses machinefolder/sounds/sfx/lanes_turret_chirp.wav - implemented
+    (2026-08-27) from the user's own full Portal 2 sound extract, a real turret reaction clip on
+    every lane hit. DRAFT pick, user plans to review/adjust manually.
 
 notes: >
   Only 4 "lane-b" LEDs exist (led-lane-b1..b4) for 5 bottom lane switches

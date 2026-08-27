@@ -62,3 +62,9 @@ show_player:
       priority: 110
       show_tokens:
         leds: led-insinerator, led-button, led-target-l1
+
+# Real GLaDOS incinerator line (extracted by the user, see TODO.md) - matches the Companion Cube
+# incineration story hook directly.
+sound_player:
+  shot_insinerator_hit: dropbank_incinerator
+  logicblock_insinerator_finisher_complete: dropbank_incinerator

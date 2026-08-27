@@ -52,7 +52,9 @@ presentation:
     chase-flash across all 3 top lanes, not the pre-hit "this one counts" pulse (needs the
     unconfirmed rotating-lane rule first). Confirmed to play correctly despite the mode's own
     stop_events firing on the same event.
-  sound: TBD - portal-fire whoosh on launch; a short plucky test-chamber-style musical stinger on a made skillshot
+  sound: machinefolder/sounds/sfx/skillshot_test_chamber_pos.wav - implemented (2026-08-27) from
+    the user's Portal 2 sound extract, a real "test chamber" positive stinger (matches the design
+    note almost literally). DRAFT pick, user plans to review/adjust manually.
 
 notes: >
   Open design question, not yet fully decided: which specific shot actually counts as

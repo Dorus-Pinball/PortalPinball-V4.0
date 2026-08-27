@@ -194,13 +194,34 @@ when fixed, not deleted, so resolution history stays visible.
       Each show has its own new regression test (color assertions via `assertLightColor` at the
       right point in the flash). Real finding confirmed empirically: skillshot's mode has
       `stop_events: shot_skillshot_hit` - the SAME event that triggers its show - and the show
-      still plays correctly despite the mode stopping (not a race, tested directly). **`sound:`
-      remains TBD for all 8 and was NOT attempted** - the project's only audio assets are 7
-      background music tracks and one generic alarm-sweep loop (`machinefolder/sounds/`), none
-      suitable as the described short stingers (whooshes, chirps, chimes) - this needs a real
-      asset-sourcing pass, per `plans/resumption-roadmap.md` Phase 4's own note that this is "a
-      separate creative task, not something to auto-generate," not something buildable from
-      config alone.
+      still plays correctly despite the mode stopping (not a race, tested directly). At the time
+      this was written, `sound:` remained TBD for all 8 - the project's only audio assets were 7
+      background music tracks and one generic alarm-sweep loop, none suitable as the described
+      short stingers - see the follow-up entry below for how that gap closed.
+- [x] Sound for all 8 Phase 3 features + multiball: **filled in (2026-08-27)**. The user located
+      their own full Portal 2 sound extract on this machine
+      (`Documents/Hobby/Pinball/Assets/Portal Sounds/` - 9,359 raw files in `_all/`, plus
+      category folders the user had already hand-curated for pinball-specific purposes -
+      `multiball`, `ball launch`, `SFX`, `buttons`, `alarms`, `possible faith plate`, etc.).
+      Picked one file per feature by filename/folder match (e.g. `SFX/beam_platform_loop1 -
+      light bridge or beam.wav` for ramps, literally labeled for this; `buttons/
+      og_test_chamber_pos_01.wav` for skillshot's "test-chamber-style stinger"; real GLaDOS
+      incinerator lines for dropbank's Companion Cube hook), copied and renamed into
+      `machinefolder/sounds/sfx/` (9 files, standard 16-bit PCM WAV, same format the project
+      already used - no conversion needed), and wired via `sound_player:` in each mode
+      (`modes/<name>/config/<name>.yaml`). No clean "springy boing" existed in the pack for
+      slings (Portal isn't that kind of game) - a synth blip stands in. **Explicitly a DRAFT
+      baseline, not a final pick** - the user plans to review/listen through and adjust the
+      allocation manually. Verified via a clean `mpf -X -t -b` boot (validates `sound_player:`
+      config syntax) and the full test suite; actual sound-*name* resolution inside Godot
+      (mpf-gmc's `GMCMedia.traverse_tree_for`) was NOT verified - a headless script calling
+      `GMCMedia` methods directly outside its normal scene-tree lifecycle hung indefinitely
+      (10+ minutes, still consuming CPU, no output) rather than erroring or completing; killed
+      rather than debugged further, since audio can't be visually verified the way slides were
+      anyway (no way to "screenshot" a sound in this environment). Filenames are unique and
+      extension-matched to mpf-gmc's discovery rules, same pattern the already-working
+      `SlowMusic`/`alarm_sweep_lp_lg_01` references use, but worth a real playtest (or a proper
+      in-editor Godot check) before fully trusting the names resolve.
 
 ## Not blocked by hardware access
 

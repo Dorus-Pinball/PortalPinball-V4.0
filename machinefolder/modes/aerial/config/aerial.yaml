@@ -27,3 +27,8 @@ show_player:
       priority: 100
       show_tokens:
         led: led-aerial
+
+# Real Portal 2 platform-impact sound (extracted by the user, see TODO.md) - a launch/impact
+# thud fitting the Faith Plate reference.
+sound_player:
+  shot_aerial_hit: aerial_launch_impact

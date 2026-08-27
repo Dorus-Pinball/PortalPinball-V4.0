@@ -44,7 +44,9 @@ presentation:
   show: modes/aerial/shows/aerial_hit.yaml - implemented (2026-08-27) as a white-to-cyan launch
     flash. The "ballistic-arc trail" half isn't representable - only one LED (led-aerial) exists
     here.
-  sound: TBD - a quick spring-launch whoosh (distinct from the portal-fire whoosh reserved for skillshot/portal)
+  sound: machinefolder/sounds/sfx/aerial_launch_impact.wav - implemented (2026-08-27) from the
+    user's Portal 2 sound extract, a platform-impact thud fitting the Faith Plate reference.
+    DRAFT pick, user plans to review/adjust manually.
 
 notes: >
   board Overviews.xlsx's "Modes" sheet has a bare "aerial plate active" note and

@@ -44,7 +44,10 @@ presentation:
     "Aperture Display Signage" graphics proposal. Plays on the combo-complete event.
   show: modes/slings/shows/sling_hit.yaml - implemented (2026-08-27) as a blue-white-blue quick
     double-pulse per hit, per the Repulsion Gel motif.
-  sound: TBD - a springy "boing" per hit, building to a distinct combo-complete sting
+  sound: machinefolder/sounds/sfx/slings_hit.wav (per-hit) + skillshot_test_chamber_pos.wav
+    (combo-complete) - implemented (2026-08-27) from the user's Portal 2 sound extract. No clean
+    "springy boing" exists in the pack (Portal isn't that kind of game) - a synth blip stands in.
+    DRAFT pick, user plans to review/adjust manually.
 
 notes: >
   Onshape CAD confirms `Slingshot Rubber Left`/`Slingshot Rubber Right` as real named parts

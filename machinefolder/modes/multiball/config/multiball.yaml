@@ -44,3 +44,7 @@ slide_player:
     multiball_start:
       priority: 200
       expire: 2s
+
+# Real Portal 2 sound, curated by the user specifically for multiball (extracted, see TODO.md).
+sound_player:
+  multiball_mb-dropbank_started: multiball_ball_lock

@@ -93,7 +93,7 @@ to `config.yaml`'s `modes:` list, now done) rather than needing design from scra
 | `ball_start` / match | ball start | Built-in `match` mode now active; mpf-gmc ships a default match slide, unused. |
 | `tilt_warning` | tilt warning event | Genuinely hardware-blocked (no tilt switch exists yet), not just undesigned. See `design/GAME_MOMENTS.md`. |
 | `ball_over` | `ball_will_end` | Presentation-only - no device/rules work needed, just a slide once art exists. |
-| `multiball_start` / jackpot | `multiball_mb-dropbank_started` | **Implemented (2026-08-27)**: `modes/multiball/slides/multiball_start.tscn` - user chose a dropbank tie-in (reuses `dropbank_hit.tscn`'s exact background tint/flame shape, 3 white ball circles bursting outward around it) over a feature-independent treatment. Rendered and visually verified in Godot 4.3 (headless, real Vulkan). |
+| `multiball_start` / jackpot | `multiball_mb-dropbank_started` | **Implemented (2026-08-27)**: `modes/multiball/slides/multiball_start.tscn` - user chose a dropbank tie-in (reuses `dropbank_hit.tscn`'s exact background tint/flame shape, 3 white ball circles bursting outward around it) over a feature-independent treatment. Rendered and visually verified in Godot 4.3 (headless, real Vulkan). Sound: `machinefolder/sounds/sfx/multiball_ball_lock.wav`, from the user's own Portal 2 sound extract - a real door/ball-lock clip already curated by the user into a "multiball" folder. DRAFT pick, user plans to review/adjust manually. |
 | `game_over` | `game_ended` | Presentation-only, same as `ball_over`. |
 | `high_score_entry` | new high score | Built-in `high_score` mode now active; mpf-gmc ships a default slide, unused. |
 
