@@ -93,7 +93,7 @@ to `config.yaml`'s `modes:` list, now done) rather than needing design from scra
 | `ball_start` / match | ball start | Built-in `match` mode now active; mpf-gmc ships a default match slide, unused. |
 | `tilt_warning` | tilt warning event | Genuinely hardware-blocked (no tilt switch exists yet), not just undesigned. See `design/GAME_MOMENTS.md`. |
 | `ball_over` | `ball_will_end` | Presentation-only - no device/rules work needed, just a slide once art exists. |
-| `multiball_start` / jackpot | whenever multiball is designed | Open design fork tied to ball-lock hardware + wizard-mode shape, tracked in `plans/resumption-roadmap.md` Phase 5. |
+| `multiball_start` / jackpot | `multiball_mb-dropbank_started` | **Implemented (2026-08-27)**: `modes/multiball/slides/multiball_start.tscn` - user chose a dropbank tie-in (reuses `dropbank_hit.tscn`'s exact background tint/flame shape, 3 white ball circles bursting outward around it) over a feature-independent treatment. Rendered and visually verified in Godot 4.3 (headless, real Vulkan). |
 | `game_over` | `game_ended` | Presentation-only, same as `ball_over`. |
 | `high_score_entry` | new high score | Built-in `high_score` mode now active; mpf-gmc ships a default slide, unused. |
 

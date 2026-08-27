@@ -42,6 +42,8 @@ shots:
     role: feedback LED
   - ref: led-lane-b4
     role: feedback LED
+  - ref: led-lane-b5
+    role: feedback LED
 
 rules:
   mode: lanes
@@ -64,13 +66,20 @@ presentation:
     icon (three peaked posts, deliberately abstract given the turret hook is unconfirmed) on a
     dark tinted panel, per the approved "Aperture Display Signage" graphics proposal. Plays on
     both top_lanes_complete/bottom_lanes_complete.
-  show: TBD - turret pop-up-and-topple animation per top lane hit, if the turret-gauntlet hook above is confirmed
+  show: modes/lanes/shows/lanes_hit.yaml - implemented (2026-08-27) as a simple white-pop-to-gold
+    flash per lane hit, layered over the persistent gold light_player state, not the full
+    turret-gauntlet animation (still unconfirmed).
   sound: TBD - turret chirp on first hit, comedic "dying" wobble/cry on the completing second hit
 
 notes: >
   Only 4 "lane-b" LEDs exist (led-lane-b1..b4) for 5 bottom lane switches
   (s-bottomlane1..5) - one bottom lane currently has no dedicated feedback LED.
   Worth confirming against the cabinet before finalizing the shot_group's LED mapping.
+  **Fixed (2026-08-27)**: added `led-lane-b5` as DRAFT hardware (chain 1 - a second, real,
+  scanned LED-driver board that was completely unused, per `hardware-basic.yaml`'s scan
+  comment), and wired simple `light_player:` feedback for all 8 lane shots (gold on first hit,
+  stays lit for the rest of the ball - not the unconfirmed 2x-blink spell, just a plain "hit
+  it yet" indicator). Verified in `tests/test_lanes.py`.
 
   Onshape CAD: `toprail` is a real large part spanning nearly the full top ~40% of the
   playfield, consistent with being the backing rail behind the 3 top lanes - but no

@@ -179,3 +179,14 @@ lights:
     number: 0-0-39
     subtype: led
     type: grb
+
+  # DRAFT - design/features/lanes.yaml flagged only 4 led-lane-b* LEDs existed for 5
+  # s-bottomlane* switches (one bottom lane had no dedicated feedback LED at all). Chain 1 is a
+  # second, real, scanned LED-driver board (hardware-basic.yaml's hardware-scan comment: "Chain:
+  # 1 Board: 0x20 Card: 0") that's completely unused today - chain 0 alone (0-0-0..39) already
+  # fills every LED defined so far. Placeholder number pending real board assignment, same status
+  # as the other DRAFT hardware this session.
+  led-lane-b5:
+    number: 1-0-0
+    subtype: led
+    type: grb

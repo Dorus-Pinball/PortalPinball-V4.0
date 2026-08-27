@@ -45,3 +45,15 @@ class TestSkillshot(MpfGameTestCase):
         # skillshot mode should have stopped itself - only lanes' 500 per-hit should land,
         # no second 1000 skillshot bonus
         self.assertEqual(score_after_first + 500, self.machine.game.player.score)
+
+    def test_skillshot_hit_show_plays_despite_mode_stopping_on_same_event(self):
+        # mode: stop_events: shot_skillshot_hit stops this mode on the very same event that
+        # triggers its own show_player entry - confirms the show still gets to play (MPF
+        # processes the show_player handler before/independent of the mode-stop teardown) rather
+        # than being silently skipped by a race.
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        self.hit_switch_and_run("s-toplane3", 0.05)
+        self.assertLightColor("led-toplane3", "white")

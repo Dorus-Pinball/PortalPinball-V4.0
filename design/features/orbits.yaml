@@ -40,7 +40,8 @@ presentation:
   slide: modes/orbits/slides/orbit_hit.tscn - implemented with two interlocked ellipse-ring
     icons in blue (left)/orange (right) on a matching split-tinted panel, per the approved
     "Aperture Display Signage" graphics proposal.
-  show: TBD - portal-ring "pop" flash on the relevant orbit icon, blue for left / orange for right
+  show: modes/orbits/shows/orbit_hit.yaml - implemented (2026-08-27) as a white-pop-to-color
+    flash, blue for left / orange for right / white for top.
   sound: TBD - a rising-pitch whoosh sweep (momentum/speed motif) distinct per side
 
 notes: >

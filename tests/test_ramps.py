@@ -42,3 +42,11 @@ class TestRamps(MpfGameTestCase):
         # 400 + 400 per-shot + 1500 group-complete bonus + 1000 combo-complete bonus
         # (2 ramp hits back to back also completes the 2-step ramp_combo sequence)
         self.assertEqual(3300, self.machine.game.player.score)
+
+    def test_ramp_hit_show_plays(self):
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        self.hit_switch_and_run("s-ramp-l1", 0.05)
+        self.assertLightColor("led-ramp-l", "white")

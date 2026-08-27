@@ -1,0 +1,11 @@
+#show_version=6
+# "Springboard/launch flash" per design/features/aerial.yaml's show note, in "sky" cyan matching
+# the slide's own accent color (distinct from portal-blue). Only one LED exists here
+# (led-aerial), so the "brief ballistic-arc trail" half of the note isn't representable without
+# more LEDs - kept to the flash.
+- lights:
+    (led): white
+  duration: 0.08s
+- lights:
+    (led): cyan
+  duration: 0.25s

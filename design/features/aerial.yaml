@@ -41,7 +41,9 @@ presentation:
   slide: modes/aerial/slides/aerial_hit.tscn - implemented with a springboard plate + dotted
     ballistic-arc trail icon in "sky" cyan (distinct from portal-blue) on a matching tinted
     panel, per the approved "Aperture Display Signage" graphics proposal.
-  show: TBD - a springboard/launch flash + brief ballistic-arc trail animation on hit fits the Faith Plate reference directly
+  show: modes/aerial/shows/aerial_hit.yaml - implemented (2026-08-27) as a white-to-cyan launch
+    flash. The "ballistic-arc trail" half isn't representable - only one LED (led-aerial) exists
+    here.
   sound: TBD - a quick spring-launch whoosh (distinct from the portal-fire whoosh reserved for skillshot/portal)
 
 notes: >

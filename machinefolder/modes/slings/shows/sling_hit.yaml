@@ -1,0 +1,12 @@
+#show_version=6
+# "Blue springy squash-and-bounce flash" per design/features/slings.yaml's show note - Repulsion
+# Gel motif, a quick double-pulse.
+- lights:
+    (led): blue
+  duration: 0.08s
+- lights:
+    (led): white
+  duration: 0.08s
+- lights:
+    (led): blue
+  duration: 0.1s

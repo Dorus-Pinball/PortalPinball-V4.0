@@ -1,0 +1,11 @@
+#show_version=6
+# "Turret pop-up-and-topple" per design/features/lanes.yaml's show note - a quick bright pop that
+# settles into the persistent gold held state already set by modes/lanes/config/lanes.yaml's
+# light_player (this show plays at a higher priority so it's visible on top, then falls back to
+# that gold once it finishes).
+- lights:
+    (led): white
+  duration: 0.1s
+- lights:
+    (led): gold
+  duration: 0.15s

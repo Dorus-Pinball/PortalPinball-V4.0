@@ -1,0 +1,13 @@
+#show_version=6
+# "Fire/incinerator flame-wipe flash" per design/features/dropbank.yaml's show note - a quick
+# red-to-orange wipe on the shot that triggered it (led-insinerator on the flat shot hit, or
+# led-insinerator/led-button/led-target-l1 together on the ordered finisher completing).
+- lights:
+    (leds): red
+  duration: 0.1s
+- lights:
+    (leds): orange
+  duration: 0.2s
+- lights:
+    (leds): off
+  duration: 0.1s

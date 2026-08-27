@@ -48,7 +48,10 @@ presentation:
   slide: modes/skillshot/slides/skillshot_hit.tscn - implemented with a hazard-gold targeting
     reticle icon (ring + crosshair ticks) on a matching tinted panel, per the approved "Aperture
     Display Signage" graphics proposal.
-  show: TBD - the lit/rotating top lane could pulse to show "this one counts" this ball
+  show: modes/skillshot/shows/skillshot_hit.yaml - implemented (2026-08-27) as a completion
+    chase-flash across all 3 top lanes, not the pre-hit "this one counts" pulse (needs the
+    unconfirmed rotating-lane rule first). Confirmed to play correctly despite the mode's own
+    stop_events firing on the same event.
   sound: TBD - portal-fire whoosh on launch; a short plucky test-chamber-style musical stinger on a made skillshot
 
 notes: >

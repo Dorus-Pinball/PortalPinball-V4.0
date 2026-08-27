@@ -1,0 +1,13 @@
+#show_version=6
+# "Made it" celebration across all 3 top lanes (design/features/skillshot.yaml's show note
+# mentions the lit lane pulsing pre-hit, which needs the unconfirmed rotating-lane rules first -
+# this is the simpler, safe "confirmed" flourish: a quick chase-flash on completion).
+- lights:
+    (leds): white
+  duration: 0.1s
+- lights:
+    (leds): cyan
+  duration: 0.2s
+- lights:
+    (leds): off
+  duration: 0.1s

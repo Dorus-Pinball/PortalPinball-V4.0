@@ -7,9 +7,10 @@ mode:
 # (design/features/ramps.yaml is explicitly the sparsest-designed Phase 3 feature). Lowest
 # priority per plans/resumption-roadmap.md Phase 3, built last.
 #
-# NOT YET BUILDABLE: the right_ramp_diverter/subway routing device from the design doc has no
-# coil/switches wired in hardware-*.yaml yet - genuinely hardware-blocked (see TODO.md), so this
-# only implements the shot/combo scoring side, not physical ball routing.
+# The right_ramp_diverter/subway routing device (design/features/ramps.yaml) is now electrically
+# drafted in hardware-*.yaml (see TODO.md), but still has no game logic wired to it - what a
+# diverted shot should actually award/do is a real open design question, not something this file
+# answers. This only implements the shot/combo scoring side, not physical ball routing.
 #
 # Either l1/l2 switch counts as a made shot for that side (entry/exit ordering between them is
 # still an open design question per the doc). No combo time window yet, same gap already noted
@@ -50,3 +51,15 @@ slide_player:
     ramps_hit:
       priority: 200
       expire: 2s
+
+show_player:
+  shot_ramp_l_hit:
+    ramps_hit:
+      priority: 100
+      show_tokens:
+        led: led-ramp-l
+  shot_ramp_r_hit:
+    ramps_hit:
+      priority: 100
+      show_tokens:
+        led: led-ramp-r

@@ -39,3 +39,15 @@ class TestOrbits(MpfGameTestCase):
         self.hit_switch_and_run("s-orbit-top", 0.1)
         # 750 + 750 + 100 per-shot + 3000 group-complete bonus
         self.assertEqual(4600, self.machine.game.player.score)
+
+    def test_orbit_hit_show_uses_the_right_color_per_side(self):
+        self.fill_troughs()
+        self.start_game()
+        self.assertBallNumber(1)
+
+        # show step 1 (white) lasts 0.1s before settling into the per-side color.
+        self.hit_switch_and_run("s-orbit-l", 0.15)
+        self.assertLightColor("led-orbit-l", "blue")
+
+        self.hit_switch_and_run("s-orbit-r", 0.15)
+        self.assertLightColor("led-orbit-r", "orange")

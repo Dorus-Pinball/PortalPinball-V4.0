@@ -38,3 +38,23 @@ slide_player:
     orbit_hit:
       priority: 200
       expire: 2s
+
+show_player:
+  shot_orbit_l_hit:
+    orbit_hit:
+      priority: 100
+      show_tokens:
+        led: led-orbit-l
+        color: blue
+  shot_orbit_r_hit:
+    orbit_hit:
+      priority: 100
+      show_tokens:
+        led: led-orbit-r
+        color: orange
+  shot_orbit_top_hit:
+    orbit_hit:
+      priority: 100
+      show_tokens:
+        led: led-orbit-t
+        color: white

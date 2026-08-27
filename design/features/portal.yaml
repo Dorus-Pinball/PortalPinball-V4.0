@@ -90,7 +90,11 @@ presentation:
   slide: modes/portal/slides/portal_transfer.tscn - implemented with blue/orange entry-exit
     ring icons linked by a dashed violet transit arc (the page's only violet accent) on a
     violet-tinted panel, per the approved "Aperture Display Signage" graphics proposal.
-  show: TBD - portal-ring burn-open/close animation on transfer, then an LED chase across led-exit-open-1..5
+  show: modes/portal/shows/portal_transfer.yaml - implemented (2026-08-27) as a burn-open chase
+    across the 4 transfer-path LEDs (dropper -> portal-r -> portal-m -> exit-success) on full
+    sequence completion. The led-exit-open-1..5 progression is handled separately by the
+    achievement chain's own light_player (each stage lights on its own completion), not a
+    dedicated chase show.
   sound: TBD - portal-fire whoosh on dropper entry, shimmering "conversion" chime on successful transfer
 
 notes: >

@@ -60,3 +60,15 @@ slide_player:
     sling_hit:
       priority: 200
       expire: 2s
+
+show_player:
+  shot_sling_l_hit:
+    sling_hit:
+      priority: 100
+      show_tokens:
+        led: led-sling-l
+  shot_sling_r_hit:
+    sling_hit:
+      priority: 100
+      show_tokens:
+        led: led-sling-r
