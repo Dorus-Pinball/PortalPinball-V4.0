@@ -125,6 +125,26 @@ when fixed, not deleted, so resolution history stays visible.
       (`shot_skillshot` overlaps them) - correct, intentional behavior, not a bug, but worth
       knowing when picking test switches.
 
+- [x] Phase 5 stretch goal: multiball. **Implemented (2026-08-27)** per user direction ("complete
+      a feature bank" as the trigger): `modes/multiball/config/multiball.yaml` adds a
+      `multiballs:` device (`mb-dropbank`, 3 balls total, 10s shoot-again) started by
+      `drop_target_bank_db-dropbank_down` - `db-dropbank` specifically since it's the one feature
+      that's literally a bank (lanes/ramps are shot_groups, not banks) and already auto-resets.
+      No `ball_locks:` device exists (no physical lock mechanism on this machine), so extra balls
+      draw straight from `bd-trough` via MPF's normal ball-request flow. DRAFT scoring (+3000 on
+      start), needs a real balance pass. Real finding along the way: repeat bank completions while
+      the multiball is still active are a no-op (MPF's `Multiball.start()` guards on
+      `balls_live_target > 0`) - it only re-arms once the multiball fully ends, not a deliberate
+      choice, just how the guard behaves; worth a balance pass if "every completion should
+      extend/restack it" is actually wanted. Verified with `tests/test_multiball.py`; existing
+      `tests/test_dropbank.py` repeat-completion assertions updated for the new +3000 side effect.
+      No dedicated Godot slide (mpf-gmc ships no default multiball slide, unlike bonus/service) -
+      flagged below as a follow-up, not done as part of this pass.
+- [ ] `modes/multiball/config/multiball.yaml` has no dedicated Godot slide - multiball currently
+      runs with whatever slide was already showing. A real "MULTIBALL!" callout slide would need
+      the same design-approval process the 8 Phase 3 feature slides went through (the approved
+      "Aperture Display Signage" proposal), not something to improvise unilaterally.
+
 ## Not blocked by hardware access
 
 - [x] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,

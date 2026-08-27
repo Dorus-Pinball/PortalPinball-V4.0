@@ -221,7 +221,9 @@ in `hardware-*.yaml` today — no new hardware needed):
 
 Only after Phases 1–4 give a genuinely playable machine:
 - Bonus tally at ball end (xlsx mentions "count to 100"). **Done (2026-08-27)** - see TODO.md.
-- Multiball (natural fit for the trough/plunger ball devices already in place).
+- Multiball (natural fit for the trough/plunger ball devices already in place). **Done
+  (2026-08-27)** - see TODO.md. Trigger chosen per user direction ("complete a feature bank"):
+  completing `db-dropbank` starts a 3-ball multiball.
 - Wizard mode gated behind full Portal-feature completion, tying Phase 3's `portal` mode into a
   machine-wide payoff. Open design fork (from pinball design research, see
   `design/research/portal-themes-and-pinball-design.md` Part 2): real machines build this two
