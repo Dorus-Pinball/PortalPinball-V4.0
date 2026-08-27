@@ -109,6 +109,13 @@ when fixed, not deleted, so resolution history stays visible.
       nodes. The other 9 slides matched the approved proposal on the first render. `base.tscn`'s
       score readout doesn't show in an isolated screenshot since there's no live MPF game
       supplying the `score` player variable in that test — expected, not a bug.
+      **Follow-up (2026-08-27)**: `attract`/`base` had their original `mainscreen.jpg` background
+      restored in place of the new aperture-iris/terminal-frame icon treatment — the user
+      specifically liked that image's moody atmosphere and, after being flagged that it reads as
+      Portal-themed fan art (same licensing category as the placeholder audio), confirmed reuse
+      is fine for this private, non-commercial project. The 8 feature-hit overlays keep their
+      new original icons (unaffected, never used `mainscreen.jpg`). Title/score `Label` color
+      accents (blue/orange) were kept over the restored image.
 - [x] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
       Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
       physical machine. Resolved: the CAD does NOT support hole-pairing - `VUK`/`VUK high`/

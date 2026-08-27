@@ -1,55 +1,28 @@
-[gd_scene load_steps=2 format=3 uid="uid://cps0oegj0e7dj"]
+[gd_scene load_steps=3 format=3 uid="uid://cps0oegj0e7dj"]
 
 [ext_resource type="Script" path="res://addons/mpf-gmc/classes/mpf_slide.gd" id="1_bcmkd"]
+[ext_resource type="Texture2D" uid="uid://dr03tlbgh7sgm" path="res://images/mainscreen.jpg" id="2_tu12f"]
 
 [node name="Attract" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1900.0
-offset_bottom = 1000.0
 script = ExtResource("1_bcmkd")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 1900.0
-offset_bottom = 1000.0
-color = Color(0.1255, 0.1451, 0.1647, 1)
-
-[node name="Icon" type="Node2D" parent="."]
-position = Vector2(0, 0)
-
-[node name="Ring" type="Line2D" parent="Icon"]
-points = PackedVector2Array(1100.00, 350.00, 1098.15, 373.47, 1092.66, 396.35, 1083.65, 418.10, 1071.35, 438.17, 1056.07, 456.07, 1038.17, 471.35, 1018.10, 483.65, 996.35, 492.66, 973.47, 498.15, 950.00, 500.00, 926.53, 498.15, 903.65, 492.66, 881.90, 483.65, 861.83, 471.35, 843.93, 456.07, 828.65, 438.17, 816.35, 418.10, 807.34, 396.35, 801.85, 373.47, 800.00, 350.00, 801.85, 326.53, 807.34, 303.65, 816.35, 281.90, 828.65, 261.83, 843.93, 243.93, 861.83, 228.65, 881.90, 216.35, 903.65, 207.34, 926.53, 201.85, 950.00, 200.00, 973.47, 201.85, 996.35, 207.34, 1018.10, 216.35, 1038.17, 228.65, 1056.07, 243.93, 1071.35, 261.83, 1083.65, 281.90, 1092.66, 303.65, 1098.15, 326.53, 1100.00, 350.00)
-width = 6.0
-default_color = Color(0.9333, 0.9412, 0.9451, 0.55)
-joint_mode = 1
-
-[node name="BladeBlue1" type="Polygon2D" parent="Icon"]
-polygon = PackedVector2Array(950.00, 200.00, 1005.00, 265.00, 950.00, 350.00)
-color = Color(0.3373, 0.7059, 1.0000, 1)
-
-[node name="BladeBlue2" type="Polygon2D" parent="Icon"]
-polygon = PackedVector2Array(1100.00, 350.00, 1035.00, 405.00, 950.00, 350.00)
-color = Color(0.3373, 0.7059, 1.0000, 1)
-
-[node name="BladeOrange1" type="Polygon2D" parent="Icon"]
-polygon = PackedVector2Array(950.00, 500.00, 895.00, 435.00, 950.00, 350.00)
-color = Color(1.0000, 0.6039, 0.3020, 1)
-
-[node name="BladeOrange2" type="Polygon2D" parent="Icon"]
-polygon = PackedVector2Array(800.00, 350.00, 865.00, 295.00, 950.00, 350.00)
-color = Color(1.0000, 0.6039, 0.3020, 1)
-
-[node name="CenterDot" type="Polygon2D" parent="Icon"]
-polygon = PackedVector2Array(975.00, 350.00, 973.78, 357.73, 970.23, 364.69, 964.69, 370.23, 957.73, 373.78, 950.00, 375.00, 942.27, 373.78, 935.31, 370.23, 929.77, 364.69, 926.22, 357.73, 925.00, 350.00, 926.22, 342.27, 929.77, 335.31, 935.31, 329.77, 942.27, 326.22, 950.00, 325.00, 957.73, 326.22, 964.69, 329.77, 970.23, 335.31, 973.78, 342.27, 975.00, 350.00)
-color = Color(0.0784, 0.0902, 0.1020, 1)
+offset_left = -15.0
+offset_top = -64.0
+offset_right = 1905.0
+offset_bottom = 1136.0
+texture = ExtResource("2_tu12f")
+expand_mode = 2
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 0.0
-offset_top = 700.0
-offset_right = 1900.0
-offset_bottom = 850.0
+offset_left = 48.0
+offset_top = 29.0
+offset_right = 873.0
+offset_bottom = 166.0
 theme_override_font_sizes/font_size = 90
 theme_override_colors/font_color = Color(0.3373, 0.7059, 1.0000, 1)
 text = "Portal Pinball 4.0"
