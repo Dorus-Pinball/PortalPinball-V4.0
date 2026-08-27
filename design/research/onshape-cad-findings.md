@@ -55,13 +55,36 @@ ball-lock hole-pairing question below) — **the user confirmed these are just o
 split into 3 pieces for 3D-printing purposes**, not three separate mechanisms or hole locations.
 No signal about hole-pairing either way; this was a dead end, not a lead.
 
-## Open question (still unresolved)
+## Resolved: ball-lock hole-pairing question (2026-08-27)
 
 The ball-lock "portal" hole-pairing mechanic the user described (a ball locked in hole A releases
-instantly when hole B captures a new ball, giving a teleport effect) is still unresolved. The
-document has separate `balldropper` / `Simplified Balldropper` / `DropperAssy` / `VUK` / `VUK high`
-/ `Exit` elements not yet opened — that's still the most direct next step, now that the
-Duplicate-Exit red herring above is ruled out.
+instantly when hole B captures a new ball, giving a teleport effect) is now answered: **the CAD,
+as built, does not support it.**
+
+Opened all the previously-unexplored elements:
+
+| Name | Type | Contents |
+|---|---|---|
+| `balldropper` | Part Studio | 21 parts: subway, bracket, playfield cutout, bottom_1/3, cylinder, top2, riserbase, risercylinder, motor holder cover, valve, + unnamed |
+| `Simplified Balldropper` | Part Studio | 9 parts, same names as above — a simplified/derivative version of the *same* single mechanism |
+| `VUK` / `VUK high` | Part Studio (each) | **1 part each: just a bracket** (height variant of the other) |
+| `Exit` | Part Studio | **1 part: just "Exit Cover"** |
+| `DropperAssy` | Assembly | 9 instances, all sourced from `balldropper`. One Revolute mate + one mate group — a single degree of freedom (one valve/riser actuator) |
+
+Cross-checked against the actual top-level **Portal Pinball Assembly** (`d3f79d14fcaf02d7c5b00654`,
+26 instances): it contains exactly **one** `DropperAssy` instance and **zero** instances of `VUK`,
+`VUK high`, or `Exit` — those three are unused/orphaned concept stubs, never placed in the
+machine. The real integrated path lives in **Portal Playfield Parts**: `Subway`, `Tube_Base`/
+`Tube_Ramp`/`Tube_Tube`, and a single `Portal Vuk` part (one instance) — a straightforward single
+entry (dropper) -> passive tube/subway -> single exit (`Portal Vuk`) path, with one actuator and
+no see-saw/dual-solenoid/coupled-motion feature anywhere that could link two capture points.
+
+**Conclusion**: this is a single linear ball-drop/VUK transfer, not a two-hole pairing mechanism.
+The instant-teleport-via-pairing mechanic isn't latent in the existing geometry — it would need
+new physical design work (a second capture point + a coordinating linkage) if still wanted. This
+directly validates `design/features/portal.yaml`'s implemented `sequences:` rule (a strictly
+ordered dropper -> portal-transfer -> exit-success path), which already matched this single-path
+reality rather than assuming pairing.
 
 ## Other elements seen but not investigated
 

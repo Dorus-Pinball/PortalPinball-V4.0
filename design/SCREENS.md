@@ -82,20 +82,20 @@ own `presentation.show` idea so the visual direction isn't re-invented here.
 | `portal` | `modes/portal/slides/portal_transfer.tscn` | Portal-ring burn-open/close animation on transfer, then an LED-chase tie-in across the 5-stage exit-open progression. Most involved feature (multi-switch state machine) — build its slide last, per `design/README.md`'s note to prove the pattern out on simpler features first. |
 | `ramps` | `modes/ramps/slides/ramps_hit.tscn` | Glowing "bridge extends" animation across the ramp icon while lit (Hard Light Bridge motif). |
 
-### Standard pinball moments (net-new — not yet modeled as features or modes)
+### Standard pinball moments
 
-These exist in every pinball game regardless of which feature is built first, but nothing in
-`design/features/` currently covers them. Flagging them here so they aren't forgotten later;
-designing them fully (shots/rules/presentation layers) is out of scope for this doc.
+See `design/GAME_MOMENTS.md` for the full design pass on these six. Key finding there: most are
+**built into MPF already** (`match`, `high_score` are bundled default modes - just needed adding
+to `config.yaml`'s `modes:` list, now done) rather than needing design from scratch.
 
 | Screen | Likely trigger | Notes |
 |---|---|---|
-| `ball_start` / match | ball start | Standard MPF ball-start display; "match" digits at game end. |
-| `tilt_warning` | tilt warning event | Persistent-ish but very short; may not need the full overlay/expire pattern. |
-| `ball_over` | ball drained | |
-| `multiball_start` / jackpot | whenever multiball is designed | Depends on multiball mode shape, not yet decided. |
-| `game_over` | game end | |
-| `high_score_entry` | new high score | Needs input handling (initials entry) — a different interaction shape than the other overlays. |
+| `ball_start` / match | ball start | Built-in `match` mode now active; mpf-gmc ships a default match slide, unused. |
+| `tilt_warning` | tilt warning event | Genuinely hardware-blocked (no tilt switch exists yet), not just undesigned. See `design/GAME_MOMENTS.md`. |
+| `ball_over` | `ball_will_end` | Presentation-only - no device/rules work needed, just a slide once art exists. |
+| `multiball_start` / jackpot | whenever multiball is designed | Open design fork tied to ball-lock hardware + wizard-mode shape, tracked in `plans/resumption-roadmap.md` Phase 5. |
+| `game_over` | `game_ended` | Presentation-only, same as `ball_over`. |
+| `high_score_entry` | new high score | Built-in `high_score` mode now active; mpf-gmc ships a default slide, unused. |
 
 ## Sequencing
 

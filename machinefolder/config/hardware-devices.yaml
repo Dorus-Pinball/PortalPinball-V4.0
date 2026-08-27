@@ -66,15 +66,17 @@ ball_devices:
     #     eject_coil: c-vuktop
     #     eject_timeouts: 2s
     
-#flippers:      DIRECT FIRE & HOLD FLIPPERS
-#    left_flipper:
-#        main_coil: c-flipper-left
-#        activation_switch: s-left-flipper
-#        enable_events: machine_reset_phase_3
-#    right_flipper:
-#        main_coil: c-flipper-right
-#        activation_switch: s-right-flipper
-#        enable_events: machine_reset_phase_3    
+# DRAFT - single main_coil per side, no hold_coil/eos_switch: the EOS is mechanical/
+# self-contained inside the coil assembly (not wired back to the controller), per
+# plans/resumption-roadmap.md Phase 1. Coil/switch numbers are placeholders pending real board
+# assignment - see the DRAFT notes in hardware-coils.yaml/hardware-switches.yaml and TODO.md.
+flippers:
+    left_flipper:
+        main_coil: c-flipper-left
+        activation_switch: s-left-flipper
+    right_flipper:
+        main_coil: c-flipper-right
+        activation_switch: s-right-flipper
     
         
 playfields:

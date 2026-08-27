@@ -5,10 +5,23 @@ when fixed, not deleted, so resolution history stays visible.
 
 - [ ] Flippers: mechs are installed and functioning (dual-wound coils, mechanical/self-contained
       EOS interrupter, no EOS switch back to the controller), but coil driver wiring to the OPP
-      boards and the MPF `flippers:` config are still incomplete. Blocks real playtesting.
+      boards is still incomplete (real physical task, board assignment unconfirmed against
+      `board Overviews.xlsx`) - blocks real playtesting. The MPF `flippers:` config itself is now
+      drafted and boot/game-flow tested against `smart_virtual`
+      (`hardware-coils.yaml`/`hardware-switches.yaml`/`hardware-devices.yaml`, all marked DRAFT).
+      Real finding along the way: the roadmap's original assumption that no hold config is
+      needed (mechanical EOS handles it invisibly) was wrong at the MPF-config level - the
+      flipper device always builds a pulse+hold hardware rule and asserts if `hold_power` is
+      0.0, even with no `hold_coil`/`eos_switch`. Fixed with `default_hold_power: 1.0` on each
+      flipper coil (correct here specifically because this hardware's hold winding shares the
+      same activation signal as the power winding - no separate PWM-reduced hold path for the
+      controller to under-power). See the coil comments for the full explanation.
 - [ ] Tilt is not configured at all — no tilt switch present in `hardware-switches.yaml`.
-- [ ] `config.yaml`'s `modes:` list references `orbit` and `lanes` (commented out) but neither
-      mode folder exists yet under `machinefolder/modes/`.
+- [x] `config.yaml`'s `modes:` list references `orbit` and `lanes` (commented out) but neither
+      mode folder exists yet under `machinefolder/modes/`. Fixed: all 8 Phase 3 feature modes
+      (`lanes, orbits, slings, skillshot, dropbank, aerial, portal, ramps`) are now implemented
+      and listed. See the "Not blocked by hardware access" section below for what's still
+      draft/deferred within each.
 - [ ] `hardware-coils.yaml` has a large commented-out block of unassigned coil numbers on the
       `2-1-x` chain and the Cobra `0-0-x`/`1-0-x` chains — worth confirming what's actually free
       vs. reserved before assigning new features (e.g. flippers) to specific numbers.
@@ -45,22 +58,65 @@ when fixed, not deleted, so resolution history stays visible.
 
 ## Not blocked by hardware access
 
-- [ ] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,
+- [x] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,
       portal, ramps`) have `scoring: TBD` — needs a scoring-values pass, doesn't require the
-      cabinet.
-- [ ] The "standard pinball moments" every game needs — `ball_start`/match, `tilt_warning`,
+      cabinet. Fixed: each now has DRAFT point values (clearly marked needs-review, not final
+      game balance) implemented in its `modes/<name>/config/<name>.yaml`.
+- [x] The "standard pinball moments" every game needs — `ball_start`/match, `tilt_warning`,
       `ball_over`, `multiball_start`/jackpot, `game_over`, `high_score_entry` — have no owning
       design doc yet; they aren't playfield "features" in the shots/hardware sense so don't fit
-      `design/features/` cleanly. Flagged in `design/SCREENS.md`'s Open items.
-- [ ] Build out the 8 designed-but-unimplemented feature modes (`lanes, orbits, slings,
+      `design/features/` cleanly. Fixed: see `design/GAME_MOMENTS.md` — most turned out to be
+      MPF built-in modes (`match`, `high_score`) needing only `config.yaml` registration (now
+      done); `tilt_warning` and `multiball_start` remain genuinely blocked (hardware / open
+      design fork respectively), not just undesigned.
+- [ ] Could not fully verify `match`/`high_score` trigger correctly at a real game-over in an
+      automated test — draining a full 3-ball game via `smart_virtual` in a scratch test got
+      stuck after ball 1 (ball 2 never advanced past `bd-plunger` across repeated
+      `drain_all_balls()` + `hit_and_release_switch("s-launch")` calls, for reasons not yet
+      root-caused; possibly `mechanical_eject`/`player_controlled_eject_event` interaction with
+      the test harness rather than a real bug). Boot is clean and the existing 24-test suite
+      (all single-ball scenarios) still passes with both modes active. Needs follow-up before
+      trusting `match`/`high_score` behavior beyond "loads without erroring."
+- [x] Build out the 8 designed-but-unimplemented feature modes (`lanes, orbits, slings,
       skillshot, dropbank, aerial, portal, ramps`) against `smart_virtual` — see
       `plans/resumption-roadmap.md` Phase 3 and each feature's Rules layer in
-      `design/features/*.yaml`.
-- [ ] Draft/validate the `flippers:` MPF config skeleton against `smart_virtual` — the real
+      `design/features/*.yaml`. Done: all 8 implemented, boot-tested clean, and covered by a
+      passing `tests/test_<name>.py` each (24 tests total). Two design-doc device-type choices
+      were corrected along the way (`accrual` -> `sequences` for dropbank/portal's ordered
+      finishers - accruals complete in any order, verified against MPF's own
+      `logic_blocks.py`). Several nuances deliberately deferred rather than shipped unverified -
+      see the new items below.
+- [x] Draft/validate the `flippers:` MPF config skeleton against `smart_virtual` — the real
       coil-driver wiring is hardware-blocked (see the flippers item above), but the config
-      itself can be written and boot-tested virtually first.
-- [ ] Build real `base`/`attract` Godot slide art, plus the bespoke feature-hit overlays
-      cataloged in `design/SCREENS.md` — runnable via Godot + virtual MPF, no cabinet needed.
-- [ ] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
+      itself can be written and boot-tested virtually first. Done - see the flippers item above
+      for a real bug this surfaced (hold_power can't be 0.0) and its fix.
+- [ ] Build real `base`/`attract` Godot slide art — still using the shared `mainscreen.jpg`
+      placeholder. The bespoke feature-hit overlays cataloged in `design/SCREENS.md` are now
+      implemented as placeholder colored panels (one per feature, in each mode's `slides/`
+      folder) — not real art, and NOT visually verified in the Godot editor (no Godot
+      executable available in this environment to check headlessly); structurally they match
+      the proven `base.tscn`/`attract.tscn` format exactly (same `MPFSlide` root script,
+      built-in `ColorRect`/`Label` node types only).
+- [x] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
       Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
-      physical machine.
+      physical machine. Resolved: the CAD does NOT support hole-pairing - `VUK`/`VUK high`/
+      `Exit` are unused orphaned stub part studios never instanced in the real assembly; the
+      built machine has exactly one `DropperAssy` feeding a single linear path to one `Portal
+      Vuk` exit, no second capture point or coordinating linkage anywhere. This validates the
+      already-implemented `sequences:`-based portal mode (a strictly ordered single path) rather
+      than requiring a rework. See `design/research/onshape-cad-findings.md`.
+- [ ] `modes/slings/config/slings.yaml`'s sling combo has no real time window yet - MPF's
+      `logic_block_timeout` starts ticking from mode/logic-block enable (ball start), not from
+      the first hit, so it can't implement "back-to-back within N seconds" as configured today.
+      Needs a real "start a timer on first hit" mechanism (e.g. enable the timeout only via an
+      event posted on the first sling hit) before this is a genuine time-limited combo.
+- [ ] `modes/portal/config/portal.yaml`'s 5-stage "exit open" achievement_group progression
+      (`led-exit-open-1..5`, the Phase 5 wizard-mode gate) is not implemented - MPF's
+      `achievements:` device only posts a generic `achievement_(name)_changed_state` event by
+      default, with no clean way (found so far) to chain stage N's enable off stage N-1's
+      completion via plain config. Needs more research into `achievements:`/`achievement_groups:`
+      before this can be built and tested properly. The core dropper->portal->exit sequence
+      scoring is implemented independently of this.
+- [ ] `modes/dropbank/config/dropbank.yaml`'s insinerator shot scores flat, not the "escalating
+      value per repeat completion" pattern from MPF's sequential-drop-banks cookbook recipe
+      referenced in `design/features/dropbank.yaml` - deferred pending a real game-balance pass.

@@ -1,6 +1,6 @@
 id: slings
 name: Sling combo
-status: designed
+status: implementing
 phase: Phase 3
 
 story:
@@ -30,10 +30,17 @@ rules:
         N hits within a timeout) is the right fit, not a plain counter - confirmed as the
         standard real-machine pattern for this kind of combo by the pinball design
         research (design/research/portal-themes-and-pinball-design.md Part 2).
-  scoring: TBD
+  scoring: >
+    DRAFT, needs a real game-balance pass with the user: 100/hit per sling (unchanged from the
+    old base.yaml placeholder), +750 combo-complete bonus for 3 hits (either side).
+    Implemented in modes/slings/config/slings.yaml as a `sequences:` logic block - NOTE: the
+    "back-to-back within a time window" part of the mechanic is not yet implemented, see that
+    file's comments (logic_block_timeout doesn't mean what its name suggests here - it starts
+    from mode/logic-block enable, not from the first hit). Flagged in TODO.md.
 
 presentation:
-  slide: TBD - no dedicated slide yet
+  slide: modes/slings/slides/sling_hit.tscn - implemented as a placeholder blue panel (no real
+    art yet), per design/SCREENS.md. Plays on the combo-complete event.
   show: TBD - a blue springy squash-and-bounce flash on the sling icon, per the Repulsion Gel motif
   sound: TBD - a springy "boing" per hit, building to a distinct combo-complete sting
 

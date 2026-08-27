@@ -9,34 +9,12 @@ slide_player:
         
         
 variable_player:
-    s-left-sling_active:
-        score: 100
-    s-right-sling_active:
-        score: 100
+    # Sling scoring moved to modes/slings/config/slings.yaml's shot devices.
     s-popbumper-1_active:
         score: 100
     s-popbumper-2_active:
         score: 100
-    s-popbumper-3_active:        
-        score: 100    
-
-    s-toplane1_active:
+    s-popbumper-3_active:
         score: 100
-    s-toplane2_active:
-        score: 100
-    s-toplane3_active:
-        score: 100      
-    s-bottomlane1_active:
-        score: 100
-    s-bottomlane2_active:
-        score: 100
-    s-bottomlane3_active:
-        score: 100
-    s-bottomlane4_active:
-        score: 100
-    s-bottomlane5_active:
-        score: 100
-
-
-    
-        
+    # Top/bottom lane scoring moved to modes/lanes/config/lanes.yaml's shot devices -
+    # this was a flat placeholder, see design/features/lanes.yaml's scoring note.

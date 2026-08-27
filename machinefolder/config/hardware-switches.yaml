@@ -91,9 +91,20 @@ switches:
         type: NO  
 
 
-# Autofire 2-1-0 to 2-1-3 empty
+# Autofire 2-1-0 to 2-1-3 - DRAFT flipper activation switches (Phase 1, plans/resumption-roadmap.md).
+# NOT confirmed against board Overviews.xlsx or a physical continuity check yet - see TODO.md's
+# note on confirming free vs. reserved numbers before wiring. Fine for smart_virtual/boot-test
+# purposes; do not treat these numbers as final for real wiring.
+    s-left-flipper:
+        number: 2-1-0
+        debounce: quick
+        tags: flipper_left
+    s-right-flipper:
+        number: 2-1-1
+        debounce: quick
+        tags: flipper_right
 # Autofire 2-1-4 to 2-1-7 DO NOT EXIST
-# Autofire 2-1-8 to 2-1-11 empty 
+# Autofire 2-1-8 to 2-1-11 empty
 # Autofire 2-1-12 to 2-1-15 DO NOT EXIST
 
 

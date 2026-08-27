@@ -1,6 +1,6 @@
 id: skillshot
 name: Launch skillshot
-status: designed
+status: implementing
 phase: Phase 3
 
 story:
@@ -38,10 +38,15 @@ rules:
         the latter directly answers this file's own open question below, though it's
         still a proposal pending confirmation. See
         design/research/portal-themes-and-pinball-design.md Part 2.
-  scoring: TBD
+  scoring: >
+    DRAFT, needs a real game-balance pass with the user: 1000 flat bonus. Implemented in
+    modes/skillshot/config/skillshot.yaml using the simplest safe baseline (ANY of the 3 top
+    lanes counts, once per ball) rather than the rotating-lane proposal below, since that still
+    needs the user's sign-off.
 
 presentation:
-  slide: TBD - no dedicated slide yet
+  slide: modes/skillshot/slides/skillshot_hit.tscn - implemented as a placeholder yellow panel
+    (no real art yet), per design/SCREENS.md.
   show: TBD - the lit/rotating top lane could pulse to show "this one counts" this ball
   sound: TBD - portal-fire whoosh on launch; a short plucky test-chamber-style musical stinger on a made skillshot
 

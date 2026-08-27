@@ -32,6 +32,14 @@ config:
     
 modes:
 - base
-#- orbit
-#- lanes
+- lanes
+- orbits
+- slings
+- skillshot
+- dropbank
+- aerial
+- portal
+- ramps
+- match
+- high_score
 
