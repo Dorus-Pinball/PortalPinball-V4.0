@@ -86,5 +86,14 @@ notes: >
   pieces for 3D-printing, not three separate mechanisms. That was a dead end, not a
   lead: the ball-lock "portal" hole-pairing mechanic the user described (hole A holds
   a ball, hole B capturing a new ball instantly releases A - giving a teleport effect)
-  is still fully unresolved. Still need to open balldropper/VUK/Exit/DropperAssy
-  directly to actually answer it - not done yet.
+  is now RESOLVED (2026-08-27): the CAD does not support it. Opened balldropper/VUK/Exit/
+  DropperAssy directly - VUK/VUK-high/Exit are unused orphaned stub part studios (a single
+  bracket or cover each), never instanced in the real top-level assembly. The actual built
+  machine has exactly one DropperAssy (single valve/riser actuator) feeding a passive Subway/
+  Tube path to a single `Portal Vuk` exit - one linear path, no second capture point, no
+  linkage that could release one ball when another is captured. See
+  design/research/onshape-cad-findings.md's "Resolved" section for full detail. This confirms
+  (rather than contradicts) the sequence-based rules below: a strictly ordered
+  dropper -> transfer -> exit path is what the physical machine actually is. If the
+  instant-teleport pairing effect is still wanted, it needs new physical design (a second
+  capture point + coordinating mechanism), not something achievable via MPF config alone.

@@ -97,9 +97,14 @@ when fixed, not deleted, so resolution history stays visible.
       executable available in this environment to check headlessly); structurally they match
       the proven `base.tscn`/`attract.tscn` format exactly (same `MPFSlide` root script,
       built-in `ColorRect`/`Label` node types only).
-- [ ] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
+- [x] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
       Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
-      physical machine.
+      physical machine. Resolved: the CAD does NOT support hole-pairing - `VUK`/`VUK high`/
+      `Exit` are unused orphaned stub part studios never instanced in the real assembly; the
+      built machine has exactly one `DropperAssy` feeding a single linear path to one `Portal
+      Vuk` exit, no second capture point or coordinating linkage anywhere. This validates the
+      already-implemented `sequences:`-based portal mode (a strictly ordered single path) rather
+      than requiring a rework. See `design/research/onshape-cad-findings.md`.
 - [ ] `modes/slings/config/slings.yaml`'s sling combo has no real time window yet - MPF's
       `logic_block_timeout` starts ticking from mode/logic-block enable (ball start), not from
       the first hit, so it can't implement "back-to-back within N seconds" as configured today.
