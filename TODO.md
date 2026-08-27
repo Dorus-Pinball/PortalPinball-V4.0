@@ -61,6 +61,29 @@ when fixed, not deleted, so resolution history stays visible.
       instead; there is no `mpf format`/lint command in 0.80.0 at all — a clean `mpf -X -t -b` boot
       is the fast config-validation check instead. Full detail in `plans/testing-strategy.md`.
 
+- [x] **Service mode was never enabled** - MPF ships a built-in `service` mode
+      (`mpf/modes/service/code/service.py`) but it wasn't in `config.yaml`'s `modes:` list, so it
+      never ran. **Fixed (2026-08-27)**: added `service` to `modes:`. Real finding along the way:
+      the installed MPF 0.80.0 service mode's config_spec advertises configurable
+      `enter_events`/`esc_events`/`up_events`/`down_events`/`door_opened_events`/
+      `door_closed_events` (a `mode_settings:` section), but the actual `_get_key()`
+      implementation hardcodes the literal switch names `sw_service_enter`/`sw_service_esc`/
+      `sw_service_up`/`sw_service_down` instead of ever reading that config, and
+      `door_opened_events`/`door_closed_events` aren't consumed anywhere in the code at all in
+      this version (real entry is the enter switch, not a door-open event) - confirmed by reading
+      the installed source after a config-only override attempt had no effect. Added DRAFT
+      `sw_service_enter/esc/up/down` switches to `hardware-switches.yaml` (named against this
+      project's usual `s-` convention for that reason specifically - numbers are placeholders
+      pending real board assignment, same status as the Phase 1 flipper switches). The mpf-gmc
+      addon already ships a default `service.tscn` slide (`addons/mpf-gmc/slides/service.tscn`),
+      so no Godot-side work was needed. Verified with 2 new tests in `tests/test_service.py`:
+      entering the menu posts `service_mode_entered`, and each nav switch posts the
+      `service_button` event a connected MC (Godot) would act on - full menu navigation/exit is
+      driven by the MC over BCP from there and isn't reproducible in a headless test.
+- [ ] Ball search is not configured anywhere - a real gap, not previously flagged: without it, a
+      ball stuck on a switchless part of the playfield stalls the machine instead of
+      self-recovering.
+
 ## Not blocked by hardware access
 
 - [x] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,

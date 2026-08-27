@@ -196,3 +196,26 @@ switches:
     s-insinerator:
         number: 2-3-13
 
+# DRAFT service mode switches (Phase 2, plans/resumption-roadmap.md). Numbers are placeholders
+# pending real board assignment/a physical continuity check, same as the flipper switches above -
+# fine for smart_virtual/boot-test purposes, not final for real wiring.
+#
+# NAMED AGAINST THIS PROJECT'S OWN `s-` CONVENTION deliberately: the installed MPF 0.80.0 service
+# mode's config_spec advertises configurable enter_events/esc_events/up_events/down_events/
+# door_opened_events/door_closed_events (a `mode_settings:` section), but its actual _get_key()
+# implementation (mpf/modes/service/code/service.py) hardcodes the literal switch names
+# sw_service_enter/sw_service_esc/sw_service_up/sw_service_down instead of ever reading that
+# config - confirmed by reading the installed source directly (a local `mode_settings:` override
+# using `s-` names was tried first and had no effect, since nothing in the code consults it).
+# door_opened_events/door_closed_events aren't consumed anywhere in the code at all in this
+# version either - real entry is the sw_service_enter switch, not a door-open event, so no
+# separate door switch is configured here.
+    sw_service_enter:
+        number: 2-3-14
+    sw_service_esc:
+        number: 2-3-15
+    sw_service_up:
+        number: 2-3-16
+    sw_service_down:
+        number: 2-3-17
+
