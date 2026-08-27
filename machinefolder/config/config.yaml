@@ -43,6 +43,8 @@ modes:
 - portal
 - ramps
 - multiball
+- progression
+- super_wizard
 - match
 - high_score
 

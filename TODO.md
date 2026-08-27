@@ -145,6 +145,25 @@ when fixed, not deleted, so resolution history stays visible.
       the same design-approval process the 8 Phase 3 feature slides went through (the approved
       "Aperture Display Signage" proposal), not something to improvise unilaterally.
 
+- [x] Phase 5 stretch goal: wizard mode. **Implemented (2026-08-27)** per user direction (tiered
+      mini-wizards, not one big gate): `modes/progression/config/progression.yaml` adds 5 chained
+      `accruals:` devices (all `persist_state: true`, since progress must survive every ball of
+      the game, not reset per-ball like a normal logic block - the same
+      `disable_on_complete`-style default-config trap already found for portal_sequence, this time
+      it's `persist_state` defaulting `false`) - `lanes_both_groups` (folds
+      top_lanes_complete + bottom_lanes_complete into one signal), then 3 feature tiers (`tier_a`:
+      lanes+skillshot+slings, `tier_b`: orbits+ramps, `tier_c`: dropbank+aerial - DRAFT groupings,
+      needs a balance pass), then `wizard_gate` requiring all 3 tiers' completion events plus
+      `portal_all_exits_open` (portal's own 5-stage chain from the earlier achievement-chain fix,
+      the namesake feature as the deliberate final required key). `wizard_gate`'s completion
+      starts a new `super_wizard` mode (`modes/super_wizard/config/super_wizard.yaml`) - DRAFT and
+      deliberately minimal: implements the *gating* correctly (the actual goal of this pass) but
+      does not invent wizard-mode gameplay (a jackpot shot sequence, its own rules) - that's a
+      further open design question, same category as the ramp diverter's routing logic. Verified
+      end-to-end in `tests/test_progression.py`: all 3 tiers + 5 portal completions correctly
+      opens the gate and starts `super_wizard`; missing one tier correctly blocks it; tier
+      progress correctly persists across a ball drain.
+
 ## Not blocked by hardware access
 
 - [x] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,

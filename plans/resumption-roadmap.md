@@ -230,7 +230,9 @@ Only after Phases 1–4 give a genuinely playable machine:
   ways — one big end-of-game wizard mode gated on all 8 Phase 3 features, or several tiered
   mini-wizard modes (2-3 features each) feeding one final "super" wizard mode. `portal`, as the
   namesake feature, is a natural choice for the final required key either way. Not decided yet —
-  needs a deliberate choice before Phase 5 starts, not a default.
+  needs a deliberate choice before Phase 5 starts, not a default. **Done (2026-08-27)**: user
+  chose tiered mini-wizards. See TODO.md for the full implementation
+  (`modes/progression/config/progression.yaml`, `modes/super_wizard/config/super_wizard.yaml`).
 - High score / audits polish (audits.yaml already tracks basics; mpf-gmc ships bonus/high_score
   slides in the addon's own `slides/` folder, currently unused).
 

@@ -81,9 +81,10 @@ rules:
   scoring: >
     DRAFT, needs a real game-balance pass with the user: 200/hit for dropper/portal-r/portal-m,
     500/hit for exit-success, +5000 for the full ordered sequence completing, +1000 per exit_open
-    stage (1-4), +10000 for the 5th/final stage (`portal_all_exits_open` - reserved for a future
-    Phase 5 wizard-mode gate, not consumed anywhere yet). Implemented in
-    modes/portal/config/portal.yaml.
+    stage (1-4), +10000 for the 5th/final stage (`portal_all_exits_open` - now consumed by
+    `modes/progression/config/progression.yaml`'s `wizard_gate` accrual as the Phase 5
+    wizard-mode gate's deliberate final required key, alongside the 3 feature tiers). Implemented
+    in modes/portal/config/portal.yaml.
 
 presentation:
   slide: modes/portal/slides/portal_transfer.tscn - implemented with blue/orange entry-exit
