@@ -25,11 +25,16 @@ when fixed, not deleted, so resolution history stays visible.
 - [ ] `hardware-coils.yaml` has a large commented-out block of unassigned coil numbers on the
       `2-1-x` chain and the Cobra `0-0-x`/`1-0-x` chains — worth confirming what's actually free
       vs. reserved before assigning new features (e.g. flippers) to specific numbers.
-- [ ] Placeholder audio in `machinefolder/sounds/` is ripped from Left 4 Dead 2
-      (`mp_coop_lobby_2_*`, `sp_a4_finale4_*`) — not licensed/final, needs replacing with real
-      Portal-themed assets before any public-facing use.
-- [ ] Placeholder art: both `base` and `attract` slides reuse the single `images/mainscreen.jpg`
-      background — no dedicated art per mode yet.
+- [x] Placeholder audio in `machinefolder/sounds/` is ripped from Left 4 Dead 2
+      (`mp_coop_lobby_2_*`, `sp_a4_finale4_*`) — not licensed/final. **Accepted as a keeper
+      (2026-08-27)**: same licensing category as `mainscreen.jpg` below, and the user confirmed
+      reuse is fine for this private, non-commercial project. No longer "needs replacing" unless
+      the project's status changes (e.g. any public-facing use).
+- [x] Placeholder art: both `base` and `attract` slides reuse the single `images/mainscreen.jpg`
+      background. **Resolved (2026-08-27)**: the 8 feature-hit overlays now have dedicated
+      original art (see the graphics item below); `base`/`attract` deliberately kept
+      `mainscreen.jpg` instead of dedicated art — same accepted-keeper reasoning as the audio
+      above.
 - [ ] `board Overviews.xlsx` "Modes" sheet has several under-specified feature notes (e.g. the
       ramps section is just "right ramp" and a bare "?") that need a design pass with the user
       before they can be implemented.
@@ -109,6 +114,13 @@ when fixed, not deleted, so resolution history stays visible.
       nodes. The other 9 slides matched the approved proposal on the first render. `base.tscn`'s
       score readout doesn't show in an isolated screenshot since there's no live MPF game
       supplying the `score` player variable in that test — expected, not a bug.
+      **Follow-up (2026-08-27)**: `attract`/`base` had their original `mainscreen.jpg` background
+      restored in place of the new aperture-iris/terminal-frame icon treatment — the user
+      specifically liked that image's moody atmosphere and, after being flagged that it reads as
+      Portal-themed fan art (same licensing category as the placeholder audio), confirmed reuse
+      is fine for this private, non-commercial project. The 8 feature-hit overlays keep their
+      new original icons (unaffected, never used `mainscreen.jpg`). Title/score `Label` color
+      accents (blue/orange) were kept over the restored image.
 - [x] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
       Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
       physical machine. Resolved: the CAD does NOT support hole-pairing - `VUK`/`VUK high`/

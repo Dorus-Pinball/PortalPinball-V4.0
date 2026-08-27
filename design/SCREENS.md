@@ -63,8 +63,8 @@ toward throwing that specificity away later.
 
 | Screen | Trigger | File | Notes |
 |---|---|---|---|
-| `attract` | attract mode start | `modes/attract/slides/attract.tscn` (exists) | Placeholder art only — reuses `images/mainscreen.jpg` (`TODO.md`). |
-| `base` | `mode_base_started` | `modes/base/slides/base.tscn` (exists) | In-game HUD: score, ball, credits. Same placeholder background as `attract` today. |
+| `attract` | attract mode start | `modes/attract/slides/attract.tscn` (exists) | Uses `images/mainscreen.jpg` deliberately (not a placeholder) — the user liked its moody atmosphere and confirmed reuse is fine for this private, non-commercial project despite it reading as Portal-themed fan art. Title label kept in the blue accent color. |
+| `base` | `mode_base_started` | `modes/base/slides/base.tscn` (exists) | In-game HUD: score, ball, credits, on the same `mainscreen.jpg` background as `attract`. Score label kept in the orange accent color. |
 
 ### Feature-hit overlays (bespoke, one per `design/features/*.yaml` entry)
 

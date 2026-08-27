@@ -199,9 +199,14 @@ in `hardware-*.yaml` today — no new hardware needed):
 
 - **Replace placeholder assets.** Current sounds are Left 4 Dead 2 rips (`mp_coop_lobby_2_*`,
   `sp_a4_finale4_*`) and a single generic alarm sweep; images are one shared `mainscreen.jpg` used
-  as background for both `base` and `attract` slides. None of this is Portal-themed. Needs a real
-  asset pass (sourced/licensed music+SFX, portal/turret/companion-cube-styled art) — a separate
-  creative task, not something to auto-generate.
+  as background for both `base` and `attract` slides. Needs a real asset pass (sourced/licensed
+  music+SFX) — a separate creative task, not something to auto-generate.
+  **Update (2026-08-27)**: `mainscreen.jpg` is in fact Portal-themed (it quotes GLaDOS's Portal 2
+  opening line) — the "none of this is Portal-themed" framing above was wrong about that image.
+  Both the audio and `mainscreen.jpg` were explicitly kept rather than replaced: the user
+  confirmed reuse is fine for this private, non-commercial project despite the licensing
+  question. See `TODO.md`'s accepted-keeper notes. The 8 Phase 3 feature slides did get real
+  (original) per-mode art, per the item below.
 - **Per-mode slides**, mirroring the `modes/<name>/slides/<name>.tscn` pattern already
   established by `base` and `attract`: each Phase 3 mode gets its own slide/shot-callout instead
   of everything reusing the single background.

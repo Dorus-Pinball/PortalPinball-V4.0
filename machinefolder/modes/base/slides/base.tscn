@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://uaxfrqj8m4bc"]
+[gd_scene load_steps=4 format=3 uid="uid://uaxfrqj8m4bc"]
 
 [ext_resource type="Script" path="res://addons/mpf-gmc/classes/mpf_slide.gd" id="1_0vgiy"]
+[ext_resource type="Texture2D" uid="uid://dr03tlbgh7sgm" path="res://images/mainscreen.jpg" id="2_urv3d"]
 [ext_resource type="Script" path="res://addons/mpf-gmc/classes/mpf_variable.gd" id="3_o2uwb"]
 
 [node name="base" type="Control"]
@@ -10,33 +11,9 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_0vgiy")
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 1900.0
-offset_bottom = 1000.0
-color = Color(0.1255, 0.1451, 0.1647, 1)
-
-[node name="Icon" type="Node2D" parent="."]
-position = Vector2(0, 0)
-
-[node name="Frame" type="Line2D" parent="Icon"]
-points = PackedVector2Array(770.00, 250.00, 1130.00, 250.00, 1130.00, 450.00, 770.00, 450.00, 770.00, 250.00)
-width = 4.0
-default_color = Color(1.0000, 0.6039, 0.3020, 1)
-joint_mode = 1
-
-[node name="HLine" type="Line2D" parent="Icon"]
-points = PackedVector2Array(770.00, 310.00, 1130.00, 310.00)
-width = 2.0
-default_color = Color(1.0000, 0.6039, 0.3020, 0.6)
-
-[node name="DotLeft" type="Polygon2D" parent="Icon"]
-polygon = PackedVector2Array(830.00, 280.00, 829.24, 283.83, 827.07, 287.07, 823.83, 289.24, 820.00, 290.00, 816.17, 289.24, 812.93, 287.07, 810.76, 283.83, 810.00, 280.00, 810.76, 276.17, 812.93, 272.93, 816.17, 270.76, 820.00, 270.00, 823.83, 270.76, 827.07, 272.93, 829.24, 276.17, 830.00, 280.00)
-color = Color(1.0000, 0.6039, 0.3020, 1)
-
-[node name="DotRight" type="Polygon2D" parent="Icon"]
-polygon = PackedVector2Array(1090.00, 280.00, 1089.24, 283.83, 1087.07, 287.07, 1083.83, 289.24, 1080.00, 290.00, 1076.17, 289.24, 1072.93, 287.07, 1070.76, 283.83, 1070.00, 280.00, 1070.76, 276.17, 1072.93, 272.93, 1076.17, 270.76, 1080.00, 270.00, 1083.83, 270.76, 1087.07, 272.93, 1089.24, 276.17, 1090.00, 280.00)
-color = Color(1.0000, 0.6039, 0.3020, 1)
+[node name="background" type="Sprite2D" parent="."]
+position = Vector2(869, 432)
+texture = ExtResource("2_urv3d")
 
 [node name="score" type="Label" parent="."]
 layout_mode = 0
