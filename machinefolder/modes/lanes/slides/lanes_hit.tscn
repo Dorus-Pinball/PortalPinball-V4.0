@@ -13,15 +13,51 @@ script = ExtResource("1")
 layout_mode = 0
 offset_right = 1900.0
 offset_bottom = 1000.0
-color = Color(0.1, 0.55, 0.25, 1)
+color = Color(0.2275, 0.1843, 0.0627, 1)
+
+[node name="Icon" type="Node2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="Post1" type="Line2D" parent="Icon"]
+points = PackedVector2Array(840.00, 410.00, 840.00, 300.00, 880.00, 260.00, 920.00, 300.00, 920.00, 410.00)
+width = 6.0
+default_color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="Post2" type="Line2D" parent="Icon"]
+points = PackedVector2Array(930.00, 410.00, 930.00, 300.00, 970.00, 260.00, 1010.00, 300.00, 1010.00, 410.00)
+width = 6.0
+default_color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="Post3" type="Line2D" parent="Icon"]
+points = PackedVector2Array(1020.00, 410.00, 1020.00, 300.00, 1060.00, 260.00, 1100.00, 300.00, 1100.00, 410.00)
+width = 6.0
+default_color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="Dot1" type="Polygon2D" parent="Icon"]
+polygon = PackedVector2Array(891.50, 310.00, 890.36, 314.99, 887.17, 318.99, 882.56, 321.21, 877.44, 321.21, 872.83, 318.99, 869.64, 314.99, 868.50, 310.00, 869.64, 305.01, 872.83, 301.01, 877.44, 298.79, 882.56, 298.79, 887.17, 301.01, 890.36, 305.01, 891.50, 310.00)
+color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="Dot2" type="Polygon2D" parent="Icon"]
+polygon = PackedVector2Array(981.50, 310.00, 980.36, 314.99, 977.17, 318.99, 972.56, 321.21, 967.44, 321.21, 962.83, 318.99, 959.64, 314.99, 958.50, 310.00, 959.64, 305.01, 962.83, 301.01, 967.44, 298.79, 972.56, 298.79, 977.17, 301.01, 980.36, 305.01, 981.50, 310.00)
+color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="Dot3" type="Polygon2D" parent="Icon"]
+polygon = PackedVector2Array(1071.50, 310.00, 1070.36, 314.99, 1067.17, 318.99, 1062.56, 321.21, 1057.44, 321.21, 1052.83, 318.99, 1049.64, 314.99, 1048.50, 310.00, 1049.64, 305.01, 1052.83, 301.01, 1057.44, 298.79, 1062.56, 298.79, 1067.17, 301.01, 1070.36, 305.01, 1071.50, 310.00)
+color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="Baseline" type="Line2D" parent="Icon"]
+points = PackedVector2Array(800.00, 410.00, 1140.00, 410.00)
+width = 3.0
+default_color = Color(0.9333, 0.9412, 0.9451, 0.7)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 0.0
-offset_top = 420.0
+offset_top = 700.0
 offset_right = 1900.0
-offset_bottom = 580.0
-theme_override_font_sizes/font_size = 120
+offset_bottom = 880.0
+theme_override_font_sizes/font_size = 92
+theme_override_colors/font_color = Color(0.9333, 0.9412, 0.9451, 1)
 text = "LANES COMPLETE"
 horizontal_alignment = 1
 vertical_alignment = 1

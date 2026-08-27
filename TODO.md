@@ -90,13 +90,25 @@ when fixed, not deleted, so resolution history stays visible.
       coil-driver wiring is hardware-blocked (see the flippers item above), but the config
       itself can be written and boot-tested virtually first. Done - see the flippers item above
       for a real bug this surfaced (hold_power can't be 0.0) and its fix.
-- [ ] Build real `base`/`attract` Godot slide art — still using the shared `mainscreen.jpg`
-      placeholder. The bespoke feature-hit overlays cataloged in `design/SCREENS.md` are now
-      implemented as placeholder colored panels (one per feature, in each mode's `slides/`
-      folder) — not real art, and NOT visually verified in the Godot editor (no Godot
-      executable available in this environment to check headlessly); structurally they match
-      the proven `base.tscn`/`attract.tscn` format exactly (same `MPFSlide` root script,
-      built-in `ColorRect`/`Label` node types only).
+- [x] Build real `base`/`attract` Godot slide art, plus the bespoke feature-hit overlays
+      cataloged in `design/SCREENS.md`. Fixed: all 10 slides now carry original vector
+      iconography (an aperture-iris mark for `attract`, a lit terminal frame for `base`, and a
+      distinct line-art icon per feature tying back to its `presentation.show` motif) on a
+      dark, per-feature-tinted background, replacing the shared `mainscreen.jpg` and the flat
+      `ColorRect` placeholders. Proposal reviewed and approved first as a published Artifact
+      ("Aperture Display Signage") before touching any `.tscn` file — see that artifact for the
+      full palette/rationale per screen. `images/mainscreen.jpg` is no longer referenced by any
+      slide but was left in place, not deleted.
+      **Now visually verified**: found Godot 4.3 actually installed on this machine
+      (`C:\Program Files (x86)\Godot\`), so all 10 slides were rendered for real (headless
+      `--script` capture, real Vulkan rendering — `--headless` alone forces a null/dummy
+      renderer and produces blank textures, worth remembering next time) and reviewed as
+      screenshots. Caught one real bug this way: the dropbank drop-target rectangles, built as
+      closed-loop `Line2D` shapes, rendered as broken glyph-like boxes (a triangulation edge
+      case for an axis-aligned closed rectangle) — fixed by switching to plain `ColorRect`
+      nodes. The other 9 slides matched the approved proposal on the first render. `base.tscn`'s
+      score readout doesn't show in an isolated screenshot since there's no live MPF game
+      supplying the `score` player variable in that test — expected, not a bug.
 - [x] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
       Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
       physical machine. Resolved: the CAD does NOT support hole-pairing - `VUK`/`VUK high`/

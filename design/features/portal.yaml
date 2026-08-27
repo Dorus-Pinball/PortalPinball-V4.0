@@ -72,8 +72,9 @@ rules:
     achievement_group progression, since that part isn't built (see rules notes above).
 
 presentation:
-  slide: modes/portal/slides/portal_transfer.tscn - implemented as a placeholder purple panel
-    (no real art yet), per design/SCREENS.md.
+  slide: modes/portal/slides/portal_transfer.tscn - implemented with blue/orange entry-exit
+    ring icons linked by a dashed violet transit arc (the page's only violet accent) on a
+    violet-tinted panel, per the approved "Aperture Display Signage" graphics proposal.
   show: TBD - portal-ring burn-open/close animation on transfer, then an LED chase across led-exit-open-1..5
   sound: TBD - portal-fire whoosh on dropper entry, shimmering "conversion" chime on successful transfer
 

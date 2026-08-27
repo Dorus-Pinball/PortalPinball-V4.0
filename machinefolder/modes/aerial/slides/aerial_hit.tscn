@@ -13,15 +13,33 @@ script = ExtResource("1")
 layout_mode = 0
 offset_right = 1900.0
 offset_bottom = 1000.0
-color = Color(0.4, 0.75, 0.95, 1)
+color = Color(0.0588, 0.1804, 0.2039, 1)
+
+[node name="Icon" type="Node2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="Plate" type="Line2D" parent="Icon"]
+points = PackedVector2Array(800.00, 460.00, 940.00, 410.00)
+width = 9.0
+default_color = Color(0.9333, 0.9412, 0.9451, 1)
+
+[node name="Trail" type="Line2D" parent="Icon"]
+points = PackedVector2Array(940.00, 410.00, 954.17, 399.51, 966.67, 388.06, 977.50, 375.62, 986.67, 362.22, 994.17, 347.85, 1000.00, 332.50, 1004.17, 316.18, 1006.67, 298.89, 1007.50, 280.62, 1006.67, 261.39, 1004.17, 241.18, 1000.00, 220.00)
+width = 4.0
+default_color = Color(0.3098, 0.8157, 0.9098, 0.7)
+
+[node name="Ball" type="Polygon2D" parent="Icon"]
+polygon = PackedVector2Array(1020.00, 220.00, 1018.48, 227.65, 1014.14, 234.14, 1007.65, 238.48, 1000.00, 240.00, 992.35, 238.48, 985.86, 234.14, 981.52, 227.65, 980.00, 220.00, 981.52, 212.35, 985.86, 205.86, 992.35, 201.52, 1000.00, 200.00, 1007.65, 201.52, 1014.14, 205.86, 1018.48, 212.35, 1020.00, 220.00)
+color = Color(0.3098, 0.8157, 0.9098, 1)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 0.0
-offset_top = 420.0
+offset_top = 700.0
 offset_right = 1900.0
-offset_bottom = 580.0
+offset_bottom = 880.0
 theme_override_font_sizes/font_size = 110
+theme_override_colors/font_color = Color(0.9333, 0.9412, 0.9451, 1)
 text = "AERIAL!"
 horizontal_alignment = 1
 vertical_alignment = 1

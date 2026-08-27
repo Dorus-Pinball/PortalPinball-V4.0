@@ -13,15 +13,55 @@ script = ExtResource("1")
 layout_mode = 0
 offset_right = 1900.0
 offset_bottom = 1000.0
-color = Color(0.95, 0.85, 0.1, 1)
+color = Color(0.2275, 0.1843, 0.0627, 1)
+
+[node name="Icon" type="Node2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="RingOuter" type="Line2D" parent="Icon"]
+points = PackedVector2Array(1100.00, 350.00, 1098.15, 373.47, 1092.66, 396.35, 1083.65, 418.10, 1071.35, 438.17, 1056.07, 456.07, 1038.17, 471.35, 1018.10, 483.65, 996.35, 492.66, 973.47, 498.15, 950.00, 500.00, 926.53, 498.15, 903.65, 492.66, 881.90, 483.65, 861.83, 471.35, 843.93, 456.07, 828.65, 438.17, 816.35, 418.10, 807.34, 396.35, 801.85, 373.47, 800.00, 350.00, 801.85, 326.53, 807.34, 303.65, 816.35, 281.90, 828.65, 261.83, 843.93, 243.93, 861.83, 228.65, 881.90, 216.35, 903.65, 207.34, 926.53, 201.85, 950.00, 200.00, 973.47, 201.85, 996.35, 207.34, 1018.10, 216.35, 1038.17, 228.65, 1056.07, 243.93, 1071.35, 261.83, 1083.65, 281.90, 1092.66, 303.65, 1098.15, 326.53, 1100.00, 350.00)
+width = 5.0
+default_color = Color(0.8784, 0.6980, 0.2353, 1)
+joint_mode = 1
+
+[node name="RingInner" type="Line2D" parent="Icon"]
+points = PackedVector2Array(1040.00, 350.00, 1038.27, 367.56, 1033.15, 384.44, 1024.83, 400.00, 1013.64, 413.64, 1000.00, 424.83, 984.44, 433.15, 967.56, 438.27, 950.00, 440.00, 932.44, 438.27, 915.56, 433.15, 900.00, 424.83, 886.36, 413.64, 875.17, 400.00, 866.85, 384.44, 861.73, 367.56, 860.00, 350.00, 861.73, 332.44, 866.85, 315.56, 875.17, 300.00, 886.36, 286.36, 900.00, 275.17, 915.56, 266.85, 932.44, 261.73, 950.00, 260.00, 967.56, 261.73, 984.44, 266.85, 1000.00, 275.17, 1013.64, 286.36, 1024.83, 300.00, 1033.15, 315.56, 1038.27, 332.44, 1040.00, 350.00)
+width = 5.0
+default_color = Color(0.8784, 0.6980, 0.2353, 1)
+joint_mode = 1
+
+[node name="CenterDot" type="Polygon2D" parent="Icon"]
+polygon = PackedVector2Array(975.00, 350.00, 973.78, 357.73, 970.23, 364.69, 964.69, 370.23, 957.73, 373.78, 950.00, 375.00, 942.27, 373.78, 935.31, 370.23, 929.77, 364.69, 926.22, 357.73, 925.00, 350.00, 926.22, 342.27, 929.77, 335.31, 935.31, 329.77, 942.27, 326.22, 950.00, 325.00, 957.73, 326.22, 964.69, 329.77, 970.23, 335.31, 973.78, 342.27, 975.00, 350.00)
+color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="TickTop" type="Line2D" parent="Icon"]
+points = PackedVector2Array(950.00, 140.00, 950.00, 200.00)
+width = 5.0
+default_color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="TickBottom" type="Line2D" parent="Icon"]
+points = PackedVector2Array(950.00, 500.00, 950.00, 560.00)
+width = 5.0
+default_color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="TickLeft" type="Line2D" parent="Icon"]
+points = PackedVector2Array(740.00, 350.00, 800.00, 350.00)
+width = 5.0
+default_color = Color(0.8784, 0.6980, 0.2353, 1)
+
+[node name="TickRight" type="Line2D" parent="Icon"]
+points = PackedVector2Array(1100.00, 350.00, 1160.00, 350.00)
+width = 5.0
+default_color = Color(0.8784, 0.6980, 0.2353, 1)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 0.0
-offset_top = 420.0
+offset_top = 700.0
 offset_right = 1900.0
-offset_bottom = 580.0
-theme_override_font_sizes/font_size = 110
+offset_bottom = 880.0
+theme_override_font_sizes/font_size = 100
+theme_override_colors/font_color = Color(0.9333, 0.9412, 0.9451, 1)
 text = "SKILLSHOT!"
 horizontal_alignment = 1
 vertical_alignment = 1

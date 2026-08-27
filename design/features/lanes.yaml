@@ -60,8 +60,10 @@ rules:
     Implemented in modes/lanes/config/lanes.yaml, replacing base.yaml's old flat-100 placeholder.
 
 presentation:
-  slide: modes/lanes/slides/lanes_hit.tscn - implemented as a placeholder colored panel (no
-    real art yet), per design/SCREENS.md. Plays on both top_lanes_complete/bottom_lanes_complete.
+  slide: modes/lanes/slides/lanes_hit.tscn - implemented with an original hazard-gold line-art
+    icon (three peaked posts, deliberately abstract given the turret hook is unconfirmed) on a
+    dark tinted panel, per the approved "Aperture Display Signage" graphics proposal. Plays on
+    both top_lanes_complete/bottom_lanes_complete.
   show: TBD - turret pop-up-and-topple animation per top lane hit, if the turret-gauntlet hook above is confirmed
   sound: TBD - turret chirp on first hit, comedic "dying" wobble/cry on the completing second hit
 

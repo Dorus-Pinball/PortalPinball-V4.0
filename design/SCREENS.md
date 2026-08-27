@@ -110,8 +110,14 @@ catalog, instead of leaving the two out of sync.
 
 ## Open items
 
-- No dedicated art exists yet for any screen (`TODO.md`). Early bespoke overlays will necessarily
-  start as placeholder-colored panels/shapes with text standing in for final art.
+- All 10 screens now carry original vector iconography and per-screen palette (an aperture-iris
+  mark for `attract`, a lit terminal frame for `base`, a distinct line-art icon per feature),
+  approved first as a published Artifact ("Aperture Display Signage") before any `.tscn` file was
+  touched — see each feature's `presentation.slide` note in `design/features/*.yaml` for the
+  per-screen rationale. This is still short of final production art (hand-drawn/painted assets,
+  animation), but has now been **rendered and visually verified** in Godot 4.3 (found installed
+  on this machine) — one real rendering bug (dropbank's drop-target icons) was caught and fixed
+  this way. See `TODO.md`.
 - `priority`/`expire` values above are unverified guesses pending the first real feature-mode
   build and on-display test.
 - The standard pinball moments listed above have no owning design doc yet — they'll need their

@@ -45,8 +45,9 @@ rules:
     needs the user's sign-off.
 
 presentation:
-  slide: modes/skillshot/slides/skillshot_hit.tscn - implemented as a placeholder yellow panel
-    (no real art yet), per design/SCREENS.md.
+  slide: modes/skillshot/slides/skillshot_hit.tscn - implemented with a hazard-gold targeting
+    reticle icon (ring + crosshair ticks) on a matching tinted panel, per the approved "Aperture
+    Display Signage" graphics proposal.
   show: TBD - the lit/rotating top lane could pulse to show "this one counts" this ball
   sound: TBD - portal-fire whoosh on launch; a short plucky test-chamber-style musical stinger on a made skillshot
 
