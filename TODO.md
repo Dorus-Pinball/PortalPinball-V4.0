@@ -198,6 +198,16 @@ when fixed, not deleted, so resolution history stays visible.
       this was written, `sound:` remained TBD for all 8 - the project's only audio assets were 7
       background music tracks and one generic alarm-sweep loop, none suitable as the described
       short stingers - see the follow-up entry below for how that gap closed.
+- [ ] **Manual action for the user**: review/adjust the DRAFT sound allocation in
+      `machinefolder/sounds/sfx/` (9 files, one per feature + multiball, picked by Claude from
+      the user's own Portal 2 sound extract - see the entry directly below for the full picks and
+      reasoning). The user plans to listen through their extract and swap in better choices where
+      warranted, particularly `slings_hit.wav` (a generic synth blip standing in for a "springy
+      boing" that doesn't exist in the pack) and `dropbank_incinerator.wav`/
+      `lanes_turret_chirp.wav` (single takes picked from several near-identical alternatives in
+      `_all/`, not necessarily the best one). Also worth a real playtest to confirm the
+      `sound_player:` filenames actually resolve inside Godot - that side wasn't verified (see
+      below).
 - [x] Sound for all 8 Phase 3 features + multiball: **filled in (2026-08-27)**. The user located
       their own full Portal 2 sound extract on this machine
       (`Documents/Hobby/Pinball/Assets/Portal Sounds/` - 9,359 raw files in `_all/`, plus
