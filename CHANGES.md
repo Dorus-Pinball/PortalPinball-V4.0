@@ -30,3 +30,45 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
    along the way, verified via a clean `mpf -X -t -b` boot and a green test suite. Added
    `design/onshape-mpf-overview.md`, a single table cross-referencing every feature's Onshape
    CAD name(s) against its MPF switch/coil/LED names. — **Status: active**.
+5. **Software-side gaps closed while flipper/tilt/diverter wiring stays hardware-blocked**
+   (2026-08-27). With the physical cabinet unavailable, worked through every gap that's fixable
+   in config/tests alone: enabled MPF's built-in `service` mode (found the installed 0.80.0
+   hardcodes its nav switch names in `_get_key()`, ignoring its own `mode_settings:`
+   config_spec — the `sw_service_*` switch names in `hardware-switches.yaml` are named to match
+   that hardcoding, not this project's usual `s-` convention, deliberately) and `ball_search`
+   (`playfields: enable_ball_search: true`); gave the sling combo a real time window via a
+   `timers:` device that restarts on every hit (`logic_block_timeout` can't do this — it starts
+   from mode enable, not the first hit); made dropbank's bank-completion score escalate per
+   repeat within a ball; implemented portal's 5-stage `exit_open` achievement chain (both
+   earlier "can't be done" findings for this were wrong — `achievements:` does default a clean
+   per-stage completion event, and `achievement_group` turned out to be the wrong device type
+   for a fixed chain); and electrically drafted the CAD-confirmed right ramp diverter/subway
+   hardware (same draft-ahead-of-wiring pattern as the Phase 1 flippers). Root-caused a
+   previously-unexplained stuck full-game test: not a bug, the test drained a ball before it was
+   ever launched onto the playfield, desyncing `playfield.available_balls` and hanging every
+   later `ball_starting`. See `plans/testing-strategy.md` for the reusable testing-methodology
+   findings from this pass (trough-fill mismatch, plunger eject-confirm delay, etc.).
+   — **Status: active**.
+6. **Phase 5 stretch goals: bonus tally, multiball, tiered wizard mode** (2026-08-27), per two
+   user decisions gathered mid-session: multiball's trigger ("complete a feature bank" →
+   `db-dropbank`, the one Phase 3 feature that's literally a bank) and the wizard mode's shape
+   (tiered mini-wizards — 3 feature tiers plus portal's own exit_open chain as the deliberate
+   final required key, not one single gate). All scoring is explicitly DRAFT, and `super_wizard`
+   mode implements the *gating* only, not real wizard-mode gameplay — both flagged as open
+   design questions, not oversights. — **Status: active**.
+7. **MPF config formatting unified on a 2-space indent** (2026-08-27). `hardware-devices.yaml`
+   and `hardware-switches.yaml` were the last two files still using a 4-space step (inherited
+   from before this project's Sept 2024 bring-up); reindented to match every other config/mode
+   file, whitespace-only, no config values touched. No `mpf format`/lint tool exists to automate
+   this (`plans/testing-strategy.md` Tier 3) — done by hand, boot-tested clean. — **Status:
+   active**.
+8. **Visual/audio polish pass: lane LEDs, LED shows for all 8 Phase 3 features, the multiball
+   slide, and a first real-sound baseline** (2026-08-27). Drafted a 5th bottom-lane LED
+   (`led-lane-b5`, a previously-unused LED chain) and wired simple hit feedback for all 8 lane
+   shots; gave every Phase 3 feature a real MPF `shows:` LED flourish matching its design doc's
+   described motif; built the multiball slide (user chose a dropbank fire tie-in over a
+   feature-independent treatment, rendered and visually verified in Godot 4.3). Sound had been
+   left untouched (no suitable assets existed) until the user located their own full Portal 2
+   sound extract on this machine — picked one clip per feature from it, wired via
+   `sound_player:`, explicitly as a DRAFT baseline pending the user's own listen-through and
+   adjustment (tracked as an open manual action in `TODO.md`). — **Status: active**.

@@ -1,362 +1,69 @@
 # TODO
 
 Rough items noticed while working, not necessarily in scope for the current task. Checked off
-when fixed, not deleted, so resolution history stays visible.
+when fixed, not deleted, so resolution history stays visible — except where a cleanup pass has
+explicitly moved that history into `CHANGES.md`/`plans/testing-strategy.md`/`design/features/*.yaml`
+instead (last done 2026-08-27; see `CHANGES.md` entries 5-8 for what closed out and why, and
+`plans/testing-strategy.md`'s Tier 2 addendum for the reusable MPF/testing findings from that
+work).
 
-- [ ] Flippers: mechs are installed and functioning (dual-wound coils, mechanical/self-contained
-      EOS interrupter, no EOS switch back to the controller), but coil driver wiring to the OPP
-      boards is still incomplete (real physical task, board assignment unconfirmed against
-      `board Overviews.xlsx`) - blocks real playtesting. The MPF `flippers:` config itself is now
-      drafted and boot/game-flow tested against `smart_virtual`
-      (`hardware-coils.yaml`/`hardware-switches.yaml`/`hardware-devices.yaml`, all marked DRAFT).
-      Real finding along the way: the roadmap's original assumption that no hold config is
-      needed (mechanical EOS handles it invisibly) was wrong at the MPF-config level - the
-      flipper device always builds a pulse+hold hardware rule and asserts if `hold_power` is
-      0.0, even with no `hold_coil`/`eos_switch`. Fixed with `default_hold_power: 1.0` on each
-      flipper coil (correct here specifically because this hardware's hold winding shares the
-      same activation signal as the power winding - no separate PWM-reduced hold path for the
-      controller to under-power). See the coil comments for the full explanation.
-- [ ] Tilt is not configured at all — no tilt switch present in `hardware-switches.yaml`.
-- [x] `config.yaml`'s `modes:` list references `orbit` and `lanes` (commented out) but neither
-      mode folder exists yet under `machinefolder/modes/`. Fixed: all 8 Phase 3 feature modes
-      (`lanes, orbits, slings, skillshot, dropbank, aerial, portal, ramps`) are now implemented
-      and listed. See the "Not blocked by hardware access" section below for what's still
-      draft/deferred within each.
-- [ ] `hardware-coils.yaml` has a large commented-out block of unassigned coil numbers on the
-      `2-1-x` chain and the Cobra `0-0-x`/`1-0-x` chains — worth confirming what's actually free
-      vs. reserved before assigning new features (e.g. flippers) to specific numbers.
-- [x] Placeholder audio in `machinefolder/sounds/` is ripped from Left 4 Dead 2
-      (`mp_coop_lobby_2_*`, `sp_a4_finale4_*`) — not licensed/final. **Accepted as a keeper
-      (2026-08-27)**: same licensing category as `mainscreen.jpg` below, and the user confirmed
-      reuse is fine for this private, non-commercial project. No longer "needs replacing" unless
-      the project's status changes (e.g. any public-facing use).
-- [x] Placeholder art: both `base` and `attract` slides reuse the single `images/mainscreen.jpg`
-      background. **Resolved (2026-08-27)**: the 8 feature-hit overlays now have dedicated
-      original art (see the graphics item below); `base`/`attract` deliberately kept
-      `mainscreen.jpg` instead of dedicated art — same accepted-keeper reasoning as the audio
-      above.
-- [ ] `board Overviews.xlsx` "Modes" sheet has several under-specified feature notes (e.g. the
-      ramps section is just "right ramp" and a bare "?") that need a design pass with the user
-      before they can be implemented.
-- [ ] Hardware wishlist, not blocking, no phase assigned: `design/features/aerial.yaml` notes that
-      the "aerial plate" (`s-aerial`) is a confirmed reference to Portal 2's Aerial Faith Plate,
-      and that adding an upkicker coil there (currently switch-only) would let it work as a
-      real launch mechanism instead of just a mode-qualifying switch. See
-      `design/research/portal-themes-and-pinball-design.md`.
-- [x] Right ramp diverter + subway: confirmed by CAD (`Diverter_Rod`, `Diverter_Base`,
-      `Bridge_Diverter_Cover`, `Subway` — see `design/research/onshape-cad-findings.md`) to be a
-      real physical mechanism feeding the right ramp, but it has no electrical wiring yet — no
-      diverter coil or subway entry/exit switches exist in `hardware-coils.yaml`/
-      `hardware-switches.yaml`. Needs board assignment before `design/features/ramps.yaml` can be
-      implemented with real diverter logic (same kind of gate as Phase 1 flippers).
-      **Electrically drafted (2026-08-27)**: `d-ramp-diverter` (MPF `diverters:` device),
-      `c-ramp-diverter` coil, and `s-subway-entry`/`s-subway-exit` switches added as DRAFT config
-      (placeholder numbers, same status as the flipper draft) - boot-tested against
-      `smart_virtual`. Hit the same `default_hold_power: 1.0` requirement the flipper coils did
-      (MPF asserts on any hold-type driver with 0.0 hold power - caught by the existing
-      `tests/test_ball_search.py` suite pulsing the coil during a ball-search phase). Deliberately
-      NOT wired to any game logic - what a diverted shot should award/do is still an open design
-      question for `design/features/ramps.yaml` (the sparsest-designed Phase 3 feature), same as
-      before this change.
-- [x] Repo hygiene: `machinefolder/logs/` was tracked in git (158 files) with no `.gitignore`
-      entry, and a stray 126,607-line log file had been accidentally committed. Logs are now
-      gitignored and untracked going forward (existing git history left intact).
-- [x] The local MPF install was completely broken (`mpf.exe` on PATH was a 0-byte stub, `pip show
-      mpf` found nothing) — no form of `mpf`, virtual or real hardware, actually worked. Fixed via
-      `install.ps1` (`.venv` + `mpf==0.80.0`). See `plans/testing-strategy.md`.
-- [x] Corrected two things doc research got wrong for the actually-installed MPF 0.80.0 (both
-      found by running the real thing, not just reading about it): `mpf test` requires
-      `kivy`/legacy `mpf-mc` and fails without it — use `python -m unittest discover tests`
-      instead; there is no `mpf format`/lint command in 0.80.0 at all — a clean `mpf -X -t -b` boot
-      is the fast config-validation check instead. Full detail in `plans/testing-strategy.md`.
+## Blocked on physical hardware work
 
-- [x] **Service mode was never enabled** - MPF ships a built-in `service` mode
-      (`mpf/modes/service/code/service.py`) but it wasn't in `config.yaml`'s `modes:` list, so it
-      never ran. **Fixed (2026-08-27)**: added `service` to `modes:`. Real finding along the way:
-      the installed MPF 0.80.0 service mode's config_spec advertises configurable
-      `enter_events`/`esc_events`/`up_events`/`down_events`/`door_opened_events`/
-      `door_closed_events` (a `mode_settings:` section), but the actual `_get_key()`
-      implementation hardcodes the literal switch names `sw_service_enter`/`sw_service_esc`/
-      `sw_service_up`/`sw_service_down` instead of ever reading that config, and
-      `door_opened_events`/`door_closed_events` aren't consumed anywhere in the code at all in
-      this version (real entry is the enter switch, not a door-open event) - confirmed by reading
-      the installed source after a config-only override attempt had no effect. Added DRAFT
-      `sw_service_enter/esc/up/down` switches to `hardware-switches.yaml` (named against this
-      project's usual `s-` convention for that reason specifically - numbers are placeholders
-      pending real board assignment, same status as the Phase 1 flipper switches). The mpf-gmc
-      addon already ships a default `service.tscn` slide (`addons/mpf-gmc/slides/service.tscn`),
-      so no Godot-side work was needed. Verified with 2 new tests in `tests/test_service.py`:
-      entering the menu posts `service_mode_entered`, and each nav switch posts the
-      `service_button` event a connected MC (Godot) would act on - full menu navigation/exit is
-      driven by the MC over BCP from there and isn't reproducible in a headless test.
-- [x] Ball search is not configured anywhere - a real gap, not previously flagged: without it, a
-      ball stuck on a switchless part of the playfield stalls the machine instead of
-      self-recovering. **Fixed (2026-08-27)**: added `enable_ball_search: true` to the
-      `playfields: playfield:` device in `hardware-devices.yaml`, using MPF's stock timing (15s
-      idle, 3 escalating search phases). `autofire_coils` (popbumpers, slings) and
-      `drop_target_banks` register for ball search unconditionally - no `include_in_ball_search`
-      toggle exists for those device types in MPF's `config_spec.yaml` (confirmed by reading it
-      directly) - so no other per-device config was needed. Flippers keep MPF's own default
-      (`include_in_ball_search: false`) since a repeatedly-pulsing flipper rarely helps free a
-      ball stuck elsewhere on the field. Verified with 2 new tests in `tests/test_ball_search.py`:
-      one confirms `ball_search_started` fires after 15s of no playfield switch activity once a
-      ball is in play, one confirms hitting a playfield switch (sling) postpones it rather than
-      just delaying it once. Real finding along the way: `bd-plunger`'s eject onto the
-      (switchless, from its own perspective) playfield has no confirming switch, so
-      `confirm_eject_type: target` falls back to its ~10s default eject timeout before
-      `playfield.balls` actually updates - worth remembering for any future test that checks
-      playfield ball count right after a launch.
+- [ ] **Flippers**: mechs are installed and functioning (dual-wound coils, mechanical EOS
+      interrupter, no EOS switch back to the controller), but coil driver wiring to the OPP
+      boards is still incomplete — the real physical task, board assignment unconfirmed against
+      `board Overviews.xlsx`. Blocks real playtesting. MPF config is already drafted and
+      boot/game-flow tested (`hardware-coils.yaml`/`hardware-switches.yaml`/
+      `hardware-devices.yaml`, all marked DRAFT).
+- [ ] **Tilt**: no tilt switch exists at all yet — needs a physical switch installed before any
+      config can follow.
+- [ ] **Right ramp diverter + subway**: CAD-confirmed real mechanism, electrically drafted
+      (`d-ramp-diverter`, `c-ramp-diverter` coil, `s-subway-entry`/`s-subway-exit` switches, all
+      DRAFT numbers) but not wired for real.
+- [ ] **Service mode nav switches** (`sw_service_enter/esc/up/down`): electrically drafted, not
+      wired for real.
+- [ ] **Board number confirmation**: `hardware-coils.yaml` has a large commented-out block of
+      unassigned numbers on the `2-1-x` chain and the Cobra `0-0-x`/`1-0-x` chains — confirm
+      what's actually free vs. reserved against `board Overviews.xlsx` before any of the DRAFT
+      items above get wired for real, so nothing collides.
+- [ ] **Aerial upkicker** (wishlist, not scheduled): would turn the aerial plate from a
+      mode-qualifying switch into a real launch mechanism. No physical coil exists there today —
+      this is a "should we add hardware" decision, not "wire up what's already there."
 
-- [x] Phase 5 stretch goal (`plans/resumption-roadmap.md`): end-of-ball bonus tally
-      (`board Overviews.xlsx`'s "count to 100" note) was never implemented - MPF ships a bonus
-      mode but it wasn't in `config.yaml`'s `modes:` list and has no default `bonus_entries`
-      (raises at start without them). **Fixed (2026-08-27)**: added `bonus` to `modes:`, a new
-      `modes/bonus/config/bonus.yaml` override with one DRAFT entry (100 points per shot made
-      this ball), and a `ball_shots_made` per-ball tally in `modes/base/config/base.yaml` (+1 on
-      every one of the 20 `shot_*_hit` events across all 8 feature modes - a flat player var, not
-      a `counters:` device, since `bonus_mode`'s `player_score_entry` reads a plain player var by
-      name, not a logic_block's state object). The mpf-gmc addon already ships a default
-      `bonus.tscn` slide, so no Godot-side work was needed. Real finding along the way: the bonus
-      mode's `display_delay_ms` sequence (3 steps × MPF's 2000ms default) adds ~6s between a ball
-      draining and the next one starting - `tests/test_full_game.py` and `tests/test_portal.py`'s
-      cross-ball tests needed their post-drain wait budgets bumped to match. Also found while
-      writing `tests/test_bonus.py`: any top lane switch (`s-toplane1/2/3`) double-counts toward
-      the tally on a ball's first hit, since all 3 are also valid skillshot targets
-      (`shot_skillshot` overlaps them) - correct, intentional behavior, not a bug, but worth
-      knowing when picking test switches.
+## Needs a design decision from the user
 
-- [x] Phase 5 stretch goal: multiball. **Implemented (2026-08-27)** per user direction ("complete
-      a feature bank" as the trigger): `modes/multiball/config/multiball.yaml` adds a
-      `multiballs:` device (`mb-dropbank`, 3 balls total, 10s shoot-again) started by
-      `drop_target_bank_db-dropbank_down` - `db-dropbank` specifically since it's the one feature
-      that's literally a bank (lanes/ramps are shot_groups, not banks) and already auto-resets.
-      No `ball_locks:` device exists (no physical lock mechanism on this machine), so extra balls
-      draw straight from `bd-trough` via MPF's normal ball-request flow. DRAFT scoring (+3000 on
-      start), needs a real balance pass. Real finding along the way: repeat bank completions while
-      the multiball is still active are a no-op (MPF's `Multiball.start()` guards on
-      `balls_live_target > 0`) - it only re-arms once the multiball fully ends, not a deliberate
-      choice, just how the guard behaves; worth a balance pass if "every completion should
-      extend/restack it" is actually wanted. Verified with `tests/test_multiball.py`; existing
-      `tests/test_dropbank.py` repeat-completion assertions updated for the new +3000 side effect.
-      No dedicated Godot slide (mpf-gmc ships no default multiball slide, unlike bonus/service) -
-      flagged below as a follow-up, not done as part of this pass.
-- [x] `modes/multiball/config/multiball.yaml` has no dedicated Godot slide - multiball currently
-      runs with whatever slide was already showing. A real "MULTIBALL!" callout slide would need
-      the same design-approval process the 8 Phase 3 feature slides went through (the approved
-      "Aperture Display Signage" proposal), not something to improvise unilaterally. **Fixed
-      (2026-08-27)**: presented 2 concept directions (dropbank fire tie-in vs. a
-      feature-independent gold/white burst), user picked the dropbank tie-in. Built
-      `modes/multiball/slides/multiball_start.tscn` reusing `dropbank_hit.tscn`'s exact
-      background tint and flame shape (scaled 2.4x, recentered), with 3 white ball circles
-      bursting outward around it, wired via `slide_player: multiball_mb-dropbank_started:`.
-      Rendered and visually verified in Godot 4.3 (headless `--script`, real Vulkan rendering -
-      `--headless` alone forces a null renderer, same finding as the original 10-slide pass).
+- [ ] `board Overviews.xlsx`'s ramps notes are just "right ramp" and a bare "?" — needs a real
+      design pass before the right ramp diverter's routing logic (what a diverted shot actually
+      awards/does) can be built.
+- [ ] `super_wizard` mode currently just awards a flat score on start — what the wizard-mode
+      payoff should actually involve (a jackpot shot sequence, its own rules) is still open.
+- [ ] Lanes' "spell"/2x-hit lit-orange-blinking mechanic and the turret-gauntlet story hook are
+      proposed but unconfirmed (current lane hit-feedback is a plain "hit it yet" indicator
+      instead).
+- [ ] Skillshot's exact rule ("any of the 3 top lanes, once per ball" is the shipped baseline) —
+      a "rotate which lane counts each ball" version was proposed but never signed off.
+- [ ] Dropbank/insinerator's Companion Cube incineration story hook is inferred from the
+      `s-insinerator` hardware name, not confirmed with the user. Also a genuine CAD gap: no
+      drop-bank/insinerator geometry found in the Onshape document at all.
+- [ ] Multiball's repeat-completion behavior: a repeat dropbank completion while a multiball is
+      already active is currently a no-op (MPF's own guard) — decide if it should
+      extend/restack the multiball instead.
 
-- [x] Phase 5 stretch goal: wizard mode. **Implemented (2026-08-27)** per user direction (tiered
-      mini-wizards, not one big gate): `modes/progression/config/progression.yaml` adds 5 chained
-      `accruals:` devices (all `persist_state: true`, since progress must survive every ball of
-      the game, not reset per-ball like a normal logic block - the same
-      `disable_on_complete`-style default-config trap already found for portal_sequence, this time
-      it's `persist_state` defaulting `false`) - `lanes_both_groups` (folds
-      top_lanes_complete + bottom_lanes_complete into one signal), then 3 feature tiers (`tier_a`:
-      lanes+skillshot+slings, `tier_b`: orbits+ramps, `tier_c`: dropbank+aerial - DRAFT groupings,
-      needs a balance pass), then `wizard_gate` requiring all 3 tiers' completion events plus
-      `portal_all_exits_open` (portal's own 5-stage chain from the earlier achievement-chain fix,
-      the namesake feature as the deliberate final required key). `wizard_gate`'s completion
-      starts a new `super_wizard` mode (`modes/super_wizard/config/super_wizard.yaml`) - DRAFT and
-      deliberately minimal: implements the *gating* correctly (the actual goal of this pass) but
-      does not invent wizard-mode gameplay (a jackpot shot sequence, its own rules) - that's a
-      further open design question, same category as the ramp diverter's routing logic. Verified
-      end-to-end in `tests/test_progression.py`: all 3 tiers + 5 portal completions correctly
-      opens the gate and starts `super_wizard`; missing one tier correctly blocks it; tier
-      progress correctly persists across a ball drain.
+## Needs a game-balance pass
 
-- [x] Lane LED mapping gap: only 4 `led-lane-b*` LEDs existed for 5 `s-bottomlane*` switches
-      (`design/features/lanes.yaml`), and no lane had any LED feedback wired at all yet. **Fixed
-      (2026-08-27)**: added `led-lane-b5` as DRAFT hardware on chain 1 (a second, real, scanned
-      LED-driver board per `hardware-basic.yaml`'s scan comment - chain 0 alone already fills
-      every LED defined so far, `0-0-0`..`0-0-39`), and wired simple `light_player:` feedback for
-      all 8 lane shots in `modes/lanes/config/lanes.yaml` (gold on first hit, stays lit for the
-      rest of the ball) - deliberately not the unconfirmed 2x-blink "spell" mechanic, just a
-      plain progress indicator. Verified with a new test in `tests/test_lanes.py`. Real finding:
-      `MpfTestCase.assertLightOn`/`assertLightOff` read `light.hw_driver` (singular), which
-      doesn't exist on multi-channel `subtype: led` lights in this MPF version (`AttributeError`
-      - it's `hw_drivers`, plural) - use `assertLightColor(name, "off")` instead for RGB lights.
+All scoring implemented this project is DRAFT placeholder values, not tuned. In particular:
+bonus tally (100/shot), multiball start bonus (+3000), the 3 wizard-mode tier groupings and their
+scores, portal's per-stage exit_open bonuses, dropbank's bank-completion escalation
+(+500/repeat), and the sling combo window length (3s sliding).
 
-- [x] All 8 Phase 3 features had `show:` marked TBD in their design docs - every feature hit was
-      silent and static beyond the slide swap. **Implemented (2026-08-27)**: a real MPF `shows:`
-      LED flourish per feature (`modes/<name>/shows/<name>_hit.yaml`), matching each design doc's
-      described motif (turret pop for lanes, blue/orange ring-pop for orbits, blue squash-bounce
-      for slings, chase-flash for skillshot, red-orange flame wipe for dropbank, cyan launch flash
-      for aerial, a 4-LED burn-open chase for portal's sequence completion, orange glow for
-      ramps), wired via `show_player:` in each mode at a higher priority than any persistent
-      `light_player:` state so it flashes on top then falls back correctly (verified for lanes).
-      Each show has its own new regression test (color assertions via `assertLightColor` at the
-      right point in the flash). Real finding confirmed empirically: skillshot's mode has
-      `stop_events: shot_skillshot_hit` - the SAME event that triggers its show - and the show
-      still plays correctly despite the mode stopping (not a race, tested directly). At the time
-      this was written, `sound:` remained TBD for all 8 - the project's only audio assets were 7
-      background music tracks and one generic alarm-sweep loop, none suitable as the described
-      short stingers - see the follow-up entry below for how that gap closed.
-- [ ] **Manual action for the user**: review/adjust the DRAFT sound allocation in
-      `machinefolder/sounds/sfx/` (9 files, one per feature + multiball, picked by Claude from
-      the user's own Portal 2 sound extract - see the entry directly below for the full picks and
-      reasoning). The user plans to listen through their extract and swap in better choices where
-      warranted, particularly `slings_hit.wav` (a generic synth blip standing in for a "springy
-      boing" that doesn't exist in the pack) and `dropbank_incinerator.wav`/
-      `lanes_turret_chirp.wav` (single takes picked from several near-identical alternatives in
-      `_all/`, not necessarily the best one). Also worth a real playtest to confirm the
-      `sound_player:` filenames actually resolve inside Godot - that side wasn't verified (see
-      below).
-- [x] Sound for all 8 Phase 3 features + multiball: **filled in (2026-08-27)**. The user located
-      their own full Portal 2 sound extract on this machine
-      (`Documents/Hobby/Pinball/Assets/Portal Sounds/` - 9,359 raw files in `_all/`, plus
-      category folders the user had already hand-curated for pinball-specific purposes -
-      `multiball`, `ball launch`, `SFX`, `buttons`, `alarms`, `possible faith plate`, etc.).
-      Picked one file per feature by filename/folder match (e.g. `SFX/beam_platform_loop1 -
-      light bridge or beam.wav` for ramps, literally labeled for this; `buttons/
-      og_test_chamber_pos_01.wav` for skillshot's "test-chamber-style stinger"; real GLaDOS
-      incinerator lines for dropbank's Companion Cube hook), copied and renamed into
-      `machinefolder/sounds/sfx/` (9 files, standard 16-bit PCM WAV, same format the project
-      already used - no conversion needed), and wired via `sound_player:` in each mode
-      (`modes/<name>/config/<name>.yaml`). No clean "springy boing" existed in the pack for
-      slings (Portal isn't that kind of game) - a synth blip stands in. **Explicitly a DRAFT
-      baseline, not a final pick** - the user plans to review/listen through and adjust the
-      allocation manually. Verified via a clean `mpf -X -t -b` boot (validates `sound_player:`
-      config syntax) and the full test suite; actual sound-*name* resolution inside Godot
-      (mpf-gmc's `GMCMedia.traverse_tree_for`) was NOT verified - a headless script calling
-      `GMCMedia` methods directly outside its normal scene-tree lifecycle hung indefinitely
-      (10+ minutes, still consuming CPU, no output) rather than erroring or completing; killed
-      rather than debugged further, since audio can't be visually verified the way slides were
-      anyway (no way to "screenshot" a sound in this environment). Filenames are unique and
-      extension-matched to mpf-gmc's discovery rules, same pattern the already-working
-      `SlowMusic`/`alarm_sweep_lp_lg_01` references use, but worth a real playtest (or a proper
-      in-editor Godot check) before fully trusting the names resolve.
+## Manual action for the user
 
-## Not blocked by hardware access
-
-- [x] All 8 `design/features/*.yaml` files (`lanes, orbits, slings, skillshot, dropbank, aerial,
-      portal, ramps`) have `scoring: TBD` — needs a scoring-values pass, doesn't require the
-      cabinet. Fixed: each now has DRAFT point values (clearly marked needs-review, not final
-      game balance) implemented in its `modes/<name>/config/<name>.yaml`.
-- [x] The "standard pinball moments" every game needs — `ball_start`/match, `tilt_warning`,
-      `ball_over`, `multiball_start`/jackpot, `game_over`, `high_score_entry` — have no owning
-      design doc yet; they aren't playfield "features" in the shots/hardware sense so don't fit
-      `design/features/` cleanly. Fixed: see `design/GAME_MOMENTS.md` — most turned out to be
-      MPF built-in modes (`match`, `high_score`) needing only `config.yaml` registration (now
-      done); `tilt_warning` and `multiball_start` remain genuinely blocked (hardware / open
-      design fork respectively), not just undesigned.
-- [x] Could not fully verify `match`/`high_score` trigger correctly at a real game-over in an
-      automated test — draining a full 3-ball game via `smart_virtual` in a scratch test got
-      stuck after ball 1 (ball 2 never advanced past `bd-plunger` across repeated
-      `drain_all_balls()` + `hit_and_release_switch("s-launch")` calls, for reasons not yet
-      root-caused; possibly `mechanical_eject`/`player_controlled_eject_event` interaction with
-      the test harness rather than a real bug). Boot is clean and the existing 24-test suite
-      (all single-ball scenarios) still passes with both modes active. Needs follow-up before
-      trusting `match`/`high_score` behavior beyond "loads without erroring." **Root-caused and
-      fixed (2026-08-27)**: not a real bug - the scratch test called `drain_all_balls()`
-      immediately after `start_game()`, before ball 1 was ever launched onto the playfield.
-      Since `bd-plunger` uses `mechanical_eject` (the player must hit `s-launch` - MPF doesn't
-      auto-plunge), ball 1 was still parked in the plunger lane; draining "it" desyncs
-      `playfield.available_balls`, and every later `ball_starting` hangs forever in MPF's
-      `BallController.wait_until_playfields_are_empty()` (confirmed via
-      `machine.playfields["playfield"].balls`/`available_balls` and the repeating "Playfields
-      still contain balls" log line - reading `mpf/modes/game/code/game.py` and
-      `mpf/core/ball_controller.py` directly pinpointed the wait). Launching each ball before
-      draining it (the same order a real player experiences) fixes it completely. Also found
-      along the way: `MpfGameTestCase.fill_troughs()` activates *every* `ball_switch` configured
-      on a trough device (7 here: `s-trough1-6` + `s-trough-jam`, a trough capacity larger than
-      `balls_installed: 4` - normal for the real cabinet), which conflicts with
-      `balls_installed: 4` and inflates the ball controller's known-ball count; a full-game test
-      needs a trimmed fill matching `hardware-basic.yaml`'s
-      `virtual_platform_start_active_switches` instead. New passing test:
-      `tests/test_full_game.py::test_full_3ball_game_reaches_game_over` - drains all 3 balls in
-      order and asserts the game actually ends (`match`/`high_score` run as part of teardown,
-      confirmed clean in the log: `match_no_match`, `mode_high_score_started/stopped`, no
-      errors).
-- [x] Build out the 8 designed-but-unimplemented feature modes (`lanes, orbits, slings,
-      skillshot, dropbank, aerial, portal, ramps`) against `smart_virtual` — see
-      `plans/resumption-roadmap.md` Phase 3 and each feature's Rules layer in
-      `design/features/*.yaml`. Done: all 8 implemented, boot-tested clean, and covered by a
-      passing `tests/test_<name>.py` each (24 tests total). Two design-doc device-type choices
-      were corrected along the way (`accrual` -> `sequences` for dropbank/portal's ordered
-      finishers - accruals complete in any order, verified against MPF's own
-      `logic_blocks.py`). Several nuances deliberately deferred rather than shipped unverified -
-      see the new items below.
-- [x] Draft/validate the `flippers:` MPF config skeleton against `smart_virtual` — the real
-      coil-driver wiring is hardware-blocked (see the flippers item above), but the config
-      itself can be written and boot-tested virtually first. Done - see the flippers item above
-      for a real bug this surfaced (hold_power can't be 0.0) and its fix.
-- [x] Build real `base`/`attract` Godot slide art, plus the bespoke feature-hit overlays
-      cataloged in `design/SCREENS.md`. Fixed: all 10 slides now carry original vector
-      iconography (an aperture-iris mark for `attract`, a lit terminal frame for `base`, and a
-      distinct line-art icon per feature tying back to its `presentation.show` motif) on a
-      dark, per-feature-tinted background, replacing the shared `mainscreen.jpg` and the flat
-      `ColorRect` placeholders. Proposal reviewed and approved first as a published Artifact
-      ("Aperture Display Signage") before touching any `.tscn` file — see that artifact for the
-      full palette/rationale per screen. `images/mainscreen.jpg` is no longer referenced by any
-      slide but was left in place, not deleted.
-      **Now visually verified**: found Godot 4.3 actually installed on this machine
-      (`C:\Program Files (x86)\Godot\`), so all 10 slides were rendered for real (headless
-      `--script` capture, real Vulkan rendering — `--headless` alone forces a null/dummy
-      renderer and produces blank textures, worth remembering next time) and reviewed as
-      screenshots. Caught one real bug this way: the dropbank drop-target rectangles, built as
-      closed-loop `Line2D` shapes, rendered as broken glyph-like boxes (a triangulation edge
-      case for an axis-aligned closed rectangle) — fixed by switching to plain `ColorRect`
-      nodes. The other 9 slides matched the approved proposal on the first render. `base.tscn`'s
-      score readout doesn't show in an isolated screenshot since there's no live MPF game
-      supplying the `score` player variable in that test — expected, not a bug.
-      **Follow-up (2026-08-27)**: `attract`/`base` had their original `mainscreen.jpg` background
-      restored in place of the new aperture-iris/terminal-frame icon treatment — the user
-      specifically liked that image's moody atmosphere and, after being flagged that it reads as
-      Portal-themed fan art (same licensing category as the placeholder audio), confirmed reuse
-      is fine for this private, non-commercial project. The 8 feature-hit overlays keep their
-      new original icons (unaffected, never used `mainscreen.jpg`). Title/score `Label` color
-      accents (blue/orange) were kept over the restored image.
-- [x] Resolve `design/features/portal.yaml`'s open ball-lock hole-pairing mechanic question via
-      Onshape CAD (open `balldropper`/`VUK`/`Exit`/`DropperAssy` directly) rather than on the
-      physical machine. Resolved: the CAD does NOT support hole-pairing - `VUK`/`VUK high`/
-      `Exit` are unused orphaned stub part studios never instanced in the real assembly; the
-      built machine has exactly one `DropperAssy` feeding a single linear path to one `Portal
-      Vuk` exit, no second capture point or coordinating linkage anywhere. This validates the
-      already-implemented `sequences:`-based portal mode (a strictly ordered single path) rather
-      than requiring a rework. See `design/research/onshape-cad-findings.md`.
-- [x] `modes/slings/config/slings.yaml`'s sling combo has no real time window yet - MPF's
-      `logic_block_timeout` starts ticking from mode/logic-block enable (ball start), not from
-      the first hit, so it can't implement "back-to-back within N seconds" as configured today.
-      Needs a real "start a timer on first hit" mechanism (e.g. enable the timeout only via an
-      event posted on the first sling hit) before this is a genuine time-limited combo. **Fixed
-      (2026-08-27)**: added a `timers:` device (`sling_combo_window`, 3s, direction up) that
-      `restart()`s on every sling hit - `restart()` starts the timer if not already running, so
-      the first hit both arms the window and registers as sequence step 0, no separate "arm"
-      event needed - and resets the sequence's progress via `reset_events` if the timer ever
-      completes (3+ seconds with no further hit). This is a sliding window (extends on each hit)
-      rather than a fixed deadline from the first hit. Verified with 2 new tests in
-      `tests/test_slings.py`: one confirming a slow gap resets progress, one confirming the
-      window correctly extends across hits spaced up to 2.5s apart.
-- [x] `modes/portal/config/portal.yaml`'s 5-stage "exit open" achievement_group progression
-      (`led-exit-open-1..5`, the Phase 5 wizard-mode gate) is not implemented - MPF's
-      `achievements:` device only posts a generic `achievement_(name)_changed_state` event by
-      default, with no clean way (found so far) to chain stage N's enable off stage N-1's
-      completion via plain config. Needs more research into `achievements:`/`achievement_groups:`
-      before this can be built and tested properly. The core dropper->portal->exit sequence
-      scoring is implemented independently of this. **Fixed (2026-08-27)**: both earlier findings
-      were wrong on re-verification against the installed source. `achievements:` DOES default
-      `events_when_completed` to a clean `achievement_<name>_state_completed` event - the earlier
-      pass only checked the generic `changed_state` event. And `achievement_group` turned out to
-      be the wrong device type entirely (built for player-selectable "pick one" mechanics, not a
-      fixed linear chain) - used 5 plain `achievements:` chained by their own default completion
-      events instead, see `design/features/portal.yaml` for the full corrected reasoning. Real bug
-      found and fixed along the way: `disable_on_complete` defaults to `true` for every
-      `logic_block` (`counters`/`accruals`/`sequences`) - `portal_sequence` needed
-      `disable_on_complete: false` explicitly or it would only ever complete once per ball,
-      capping the chain at stage 1 forever. Verified with 2 new tests in `tests/test_portal.py`.
-- [x] `modes/dropbank/config/dropbank.yaml`'s insinerator shot scores flat, not the "escalating
-      value per repeat completion" pattern from MPF's sequential-drop-banks cookbook recipe
-      referenced in `design/features/dropbank.yaml` - deferred pending a real game-balance pass.
-      **Fixed (2026-08-27)**: the *bank-completion* award (not the insinerator shot itself, which
-      stays flat - the design note was about the bank) now escalates +500 per repeat completion
-      within a ball, via a plain `dropbank_completions` player var read into the score template
-      (`1000 + 500 * current_player.dropbank_completions`) and incremented after. Values are still
-      DRAFT pending a real balance pass. Verified with a new test in `tests/test_dropbank.py`
-      covering 3 repeat completions (1000/1500/2000).
+- [ ] Review/adjust the DRAFT sound allocation in `machinefolder/sounds/sfx/` (9 files, one per
+      feature + multiball, picked from the user's own Portal 2 sound extract — see `CHANGES.md`
+      entry 8). `slings_hit.wav` (a generic synth blip standing in for a "springy boing" that
+      doesn't exist in the pack) and `dropbank_incinerator.wav`/`lanes_turret_chirp.wav` (single
+      takes picked from several near-identical alternatives) are the most likely to be worth
+      swapping.
+- [ ] Confirm on a real playtest (or a proper in-editor Godot check) that the `sound_player:`
+      filenames actually resolve inside Godot — this wasn't independently verified (see
+      `plans/testing-strategy.md`'s `GMCMedia` finding for why).
