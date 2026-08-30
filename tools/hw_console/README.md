@@ -14,8 +14,8 @@ cd tools/hw_console
 ..\..\.venv\Scripts\python.exe app.py
 ```
 
-Then open http://localhost:5000. (Flask is installed in the project's `.venv`; if it's missing,
-`pip install flask`.)
+Then open http://localhost:5000. (Flask and ruamel.yaml are installed in the project's `.venv`;
+if either is missing, `pip install flask ruamel.yaml`.)
 
 ## Workflow
 
