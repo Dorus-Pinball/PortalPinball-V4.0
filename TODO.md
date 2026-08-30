@@ -51,6 +51,17 @@ work).
       mode-qualifying switch into a real launch mechanism. No physical coil exists there today —
       this is a "should we add hardware" decision, not "wire up what's already there."
 
+## Dev tooling
+
+- [ ] **True graceful Ctrl+C shutdown for `tools/mpf-session.ps1`**: current `-Action Stop` is a
+      tracked `Stop-Process` (hard-stop), not a real SIGINT to MPF's own signal handler —
+      deliberately deferred in favor of simplicity, since a hard-stop was verified safe on this
+      hardware (OPP boards de-energize drivers on serial disconnect, COM ports release cleanly).
+      A true graceful stop would need a small Win32 helper (`AttachConsole`/
+      `GenerateConsoleCtrlEvent`) to deliver a real CTRL_C to the child process. Revisit only if
+      MPF's own clean-shutdown logic (e.g. flushing something mid-write) ever actually matters
+      for a session.
+
 ## Needs a design decision from the user
 
 - [ ] `board Overviews.xlsx`'s ramps notes are just "right ramp" and a bare "?" — needs a real

@@ -44,9 +44,17 @@ this project doesn't use.)
 
 **Real hardware:** `../.venv/Scripts/mpf` (no `-X`) from `machinefolder/` — MPF uses the `opp`
 platform from `config.yaml` and talks to the boards over `COM4`/`COM5`/`COM6`. Board/port
-assignments can drift if USB enumeration changes — re-run MPF's hardware scan and compare against
-the pasted scan output in `machinefolder/config/hardware-basic.yaml` if switches/coils stop
-responding.
+assignments can drift if USB enumeration changes — re-run MPF's hardware scan
+(`mpf hardware scan`, a read-only connectivity check) and compare against the pasted scan output
+in `machinefolder/config/hardware-basic.yaml` if switches/coils stop responding.
+
+**From a non-interactive session (e.g. Claude Code):** plain `mpf` crashes here — its text UI
+(`asciimatics`) can't open a console screen buffer without a real console attached. Use
+`tools/mpf-session.ps1 -Action Start` instead (run via a PowerShell tool/shell, not Bash — it
+tracks the real Windows PID, which a Bash shell's `ps`/`kill` don't reliably see for a
+backgrounded Windows process). See the script's header comment for the full rationale, and
+`-Action Stop`/`Status`/`Log` to manage it. This is unnecessary in your own interactive terminal,
+where plain `mpf` and its text UI work normally.
 
 **Display:** open `machinefolder/` as a Godot 4 project (it autoloads `mpf_gmc.gd` per
 `project.godot`) and run it alongside a running `mpf` instance — it connects over BCP
@@ -75,6 +83,7 @@ machinefolder/
 tests/              # MpfTestCase/MpfGameTestCase suite - run with `python -m unittest discover tests`
 design/             # story -> shots -> modes workflow + schema-tracked feature design docs
 tools/hw_console/   # local web tool for tracking hardware bring-up (boards + components)
+tools/mpf-session.ps1  # start/stop mpf reliably from a non-interactive shell (see Running it)
 install.ps1          # one-time dev environment setup (.venv + mpf + jsonschema)
 ```
 

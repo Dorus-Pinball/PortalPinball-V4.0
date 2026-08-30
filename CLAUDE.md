@@ -29,6 +29,13 @@ display. See `README.md` for the full stack breakdown and how to run it.
 - `board Overviews.xlsx` at the repo root is the hardware/design reference (board pinouts +
   early game-design notes) — check it before assigning new switch/coil numbers, to avoid
   colliding with something already planned there.
+- **Starting/stopping `mpf` from a session (this includes Claude Code tool calls):** use
+  `tools/mpf-session.ps1 -Action Start|Stop|Status|Log`, run via a PowerShell tool/shell, not
+  Bash — plain `mpf` crashes its text UI in a non-interactive shell, and a Bash-tracked PID for a
+  backgrounded Windows process doesn't match its real PID, so `kill` from Bash can silently miss
+  a still-running session against real hardware. See the script's header comment for the full
+  story. Always check with the user before a real-hardware `Start` (the script itself can't
+  prompt — no interactive stdin).
 
 ## Current known gaps
 

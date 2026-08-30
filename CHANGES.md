@@ -85,3 +85,18 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
    this tool existed. Found two real gaps while seeding it (recorded in the registry's notes, not
    fixed here): the VUK switches and the portal dropper switch have no matching eject coil
    configured anywhere. — **Status: active**.
+10. **`tools/mpf-session.ps1` for running mpf from a non-interactive session** (2026-08-30),
+    found while doing the first real-hardware bring-up test this laptop. Plain `mpf` (real
+    hardware, full text UI) crashes immediately when run from a Claude Code tool session —
+    `asciimatics` can't open a console screen buffer without a real console attached; MPF's own
+    `-t` flag fixes that (confirmed working: connected cleanly to all 3 OPP chains, correctly
+    read all 6 trough switches + jam as active). Separately, a backgrounded `mpf` process's PID
+    as seen from a Bash/MSYS shell doesn't match its real Windows PID, so `kill` from Bash
+    silently failed to find it — it was still running, undetected, until located via
+    `Get-Process`/`Stop-Process` from PowerShell. `tools/mpf-session.ps1` wraps both fixes:
+    always passes `-t`, tracks the real Windows PID via `Start-Process -PassThru`, and gives
+    `Start`/`Stop`/`Status`/`Log` actions with log tailing and stale-state cleanup. Stop is a
+    plain tracked `Stop-Process`, not a true graceful Ctrl+C — verified safe on this hardware
+    (OPP boards de-energize drivers on serial disconnect, COM ports release cleanly, confirmed
+    via `mpf hardware scan` immediately after a hard-stop); a true graceful shutdown was
+    considered and deliberately deferred, see `TODO.md`. — **Status: active**.
