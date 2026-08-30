@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portal Pinball - Hardware Console</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>Portal Pinball - Hardware Bring-Up Console</h1>
+  <nav>
+    <button class="tab-btn active" data-tab="boards">Boards</button>
+    <button class="tab-btn" data-tab="components">Components</button>
+  </nav>
+</header>
+
+<main>
+  <section id="tab-boards" class="tab active">
+    <table id="boards-table">
+      <thead>
+        <tr><th>Board</th><th>Port</th><th>Role</th><th>Firmware</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section id="tab-components" class="tab">
+    <div class="components-layout">
+      <div class="components-list-pane">
+        <div class="list-controls">
+          <select id="status-filter">
+            <option value="">All statuses</option>
+            <option value="planned">Planned</option>
+            <option value="wired">Wired</option>
+            <option value="tested">Tested</option>
+          </select>
+          <button id="new-component-btn">+ Add component</button>
+        </div>
+        <ul id="components-list"></ul>
+      </div>
+      <div class="component-detail-pane" id="component-detail">
+        <p class="placeholder">Select a component to see its switches, coils, board, and wiring checklist.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dialog id="new-component-dialog">
+  <form id="new-component-form">
+    <h2>Add component</h2>
+    <label>Internal name (kebab-case)<input name="name" required pattern="[a-z0-9]+(-[a-z0-9]+)*"></label>
+    <label>Display name<input name="display_name" required></label>
+    <label>Notes<textarea name="notes" rows="2"></textarea></label>
+
+    <h3>Switches</h3>
+    <div id="new-switches"></div>
+    <button type="button" class="add-row-btn" data-kind="switch">+ switch</button>
+
+    <h3>Coils</h3>
+    <div id="new-coils"></div>
+    <button type="button" class="add-row-btn" data-kind="coil">+ coil</button>
+
+    <p class="error" id="new-component-error" hidden></p>
+
+    <div class="dialog-actions">
+      <button type="button" id="cancel-new-component">Cancel</button>
+      <button type="submit">Add</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

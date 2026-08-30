@@ -1,0 +1,379 @@
+# Hardware bring-up registry for Portal Pinball V4.0.
+#
+# This is a tracking layer, NOT MPF config - the real switch/coil numbers MPF loads live in
+# machinefolder/config/hardware-switches.yaml and hardware-coils.yaml, unchanged by this file.
+# Edit this by hand or through the hw_console web UI (see tools/hw_console/README.md).
+#
+# Seeded 2026-08-30 from the state of hardware-*.yaml / hardware-devices.yaml / TODO.md /
+# plans/resumption-roadmap.md at that time: components without a DRAFT marker in those files are
+# seeded as `wired` (the machine logged 23 real games in Sept-Oct 2024 per the roadmap); the
+# DRAFT-marked components (flippers, ramp-diverter/subway, service-mode nav) are seeded as
+# `planned`. Board status is seeded as `scanned` (the last known state, from the hardware-scan
+# comment block in hardware-basic.yaml) since the machine has been dormant ~22 months and boards
+# are being reconnected/reverified now, not assumed still connected.
+
+checklist_template:
+  - {item: "Flyback diode across coil", done: false}
+  - {item: "Common ground tied to power supply ground", done: false}
+  - {item: "Coil and its trigger switch land on the same physical OPP board", done: false}
+
+boards:
+  chain0-0x20:
+    display_name: "Chain 0 / Board 0x20 (Cobra LED driver)"
+    port: COM4
+    chain: 0
+    address: "0x20"
+    firmware: "0x2040000"
+    role: led-driver
+    status: scanned
+    notes: "Also has 16 unused solenoid outputs (see commented Cobra 0-0-x placeholders
+      in hardware-coils.yaml)."
+  chain1-0x20:
+    display_name: "Chain 1 / Board 0x20 (Cobra LED driver)"
+    port: COM5
+    chain: 1
+    address: "0x20"
+    firmware: "0x2040000"
+    role: led-driver
+    status: scanned
+    notes: "Also has 8 unused solenoid outputs (see commented Cobra 1-0-x placeholders
+      in hardware-coils.yaml)."
+  chain2-0x20:
+    display_name: "Chain 2 / Board 0x20 (PSOC card 0)"
+    port: COM6
+    chain: 2
+    address: "0x20"
+    firmware: "0x1000004"
+    role: psoc-switches-coils
+    status: scanned
+  chain2-0x21:
+    display_name: "Chain 2 / Board 0x21 (PSOC card 1)"
+    port: COM6
+    chain: 2
+    address: "0x21"
+    firmware: "0x1000004"
+    role: psoc-switches-coils
+    status: scanned
+  chain2-0x22:
+    display_name: "Chain 2 / Board 0x22 (PSOC card 2, incl. incandescent card)"
+    port: COM6
+    chain: 2
+    address: "0x22"
+    firmware: "0x1000004"
+    role: psoc-switches-coils-incand
+    status: scanned
+  chain2-0x23:
+    display_name: "Chain 2 / Board 0x23 (PSOC card 3)"
+    port: COM6
+    chain: 2
+    address: "0x23"
+    firmware: "0x1000004"
+    role: psoc-switches-coils
+    status: scanned
+
+components:
+  autofire-slings:
+    display_name: "Slings (autofire)"
+    status: wired
+    mpf_devices: [ac-sling-left, ac-sling-right]
+    switches:
+      - {name: s-left-sling, number: 2-0-1, board: chain2-0x20, status: wired}
+      - {name: s-right-sling, number: 2-0-0, board: chain2-0x20, status: wired}
+    coils:
+      - {name: c-sling-left, number: 2-0-1, board: chain2-0x20, status: wired}
+      - {name: c-sling-right, number: 2-0-0, board: chain2-0x20, status: wired}
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: ""
+
+  autofire-popbumpers:
+    display_name: "Pop bumpers (autofire)"
+    status: wired
+    mpf_devices: [ac-popbumper-1, ac-popbumper-2, ac-popbumper-3]
+    switches:
+      - {name: s-popbumper-1, number: 2-0-8, board: chain2-0x20, status: wired}
+      - {name: s-popbumper-2, number: 2-0-9, board: chain2-0x20, status: wired}
+      - {name: s-popbumper-3, number: 2-0-10, board: chain2-0x20, status: wired}
+    coils:
+      - {name: c-popbumper-1, number: 2-0-4, board: chain2-0x20, status: wired}
+      - {name: c-popbumper-2, number: 2-0-5, board: chain2-0x20, status: wired}
+      - {name: c-popbumper-3, number: 2-0-6, board: chain2-0x20, status: wired}
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: ""
+
+  plunger-launch:
+    display_name: "Plunger lane / auto-launch"
+    status: wired
+    mpf_devices: [bd-plunger]
+    switches:
+      - {name: s-plunger-lane, number: 2-0-16, board: chain2-0x20, status: wired}
+      - {name: s-start, number: 2-0-17, board: chain2-0x20, status: wired}
+      - {name: s-launch, number: 2-0-18, board: chain2-0x20, status: wired}
+    coils:
+      - {name: c-plunger, number: 2-0-2, board: chain2-0x20, status: wired}
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "s-start/s-launch are cabinet buttons, not playfield switches."
+
+  trough:
+    display_name: "Ball trough"
+    status: wired
+    mpf_devices: [bd-trough]
+    switches:
+      - {name: s-trough1, number: 2-1-16, board: chain2-0x21, status: wired}
+      - {name: s-trough2, number: 2-1-17, board: chain2-0x21, status: wired}
+      - {name: s-trough3, number: 2-1-18, board: chain2-0x21, status: wired}
+      - {name: s-trough4, number: 2-1-19, board: chain2-0x21, status: wired}
+      - {name: s-trough5, number: 2-1-20, board: chain2-0x21, status: wired}
+      - {name: s-trough6, number: 2-1-21, board: chain2-0x21, status: wired}
+      - {name: s-trough-jam, number: 2-1-22, board: chain2-0x21, status: wired}
+    coils:
+      - {name: c-trough-eject, number: 2-0-3, board: chain2-0x20, status: wired}
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "Eject coil is software/event-triggered (ball_device), not a hardware autofire
+      rule - the switch/coil board split (0x21 / 0x20) is fine here."
+
+  drop-bank:
+    display_name: "Drop target bank"
+    status: wired
+    mpf_devices: [d-drop-target1, d-drop-target2, d-drop-target3, db-dropbank]
+    switches:
+      - {name: s-drop1, number: 2-1-23, board: chain2-0x21, status: wired}
+      - {name: s-drop2, number: 2-1-24, board: chain2-0x21, status: wired}
+      - {name: s-drop3, number: 2-1-25, board: chain2-0x21, status: wired}
+    coils:
+      - {name: c-drop, number: 2-0-7, board: chain2-0x20, status: wired}
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "Reset coil is software-triggered, not a hardware autofire rule - board
+      split (0x21 / 0x20) is fine here."
+
+  top-lanes:
+    display_name: "Top lanes (3)"
+    status: wired
+    mpf_devices: []
+    switches:
+      - {name: s-toplane1, number: 2-0-19, board: chain2-0x20, status: wired}
+      - {name: s-toplane2, number: 2-0-20, board: chain2-0x20, status: wired}
+      - {name: s-toplane3, number: 2-0-21, board: chain2-0x20, status: wired}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "No coils - pure switches."
+
+  bottom-lanes:
+    display_name: "Bottom lanes (5)"
+    status: wired
+    mpf_devices: []
+    switches:
+      - {name: s-bottomlane1, number: 2-0-22, board: chain2-0x20, status: wired}
+      - {name: s-bottomlane2, number: 2-0-23, board: chain2-0x20, status: wired}
+      - {name: s-bottomlane3, number: 2-0-24, board: chain2-0x20, status: wired}
+      - {name: s-bottomlane4, number: 2-0-25, board: chain2-0x20, status: wired}
+      - {name: s-bottomlane5, number: 2-0-26, board: chain2-0x20, status: wired}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "No coils - pure switches."
+
+  orbits:
+    display_name: "Orbits (left/right/top)"
+    status: wired
+    mpf_devices: []
+    switches:
+      - {name: s-orbit-l, number: 2-0-28, board: chain2-0x20, status: wired}
+      - {name: s-orbit-r, number: 2-0-27, board: chain2-0x20, status: wired}
+      - {name: s-orbit-top, number: 2-1-28, board: chain2-0x21, status: wired}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "No coils - pure switches."
+
+  targets:
+    display_name: "Standup targets (E/R/M/L banks)"
+    status: wired
+    mpf_devices: []
+    switches:
+      - {name: s-target-e1, number: 2-0-29, board: chain2-0x20, status: wired}
+      - {name: s-target-e2, number: 2-0-30, board: chain2-0x20, status: wired}
+      - {name: s-target-r1, number: 2-3-0, board: chain2-0x23, status: wired}
+      - {name: s-target-r2, number: 2-3-1, board: chain2-0x23, status: wired}
+      - {name: s-target-m1, number: 2-3-2, board: chain2-0x23, status: wired}
+      - {name: s-target-m2, number: 2-3-3, board: chain2-0x23, status: wired}
+      - {name: s-target-m3, number: 2-3-4, board: chain2-0x23, status: wired}
+      - {name: s-target-m4, number: 2-3-5, board: chain2-0x23, status: wired}
+      - {name: s-target-l1, number: 2-3-6, board: chain2-0x23, status: wired}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "No coils - pure switches."
+
+  ramps:
+    display_name: "Ramps (left/right, entry+exit)"
+    status: wired
+    mpf_devices: []
+    switches:
+      - {name: s-ramp-r1, number: 2-3-7, board: chain2-0x23, status: wired}
+      - {name: s-ramp-l1, number: 2-3-8, board: chain2-0x23, status: wired}
+      - {name: s-ramp-r2, number: 2-3-9, board: chain2-0x23, status: wired}
+      - {name: s-ramp-l2, number: 2-3-10, board: chain2-0x23, status: wired}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "No coils - pure switches. board Overviews.xlsx's ramp notes are sparse
+      ('right ramp', a bare '?') - see TODO.md."
+
+  vuk:
+    display_name: "VUKs (mid-field, top)"
+    status: wired
+    mpf_devices: []
+    switches:
+      - {name: s-vukmid, number: 2-1-26, board: chain2-0x21, status: wired}
+      - {name: s-vuktop, number: 2-1-27, board: chain2-0x21, status: wired}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: false}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: false}
+    notes: "GAP: switches exist and are wired, but no eject coil is configured anywhere
+      (bd-vukmid/bd-vuktop are commented out in hardware-devices.yaml with no eject_coil
+      assigned) - a ball reaching either VUK currently has no way to be ejected."
+
+  portal-transfer:
+    display_name: "Portal ball transfer (dropper -> portal -> exit)"
+    status: wired
+    mpf_devices: []
+    switches:
+      - {name: s-dropper, number: 2-1-30, board: chain2-0x21, status: wired}
+      - {name: s-portal-r, number: 2-1-29, board: chain2-0x21, status: wired}
+      - {name: s-portal-m, number: 2-3-12, board: chain2-0x23, status: wired}
+      - {name: s-exit-success, number: 2-1-31, board: chain2-0x21, status: wired}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: false}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: false}
+    notes: "GAP: s-dropper has no matching coil anywhere in hardware-coils.yaml -
+      the dropper's release mechanism (if any) isn't wired/configured."
+
+  aerial-and-insinerator:
+    display_name: "Aerial plate / Insinerator target"
+    status: wired
+    mpf_devices: []
+    switches:
+      - {name: s-aerial, number: 2-3-11, board: chain2-0x23, status: wired}
+      - {name: s-insinerator, number: 2-3-13, board: chain2-0x23, status: wired}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "No coils today - aerial upkicker is a wishlist item (see TODO.md), not
+      installed."
+
+  cabinet-button:
+    display_name: "Cabinet action button"
+    status: wired
+    mpf_devices: []
+    switches:
+      - {name: s-button, number: 2-0-31, board: chain2-0x20, status: wired}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "No coil - pure switch."
+
+  flippers:
+    display_name: "Flippers"
+    status: planned
+    mpf_devices: [left_flipper, right_flipper]
+    switches:
+      - {name: s-left-flipper, number: 2-1-0, board: chain2-0x21, status: planned}
+      - {name: s-right-flipper, number: 2-1-1, board: chain2-0x21, status: planned}
+    coils:
+      - {name: c-flipper-left, number: 2-1-0, board: chain2-0x21, status: planned}
+      - {name: c-flipper-right, number: 2-1-1, board: chain2-0x21, status: planned}
+    checklist:
+      - done: false
+        item: Flyback diode across coil
+      - done: false
+        item: Common ground tied to power supply ground
+      - done: false
+        item: Coil and its trigger switch land on the same physical OPP board
+    notes: "Mechanical EOS inside coil assembly, not wired back to controller - main_coil
+      only, no hold_coil/eos_switch. Numbers are DRAFT pending a physical continuity
+      check against board Overviews.xlsx (see TODO.md)."
+
+  ramp-diverter-subway:
+    display_name: "Right ramp diverter + subway"
+    status: planned
+    mpf_devices: [d-ramp-diverter]
+    switches:
+      - {name: s-subway-entry, number: 2-3-18, board: chain2-0x23, status: planned}
+      - {name: s-subway-exit, number: 2-3-19, board: chain2-0x23, status: planned}
+    coils:
+      - {name: c-ramp-diverter, number: 2-1-2, board: chain2-0x21, status: planned}
+    checklist:
+      - {item: "Flyback diode across coil", done: false}
+      - {item: "Common ground tied to power supply ground", done: false}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: false}
+    notes: "CAD-confirmed real mechanism (see design/research/onshape-cad-findings.md).
+      No game logic wired yet - what a diverted shot awards is an open design question
+      (design/features/ramps.yaml). Numbers are DRAFT, unconfirmed against board Overviews.xlsx."
+
+  service-mode-nav:
+    display_name: "Service mode nav switches"
+    status: planned
+    mpf_devices: []
+    switches:
+      - {name: sw_service_enter, number: 2-3-14, board: chain2-0x23, status: planned}
+      - {name: sw_service_esc, number: 2-3-15, board: chain2-0x23, status: planned}
+      - {name: sw_service_up, number: 2-3-16, board: chain2-0x23, status: planned}
+      - {name: sw_service_down, number: 2-3-17, board: chain2-0x23, status: planned}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: false}
+      - {item: "Common ground tied to power supply ground", done: false}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: false}
+    notes: "Names must stay exactly sw_service_enter/esc/up/down - MPF 0.80.0's service
+      mode hardcodes these literal switch names, ignoring any mode_settings override
+      (see hardware-switches.yaml's comment). No coils. Numbers are DRAFT."

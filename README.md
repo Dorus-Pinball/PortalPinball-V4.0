@@ -52,6 +52,14 @@ responding.
 `project.godot`) and run it alongside a running `mpf` instance — it connects over BCP
 automatically.
 
+## Hardware bring-up console
+
+`tools/hw_console/` is a small local web tool for tracking real-hardware wiring progress —
+per-board and per-component status, wiring checklists, and a collision check against
+`hardware-switches.yaml`/`hardware-coils.yaml` before a new component's numbers get assigned. It's
+a separate tracking layer, not a replacement for MPF's own config. See
+`tools/hw_console/README.md` for how to run it and the intended workflow.
+
 ## Layout
 
 ```
@@ -66,6 +74,7 @@ machinefolder/
   sounds/, images/  # currently placeholder assets, not final
 tests/              # MpfTestCase/MpfGameTestCase suite - run with `python -m unittest discover tests`
 design/             # story -> shots -> modes workflow + schema-tracked feature design docs
+tools/hw_console/   # local web tool for tracking hardware bring-up (boards + components)
 install.ps1          # one-time dev environment setup (.venv + mpf + jsonschema)
 ```
 
