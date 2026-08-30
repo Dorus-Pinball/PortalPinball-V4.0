@@ -72,3 +72,16 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
    sound extract on this machine — picked one clip per feature from it, wired via
    `sound_player:`, explicitly as a DRAFT baseline pending the user's own listen-through and
    adjustment (tracked as an open manual action in `TODO.md`). — **Status: active**.
+9. **Hardware bring-up console** (2026-08-30), ahead of starting real-hardware reconnection
+   (boards first, then one component at a time). Built `tools/hw_console/` — a local Flask +
+   vanilla-JS web tool tracking per-board and per-component wiring status (`planned`/`wired`/
+   `tested`), a wiring checklist per component (flyback diode / common ground / same-board rule,
+   from `TODO.md`'s OPP checklist), and a collision check against `hardware-switches.yaml`/
+   `hardware-coils.yaml` before a new component's numbers get assigned. It's a separate tracking
+   layer, not a replacement for MPF's own config — seeded from the current state of
+   `hardware-*.yaml`/`TODO.md` (DRAFT items as `planned`, everything else as `wired`, reflecting
+   the 23-real-games history from entry 1). `board Overviews.xlsx` is deliberately not
+   auto-parsed — numbers are transcribed by hand as each component gets planned, same as before
+   this tool existed. Found two real gaps while seeding it (recorded in the registry's notes, not
+   fixed here): the VUK switches and the portal dropper switch have no matching eject coil
+   configured anywhere. — **Status: active**.

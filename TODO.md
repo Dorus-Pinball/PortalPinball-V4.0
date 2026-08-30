@@ -29,7 +29,16 @@ work).
 - [ ] **Board number confirmation**: `hardware-coils.yaml` has a large commented-out block of
       unassigned numbers on the `2-1-x` chain and the Cobra `0-0-x`/`1-0-x` chains — confirm
       what's actually free vs. reserved against `board Overviews.xlsx` before any of the DRAFT
-      items above get wired for real, so nothing collides.
+      items above get wired for real, so nothing collides. Now tracked live in
+      `tools/hw_console/`'s registry (per-board/per-component status, collision check against
+      `hardware-*.yaml`) rather than only here.
+- [ ] **VUK eject coils missing**: `s-vukmid`/`s-vuktop` are wired switches, but no eject coil is
+      configured anywhere for either (`bd-vukmid`/`bd-vuktop` are commented out in
+      `hardware-devices.yaml` with no `eject_coil`) — a ball reaching either VUK currently has no
+      way to be ejected. Found while seeding `tools/hw_console/`'s registry (2026-08-30).
+- [ ] **Portal dropper coil missing**: `s-dropper` has no matching coil anywhere in
+      `hardware-coils.yaml` — the dropper's release mechanism (if any) isn't wired/configured.
+      Found while seeding `tools/hw_console/`'s registry (2026-08-30).
 - [ ] **OPP wiring checklist** (from `plans/OutsidePerspective.md`'s community research, apply
       before any DRAFT item above gets wired for real): confirm every driver + the switch that
       triggers it via a hardware rule (flipper EOS now, autofire coils already wired) land on the
