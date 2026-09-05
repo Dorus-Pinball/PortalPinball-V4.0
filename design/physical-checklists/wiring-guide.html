@@ -1,4 +1,4 @@
-<title>Wiring Guide</title>
+<title>Wiring &amp; Test Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -96,8 +96,27 @@ body{
 .masthead .sub{
   font-size:0.95rem;
   color:var(--ink-mute);
-  max-width:70ch;
+  max-width:74ch;
   line-height:1.5;
+}
+.masthead .fields{
+  margin-top:1.25rem;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0.75rem 2rem;
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+  font-size:0.78rem;
+}
+.field-line{
+  display:flex;
+  align-items:baseline;
+  gap:0.5rem;
+  color:var(--ink-mute);
+}
+.field-line .blank{
+  flex:1;
+  border-bottom:1px solid var(--ink-mute);
+  height:1.1em;
 }
 
 /* ---------- Legend ---------- */
@@ -152,8 +171,27 @@ body{
   line-height:1.55;
   max-width:74ch;
 }
-.section.flippers .section-head{border-color:var(--orange);}
-.section.flippers .section-num{color:var(--orange);}
+.section.flippers .section-head, .section.draft .section-head{border-color:var(--orange);}
+.section.flippers .section-num, .section.draft .section-num{color:var(--orange);}
+.section.decision .section-head{border-color:var(--blue);}
+.section.decision .section-num{color:var(--blue);}
+
+.divider{
+  display:flex;
+  align-items:center;
+  gap:0.9rem;
+  margin:3rem 0 2rem;
+  font-family:"Big Shoulders Stencil", "Arial Narrow", sans-serif;
+  font-size:1.1rem;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+  color:var(--ink-mute);
+}
+.divider::before, .divider::after{
+  content:"";
+  flex:1;
+  border-top:2px dashed var(--line);
+}
 
 /* ---------- Tables ---------- */
 .card{
@@ -166,15 +204,6 @@ table.wtable{
   width:100%;
   border-collapse:collapse;
   font-size:0.82rem;
-}
-table.wtable caption{
-  text-align:left;
-  font-family:"IBM Plex Mono", ui-monospace, monospace;
-  font-size:0.7rem;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--ink-mute);
-  padding:0.6rem 0.9rem 0.3rem;
 }
 table.wtable th, table.wtable td{
   padding:0.45rem 0.7rem;
@@ -206,7 +235,11 @@ table.wtable td.num, table.wtable td.brd{font-family:"IBM Plex Mono", ui-monospa
 .status.gap{color:var(--blue); background:var(--blue-tint);}
 
 .grid-two{display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;}
-@media (max-width:640px){.grid-two{grid-template-columns:1fr;} table.wtable{font-size:0.76rem;}}
+@media (max-width:640px){
+  .grid-two{grid-template-columns:1fr;}
+  table.wtable{font-size:0.76rem;}
+  .masthead .fields{grid-template-columns:1fr;}
+}
 
 .sketch{
   background:var(--surface);
@@ -243,6 +276,74 @@ table.wtable td.num, table.wtable td.brd{font-family:"IBM Plex Mono", ui-monospa
 }
 .callout b{font-weight:600;}
 
+/* ---------- Checklist items (bench-test sections) ---------- */
+.item{
+  display:flex;
+  align-items:flex-start;
+  gap:0.75rem;
+  padding:0.6rem 0.9rem;
+  border-top:1px solid var(--line);
+}
+.item:first-child{border-top:none;}
+.box{
+  flex:none;
+  width:1rem; height:1rem;
+  margin-top:0.2rem;
+  border:1.5px solid var(--ink);
+  border-radius:2px;
+}
+.item-body{flex:1; min-width:0;}
+.item-label{
+  font-size:0.92rem;
+  line-height:1.4;
+}
+.item-label b{font-weight:600;}
+.item-meta{
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+  font-size:0.74rem;
+  color:var(--ink-mute);
+  letter-spacing:0.02em;
+}
+.item-note{
+  display:flex;
+  align-items:baseline;
+  gap:0.4rem;
+  margin-top:0.35rem;
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+  font-size:0.72rem;
+  color:var(--ink-mute);
+}
+.item-note .blank{
+  flex:1;
+  min-width:3rem;
+  max-width:14rem;
+  border-bottom:1px solid var(--line);
+  height:1.1em;
+}
+.tag{
+  display:inline-block;
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+  font-size:0.65rem;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  margin-left:0.4rem;
+  vertical-align:1px;
+}
+.tag.draft{color:var(--orange); background:var(--orange-tint);}
+.tag.decision{color:var(--blue); background:var(--blue-tint);}
+
+.subhead{
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+  font-size:0.7rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--ink-mute);
+  margin:1.1rem 0 0.4rem;
+}
+.subhead:first-child{margin-top:0;}
+
 footer{
   margin-top:2.5rem;
   padding-top:1rem;
@@ -265,17 +366,23 @@ footer{
 
   <div class="masthead">
     <div class="kicker">
-      <span>Portal Pinball V4.0 — Wiring Reference</span>
+      <span>Portal Pinball V4.0 — Wiring &amp; Field Test</span>
       <span>OPP gen2 · COM4/5/6</span>
     </div>
-    <h1>Wiring Guide</h1>
-    <div class="sub">Board map, known-component wiring tables, and connector sketches to support wiring the cabinet by hand against the real boards. Source of truth for live status stays <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> — this is its printable/visual companion, generated from the same data plus <span style="font-family:'IBM Plex Mono',monospace">board Overviews.xlsx</span>'s connector pinouts.</div>
+    <h1>Wiring &amp; Test Guide</h1>
+    <div class="sub">Board map, known-component wiring tables, and connector sketches to support wiring the cabinet by hand — followed by the bench-test procedure to run once something here is wired. Source of truth for live status stays <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span>; this is its printable/visual companion, generated from that data plus <span style="font-family:'IBM Plex Mono',monospace">board Overviews.xlsx</span>'s connector pinouts.</div>
+    <div class="fields">
+      <div class="field-line">Date <span class="blank"></span></div>
+      <div class="field-line">MPF version <span class="blank"></span></div>
+      <div class="field-line">Run by <span class="blank"></span></div>
+      <div class="field-line">Build/commit <span class="blank"></span></div>
+    </div>
   </div>
 
   <div class="legend">
-    <span><span class="swatch wired"></span>Wired — real, confirmed on the cabinet</span>
-    <span><span class="swatch draft"></span>Planned — DRAFT config, not wired for real yet</span>
-    <span><span class="swatch gap"></span>Gap — switch/mechanism exists, no coil/config yet</span>
+    <span><span class="swatch wired"></span>Wired / standard — real, confirmed on the cabinet</span>
+    <span><span class="swatch draft"></span>Draft / planned — DRAFT config, not wired for real yet</span>
+    <span><span class="swatch gap"></span>Gap / decision — hardware or config missing, or a measurement to record</span>
   </div>
 
   <!-- 01 -->
@@ -286,7 +393,7 @@ footer{
       <table class="wtable">
         <thead><tr><th>Board</th><th>Port</th><th>Role</th><th>Switch inputs</th><th>Coil/driver outputs</th><th>LED outputs</th></tr></thead>
         <tbody>
-          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O</td><td class="num">15 free (of ~15 wired)</td><td class="num">14 free / 16 total <span style="color:var(--orange)">— 2 now planned (flippers)</span></td><td class="num">40 used (0-0-0…39)</td></tr>
+          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O</td><td class="num">13 free / 15 total <span style="color:var(--orange)">— 2 now planned (flippers)</span></td><td class="num">14 free / 16 total <span style="color:var(--orange)">— 2 now planned (flippers)</span></td><td class="num">40 used (0-0-0…39)</td></tr>
           <tr><td>chain1-0x20 <span class="item-meta">(Cobra B)</span></td><td class="brd">COM5</td><td>LED driver + spare I/O</td><td class="num">23 free</td><td class="num">8 free</td><td class="num">1 used (1-0-0)</td></tr>
           <tr><td>chain2-0x20 <span class="item-meta">(PSOC card 0)</span></td><td class="brd">COM6</td><td>Switches + coils</td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
           <tr><td>chain2-0x21 <span class="item-meta">(PSOC card 1)</span></td><td class="brd">COM6</td><td>Switches + coils</td><td class="num">wired</td><td class="num">wired (2-1-0…3 now free again)</td><td class="num">—</td></tr>
@@ -346,8 +453,9 @@ footer{
 
     <div class="grid-two">
       <div class="sketch">
-        <h3>Coil bank sketch — chain 0, driver connector</h3>
-        <svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
+        <h3>Coil bank — connector pins + which lug goes where</h3>
+        <svg viewBox="0 0 260 250" xmlns="http://www.w3.org/2000/svg">
+          <text x="130" y="14" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-mute)" letter-spacing="0.05em">CHAIN0-0x20 · COIL BANK (J-x)</text>
           <rect x="10" y="20" width="240" height="70" rx="4" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
           <!-- pins: 0-0-4, 0-0-3, 0-0-2, 0-0-1 left to right per xlsx bank order -->
           <g font-family="IBM Plex Mono, monospace" font-size="10" text-anchor="middle">
@@ -360,16 +468,38 @@ footer{
             <rect x="170" y="30" width="50" height="50" fill="none" stroke="var(--line)"/>
             <text x="195" y="60" fill="var(--ink-mute)">0-0-1</text>
           </g>
-          <text x="130" y="14" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-mute)" letter-spacing="0.05em">CHAIN0-0x20 · COIL BANK (J-x)</text>
-          <text x="130" y="112" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="var(--ink)">right ← → left</text>
-          <text x="130" y="132" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="var(--orange)">0-0-2 = c-flipper-left · 0-0-3 = c-flipper-right</text>
+          <text x="130" y="104" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="var(--orange)">0-0-2 = c-flipper-left · 0-0-3 = c-flipper-right</text>
+
+          <!-- per-coil circuit: which lug is +50V, which lug is the board's ground-sink pin -->
+          <text x="130" y="128" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-mute)" letter-spacing="0.05em">EACH COIL, WIRED LIKE THIS</text>
+
+          <rect x="15" y="168" width="80" height="36" rx="3" fill="var(--blue-tint)" stroke="var(--blue)" stroke-width="1.5"/>
+          <text x="55" y="184" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--blue)" font-weight="600">+50V SUPPLY</text>
+          <text x="55" y="197" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--blue)">(VIN 50V bus)</text>
+
+          <rect x="165" y="168" width="80" height="36" rx="3" fill="var(--orange-tint)" stroke="var(--orange)" stroke-width="1.5"/>
+          <text x="205" y="181" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--orange)" font-weight="600">BOARD PIN</text>
+          <text x="205" y="192" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--orange)">0-0-2 / 0-0-3</text>
+          <text x="205" y="202" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="var(--orange)">(sinks to GND when fired)</text>
+
+          <rect x="105" y="177" width="50" height="18" rx="2" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="130" y="190" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--ink)">COIL</text>
+          <line x1="95" y1="186" x2="105" y2="186" stroke="var(--ink)" stroke-width="1.5"/>
+          <line x1="155" y1="186" x2="165" y2="186" stroke="var(--ink)" stroke-width="1.5"/>
+
+          <!-- flyback diode in parallel across the coil, cathode band toward +50V (left) -->
+          <polyline points="55,168 55,148 205,148 205,168" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+          <polygon points="122,148 110,142 110,154" fill="var(--ink)"/>
+          <line x1="110" y1="140" x2="110" y2="156" stroke="var(--ink)" stroke-width="2.5"/>
+          <text x="130" y="220" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--ink)">flyback diode — cathode band ▐ faces the +50V lug</text>
         </svg>
-        <div class="caption">Coil lugs run positive from the high-voltage supply; the driver pin sinks to ground when fired. A 4004-type flyback diode is required across every coil (band toward the positive lead) — without it the collapsing field can destroy the driver MOSFET.</div>
+        <div class="caption">One coil lug lands on the <b>+50V supply bus</b> (VIN terminal block) — never the board. The other lug lands on the <b>board's driver pin</b> (<span style="font-family:'IBM Plex Mono',monospace">0-0-2</span>/<span style="font-family:'IBM Plex Mono',monospace">0-0-3</span>), which is a ground-sink: the on-board MOSFET pulls it to ground to fire the coil, it does not supply power itself. A 4004-type flyback diode goes in parallel across the coil, cathode band toward the +50V lug — without it, the field collapse can destroy the driver MOSFET (per the xlsx <i>Coil</i> sheet).</div>
       </div>
 
       <div class="sketch">
-        <h3>Switch wing sketch — chain 0, input connector</h3>
-        <svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
+        <h3>Switch wing — connector pins + which lug goes where</h3>
+        <svg viewBox="0 0 260 250" xmlns="http://www.w3.org/2000/svg">
+          <text x="130" y="14" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-mute)" letter-spacing="0.05em">CHAIN0-0x20 · SWITCH WING (J-x)</text>
           <rect x="10" y="20" width="240" height="70" rx="4" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
           <g font-family="IBM Plex Mono, monospace" font-size="10" text-anchor="middle">
             <rect x="20" y="30" width="50" height="50" fill="none" stroke="var(--line)"/>
@@ -381,21 +511,167 @@ footer{
             <rect x="170" y="30" width="50" height="50" fill="none" stroke="var(--line)"/>
             <text x="195" y="60" fill="var(--ink-mute)">0-0-8</text>
           </g>
-          <text x="130" y="14" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-mute)" letter-spacing="0.05em">CHAIN0-0x20 · SWITCH WING (J-x)</text>
-          <text x="130" y="112" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="var(--ink)">right ← → left</text>
-          <text x="130" y="132" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="var(--orange)">0-0-9 = s-left-flipper · 0-0-10 = s-right-flipper</text>
+          <text x="130" y="104" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="var(--orange)">0-0-9 = s-left-flipper · 0-0-10 = s-right-flipper</text>
+
+          <text x="130" y="128" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-mute)" letter-spacing="0.05em">EACH SWITCH, WIRED LIKE THIS</text>
+
+          <rect x="15" y="168" width="80" height="36" rx="3" fill="var(--orange-tint)" stroke="var(--orange)" stroke-width="1.5"/>
+          <text x="55" y="181" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--orange)" font-weight="600">BOARD PIN</text>
+          <text x="55" y="192" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--orange)">0-0-9 / 0-0-10</text>
+          <text x="55" y="202" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="var(--orange)">(5V pull-up — no external power)</text>
+
+          <rect x="165" y="168" width="80" height="36" rx="3" fill="var(--blue-tint)" stroke="var(--blue)" stroke-width="1.5"/>
+          <text x="205" y="184" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--blue)" font-weight="600">LOGIC GND</text>
+          <text x="205" y="197" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--blue)">(board "GND" pin)</text>
+
+          <line x1="95" y1="186" x2="112" y2="186" stroke="var(--ink)" stroke-width="1.5"/>
+          <circle cx="115" cy="186" r="2.5" fill="var(--ink)"/>
+          <line x1="115" y1="186" x2="140" y2="172" stroke="var(--ink)" stroke-width="1.5"/>
+          <circle cx="148" cy="186" r="2.5" fill="var(--ink)"/>
+          <line x1="150" y1="186" x2="165" y2="186" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="130" y="220" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--ink)">lever shown open (N.O.) — closes on flipper-button press</text>
         </svg>
-        <div class="caption">Switch pins idle at 5V (pull-up); the cabinet button grounds the pin to register "closed." Runs to logic ground, not the high-voltage supply — keep this return separate from the coil's ground return.</div>
+        <div class="caption">One switch lug lands on the <b>board's input pin</b> (<span style="font-family:'IBM Plex Mono',monospace">0-0-9</span>/<span style="font-family:'IBM Plex Mono',monospace">0-0-10</span>) — already pulled up to 5V inside the board, so never wire external power to it. The other lug lands on the <b>logic ground bus</b> (the board's plain "GND" pin — a separate rail from the "GND(50V)" and "GND(LED)" pins the coil/LED supplies return to). Closing the switch grounds the pin, which reads as "active" (per the xlsx <i>Switch</i> sheet).</div>
       </div>
     </div>
 
     <div class="callout">
-      <b>Before energizing anything:</b> pin positions above are read off the xlsx silkscreen labels, not yet confirmed with a meter on the real board. Do a physical continuity check from each terminal back to its labeled address before landing a wire, exactly like every other DRAFT number in <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. Tie the flipper coil's ground return to the same power-supply ground as everything else on the board (no floating grounds), and bench-test each flipper at low power (short pulse, held by hand) before a full unrestrained swing — listen for the mechanical EOS interrupter cutting hold current cleanly.
+      <b>Before energizing anything:</b> pin positions above are read off the xlsx silkscreen labels, not yet confirmed with a meter on the real board. Do a physical continuity check from each terminal back to its labeled address before landing a wire, exactly like every other DRAFT number in <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. The board exposes at least three separate ground rails (logic <span style="font-family:'IBM Plex Mono',monospace">GND</span>, <span style="font-family:'IBM Plex Mono',monospace">GND(50V)</span>, <span style="font-family:'IBM Plex Mono',monospace">GND(LED)</span>) — tie them all together at the power supply, don't assume they're the same physical terminal. Bench-test each flipper at low power (short pulse, held by hand) before a full unrestrained swing — listen for the mechanical EOS interrupter cutting hold current cleanly.
+    </div>
+  </div>
+
+  <div class="divider">Bench Test Procedure</div>
+
+  <!-- 04 -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">04</span><h2>Before power-on</h2></div>
+    <p class="section-note">Visual/mechanical pass with the machine unplugged. Catches the cheap failures before anything gets energized.</p>
+    <div class="card">
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">No loose wire ends, pinched harnesses, or connectors sitting half-seated on any of the three OPP chains (COM4/COM5 Cobra, COM6 PSOC ×4)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Trough holds exactly <b>4 balls</b> (matches <span class="item-meta">balls_installed: 4</span> in <span class="item-meta">hardware-basic.yaml</span>) — add/remove before powering on, not after</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Flipper mechs: dual-wound coils seated, mechanical EOS interrupter moves freely by hand, no binding at end of stroke</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Drop target bank (3 targets) resets freely by hand, no snagging in the guide rails</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Sling and popbumper rubber in good condition, not so loose/tight it changes the expected pulse strength</div></div></div>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">05</span><h2>Power-on &amp; board scan</h2></div>
+    <p class="section-note">Run <span class="item-meta">../.venv/Scripts/mpf</span> (no <span class="item-meta">-X</span>) from <span class="item-meta">machinefolder/</span> — this is the real <span class="item-meta">opp</span> platform, not <span class="item-meta">smart_virtual</span>. Compare the scan MPF prints against the pasted reference in <span class="item-meta">hardware-basic.yaml</span> (lines 12–44).</p>
+    <div class="card">
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">COM4 (chain 0), COM5 (chain 1), COM6 (chain 2) all enumerate — no "port not found" / timeout errors</div>
+        <div class="item-note">Ports seen: <span class="blank"></span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Chain 2 shows all <b>4 PSOC boards</b> (0x20, 0x21, 0x22, 0x23) — a missing board here silently drops a quarter of the switches/coils</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Firmware versions match the reference scan (0x2040000 on chain 0/1, 0x1000004 on chain 2 boards)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">MPF boots to attract mode with no config warnings/errors in the console</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">If any port/board differs from the reference scan — USB re-enumeration drift — <b>update the comment block</b> in <span class="item-meta">hardware-basic.yaml</span> before moving on, so it stays trustworthy</div></div></div>
+    </div>
+  </div>
+
+  <!-- 06 -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">06</span><h2>Switch test — wired &amp; confirmed</h2></div>
+    <p class="section-note">Everything below is real, non-DRAFT config. Use Service Mode → Switch Test (or trip each by hand) and confirm it registers cleanly with no double-bounce. Note anything intermittent.</p>
+    <div class="card">
+      <div class="subhead" style="padding:0.6rem 0.9rem 0">Slings / pops — chain 2-0-0…10</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-right-sling <span class="item-meta">2-0-0</span> · s-left-sling <span class="item-meta">2-0-1</span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-popbumper-1/2/3 <span class="item-meta">2-0-8 / 2-0-9 / 2-0-10</span></div></div></div>
+      <div class="subhead" style="padding:0 0.9rem 0">Plunger / start / launch — 2-0-16…18</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-plunger-lane <span class="item-meta">2-0-16</span> · s-start <span class="item-meta">2-0-17</span> · s-launch <span class="item-meta">2-0-18</span></div></div></div>
+      <div class="subhead" style="padding:0 0.9rem 0">Lanes — 2-0-19…26</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-toplane1/2/3 <span class="item-meta">2-0-19…21</span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-bottomlane1…5 <span class="item-meta">2-0-22…26</span></div></div></div>
+      <div class="subhead" style="padding:0 0.9rem 0">Orbits / targets / button — 2-0-27…31</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-orbit-r <span class="item-meta">2-0-27</span> · s-orbit-l <span class="item-meta">2-0-28</span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-target-e1/e2 <span class="item-meta">2-0-29 / 2-0-30</span> · s-button <span class="item-meta">2-0-31</span></div></div></div>
+      <div class="subhead" style="padding:0 0.9rem 0">Trough — 2-1-16…22 (all NC — verify they read closed at rest)</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-trough1…6 <span class="item-meta">2-1-16…21</span> · s-trough-jam <span class="item-meta">2-1-22</span></div></div></div>
+      <div class="subhead" style="padding:0 0.9rem 0">Drops / VUKs / right bank — 2-1-23…31</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-drop1/2/3 <span class="item-meta">2-1-23…25</span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-vukmid <span class="item-meta">2-1-26</span> · s-vuktop <span class="item-meta">2-1-27</span> · s-orbit-top <span class="item-meta">2-1-28</span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-portal-r <span class="item-meta">2-1-29</span> · s-dropper <span class="item-meta">2-1-30</span> · s-exit-success <span class="item-meta">2-1-31</span></div></div></div>
+      <div class="subhead" style="padding:0 0.9rem 0">Board 3 targets / ramps / misc — 2-3-0…13</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-target-r1/r2, m1–m4, l1 <span class="item-meta">2-3-0…6</span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-ramp-r1/l1/r2/l2 <span class="item-meta">2-3-7…10</span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-aerial <span class="item-meta">2-3-11</span> · s-portal-m <span class="item-meta">2-3-12</span> · s-insinerator <span class="item-meta">2-3-13</span></div></div></div>
+    </div>
+  </div>
+
+  <!-- 07 -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">07</span><h2>Coil / mechanism test — wired &amp; confirmed</h2></div>
+    <p class="section-note">Fire each from Service Mode → Coil Test. Watch the actual mechanism move, not just the console log — and record pulse strength if it looks over/under-powered relative to <span class="item-meta">default_pulse_ms</span>.</p>
+    <div class="card">
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-sling-right <span class="item-meta">2-0-0, 15ms</span> — fires crisp, ball kicks away cleanly</div>
+        <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-sling-left <span class="item-meta">2-0-1, 16ms</span></div>
+        <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-plunger <span class="item-meta">2-0-2, 21ms</span> — autolaunch reaches the playfield reliably, doesn't airball</div>
+        <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-trough-eject <span class="item-meta">2-0-3, 25ms</span> — feeds one ball to the plunger lane, no double-feed</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-popbumper-1/2/3 <span class="item-meta">2-0-4/5/6, 17ms each</span></div>
+        <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-drop <span class="item-meta">2-0-7, 25ms</span> — drop-bank reset raises all 3 targets fully, no partial resets</div></div></div>
+    </div>
+  </div>
+
+  <!-- 08 -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">08</span><h2>LED check</h2></div>
+    <p class="section-note">Chain 0 (COM4), 40 addresses <span class="item-meta">0-0-0…39</span>, all <span class="item-meta">grb</span>. Run a full-chain color sweep (or Service Mode's light test) and walk the playfield.</p>
+    <div class="card grid-two" style="display:grid;">
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">No dead/unlit pixels anywhere in the 0-0-0…39 run</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">No swapped colors (a pixel showing red where the show says green, etc. — checks GRB byte order per unit)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Correct physical LED lights for each named position (spot-check launch, sling, orbit, ramp, portal-m/r, exit-open 1–5)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">No visible flicker at normal brightness (loose data line / bad ground)</div></div></div>
+    </div>
+  </div>
+
+  <!-- 09 -->
+  <div class="section draft">
+    <div class="section-head"><span class="section-num">09</span><h2>DRAFT hardware — not wired for real yet <span class="tag draft">draft</span></h2></div>
+    <p class="section-note">These numbers exist in config for <span class="item-meta">smart_virtual</span>/boot testing only. Before wiring any of them for real: confirm the number is actually free on the board (against <span class="item-meta">board Overviews.xlsx</span>) — the commented-out block in <span class="item-meta">hardware-coils.yaml</span> (2-1-x chain, Cobra 0-0-x/1-0-x) has a lot of unconfirmed reservations to check against first.</p>
+    <div class="card">
+      <div class="subhead" style="padding:0.6rem 0.9rem 0">Flippers — blocks real playtesting (TODO.md) — now routed via the Cobra board (chain 0), see section 03 above</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Confirm <span class="item-meta">s-left-flipper 0-0-9</span> / <span class="item-meta">s-right-flipper 0-0-10</span> free on the Cobra board (chain0-0x20), wire, continuity-check before energizing</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Confirm <span class="item-meta">c-flipper-left 0-0-2</span> / <span class="item-meta">c-flipper-right 0-0-3</span> coil driver wiring on the same Cobra board — mechs are already installed, this is the missing link</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">First real fire: low-power bench test (short pulse, held by hand) before a full unrestrained swing — confirm the mechanical EOS interrupter actually cuts hold current</div>
+        <div class="item-note">EOS behavior observed: <span class="blank"></span></div></div></div>
+      <div class="subhead" style="padding:0.4rem 0.9rem 0">Right ramp diverter + subway — CAD-confirmed real mechanism</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Confirm <span class="item-meta">s-subway-entry 2-3-18</span> / <span class="item-meta">s-subway-exit 2-3-19</span> free, wire, continuity-check</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Confirm <span class="item-meta">c-ramp-diverter 2-1-2</span> free, wire — <span class="item-meta">type: hold</span>, physically holds the gate rather than kicking, watch behavior on first energize</div></div></div>
+      <div class="subhead" style="padding:0.4rem 0.9rem 0">Service mode navigation</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Confirm <span class="item-meta">sw_service_enter/esc/up/down 2-3-14…17</span> free, wire — these are the literal hardcoded MPF names, not configurable</div></div></div>
+      <div class="subhead" style="padding:0.4rem 0.9rem 0">Lane 5 LED gap</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label"><span class="item-meta">led-lane-b5 1-0-0</span> — chain 1 (COM5) is a real, scanned, currently-unused LED board. Confirm 1-0-0 is a valid first address before wiring</div></div></div>
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="section decision">
+    <div class="section-head"><span class="section-num">10</span><h2>Tilt — no hardware exists yet <span class="tag decision">decision</span></h2></div>
+    <p class="section-note">Not a wiring gap — there is no tilt switch installed anywhere on the machine yet.</p>
+    <div class="card">
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Decide mounting location (pendulum/plumb-bob on the body is the usual spot) and mechanism type</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Install physical switch, pick a free board number, wire it, <i>then</i> add the corresponding switch config</div></div></div>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">11</span><h2>Full smoke test</h2></div>
+    <p class="section-note">Once the sections above pass, run a real end-to-end game.</p>
+    <div class="card">
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Ball search recovers a ball parked on a switchless part of the field within ~15s (idle timeout) without operator help</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Play a full ball start-to-drain with no stuck balls, no false tilts, no missed trough resets</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Run alongside Godot (drop the <span class="item-meta">-b</span> flag) — score display connects over BCP, slides update</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Confirm each mode's <span class="item-meta">sound_player:</span> filename actually resolves and plays in Godot — flagged in TODO.md as never independently verified</div></div></div>
     </div>
   </div>
 
   <footer>
-    Generated from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">board Overviews.xlsx</span> (Cobrapin - Game Funtion / Cobrapin - Doc sheets). If a component's wiring status changes, update <span style="font-family:'IBM Plex Mono',monospace">components.yaml</span> (or the hw_console web UI) first, then refresh this page to match — it is not itself the live tracker. See also <span style="font-family:'IBM Plex Mono',monospace">design/physical-checklists/hardware-test-checklist.html</span> for the bench-test procedure once something here is wired.
+    Wiring tables generated from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">board Overviews.xlsx</span> (Cobrapin - Game Funtion / Cobrapin - Doc sheets); the bench-test procedure is sourced from <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-{basic,switches,coils,devices,leds}.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. If a component's wiring status changes, update <span style="font-family:'IBM Plex Mono',monospace">components.yaml</span> (or the hw_console web UI) first, then re-generate this page to match — it is not itself the live tracker.
   </footer>
 
 </div>
