@@ -11,10 +11,15 @@ work).
 
 - [ ] **Flippers**: mechs are installed and functioning (dual-wound coils, mechanical EOS
       interrupter, no EOS switch back to the controller), but coil driver wiring to the OPP
-      boards is still incomplete — the real physical task, board assignment unconfirmed against
-      `board Overviews.xlsx`. Blocks real playtesting. MPF config is already drafted and
-      boot/game-flow tested (`hardware-coils.yaml`/`hardware-switches.yaml`/
-      `hardware-devices.yaml`, all marked DRAFT).
+      boards is still incomplete — the real physical task. Board assignment now proposed
+      (2026-09-05): routed via the **Cobra board** (chain 0, board `0x20`) instead of the PSOC
+      chain, so the flipper switch and coil share a physical STM32 board per CobraPin's
+      same-board guidance for timing-critical devices — `c-flipper-left/right` on `0-0-2`/`0-0-3`,
+      `s-left/right-flipper` on `0-0-9`/`0-0-10`, read off `board Overviews.xlsx`'s Cobrapin pin
+      dump. See `design/physical-checklists/wiring-guide.html` for the visual reference. Still
+      needs a physical continuity check on the real board before wiring for real. Blocks real
+      playtesting. MPF config is already drafted and boot/game-flow tested
+      (`hardware-coils.yaml`/`hardware-switches.yaml`/`hardware-devices.yaml`, all marked DRAFT).
 - [ ] **Tilt**: no tilt switch exists at all yet — needs a physical switch installed before any
       config can follow. Per `plans/OutsidePerspective.md`, MPF ships a complete built-in `tilt`
       mode — once the switch exists, the MPF-side work is `modes: [tilt]` plus tagging the

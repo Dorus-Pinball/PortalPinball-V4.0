@@ -325,11 +325,11 @@ components:
     status: planned
     mpf_devices: [left_flipper, right_flipper]
     switches:
-      - {name: s-left-flipper, number: 2-1-0, board: chain2-0x21, status: planned}
-      - {name: s-right-flipper, number: 2-1-1, board: chain2-0x21, status: planned}
+      - {name: s-left-flipper, number: 0-0-9, board: chain0-0x20, status: planned}
+      - {name: s-right-flipper, number: 0-0-10, board: chain0-0x20, status: planned}
     coils:
-      - {name: c-flipper-left, number: 2-1-0, board: chain2-0x21, status: planned}
-      - {name: c-flipper-right, number: 2-1-1, board: chain2-0x21, status: planned}
+      - {name: c-flipper-left, number: 0-0-2, board: chain0-0x20, status: planned}
+      - {name: c-flipper-right, number: 0-0-3, board: chain0-0x20, status: planned}
     checklist:
       - done: false
         item: Flyback diode across coil
@@ -338,8 +338,11 @@ components:
       - done: false
         item: Coil and its trigger switch land on the same physical OPP board
     notes: "Mechanical EOS inside coil assembly, not wired back to controller - main_coil
-      only, no hold_coil/eos_switch. Numbers are DRAFT pending a physical continuity
-      check against board Overviews.xlsx (see TODO.md)."
+      only, no hold_coil/eos_switch. Moved from the PSOC chain to the Cobra board
+      (chain0-0x20) per user decision, so switch+coil share a physical STM32 board per
+      CobraPin's own same-board guidance for timing-critical devices. Numbers read off
+      board Overviews.xlsx's Cobrapin pin dump, still DRAFT pending a physical continuity
+      check (see TODO.md and design/physical-checklists/wiring-guide.html)."
 
   ramp-diverter-subway:
     display_name: "Right ramp diverter + subway"

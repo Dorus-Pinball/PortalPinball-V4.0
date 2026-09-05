@@ -91,18 +91,27 @@ switches:
     type: NO
 
 
-# Autofire 2-1-0 to 2-1-3 - DRAFT flipper activation switches (Phase 1, plans/resumption-roadmap.md).
-# NOT confirmed against board Overviews.xlsx or a physical continuity check yet - see TODO.md's
-# note on confirming free vs. reserved numbers before wiring. Fine for smart_virtual/boot-test
-# purposes; do not treat these numbers as final for real wiring.
+# Cobra chain 0 (board 0x20) - DRAFT flipper activation switches (Phase 1,
+# plans/resumption-roadmap.md). Board assignment moved from the PSOC chain (2-1-x) to the Cobra
+# board per user decision, to land each flipper's switch on the SAME physical board as its coil
+# (c-flipper-left/right in hardware-coils.yaml are now 0-0-2/0-0-3, also chain 0) - CobraPin's own
+# docs say timing-critical devices (flippers, slings, pops) need switch+coil on the same STM32
+# board for a hardware autofire rule. 0-0-9/0-0-10 are read off board Overviews.xlsx's
+# "Cobrapin - Game Funtion" sheet (adjacent pins in the free switch-wing connector containing
+# 0-0-8/9/10/11) and cross-checked against hardware-basic.yaml's scan (chain 0 board 0x20 has 15
+# free switch inputs, all otherwise unused) and tools/hw_console/data/components.yaml. Still
+# DRAFT - NOT confirmed by a physical continuity check on the real board yet, see TODO.md and
+# design/physical-checklists/wiring-guide.html. Fine for smart_virtual/boot-test purposes; do not
+# treat these numbers as final for real wiring.
   s-left-flipper:
-    number: 2-1-0
+    number: 0-0-9
     debounce: quick
     tags: flipper_left
   s-right-flipper:
-    number: 2-1-1
+    number: 0-0-10
     debounce: quick
     tags: flipper_right
+# Chain 2-1-0 to 2-1-3 (formerly used for the DRAFT flipper switches) now free again.
 # Autofire 2-1-4 to 2-1-7 DO NOT EXIST
 # Autofire 2-1-8 to 2-1-11 empty
 # Autofire 2-1-12 to 2-1-15 DO NOT EXIST
