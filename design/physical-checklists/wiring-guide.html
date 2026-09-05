@@ -487,11 +487,15 @@ footer{
           <line x1="95" y1="186" x2="105" y2="186" stroke="var(--ink)" stroke-width="1.5"/>
           <line x1="155" y1="186" x2="165" y2="186" stroke="var(--ink)" stroke-width="1.5"/>
 
-          <!-- flyback diode in parallel across the coil, cathode band toward +50V (left) -->
+          <!-- flyback diode in parallel across the coil. Forward (flyback) conduction runs
+               anode (board-pin side, right) -> cathode (+50V side, left), so the triangle
+               must point LEFT with its apex touching the cathode bar on the +50V side. -->
           <polyline points="55,168 55,148 205,148 205,168" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
-          <polygon points="122,148 110,142 110,154" fill="var(--ink)"/>
-          <line x1="110" y1="140" x2="110" y2="156" stroke="var(--ink)" stroke-width="2.5"/>
-          <text x="130" y="220" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--ink)">flyback diode — cathode band ▐ faces the +50V lug</text>
+          <polygon points="119,148 134,141 134,155" fill="var(--ink)"/>
+          <line x1="118" y1="140" x2="118" y2="156" stroke="var(--ink)" stroke-width="2.5"/>
+          <text x="118" y="138" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--ink)">K</text>
+          <text x="134" y="138" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--ink)">A</text>
+          <text x="130" y="220" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--ink)">flyback diode — cathode (K, banded end) toward +50V, anode (A) toward the board pin</text>
         </svg>
         <div class="caption">One coil lug lands on the <b>+50V supply bus</b> (VIN terminal block) — never the board. The other lug lands on the <b>board's driver pin</b> (<span style="font-family:'IBM Plex Mono',monospace">0-0-2</span>/<span style="font-family:'IBM Plex Mono',monospace">0-0-3</span>), which is a ground-sink: the on-board MOSFET pulls it to ground to fire the coil, it does not supply power itself. A 4004-type flyback diode goes in parallel across the coil, cathode band toward the +50V lug — without it, the field collapse can destroy the driver MOSFET (per the xlsx <i>Coil</i> sheet).</div>
       </div>
