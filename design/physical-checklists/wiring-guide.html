@@ -388,17 +388,17 @@ footer{
   <!-- 01 -->
   <div class="section">
     <div class="section-head"><span class="section-num">01</span><h2>Board map</h2></div>
-    <p class="section-note">Six physical CPU boards across three USB-serial chains. The two Cobra boards share one physical PCB (two STM32 modules) but count as independent CPUs/chains for wiring purposes — a hardware autofire rule cannot cross between them, or onto the PSOC chain.</p>
+    <p class="section-note">Six physical CPU boards across three USB-serial chains. The two Cobra boards share one physical PCB (two STM32 modules) but count as independent CPUs/chains for wiring purposes — a hardware autofire rule cannot cross between them, or onto the PSOC chain. <b>This machine is being rewired from scratch, board assignment follows a fixed priority: CobraPin first (chain 0, then chain 1), the red PSOC boards (chain 2) only as a fallback when CobraPin can't fit something, and every LED goes on CobraPin, no exceptions.</b> See <span style="font-family:'IBM Plex Mono',monospace">docs/opp-hardware-reference.md</span> for the full rulebook this page is built from.</p>
     <div class="card">
       <table class="wtable">
         <thead><tr><th>Board</th><th>Port</th><th>Role</th><th>Switch inputs</th><th>Coil/driver outputs</th><th>LED outputs</th></tr></thead>
         <tbody>
-          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O</td><td class="num">13 free / 15 total <span style="color:var(--orange)">— 2 now planned (flippers)</span></td><td class="num">14 free / 16 total <span style="color:var(--orange)">— 2 now planned (flippers)</span></td><td class="num">40 used (0-0-0…39)</td></tr>
-          <tr><td>chain1-0x20 <span class="item-meta">(Cobra B)</span></td><td class="brd">COM5</td><td>LED driver + spare I/O</td><td class="num">23 free</td><td class="num">8 free</td><td class="num">1 used (1-0-0)</td></tr>
-          <tr><td>chain2-0x20 <span class="item-meta">(PSOC card 0)</span></td><td class="brd">COM6</td><td>Switches + coils</td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
-          <tr><td>chain2-0x21 <span class="item-meta">(PSOC card 1)</span></td><td class="brd">COM6</td><td>Switches + coils</td><td class="num">wired</td><td class="num">wired (2-1-0…3 now free again)</td><td class="num">—</td></tr>
-          <tr><td>chain2-0x22 <span class="item-meta">(PSOC card 2 + incand)</span></td><td class="brd">COM6</td><td>Switches + coils + incand</td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
-          <tr><td>chain2-0x23 <span class="item-meta">(PSOC card 3)</span></td><td class="brd">COM6</td><td>Switches + coils</td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
+          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O — <b>1st choice</b></td><td class="num">13 free / 15 total <span style="color:var(--orange)">— 2 now planned (flippers)</span></td><td class="num">14 free / 16 total <span style="color:var(--orange)">— 2 now planned (flippers)</span></td><td class="num">40 used (0-0-0…39)</td></tr>
+          <tr><td>chain1-0x20 <span class="item-meta">(Cobra B)</span></td><td class="brd">COM5</td><td>LED driver + spare I/O — <b>2nd choice</b></td><td class="num">23 free</td><td class="num">8 free</td><td class="num">1 used (1-0-0)</td></tr>
+          <tr><td>chain2-0x20 <span class="item-meta">(PSOC card 0)</span></td><td class="brd">COM6</td><td>Switches + coils — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
+          <tr><td>chain2-0x21 <span class="item-meta">(PSOC card 1)</span></td><td class="brd">COM6</td><td>Switches + coils — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired (2-1-0…3 now free again)</td><td class="num">—</td></tr>
+          <tr><td>chain2-0x22 <span class="item-meta">(PSOC card 2 + incand)</span></td><td class="brd">COM6</td><td>Switches + coils + incand — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
+          <tr><td>chain2-0x23 <span class="item-meta">(PSOC card 3)</span></td><td class="brd">COM6</td><td>Switches + coils — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
         </tbody>
       </table>
     </div>
@@ -406,7 +406,37 @@ footer{
 
   <!-- 02 -->
   <div class="section">
-    <div class="section-head"><span class="section-num">02</span><h2>Known components — current wiring</h2></div>
+    <div class="section-head"><span class="section-num">02</span><h2>CobraPin banks &amp; HV power reference</h2></div>
+    <p class="section-note">The 3 solenoid banks (A/B/C, 8 outputs each) each have their own fused HV supply pin (<span style="font-family:'IBM Plex Mono',monospace">HV_A</span>/<span style="font-family:'IBM Plex Mono',monospace">HV_B</span>/<span style="font-family:'IBM Plex Mono',monospace">HV_C</span> on connector J13) — <b>a coil's +50V lead must come from the HV pin matching its own bank</b>, never a generic shared bus. Full detail and sources in <span style="font-family:'IBM Plex Mono',monospace">docs/opp-hardware-reference.md</span>.</p>
+    <div class="card" style="margin-bottom:1.25rem;">
+      <table class="wtable">
+        <thead><tr><th>Bank</th><th>Chain 0/1 pins</th><th>HV feed</th><th>Wire color</th></tr></thead>
+        <tbody>
+          <tr><td><b>A</b></td><td class="num">0-0-0, 0-0-8…0-0-14</td><td class="num">HV_A</td><td>brown</td></tr>
+          <tr><td><b>B</b></td><td class="num">0-0-1…0-0-7, 0-0-15</td><td class="num">HV_B</td><td>teal — includes flipper coils <b>0-0-2</b>/<b>0-0-3</b></td></tr>
+          <tr><td><b>C</b></td><td class="num">1-0-0…1-0-7</td><td class="num">HV_C</td><td>purple</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <b>Mixing up bank power and bank driver can blow FETs, coils, and fuses</b> (CobraPin's own doc wording). Test without coil power first, and check the per-bank yellow coil LED to confirm a bank actually has power before trusting it. A bank's connector pins can also be pre-broken-out to a wall-mounted terminal block without any coil actually being wired to them yet — wires present on a bank's connector doesn't by itself mean it's in use, check the far end of the run.
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">03</span><h2>Red boards — classic/modular OPP (chain 2)</h2></div>
+    <p class="section-note">Chain 2's 4 PSOC boards follow a <b>different, tighter</b> rule than CobraPin — used here only as the fallback when CobraPin can't fit a component (per section 01's priority). Full detail in <span style="font-family:'IBM Plex Mono',monospace">docs/opp-hardware-reference.md</span>.</p>
+    <div class="card">
+      <div class="item"><span class="box" style="visibility:hidden"></span><div class="item-body"><div class="item-label">Up to 4 plug-in "wings" per board (solenoid/switch/lamp, mixed freely) — not one combo PCB like CobraPin. <b>5V</b> switch logic, vs. CobraPin's 3.3V.</div></div></div>
+      <div class="item"><span class="box" style="visibility:hidden"></span><div class="item-body"><div class="item-label">Numbering is wing-position-based: switches = wing×8 (<span class="item-meta">0-7, 8-15, 16-23, 24-31</span>), coils = wing×4 (<span class="item-meta">0-3, 4-7, 8-11, 12-15</span>).</div></div></div>
+      <div class="item"><span class="box" style="visibility:hidden"></span><div class="item-body"><div class="item-label"><b>Pairing rule:</b> a solenoid wing's own dedicated switch inputs are the first four switch numbers of that same wing — a coil in wing N (<span class="item-meta">4N..4N+3</span>) pairs only with a switch in <span class="item-meta">8N..8N+3</span>, not just "anywhere on the same board." Confirmed against this cabinet's own working hardware: <span class="item-meta">c-sling-right/left</span> (<span class="item-meta">2-0-0/1</span>) pair with switches <span class="item-meta">2-0-0/1</span>; <span class="item-meta">c-popbumper-1/2/3</span> (<span class="item-meta">2-0-4/5/6</span>) pair with switches <span class="item-meta">2-0-8/9/10</span> — the first 3 of wing 1's 4 dedicated slots.</div></div></div>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">04</span><h2>Known components — current wiring</h2></div>
     <p class="section-note">Everything already wired and confirmed on the cabinet (23 real games logged, per <span style="font-family:'IBM Plex Mono',monospace">plans/resumption-roadmap.md</span>), plus the two known gaps. Transcribed from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> — update that file first if anything changes, then this table.</p>
     <div class="card">
       <table class="wtable">
@@ -434,17 +464,17 @@ footer{
     </div>
   </div>
 
-  <!-- 03 -->
+  <!-- 05 -->
   <div class="section flippers">
-    <div class="section-head"><span class="section-num">03</span><h2>Flippers — new wiring via the Cobra board</h2></div>
-    <p class="section-note">Decision: route the flipper switch + coil through Cobra chain 0 (<span style="font-family:'IBM Plex Mono',monospace">chain0-0x20</span>, port COM4) instead of the PSOC chain. CobraPin's own documentation says timing-critical devices (flippers, slings, pop bumpers) should have their switch and coil on the <b>same physical STM32 board</b>, so the hardware autofire rule runs with minimal latency and doesn't need to cross a board boundary. Chain 0 has plenty of free capacity (14 of 16 solenoid outputs, 13 of 15 switch inputs after this) and already anchors most of the game's LEDs, so it's the natural home. Numbers below are read directly off <span style="font-family:'IBM Plex Mono',monospace">board Overviews.xlsx</span>'s <i>Cobrapin - Game Funtion</i> pin dump.</p>
+    <div class="section-head"><span class="section-num">05</span><h2>Flippers — new wiring via the Cobra board</h2></div>
+    <p class="section-note">Decision: route the flipper switch + coil through Cobra chain 0 (<span style="font-family:'IBM Plex Mono',monospace">chain0-0x20</span>, port COM4) instead of the PSOC chain. CobraPin's own documentation says timing-critical devices (flippers, slings, pop bumpers) should have their switch and coil on the <b>same physical STM32 board</b>, so the hardware autofire rule runs with minimal latency and doesn't need to cross a board boundary. Chain 0 has plenty of free capacity (14 of 16 solenoid outputs, 13 of 15 switch inputs after this) and already anchors most of the game's LEDs, so it's the natural home. Numbers below are read directly off <span style="font-family:'IBM Plex Mono',monospace">board Overviews.xlsx</span>'s <i>Cobrapin - Game Funtion</i> pin dump; bank/HV feed from section 02's reference table.</p>
 
     <div class="card" style="margin-bottom:1.25rem;">
       <table class="wtable">
         <thead><tr><th>Device</th><th>Old (PSOC, unused)</th><th>New (Cobra chain 0)</th><th>Connector</th></tr></thead>
         <tbody>
-          <tr><td>c-flipper-left</td><td class="num" style="text-decoration:line-through;color:var(--ink-mute)">2-1-0</td><td class="num"><b>0-0-2</b></td><td>Coil bank (pins 0-0-1/2/3/4)</td></tr>
-          <tr><td>c-flipper-right</td><td class="num" style="text-decoration:line-through;color:var(--ink-mute)">2-1-1</td><td class="num"><b>0-0-3</b></td><td>same bank, adjacent pin</td></tr>
+          <tr><td>c-flipper-left</td><td class="num" style="text-decoration:line-through;color:var(--ink-mute)">2-1-0</td><td class="num"><b>0-0-2</b> <span class="item-meta">(Bank B, HV_B teal)</span></td><td>Coil bank (pins 0-0-1/2/3/4)</td></tr>
+          <tr><td>c-flipper-right</td><td class="num" style="text-decoration:line-through;color:var(--ink-mute)">2-1-1</td><td class="num"><b>0-0-3</b> <span class="item-meta">(Bank B, HV_B teal)</span></td><td>same bank, adjacent pin</td></tr>
           <tr><td>s-left-flipper</td><td class="num" style="text-decoration:line-through;color:var(--ink-mute)">2-1-0</td><td class="num"><b>0-0-9</b></td><td>Switch wing (pins 0-0-8/9/10/11)</td></tr>
           <tr><td>s-right-flipper</td><td class="num" style="text-decoration:line-through;color:var(--ink-mute)">2-1-1</td><td class="num"><b>0-0-10</b></td><td>same connector, adjacent pin</td></tr>
         </tbody>
@@ -468,14 +498,14 @@ footer{
             <rect x="170" y="30" width="50" height="50" fill="none" stroke="var(--line)"/>
             <text x="195" y="60" fill="var(--ink-mute)">0-0-1</text>
           </g>
-          <text x="130" y="104" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="var(--orange)">0-0-2 = c-flipper-left · 0-0-3 = c-flipper-right</text>
+          <text x="130" y="104" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="var(--orange)">0-0-2 = c-flipper-left · 0-0-3 = c-flipper-right (Bank B)</text>
 
-          <!-- per-coil circuit: which lug is +50V, which lug is the board's ground-sink pin -->
+          <!-- per-coil circuit: which lug is the bank's HV feed, which lug is the board's ground-sink pin -->
           <text x="130" y="128" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-mute)" letter-spacing="0.05em">EACH COIL, WIRED LIKE THIS</text>
 
           <rect x="15" y="168" width="80" height="36" rx="3" fill="var(--blue-tint)" stroke="var(--blue)" stroke-width="1.5"/>
-          <text x="55" y="184" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--blue)" font-weight="600">+50V SUPPLY</text>
-          <text x="55" y="197" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--blue)">(VIN 50V bus)</text>
+          <text x="55" y="184" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--blue)" font-weight="600">HV_B SUPPLY</text>
+          <text x="55" y="197" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--blue)">(Bank B feed, teal wire)</text>
 
           <rect x="165" y="168" width="80" height="36" rx="3" fill="var(--orange-tint)" stroke="var(--orange)" stroke-width="1.5"/>
           <text x="205" y="181" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--orange)" font-weight="600">BOARD PIN</text>
@@ -497,7 +527,7 @@ footer{
           <text x="134" y="138" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--ink)">A</text>
           <text x="130" y="220" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--ink)">flyback diode — cathode (K, banded end) toward +50V, anode (A) toward the board pin</text>
         </svg>
-        <div class="caption">One coil lug lands on the <b>+50V supply bus</b> (VIN terminal block) — never the board. The other lug lands on the <b>board's driver pin</b> (<span style="font-family:'IBM Plex Mono',monospace">0-0-2</span>/<span style="font-family:'IBM Plex Mono',monospace">0-0-3</span>), which is a ground-sink: the on-board MOSFET pulls it to ground to fire the coil, it does not supply power itself. A 4004-type flyback diode goes in parallel across the coil, cathode band toward the +50V lug — without it, the field collapse can destroy the driver MOSFET (per the xlsx <i>Coil</i> sheet).</div>
+        <div class="caption">One coil lug lands on the <b>Bank B HV feed</b> (<span style="font-family:'IBM Plex Mono',monospace">HV_B</span>, the teal wire from J13) — never a generic +50V bus, and never a different bank's HV pin (see section 02). The other lug lands on the <b>board's driver pin</b> (<span style="font-family:'IBM Plex Mono',monospace">0-0-2</span>/<span style="font-family:'IBM Plex Mono',monospace">0-0-3</span>), which is a ground-sink: the on-board MOSFET pulls it to ground to fire the coil, it does not supply power itself. A 4004-type flyback diode goes in parallel across the coil, cathode band toward the HV_B lug — without it, the field collapse can destroy the driver MOSFET (per the xlsx <i>Coil</i> sheet).</div>
       </div>
 
       <div class="sketch">
@@ -540,15 +570,15 @@ footer{
     </div>
 
     <div class="callout">
-      <b>Before energizing anything:</b> pin positions above are read off the xlsx silkscreen labels, not yet confirmed with a meter on the real board. Do a physical continuity check from each terminal back to its labeled address before landing a wire, exactly like every other DRAFT number in <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. The board exposes at least three separate ground rails (logic <span style="font-family:'IBM Plex Mono',monospace">GND</span>, <span style="font-family:'IBM Plex Mono',monospace">GND(50V)</span>, <span style="font-family:'IBM Plex Mono',monospace">GND(LED)</span>) — tie them all together at the power supply, don't assume they're the same physical terminal. Bench-test each flipper at low power (short pulse, held by hand) before a full unrestrained swing — listen for the mechanical EOS interrupter cutting hold current cleanly.
+      <b>Before energizing anything:</b> pin positions above are read off the xlsx silkscreen labels, not yet confirmed with a meter on the real board. Do a physical continuity check from each terminal back to its labeled address before landing a wire, exactly like every other DRAFT number in <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. The board exposes at least three separate ground rails (logic <span style="font-family:'IBM Plex Mono',monospace">GND</span>, <span style="font-family:'IBM Plex Mono',monospace">GND(50V)</span>, <span style="font-family:'IBM Plex Mono',monospace">GND(LED)</span>) — tie them all together at the power supply, don't assume they're the same physical terminal. Double-check the flipper coils' +50V leads land on <span style="font-family:'IBM Plex Mono',monospace">HV_B</span> specifically (teal) — landing on <span style="font-family:'IBM Plex Mono',monospace">HV_A</span> or <span style="font-family:'IBM Plex Mono',monospace">HV_C</span> by mistake risks a blown FET/fuse per section 02. Watch Bank B's yellow coil LED to confirm it actually has power before the first real fire. Bench-test each flipper at low power (short pulse, held by hand) before a full unrestrained swing — listen for the mechanical EOS interrupter cutting hold current cleanly.
     </div>
   </div>
 
   <div class="divider">Bench Test Procedure</div>
 
-  <!-- 04 -->
+  <!-- 06 -->
   <div class="section">
-    <div class="section-head"><span class="section-num">04</span><h2>Before power-on</h2></div>
+    <div class="section-head"><span class="section-num">06</span><h2>Before power-on</h2></div>
     <p class="section-note">Visual/mechanical pass with the machine unplugged. Catches the cheap failures before anything gets energized.</p>
     <div class="card">
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">No loose wire ends, pinched harnesses, or connectors sitting half-seated on any of the three OPP chains (COM4/COM5 Cobra, COM6 PSOC ×4)</div></div></div>
@@ -559,9 +589,9 @@ footer{
     </div>
   </div>
 
-  <!-- 05 -->
+  <!-- 07 -->
   <div class="section">
-    <div class="section-head"><span class="section-num">05</span><h2>Power-on &amp; board scan</h2></div>
+    <div class="section-head"><span class="section-num">07</span><h2>Power-on &amp; board scan</h2></div>
     <p class="section-note">Run <span class="item-meta">../.venv/Scripts/mpf</span> (no <span class="item-meta">-X</span>) from <span class="item-meta">machinefolder/</span> — this is the real <span class="item-meta">opp</span> platform, not <span class="item-meta">smart_virtual</span>. Compare the scan MPF prints against the pasted reference in <span class="item-meta">hardware-basic.yaml</span> (lines 12–44).</p>
     <div class="card">
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">COM4 (chain 0), COM5 (chain 1), COM6 (chain 2) all enumerate — no "port not found" / timeout errors</div>
@@ -573,9 +603,9 @@ footer{
     </div>
   </div>
 
-  <!-- 06 -->
+  <!-- 08 -->
   <div class="section">
-    <div class="section-head"><span class="section-num">06</span><h2>Switch test — wired &amp; confirmed</h2></div>
+    <div class="section-head"><span class="section-num">08</span><h2>Switch test — wired &amp; confirmed</h2></div>
     <p class="section-note">Everything below is real, non-DRAFT config. Use Service Mode → Switch Test (or trip each by hand) and confirm it registers cleanly with no double-bounce. Note anything intermittent.</p>
     <div class="card">
       <div class="subhead" style="padding:0.6rem 0.9rem 0">Slings / pops — chain 2-0-0…10</div>
@@ -602,9 +632,9 @@ footer{
     </div>
   </div>
 
-  <!-- 07 -->
+  <!-- 09 -->
   <div class="section">
-    <div class="section-head"><span class="section-num">07</span><h2>Coil / mechanism test — wired &amp; confirmed</h2></div>
+    <div class="section-head"><span class="section-num">09</span><h2>Coil / mechanism test — wired &amp; confirmed</h2></div>
     <p class="section-note">Fire each from Service Mode → Coil Test. Watch the actual mechanism move, not just the console log — and record pulse strength if it looks over/under-powered relative to <span class="item-meta">default_pulse_ms</span>.</p>
     <div class="card">
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-sling-right <span class="item-meta">2-0-0, 15ms</span> — fires crisp, ball kicks away cleanly</div>
@@ -620,9 +650,9 @@ footer{
     </div>
   </div>
 
-  <!-- 08 -->
+  <!-- 10 -->
   <div class="section">
-    <div class="section-head"><span class="section-num">08</span><h2>LED check</h2></div>
+    <div class="section-head"><span class="section-num">10</span><h2>LED check</h2></div>
     <p class="section-note">Chain 0 (COM4), 40 addresses <span class="item-meta">0-0-0…39</span>, all <span class="item-meta">grb</span>. Run a full-chain color sweep (or Service Mode's light test) and walk the playfield.</p>
     <div class="card grid-two" style="display:grid;">
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">No dead/unlit pixels anywhere in the 0-0-0…39 run</div></div></div>
@@ -632,12 +662,12 @@ footer{
     </div>
   </div>
 
-  <!-- 09 -->
+  <!-- 11 -->
   <div class="section draft">
-    <div class="section-head"><span class="section-num">09</span><h2>DRAFT hardware — not wired for real yet <span class="tag draft">draft</span></h2></div>
-    <p class="section-note">These numbers exist in config for <span class="item-meta">smart_virtual</span>/boot testing only. Before wiring any of them for real: confirm the number is actually free on the board (against <span class="item-meta">board Overviews.xlsx</span>) — the commented-out block in <span class="item-meta">hardware-coils.yaml</span> (2-1-x chain, Cobra 0-0-x/1-0-x) has a lot of unconfirmed reservations to check against first.</p>
+    <div class="section-head"><span class="section-num">11</span><h2>DRAFT hardware — not wired for real yet <span class="tag draft">draft</span></h2></div>
+    <p class="section-note">These numbers exist in config for <span class="item-meta">smart_virtual</span>/boot testing only. Before wiring any of them for real: confirm the number is actually free on the board (against <span class="item-meta">board Overviews.xlsx</span> and the priority policy in sections 01-03) — the commented-out block in <span class="item-meta">hardware-coils.yaml</span> (2-1-x chain, Cobra 0-0-x/1-0-x) has a lot of unconfirmed reservations to check against first.</p>
     <div class="card">
-      <div class="subhead" style="padding:0.6rem 0.9rem 0">Flippers — blocks real playtesting (TODO.md) — now routed via the Cobra board (chain 0), see section 03 above</div>
+      <div class="subhead" style="padding:0.6rem 0.9rem 0">Flippers — blocks real playtesting (TODO.md) — now routed via the Cobra board (chain 0), see section 05 above</div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Confirm <span class="item-meta">s-left-flipper 0-0-9</span> / <span class="item-meta">s-right-flipper 0-0-10</span> free on the Cobra board (chain0-0x20), wire, continuity-check before energizing</div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Confirm <span class="item-meta">c-flipper-left 0-0-2</span> / <span class="item-meta">c-flipper-right 0-0-3</span> coil driver wiring on the same Cobra board — mechs are already installed, this is the missing link</div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">First real fire: low-power bench test (short pulse, held by hand) before a full unrestrained swing — confirm the mechanical EOS interrupter actually cuts hold current</div>
@@ -652,9 +682,9 @@ footer{
     </div>
   </div>
 
-  <!-- 10 -->
+  <!-- 12 -->
   <div class="section decision">
-    <div class="section-head"><span class="section-num">10</span><h2>Tilt — no hardware exists yet <span class="tag decision">decision</span></h2></div>
+    <div class="section-head"><span class="section-num">12</span><h2>Tilt — no hardware exists yet <span class="tag decision">decision</span></h2></div>
     <p class="section-note">Not a wiring gap — there is no tilt switch installed anywhere on the machine yet.</p>
     <div class="card">
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Decide mounting location (pendulum/plumb-bob on the body is the usual spot) and mechanism type</div></div></div>
@@ -662,9 +692,9 @@ footer{
     </div>
   </div>
 
-  <!-- 11 -->
+  <!-- 13 -->
   <div class="section">
-    <div class="section-head"><span class="section-num">11</span><h2>Full smoke test</h2></div>
+    <div class="section-head"><span class="section-num">13</span><h2>Full smoke test</h2></div>
     <p class="section-note">Once the sections above pass, run a real end-to-end game.</p>
     <div class="card">
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">Ball search recovers a ball parked on a switchless part of the field within ~15s (idle timeout) without operator help</div></div></div>
@@ -675,7 +705,7 @@ footer{
   </div>
 
   <footer>
-    Wiring tables generated from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">board Overviews.xlsx</span> (Cobrapin - Game Funtion / Cobrapin - Doc sheets); the bench-test procedure is sourced from <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-{basic,switches,coils,devices,leds}.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. If a component's wiring status changes, update <span style="font-family:'IBM Plex Mono',monospace">components.yaml</span> (or the hw_console web UI) first, then re-generate this page to match — it is not itself the live tracker.
+    Wiring tables generated from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">board Overviews.xlsx</span> (Cobrapin - Game Funtion / Cobrapin - Doc sheets); the board-priority policy and CobraPin/red-board pairing rules (sections 01-03) are sourced from <span style="font-family:'IBM Plex Mono',monospace">docs/opp-hardware-reference.md</span> — that's the canonical rulebook, this page is its visual companion; the bench-test procedure is sourced from <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-{basic,switches,coils,devices,leds}.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. If a component's wiring status changes, update <span style="font-family:'IBM Plex Mono',monospace">components.yaml</span> (or the hw_console web UI) first, then re-generate this page to match — it is not itself the live tracker. New component wiring should follow <span style="font-family:'IBM Plex Mono',monospace">.claude/skills/wire-component/SKILL.md</span>'s process so this page, the registry, and the config all stay in sync.
   </footer>
 
 </div>
