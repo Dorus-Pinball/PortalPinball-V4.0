@@ -87,7 +87,7 @@ boards:
 components:
   autofire-slings:
     display_name: "Slings (autofire)"
-    status: 6
+    status: 4
     mpf_devices: [ac-sling-left, ac-sling-right]
     switches:
       - {name: s-left-sling, number: 2-0-1, board: chain2-0x20}
@@ -104,7 +104,7 @@ components:
 
   autofire-popbumpers:
     display_name: "Pop bumpers (autofire)"
-    status: 6
+    status: 4
     mpf_devices: [ac-popbumper-1, ac-popbumper-2, ac-popbumper-3]
     switches:
       - {name: s-popbumper-1, number: 2-0-8, board: chain2-0x20}
@@ -123,7 +123,7 @@ components:
 
   plunger-launch:
     display_name: "Plunger lane / auto-launch"
-    status: 6
+    status: 4
     mpf_devices: [bd-plunger]
     switches:
       - {name: s-plunger-lane, number: 2-0-16, board: chain2-0x20}
@@ -140,7 +140,7 @@ components:
 
   trough:
     display_name: "Ball trough"
-    status: 6
+    status: 5
     mpf_devices: [bd-trough]
     switches:
       - {name: s-trough1, number: 2-1-16, board: chain2-0x21}
@@ -162,7 +162,7 @@ components:
 
   drop-bank:
     display_name: "Drop target bank"
-    status: 6
+    status: 3
     mpf_devices: [d-drop-target1, d-drop-target2, d-drop-target3, db-dropbank]
     switches:
       - {name: s-drop1, number: 2-1-23, board: chain2-0x21}
@@ -180,7 +180,7 @@ components:
 
   top-lanes:
     display_name: "Top lanes (3)"
-    status: 6
+    status: 4
     mpf_devices: []
     switches:
       - {name: s-toplane1, number: 2-0-19, board: chain2-0x20}
@@ -196,7 +196,7 @@ components:
 
   bottom-lanes:
     display_name: "Bottom lanes (5)"
-    status: 6
+    status: 4
     mpf_devices: []
     switches:
       - {name: s-bottomlane1, number: 2-0-22, board: chain2-0x20}
@@ -214,7 +214,7 @@ components:
 
   orbits:
     display_name: "Orbits (left/right/top)"
-    status: 6
+    status: 1
     mpf_devices: []
     switches:
       - {name: s-orbit-l, number: 2-0-28, board: chain2-0x20}
@@ -230,7 +230,7 @@ components:
 
   targets:
     display_name: "Standup targets (E/R/M/L banks)"
-    status: 6
+    status: 1
     mpf_devices: []
     switches:
       - {name: s-target-e1, number: 2-0-29, board: chain2-0x20}
@@ -252,7 +252,7 @@ components:
 
   ramps:
     display_name: "Ramps (left/right, entry+exit)"
-    status: 6
+    status: 1
     mpf_devices: []
     switches:
       - {name: s-ramp-r1, number: 2-3-7, board: chain2-0x23}
@@ -270,7 +270,7 @@ components:
 
   vuk:
     display_name: "VUKs (mid-field, top)"
-    status: 6
+    status: 1
     mpf_devices: []
     switches:
       - {name: s-vukmid, number: 2-1-26, board: chain2-0x21}
@@ -287,7 +287,7 @@ components:
 
   portal-transfer:
     display_name: "Portal ball transfer (dropper -> portal -> exit)"
-    status: 6
+    status: 1
     mpf_devices: []
     switches:
       - {name: s-dropper, number: 2-1-30, board: chain2-0x21}
@@ -305,7 +305,7 @@ components:
 
   aerial-and-insinerator:
     display_name: "Aerial plate / Insinerator target"
-    status: 6
+    status: 3
     mpf_devices: []
     switches:
       - {name: s-aerial, number: 2-3-11, board: chain2-0x23}
@@ -321,7 +321,7 @@ components:
 
   cabinet-button:
     display_name: "Cabinet action button"
-    status: 6
+    status: 4
     mpf_devices: []
     switches:
       - {name: s-button, number: 2-0-31, board: chain2-0x20}
@@ -335,7 +335,7 @@ components:
 
   flippers:
     display_name: "Flippers"
-    status: 4
+    status: 5
     mpf_devices: [left_flipper, right_flipper]
     switches:
       - {name: s-left-flipper, number: 0-0-9, board: chain0-0x20}
@@ -344,9 +344,9 @@ components:
       - {name: c-flipper-left, number: 0-0-8, board: chain0-0x20}
       - {name: c-flipper-right, number: 0-0-9, board: chain0-0x20}
     checklist:
-      - done: false
+      - done: true
         item: Flyback diode across coil
-      - done: false
+      - done: true
         item: Common ground tied to power supply ground
       - done: false
         item: Coil and its trigger switch land on the same physical OPP board
@@ -361,7 +361,7 @@ components:
 
   ramp-diverter-subway:
     display_name: "Right ramp diverter + subway"
-    status: 4
+    status: 1
     mpf_devices: [d-ramp-diverter]
     switches:
       - {name: s-subway-entry, number: 2-3-18, board: chain2-0x23}
@@ -379,7 +379,7 @@ components:
 
   service-mode-nav:
     display_name: "Service mode nav switches"
-    status: 4
+    status: 1
     mpf_devices: []
     switches:
       - {name: sw_service_enter, number: 2-3-14, board: chain2-0x23}
