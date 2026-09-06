@@ -120,3 +120,12 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     configured default pulse is too weak for real travel with HV on (200ms worked, untuned) -
     real tuning is still an open decision, and separately, the trough→plunger ball transfer is
     failing/retrying in a real game - a new, unrelated gap. — **Status: active**.
+12. **Start/launch switches wired onto the flipper Cobra board** (2026-09-06). Moved `s-start`/
+    `s-launch` off their earlier DRAFT `2-0-17`/`2-0-18` PSOC-chain placeholders onto the same
+    Cobra chain 0 board (0x20) the flippers use, at the actual terminals wired for real:
+    `s-launch` → `0-0-3`, `s-start` → `0-0-8`. Config boots clean (virtual + all 49 tests), and
+    both addresses resolve correctly against MPF's own service-mode switch list on real hardware.
+    Live continuity test (same BCP mechanism as `tools/wiring_test.py`): `s-launch` PASSES
+    (OPEN→CLOSED→OPEN). `s-start` reads CLOSED at rest and doesn't change on press/release — a
+    hardware fault (short to ground or wrong terminal), not a config problem; needs physical
+    tracing before it'll work. See `TODO.md`. — **Status: active**.

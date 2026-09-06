@@ -25,6 +25,16 @@ work).
       in `hardware-coils.yaml` was too weak for real travel with HV on (`pulse_ms: 200` worked in
       testing) — real tuning still needed, see the "Needs a design decision" flipper pulse entry
       below.
+- [ ] **Start/launch switches**: wired onto the same Cobra chain 0 board (0x20) as the flippers
+      during the 2026-09-06 session, `s-launch` on `0-0-3`, `s-start` on `0-0-8` (moved from the
+      earlier DRAFT `2-0-17`/`2-0-18` PSOC-chain placeholders). Tested live via `bcp_step.py`
+      (the same BCP mechanism `tools/wiring_test.py` uses): **`s-launch` PASSES**
+      (OPEN→CLOSED→OPEN on press/release). **`s-start` reads CLOSED at rest and stays CLOSED
+      regardless of press/release** — not a simple NO/NC wiring reversal (that would invert, not
+      stick), points to a short to ground or a wrong terminal on input 8 of board 0x20. Needs
+      physical tracing of that wire before `s-start` will work; config address is believed
+      correct (confirmed against `hardware-basic.yaml`'s input-card scan, terminal 8 is a valid
+      input on that board).
 - [ ] **Tilt**: no tilt switch exists at all yet — needs a physical switch installed before any
       config can follow. Per `plans/OutsidePerspective.md`, MPF ships a complete built-in `tilt`
       mode — once the switch exists, the MPF-side work is `modes: [tilt]` plus tagging the
