@@ -27,6 +27,27 @@ MPF_DEVICES_PATH = REPO_ROOT / "machinefolder" / "config" / "hardware-devices.ya
 # a switch in 8N..8N+3, not just "anywhere on the same board."
 COBRA_CHAINS = (0, 1)
 
+# Numbers that look free (nothing claims them in hardware-*.yaml or the registry) but are
+# actually off-limits because of something outside MPF's own config entirely - a board's flashed
+# firmware config dedicating that channel to a different function. Checked in addition to the
+# normal collision check, since neither hardware-*.yaml nor components.yaml would otherwise know
+# about this.
+#
+# chain0-0x20 (Cobra A) inputs 8-11: confirmed 2026-09-06 that this board's servo config
+# (CobraPin_Board0_servos.py in the external board-config toolchain, see
+# docs/opp-hardware-reference.md) sets a special config byte on these 4 input channels instead of
+# CFG_INP_STATE, dedicating them to servo/PWM - not usable as plain switch inputs unless that
+# board is reflashed back to the plain (non-servo) config. Found after s-start read stuck CLOSED
+# on 0-0-8 with no wiring fault; moved to 0-0-27 instead.
+RESERVED_NUMBERS = {
+    "switches": {
+        "0-0-8": "reserved for servo/PWM by chain0-0x20's flashed board config (see docs/opp-hardware-reference.md)",
+        "0-0-9": "reserved for servo/PWM by chain0-0x20's flashed board config (see docs/opp-hardware-reference.md)",
+        "0-0-10": "reserved for servo/PWM by chain0-0x20's flashed board config (see docs/opp-hardware-reference.md)",
+        "0-0-11": "reserved for servo/PWM by chain0-0x20's flashed board config (see docs/opp-hardware-reference.md)",
+    }
+}
+
 COMPONENT_STATUSES = {
     1: "Idea - no hardware yet",
     2: "Hardware - no idea yet",
@@ -91,6 +112,10 @@ def check_collision(registry, kind, number, exclude_component=None):
     `kind` is "switches" or "coils". Returns a conflict description string, or None if free.
     """
     number = str(number)
+    reserved_reason = RESERVED_NUMBERS.get(kind, {}).get(number)
+    if reserved_reason:
+        return f"{number} is {reserved_reason}"
+
     mpf_numbers = mpf_switch_numbers() if kind == "switches" else mpf_coil_numbers()
     if number in mpf_numbers:
         return f"{number} is already used by {mpf_numbers[number]} in hardware-{kind}.yaml"
@@ -189,6 +214,12 @@ def full_scan():
 
     switch_numbers = mpf_switch_numbers()
     coil_numbers = mpf_coil_numbers()
+
+    for kind, numbers in (("switches", switch_numbers), ("coils", coil_numbers)):
+        for number, name in numbers.items():
+            reserved_reason = RESERVED_NUMBERS.get(kind, {}).get(number)
+            if reserved_reason:
+                violations.append(f"hardware-{kind}.yaml: {name} is on {number}, which is {reserved_reason}")
     switch_by_name = {name: number for number, name in switch_numbers.items()}
     coil_by_name = {name: number for number, name in coil_numbers.items()}
 

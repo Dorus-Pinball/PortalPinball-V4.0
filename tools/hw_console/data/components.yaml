@@ -127,8 +127,6 @@ components:
     mpf_devices: [bd-plunger]
     switches:
       - {name: s-plunger-lane, number: 2-0-16, board: chain2-0x20}
-      - {name: s-start, number: 2-0-17, board: chain2-0x20}
-      - {name: s-launch, number: 2-0-18, board: chain2-0x20}
     coils:
       - {name: c-plunger, number: 2-0-2, board: chain2-0x20}
     checklist:
@@ -136,7 +134,30 @@ components:
       - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
-    notes: "s-start/s-launch are cabinet buttons, not playfield switches."
+    notes: "s-start/s-launch used to be grouped here (2-0-17/2-0-18, DRAFT) but moved to the
+      Cobra board with the flippers, 2026-09-06 - see the start-launch-buttons component."
+
+  start-launch-buttons:
+    display_name: "Start / launch cabinet buttons"
+    status: 6
+    mpf_devices: []
+    switches:
+      - {name: s-start, number: 0-0-27, board: chain0-0x20}
+      - {name: s-launch, number: 0-0-3, board: chain0-0x20}
+    coils: []
+    checklist:
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "Cabinet buttons, not playfield switches - no coil, hardware-autofire pairing rule
+      doesn't apply. Wired onto the same Cobra chain 0 board (0x20) as the flippers, 2026-09-06
+      (moved off the earlier DRAFT 2-0-17/2-0-18 PSOC placeholders in plunger-launch). s-launch
+      (0-0-3) PASSED first try. s-start was first wired to 0-0-8, which read stuck CLOSED
+      regardless of press/release - confirmed via the external CobraPin board-config toolchain
+      that this board's servo config dedicates inputs 0-0-8..11 to servo/PWM, not switch inputs
+      (see docs/opp-hardware-reference.md and registry.RESERVED_NUMBERS) - moved to 0-0-27 and
+      PASSED. Both confirmed live via bcp_step.py (same BCP mechanism as tools/wiring_test.py)."
 
   trough:
     display_name: "Ball trough"
@@ -335,7 +356,7 @@ components:
 
   flippers:
     display_name: "Flippers"
-    status: 5
+    status: 6
     mpf_devices: [left_flipper, right_flipper]
     switches:
       - {name: s-left-flipper, number: 0-0-1, board: chain0-0x20}
@@ -358,8 +379,8 @@ components:
       both Bank A (HV_A, brown) - supersedes the earlier 0-0-2/0-0-3 guess read off
       board Overviews.xlsx's pin dump. Switch numbers are also the actual pins used for
       real physical wiring (2026-09-06): 0-0-1/0-0-2 - supersedes the earlier 0-0-9/0-0-10
-      guess. Still pending a physical continuity check (see TODO.md and
-      design/physical-checklists/wiring-guide.html)."
+      guess. Continuity/coil-driver check PASSED via tools/wiring_test.py, and confirmed live
+      in a real game (see TODO.md and design/physical-checklists/wiring-guide.html)."
 
   ramp-diverter-subway:
     display_name: "Right ramp diverter + subway"

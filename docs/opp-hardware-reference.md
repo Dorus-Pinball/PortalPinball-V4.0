@@ -42,6 +42,31 @@ when probing a switch pin with a meter.
   convenience without any coil actually being wired to them yet — wires present on a bank's
   connector doesn't by itself mean the bank is in use. Check the far end of the run.
 
+### Switch inputs can be silently repurposed by the board's own flashed config
+
+A CobraPin board's per-channel behavior isn't fully determined by `mpf hardware scan` (which only
+reports coarse wing-level type — solenoid/input/NeoPixel/etc). A separate, external tool -
+CobraPin's own board-config toolchain, on this machine at
+`C:\Users\dorus\Documents\Pinball-Code\Tools\Boardconfig files\Cobra\` (config scripts) and
+`...\Tools\OPP - open-pinball-project-code\` (full source) - can set a *per-channel* config byte
+that MPF's hardware scan never surfaces, silently taking an input off the table for plain switch
+use without it ever showing as "in use" anywhere in this repo's own config.
+
+**Confirmed case (2026-09-06):** chain 0 board `0x20`'s `CobraPin_Board0_servos.py` config
+(vs. the plain `CobraPin_Board0.py`) sets a special `\x96` byte on input indices **8, 9, 10, 11**
+instead of the normal `rs232Intf.CFG_INP_STATE` - dedicating those four inputs to servo/PWM use.
+A switch wired to one of them reads stuck/garbage regardless of press/release (not a simple NO/NC
+reversal, which would just invert). Found after `s-start` was wired to `0-0-8` and wouldn't work;
+moved to `0-0-27` instead.
+
+**This is enforced in code, not just documented here:** `tools/hw_console/registry.py`'s
+`RESERVED_NUMBERS` dict lists every number known to be off-limits this way, and both
+`check_collision()` (the interactive pre-check in `wire-component`'s step 4) and `full_scan()`
+(run automatically by the PostToolUse hook after any edit to `hardware-switches.yaml`/
+`-coils.yaml`) check against it. If a board is ever reflashed back to a plain (non-servo) config,
+or a new board turns out to have its own repurposed channels, update `RESERVED_NUMBERS` to match
+reality - it's a manually-maintained list, not something derived from a live board query.
+
 ### Same-microcontroller pairing rule (hardware-autofire devices)
 
 For a hardware-autofire device (flippers, slings, pop bumpers — switch and coil linked as a
