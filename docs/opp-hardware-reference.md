@@ -58,8 +58,12 @@ constraint — there is no further sub-range requirement (contrast with the red 
 | `0-0-1`, `0-0-2`, `0-0-3`, `0-0-4`, `0-0-5`, `0-0-6`, `0-0-7`, `0-0-15` | B | `HV_B` | teal |
 | `1-0-0`, `1-0-1`, `1-0-2`, `1-0-3`, `1-0-4`, `1-0-5`, `1-0-6`, `1-0-7` | C | `HV_C` | purple |
 
-This project's flipper coils (`c-flipper-left`=`0-0-2`, `c-flipper-right`=`0-0-3`) are both **Bank
-B**, so they draw +50V from the **teal `HV_B`** wire.
+This project's flipper coils (`c-flipper-left`=`0-0-8`, `c-flipper-right`=`0-0-9`) are both **Bank
+A**, so they draw +50V from the **brown `HV_A`** wire. Its flipper switches
+(`s-left-flipper`=`0-0-1`, `s-right-flipper`=`0-0-2`) are on chain 0 too, satisfying the
+same-microcontroller pairing rule above; switches don't have a "bank" (that's a coil-only, HV
+power concept), so their numbers landing in what the table above calls coil Bank B's range is
+irrelevant here.
 
 Other confirmed wire colors: main incoming supply `VIN` = red, `GND` = black. The 8-pin
 driver-output signal wires observed in photos cycle through blue/yellow/purple/teal, but this

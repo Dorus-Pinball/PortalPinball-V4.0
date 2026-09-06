@@ -95,19 +95,17 @@ switches:
 # PSOC chain (2-1-x) to the Cobra board per user decision, to land each flipper's switch on the
 # SAME physical board as its coil (c-flipper-left/right in hardware-coils.yaml are 0-0-8/0-0-9,
 # also chain 0) - CobraPin's own docs say timing-critical devices (flippers, slings, pops) need
-# switch+coil on the same STM32 board for a hardware autofire rule. 0-0-9/0-0-10 are read off
-# board Overviews.xlsx's "Cobrapin - Game Funtion" sheet (adjacent pins in the free switch-wing
-# connector containing 0-0-8/9/10/11) and cross-checked against hardware-basic.yaml's scan (chain
-# 0 board 0x20 has 15 free switch inputs, all otherwise unused) and
-# tools/hw_console/data/components.yaml. Still not confirmed by a physical continuity check on
-# the real board yet, see TODO.md and design/physical-checklists/wiring-guide.html. Fine for
-# smart_virtual/boot-test purposes; do not treat these numbers as final for real wiring.
+# switch+coil on the same STM32 board for a hardware autofire rule. 0-0-1/0-0-2 are the actual
+# pins used for real physical wiring (2026-09-06, confirmed by the user while wiring) -
+# supersedes the earlier 0-0-9/0-0-10 guess read off board Overviews.xlsx's "Cobrapin - Game
+# Funtion" sheet. Still pending a physical continuity check on the real board, see TODO.md and
+# design/physical-checklists/wiring-guide.html.
   s-left-flipper:
-    number: 0-0-9
+    number: 0-0-1
     debounce: quick
     tags: flipper_left
   s-right-flipper:
-    number: 0-0-10
+    number: 0-0-2
     debounce: quick
     tags: flipper_right
 # Chain 2-1-0 to 2-1-3 (formerly used for the DRAFT flipper switches) now free again.

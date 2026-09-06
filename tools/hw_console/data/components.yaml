@@ -338,8 +338,8 @@ components:
     status: 5
     mpf_devices: [left_flipper, right_flipper]
     switches:
-      - {name: s-left-flipper, number: 0-0-9, board: chain0-0x20}
-      - {name: s-right-flipper, number: 0-0-10, board: chain0-0x20}
+      - {name: s-left-flipper, number: 0-0-1, board: chain0-0x20}
+      - {name: s-right-flipper, number: 0-0-2, board: chain0-0x20}
     coils:
       - {name: c-flipper-left, number: 0-0-8, board: chain0-0x20}
       - {name: c-flipper-right, number: 0-0-9, board: chain0-0x20}
@@ -348,7 +348,7 @@ components:
         item: Flyback diode across coil
       - done: true
         item: Common ground tied to power supply ground
-      - done: false
+      - done: true
         item: Coil and its trigger switch land on the same physical OPP board
     notes: "Mechanical EOS inside coil assembly, not wired back to controller - main_coil
       only, no hold_coil/eos_switch. Moved from the PSOC chain to the Cobra board
@@ -356,8 +356,10 @@ components:
       per CobraPin's own same-board guidance for timing-critical devices. Coil numbers
       are the actual pins used for real physical wiring (2026-09-06): 0-0-8/0-0-9,
       both Bank A (HV_A, brown) - supersedes the earlier 0-0-2/0-0-3 guess read off
-      board Overviews.xlsx's pin dump. Still pending a physical continuity check (see
-      TODO.md and design/physical-checklists/wiring-guide.html)."
+      board Overviews.xlsx's pin dump. Switch numbers are also the actual pins used for
+      real physical wiring (2026-09-06): 0-0-1/0-0-2 - supersedes the earlier 0-0-9/0-0-10
+      guess. Still pending a physical continuity check (see TODO.md and
+      design/physical-checklists/wiring-guide.html)."
 
   ramp-diverter-subway:
     display_name: "Right ramp diverter + subway"
