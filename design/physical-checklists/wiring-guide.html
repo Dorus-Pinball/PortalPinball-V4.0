@@ -553,7 +553,7 @@ footer{
           <rect x="15" y="168" width="80" height="36" rx="3" fill="var(--orange-tint)" stroke="var(--orange)" stroke-width="1.5"/>
           <text x="55" y="181" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--orange)" font-weight="600">BOARD PIN</text>
           <text x="55" y="192" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="var(--orange)">0-0-9 / 0-0-10</text>
-          <text x="55" y="202" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="var(--orange)">(5V pull-up — no external power)</text>
+          <text x="55" y="202" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="var(--orange)">(3.3V pull-up — no external power)</text>
 
           <rect x="165" y="168" width="80" height="36" rx="3" fill="var(--blue-tint)" stroke="var(--blue)" stroke-width="1.5"/>
           <text x="205" y="184" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--blue)" font-weight="600">LOGIC GND</text>
@@ -566,7 +566,7 @@ footer{
           <line x1="150" y1="186" x2="165" y2="186" stroke="var(--ink)" stroke-width="1.5"/>
           <text x="130" y="220" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9" fill="var(--ink)">lever shown open (N.O.) — closes on flipper-button press</text>
         </svg>
-        <div class="caption">One switch lug lands on the <b>board's input pin</b> (<span style="font-family:'IBM Plex Mono',monospace">0-0-9</span>/<span style="font-family:'IBM Plex Mono',monospace">0-0-10</span>) — already pulled up to 5V inside the board, so never wire external power to it. The other lug lands on the <b>logic ground bus</b> (the board's plain "GND" pin — a separate rail from the "GND(50V)" and "GND(LED)" pins the coil/LED supplies return to). Closing the switch grounds the pin, which reads as "active" (per the xlsx <i>Switch</i> sheet).</div>
+        <div class="caption">One switch lug lands on the <b>board's input pin</b> (<span style="font-family:'IBM Plex Mono',monospace">0-0-9</span>/<span style="font-family:'IBM Plex Mono',monospace">0-0-10</span>) — already pulled up to <b>3.3V</b> inside the board (CobraPin's STM32 logic level — the red/PSOC boards elsewhere in this cabinet are 5V, see section 03), so never wire external power to it. The other lug lands on the <b>logic ground bus</b> (the board's plain "GND" pin — a separate rail from the "GND(50V)" and "GND(LED)" pins the coil/LED supplies return to). Closing the switch grounds the pin, which reads as "active" (per the xlsx <i>Switch</i> sheet).</div>
       </div>
     </div>
 
