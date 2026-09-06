@@ -393,8 +393,8 @@ footer{
       <table class="wtable">
         <thead><tr><th>Board</th><th>Port</th><th>Role</th><th>Switch inputs</th><th>Coil/driver outputs</th><th>LED outputs</th></tr></thead>
         <tbody>
-          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O — <b>1st choice</b></td><td class="num">13 free / 15 total — 2 in use (flippers)</td><td class="num">14 free / 16 total — 2 in use (flippers)</td><td class="num">40 used (0-0-0…39)</td></tr>
-          <tr><td>chain1-0x20 <span class="item-meta">(Cobra B)</span></td><td class="brd">COM5</td><td>LED driver + spare I/O — <b>2nd choice</b></td><td class="num">23 free</td><td class="num">8 free</td><td class="num">1 used (1-0-0)</td></tr>
+          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O — <b>1st choice</b></td><td class="num">7 free / 15 total — 4 in use (flippers, start, launch), 4 reserved (0-0-8…11, servo config)</td><td class="num">14 free / 16 total — 2 in use (flippers)</td><td class="num">40 used (0-0-0…39), 216 free (up to 256/board)</td></tr>
+          <tr><td>chain1-0x20 <span class="item-meta">(Cobra B)</span></td><td class="brd">COM5</td><td>LED driver + spare I/O — <b>2nd choice</b></td><td class="num">23 free</td><td class="num">8 free</td><td class="num">1 used (1-0-0, DRAFT), 255 free</td></tr>
           <tr><td>chain2-0x20 <span class="item-meta">(PSOC card 0)</span></td><td class="brd">COM6</td><td>Switches + coils — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
           <tr><td>chain2-0x21 <span class="item-meta">(PSOC card 1)</span></td><td class="brd">COM6</td><td>Switches + coils — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired (2-1-0…3 now free again)</td><td class="num">—</td></tr>
           <tr><td>chain2-0x22 <span class="item-meta">(PSOC card 2 + incand)</span></td><td class="brd">COM6</td><td>Switches + coils + incand — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
