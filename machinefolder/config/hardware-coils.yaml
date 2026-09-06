@@ -31,20 +31,17 @@ coils:
     default_pulse_ms: 25
 
     # Cobra chain 0 (board 0x20) - flipper coils
-    # DRAFT flipper coils (Phase 1, plans/resumption-roadmap.md) - single main_coil per side,
-    # no hold_coil/eos_switch since the EOS is mechanical/self-contained inside the coil
-    # assembly and not wired back to the controller.
+    # Flipper coils, single main_coil per side, no hold_coil/eos_switch since the EOS is
+    # mechanical/self-contained inside the coil assembly and not wired back to the controller.
     #
     # Board assignment moved from the PSOC chain (2-1-x) to the Cobra board (chain 0) per user
     # decision - flippers are timing-critical, and CobraPin's own docs (docs.missionpinball.org/
     # hardware/opp/cobrapin) say timing-critical devices should have their switch+coil on the
-    # same STM32 board for a hardware autofire rule with minimal latency. 0-0-2/0-0-3 are read
-    # directly off board Overviews.xlsx's "Cobrapin - Game Funtion" sheet pin dump (part of the
-    # free 4-pin coil bank containing 0-0-1/2/3/4) and cross-checked against
-    # tools/hw_console/data/components.yaml + hardware-basic.yaml's scan (chain 0 board 0x20 has
-    # 16 free solenoid outputs, all otherwise unused). Still DRAFT - not confirmed by a physical
-    # continuity check on the real board yet, see TODO.md and design/physical-checklists/
-    # wiring-guide.html.
+    # same STM32 board for a hardware autofire rule with minimal latency. 0-0-8/0-0-9 are the
+    # actual pins used for real physical wiring (2026-09-06), both in Bank A (HV_A, brown wire per
+    # docs/opp-hardware-reference.md) - supersedes the earlier 0-0-2/0-0-3 guess read off board
+    # Overviews.xlsx's pin dump (now free again). Still not confirmed by a physical continuity
+    # check on the real board yet, see TODO.md and design/physical-checklists/wiring-guide.html.
     #
     # CORRECTION to the roadmap's original assumption: MPF's flipper device still requires a
     # nonzero default_hold_power even with no hold_coil/eos_switch - confirmed by reading
@@ -56,11 +53,11 @@ coils:
     # winding for the controller to under-power, so a reduced hold_power would be wrong, not
     # just unnecessary.
   c-flipper-left:
-    number: 0-0-2
+    number: 0-0-8
     default_pulse_ms: 25
     default_hold_power: 1.0
   c-flipper-right:
-    number: 0-0-3
+    number: 0-0-9
     default_pulse_ms: 25
     default_hold_power: 1.0
 
@@ -99,12 +96,7 @@ coils:
     #    default_pulse_ms: 25
 
     # Cobra 0-0- & 1-0-
-    #name:
-    #    number: 0-0-8
-    #    default_pulse_ms: 25
-    #name:
-    #    number: 0-0-9
-    #    default_pulse_ms: 25
+    # 0-0-8 and 0-0-9 now taken - see c-flipper-left/c-flipper-right above.
     #name:
     #    number: 0-0-10
     #    default_pulse_ms: 25
@@ -139,7 +131,12 @@ coils:
     #name:
     #    number: 0-0-4
     #    default_pulse_ms: 25
-    # 0-0-3 and 0-0-2 now taken - see c-flipper-right/c-flipper-left above.
+    #name:
+    #    number: 0-0-3
+    #    default_pulse_ms: 25
+    #name:
+    #    number: 0-0-2
+    #    default_pulse_ms: 25
     #name:
     #    number: 0-0-1
     #    default_pulse_ms: 25
