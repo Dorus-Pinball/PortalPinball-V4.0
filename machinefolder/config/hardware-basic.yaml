@@ -26,6 +26,13 @@ virtual_platform_start_active_switches: s-trough1, s-trough2, s-trough3, s-troug
 #  - Chain: 2 Board: 0x22 Card: 2 Numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
 # Input cards:
+# NOTE: chain 0 board 0x20 inputs 8-11 are listed below (the OPP hardware scan reports them as
+# generic input-card numbers) but are actually dedicated to servo/PWM use by this board's
+# flashed config (CobraPin_Board0_servos.py in the board-config toolchain at
+# C:\Users\dorus\Documents\Pinball-Code\Tools\Boardconfig files\Cobra\ sets a special \x96 byte
+# on those 4 input indices instead of CFG_INP_STATE) - confirmed 2026-09-06 after s-start read
+# stuck CLOSED on 0-0-8. Do not wire a new switch to 0-0-8/9/10/11 unless that board is
+# re-flashed back to the plain (non-servo) CobraPin_Board0.py config.
 #  - Chain: 0 Board: 0x20 Card: 0 Numbers: [1, 2, 3, 8, 9, 10, 11, 16, 17, 18, 19, 24, 25, 26, 27]
 #  - Chain: 1 Board: 0x20 Card: 0 Numbers: [1, 2, 3, 8, 9, 10, 11, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 #  - Chain: 2 Board: 0x20 Card: 0 Numbers: [0, 1, 2, 3, 8, 9, 10, 11, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]

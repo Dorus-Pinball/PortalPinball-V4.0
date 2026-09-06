@@ -28,10 +28,17 @@ work).
 - [x] **Start/launch switches**: wired onto the same Cobra chain 0 board (0x20) as the flippers
       during the 2026-09-06 session (moved from the earlier DRAFT `2-0-17`/`2-0-18` PSOC-chain
       placeholders). `s-launch` on `0-0-3` PASSED first try (OPEN→CLOSED→OPEN). `s-start` was
-      first wired to `0-0-8` and read stuck CLOSED regardless of press/release (suspected: that
-      channel had been reassigned to servo/PWM use on the board itself, per the user, rather than
-      a wiring fault) — moved to `0-0-27` (confirmed free/valid on that board's input card) and
-      **PASSED** (OPEN→CLOSED→OPEN). Both confirmed live via `bcp_step.py` (same BCP mechanism as
+      first wired to `0-0-8` and read stuck CLOSED regardless of press/release — **confirmed root
+      cause** by reading the actual CobraPin board-config toolchain
+      (`C:\Users\dorus\Documents\Pinball-Code\Tools\Boardconfig files\Cobra\`):
+      `CobraPin_Board0_servos.py` vs. the plain `CobraPin_Board0.py` differ only in the input
+      config array, where indices **8, 9, 10, 11** get a special `\x96` byte instead of the
+      normal `CFG_INP_STATE` — that board's servo config variant dedicates inputs 8-11 to
+      servo/PWM use, not plain switch inputs. Moved to `0-0-27` (outside that range, confirmed
+      free/valid on that board's input card) and **PASSED** (OPEN→CLOSED→OPEN). **Inputs 0-0-8
+      through 0-0-11 on this board (chain 0, board 0x20) are off-limits for switches** unless
+      it's re-flashed back to the plain (non-servo) config. Both confirmed live via
+      `bcp_step.py` (same BCP mechanism as
       `tools/wiring_test.py`). Along the way, hit a real USB-serial incident: all 3 OPP boards'
       COM ports (COM4/5/6) dropped into `Status: Unknown` in Device Manager after a mid-session
       `ClearCommError` on COM5 (same signature as the earlier flipper-bringup USB-suspend issue,

@@ -618,7 +618,7 @@ footer{
       <div class="subhead" style="padding:0 0.9rem 0">Plunger — 2-0-16 · start/launch moved to the Cobra board, see below</div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-plunger-lane <span class="item-meta">2-0-16</span></div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-launch <span class="item-meta">0-0-3, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-06</div></div></div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-start <span class="item-meta">0-0-27, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-06 (moved from 0-0-8, which had been reassigned to servo/PWM use on the board)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-start <span class="item-meta">0-0-27, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-06 (moved from 0-0-8; confirmed via the CobraPin board-config toolchain that this board's servo config reassigns inputs <b>0-0-8 through 0-0-11</b> to servo/PWM use — avoid that range for any future switch on this board)</div></div></div>
       <div class="subhead" style="padding:0 0.9rem 0">Lanes — 2-0-19…26</div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-toplane1/2/3 <span class="item-meta">2-0-19…21</span></div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-bottomlane1…5 <span class="item-meta">2-0-22…26</span></div></div></div>

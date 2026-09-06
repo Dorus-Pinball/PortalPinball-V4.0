@@ -124,8 +124,14 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     (2026-09-06). Moved `s-start`/`s-launch` off their earlier DRAFT `2-0-17`/`2-0-18` PSOC-chain
     placeholders onto the same Cobra chain 0 board (0x20) the flippers use: `s-launch` →
     `0-0-3` (PASSED first try), `s-start` → initially `0-0-8`, which read stuck CLOSED regardless
-    of press/release (the user had reassigned that channel to servo/PWM use on the board itself)
-    — moved to `0-0-27` and PASSED. Both confirmed live via the same BCP mechanism
+    of press/release. Root-caused by reading the actual CobraPin board-config toolchain
+    (`C:\Users\dorus\Documents\Pinball-Code\Tools\Boardconfig files\Cobra\`):
+    `CobraPin_Board0_servos.py` vs. the plain `CobraPin_Board0.py` differ only in the input
+    config array, where indices 8-11 get a special `\x96` byte instead of the normal
+    `CFG_INP_STATE` — that board's servo config dedicates inputs 8-11 to servo/PWM use, not
+    switch inputs. Moved `s-start` to `0-0-27` (outside that range) and PASSED. Inputs 0-0-8
+    through 0-0-11 on this board are now off-limits for future switches unless it's re-flashed
+    back to the plain config. Both confirmed live via the same BCP mechanism
     `tools/wiring_test.py` uses. Also hit a more severe repeat of the flipper bring-up's USB
     disconnect issue: all 3 OPP boards' COM ports wedged into `Status: Unknown` after one
     `ClearCommError`, not just the affected port — the earlier `powercfg` selective-suspend fix
