@@ -27,7 +27,15 @@ MPF_DEVICES_PATH = REPO_ROOT / "machinefolder" / "config" / "hardware-devices.ya
 # a switch in 8N..8N+3, not just "anywhere on the same board."
 COBRA_CHAINS = (0, 1)
 
-VALID_COMPONENT_STATUSES = ("planned", "wired", "tested")
+COMPONENT_STATUSES = {
+    1: "Idea - no hardware yet",
+    2: "Hardware - no idea yet",
+    3: "Hardware with a purpose - not renovated",
+    4: "Renovated hardware with a purpose - not wired",
+    5: "Fully connected - not tested",
+    6: "Ready - connected & tested",
+}
+VALID_COMPONENT_STATUSES = tuple(COMPONENT_STATUSES)  # (1, 2, 3, 4, 5, 6)
 VALID_BOARD_STATUSES = ("scanned", "connected", "verified")
 
 _yaml = YAML()

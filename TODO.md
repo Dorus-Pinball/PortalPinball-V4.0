@@ -59,6 +59,13 @@ work).
 
 ## Dev tooling
 
+- [ ] **`wiring-guide.html` status vocabulary out of sync**: `tools/hw_console`'s Status tab
+      (2026-09-06) replaced `components.yaml`'s `planned`/`wired`/`tested` status with a 1-6
+      build-lifecycle scale (`registry.COMPONENT_STATUSES`), but
+      `design/physical-checklists/wiring-guide.html`'s "04 Known components" table still uses the
+      old `wired`/`planned`/`gap` badge vocabulary — it's a hand-maintained static document with
+      no generator script, so it wasn't rewritten as part of that change. Re-label its status
+      badges to match next time it's touched for a real wiring pass.
 - [ ] **True graceful Ctrl+C shutdown for `tools/mpf-session.ps1`**: current `-Action Stop` is a
       tracked `Stop-Process` (hard-stop), not a real SIGINT to MPF's own signal handler —
       deliberately deferred in favor of simplicity, since a hard-stop was verified safe on this
@@ -132,6 +139,10 @@ scores, portal's per-stage exit_open bonuses, dropbank's bank-completion escalat
 
 ## Manual action for the user
 
+- [ ] Review the 1-6 statuses seeded into `tools/hw_console/data/components.yaml`'s Status tab
+      (2026-09-06 migration from `planned`/`wired`/`tested`): `wired` components were seeded as
+      `6`, `planned` ones as `4` — a reasonable default, not a precise per-element audit. Walk
+      through each element in the Status tab and correct any that don't actually match reality.
 - [ ] Review/adjust the DRAFT sound allocation in `machinefolder/sounds/sfx/` (9 files, one per
       feature + multiball, picked from the user's own Portal 2 sound extract — see `CHANGES.md`
       entry 8). `slings_hit.wav` (a generic synth blip standing in for a "springy boing" that

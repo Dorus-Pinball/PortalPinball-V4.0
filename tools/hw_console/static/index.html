@@ -10,7 +10,7 @@
   <h1>Portal Pinball - Hardware Bring-Up Console</h1>
   <nav>
     <button class="tab-btn active" data-tab="boards">Boards</button>
-    <button class="tab-btn" data-tab="components">Components</button>
+    <button class="tab-btn" data-tab="components">Status</button>
   </nav>
 </header>
 
@@ -30,11 +30,15 @@
         <div class="list-controls">
           <select id="status-filter">
             <option value="">All statuses</option>
-            <option value="planned">Planned</option>
-            <option value="wired">Wired</option>
-            <option value="tested">Tested</option>
+            <option value="1">1 - Idea, no hardware</option>
+            <option value="2">2 - Hardware, no idea</option>
+            <option value="3">3 - Hardware with a purpose</option>
+            <option value="4">4 - Renovated, not wired</option>
+            <option value="5">5 - Connected, not tested</option>
+            <option value="6">6 - Ready (connected & tested)</option>
           </select>
-          <button id="new-component-btn">+ Add component</button>
+          <button id="new-component-btn">+ Add element</button>
+          <button id="review-btn">Review all</button>
         </div>
         <ul id="components-list"></ul>
       </div>
@@ -47,18 +51,20 @@
 
 <dialog id="new-component-dialog">
   <form id="new-component-form">
-    <h2>Add component</h2>
-    <label>Internal name (kebab-case)<input name="name" required pattern="[a-z0-9]+(-[a-z0-9]+)*"></label>
+    <h2>Add element</h2>
+    <label>Internal ID (kebab-case)<input name="name" required pattern="[a-z0-9]+(-[a-z0-9]+)*"></label>
     <label>Display name<input name="display_name" required></label>
+    <label>Status
+      <select name="status">
+        <option value="1" selected>1 - Idea, no hardware</option>
+        <option value="2">2 - Hardware, no idea</option>
+        <option value="3">3 - Hardware with a purpose</option>
+        <option value="4">4 - Renovated, not wired</option>
+        <option value="5">5 - Connected, not tested</option>
+        <option value="6">6 - Ready (connected & tested)</option>
+      </select>
+    </label>
     <label>Notes<textarea name="notes" rows="2"></textarea></label>
-
-    <h3>Switches</h3>
-    <div id="new-switches"></div>
-    <button type="button" class="add-row-btn" data-kind="switch">+ switch</button>
-
-    <h3>Coils</h3>
-    <div id="new-coils"></div>
-    <button type="button" class="add-row-btn" data-kind="coil">+ coil</button>
 
     <p class="error" id="new-component-error" hidden></p>
 
@@ -67,6 +73,20 @@
       <button type="submit">Add</button>
     </div>
   </form>
+</dialog>
+
+<dialog id="review-dialog">
+  <div class="review-progress" id="review-progress"></div>
+  <h2 id="review-name"></h2>
+  <p class="review-hint" id="review-hint"></p>
+  <div id="review-options" class="review-options"></div>
+  <div class="dialog-actions review-actions">
+    <button type="button" id="review-close">Close</button>
+    <div>
+      <button type="button" id="review-prev">&larr; Previous</button>
+      <button type="button" id="review-next">Next &rarr;</button>
+    </div>
+  </div>
 </dialog>
 
 <script src="/static/app.js"></script>

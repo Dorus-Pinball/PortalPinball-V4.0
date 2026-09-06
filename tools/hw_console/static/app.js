@@ -1,5 +1,20 @@
 let selectedComponent = null;
 
+const STATUS_LABELS = {
+  1: "Idea - no hardware yet",
+  2: "Hardware - no idea yet",
+  3: "Hardware with a purpose - not renovated",
+  4: "Renovated hardware with a purpose - not wired",
+  5: "Fully connected - not tested",
+  6: "Ready - connected & tested",
+};
+
+function statusOptionsHtml(selected) {
+  return Object.entries(STATUS_LABELS)
+    .map(([value, label]) => `<option value="${value}" ${Number(selected) === Number(value) ? "selected" : ""}>${value} - ${esc(label)}</option>`)
+    .join("");
+}
+
 function $(sel, root = document) { return root.querySelector(sel); }
 function $all(sel, root = document) { return [...root.querySelectorAll(sel)]; }
 
@@ -64,7 +79,7 @@ async function loadComponents() {
     const li = document.createElement("li");
     li.dataset.name = name;
     if (name === selectedComponent) li.classList.add("selected");
-    li.innerHTML = `<span>${esc(c.display_name)}</span><span class="status-badge ${esc(c.status)}">${esc(c.status)}</span>`;
+    li.innerHTML = `<span>${esc(c.display_name)}</span><span class="status-badge status-${esc(c.status)}">${esc(c.status)} - ${esc(STATUS_LABELS[c.status])}</span>`;
     li.addEventListener("click", () => selectComponent(name));
     list.appendChild(li);
   }
@@ -79,39 +94,29 @@ async function selectComponent(name) {
 
 function renderComponentDetail(name, c) {
   const pane = $("#component-detail");
-  const rows = (entries, kind) =>
+  const rows = (entries) =>
     entries
       .map(
         (e) => `<tr>
           <td>${esc(e.name)}</td><td>${esc(e.number)}</td><td>${esc(e.board || "")}</td>
-          <td>
-            <select data-kind="${kind}" data-name="${esc(e.name)}">
-              <option value="planned" ${e.status === "planned" ? "selected" : ""}>planned</option>
-              <option value="wired" ${e.status === "wired" ? "selected" : ""}>wired</option>
-              <option value="tested" ${e.status === "tested" ? "selected" : ""}>tested</option>
-            </select>
-          </td>
         </tr>`
       )
       .join("");
 
   pane.innerHTML = `
-    <h2>${esc(c.display_name)}
-      <select id="component-status">
-        <option value="planned" ${c.status === "planned" ? "selected" : ""}>planned</option>
-        <option value="wired" ${c.status === "wired" ? "selected" : ""}>wired</option>
-        <option value="tested" ${c.status === "tested" ? "selected" : ""}>tested</option>
-      </select>
+    <h2>
+      <input type="text" id="component-name" value="${esc(c.display_name)}">
+      <select id="component-status">${statusOptionsHtml(c.status)}</select>
     </h2>
     ${c.mpf_devices && c.mpf_devices.length ? `<p><em>MPF devices:</em> ${esc(c.mpf_devices.join(", "))}</p>` : ""}
 
-    <h3>Switches</h3>
-    <table><thead><tr><th>Name</th><th>Number</th><th>Board</th><th>Status</th></tr></thead>
-      <tbody>${c.switches.length ? rows(c.switches, "switch") : '<tr><td colspan="4">none</td></tr>'}</tbody></table>
+    <h3>Switches <span class="readonly-hint">(read-only - change via chat)</span></h3>
+    <table><thead><tr><th>Name</th><th>Number</th><th>Board</th></tr></thead>
+      <tbody>${c.switches.length ? rows(c.switches) : '<tr><td colspan="3">none</td></tr>'}</tbody></table>
 
-    <h3>Coils</h3>
-    <table><thead><tr><th>Name</th><th>Number</th><th>Board</th><th>Status</th></tr></thead>
-      <tbody>${c.coils.length ? rows(c.coils, "coil") : '<tr><td colspan="4">none</td></tr>'}</tbody></table>
+    <h3>Coils <span class="readonly-hint">(read-only - change via chat)</span></h3>
+    <table><thead><tr><th>Name</th><th>Number</th><th>Board</th></tr></thead>
+      <tbody>${c.coils.length ? rows(c.coils) : '<tr><td colspan="3">none</td></tr>'}</tbody></table>
 
     <h3>Wiring checklist</h3>
     ${c.checklist
@@ -131,11 +136,8 @@ function renderComponentDetail(name, c) {
     await patchComponent(name, { status: e.target.value });
   });
 
-  $all("select[data-kind]", pane).forEach((sel) => {
-    sel.addEventListener("change", async () => {
-      const key = sel.dataset.kind === "switch" ? "switch_status" : "coil_status";
-      await patchComponent(name, { [key]: { name: sel.dataset.name, status: sel.value } });
-    });
+  $("#component-name").addEventListener("change", async (e) => {
+    await patchComponent(name, { display_name: e.target.value });
   });
 
   $all("input[data-checklist-idx]", pane).forEach((cb) => {
@@ -159,48 +161,14 @@ async function patchComponent(name, body) {
 
 $("#status-filter").addEventListener("change", loadComponents);
 
-// ---- Add component dialog ----
+// ---- Add element dialog ----
 const dialog = $("#new-component-dialog");
 $("#new-component-btn").addEventListener("click", () => {
-  $("#new-switches").innerHTML = "";
-  $("#new-coils").innerHTML = "";
   $("#new-component-form").reset();
   $("#new-component-error").hidden = true;
   dialog.showModal();
 });
 $("#cancel-new-component").addEventListener("click", () => dialog.close());
-
-function entryRowHtml(kind) {
-  return `<div class="entry-row" data-kind="${kind}">
-    <input placeholder="${kind === "switch" ? "s-" : "c-"}name" data-field="name">
-    <input placeholder="chain-card-number" data-field="number">
-    <input placeholder="board id" data-field="board">
-    <button type="button" class="remove-row-btn">x</button>
-  </div>`;
-}
-
-$all(".add-row-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const container = btn.dataset.kind === "switch" ? $("#new-switches") : $("#new-coils");
-    container.insertAdjacentHTML("beforeend", entryRowHtml(btn.dataset.kind));
-  });
-});
-
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("remove-row-btn")) {
-    e.target.closest(".entry-row").remove();
-  }
-});
-
-function collectEntries(containerId) {
-  return $all(`#${containerId} .entry-row`)
-    .map((row) => ({
-      name: $('[data-field="name"]', row).value.trim(),
-      number: $('[data-field="number"]', row).value.trim(),
-      board: $('[data-field="board"]', row).value.trim(),
-    }))
-    .filter((e) => e.name && e.number);
-}
 
 $("#new-component-form").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -208,9 +176,8 @@ $("#new-component-form").addEventListener("submit", async (e) => {
   const body = {
     name: form.name.value.trim(),
     display_name: form.display_name.value.trim(),
+    status: Number(form.status.value),
     notes: form.notes.value.trim(),
-    switches: collectEntries("new-switches"),
-    coils: collectEntries("new-coils"),
   };
 
   const res = await fetch("/api/components", {
@@ -231,6 +198,69 @@ $("#new-component-form").addEventListener("submit", async (e) => {
   dialog.close();
   loadComponents();
 });
+
+// ---- Review-all mode: walk every element one at a time ----
+let reviewEntries = [];
+let reviewIndex = 0;
+const reviewDialog = $("#review-dialog");
+
+$("#review-btn").addEventListener("click", async () => {
+  const components = await fetch("/api/components").then((r) => r.json());
+  reviewEntries = Object.entries(components);
+  if (!reviewEntries.length) return;
+  reviewIndex = 0;
+  renderReviewStep();
+  reviewDialog.showModal();
+});
+
+function renderReviewStep() {
+  const [name, c] = reviewEntries[reviewIndex];
+  $("#review-progress").textContent = `Element ${reviewIndex + 1} of ${reviewEntries.length}`;
+  $("#review-name").textContent = c.display_name;
+
+  const pinCount = c.switches.length + c.coils.length;
+  $("#review-hint").textContent = pinCount
+    ? `${c.switches.length} switch(es), ${c.coils.length} coil(s) assigned.`
+    : "No pins assigned yet.";
+
+  $("#review-options").innerHTML = Object.entries(STATUS_LABELS)
+    .map(
+      ([value, label]) => `<label class="review-option">
+        <input type="radio" name="review-status" value="${value}" ${Number(c.status) === Number(value) ? "checked" : ""}>
+        ${value} - ${esc(label)}
+      </label>`
+    )
+    .join("");
+
+  $all('input[name="review-status"]', reviewDialog).forEach((radio) => {
+    radio.addEventListener("change", async () => {
+      await patchComponent(name, { status: Number(radio.value) });
+      reviewEntries[reviewIndex][1].status = Number(radio.value);
+    });
+  });
+
+  $("#review-prev").disabled = reviewIndex === 0;
+  $("#review-next").textContent = reviewIndex === reviewEntries.length - 1 ? "Done" : "Next →";
+}
+
+$("#review-prev").addEventListener("click", () => {
+  if (reviewIndex > 0) {
+    reviewIndex -= 1;
+    renderReviewStep();
+  }
+});
+
+$("#review-next").addEventListener("click", () => {
+  if (reviewIndex < reviewEntries.length - 1) {
+    reviewIndex += 1;
+    renderReviewStep();
+  } else {
+    reviewDialog.close();
+  }
+});
+
+$("#review-close").addEventListener("click", () => reviewDialog.close());
+reviewDialog.addEventListener("close", () => loadComponents());
 
 loadBoards();
 loadComponents();
