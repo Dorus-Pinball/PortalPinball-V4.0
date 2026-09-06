@@ -25,16 +25,21 @@ work).
       in `hardware-coils.yaml` was too weak for real travel with HV on (`pulse_ms: 200` worked in
       testing) — real tuning still needed, see the "Needs a design decision" flipper pulse entry
       below.
-- [ ] **Start/launch switches**: wired onto the same Cobra chain 0 board (0x20) as the flippers
-      during the 2026-09-06 session, `s-launch` on `0-0-3`, `s-start` on `0-0-8` (moved from the
-      earlier DRAFT `2-0-17`/`2-0-18` PSOC-chain placeholders). Tested live via `bcp_step.py`
-      (the same BCP mechanism `tools/wiring_test.py` uses): **`s-launch` PASSES**
-      (OPEN→CLOSED→OPEN on press/release). **`s-start` reads CLOSED at rest and stays CLOSED
-      regardless of press/release** — not a simple NO/NC wiring reversal (that would invert, not
-      stick), points to a short to ground or a wrong terminal on input 8 of board 0x20. Needs
-      physical tracing of that wire before `s-start` will work; config address is believed
-      correct (confirmed against `hardware-basic.yaml`'s input-card scan, terminal 8 is a valid
-      input on that board).
+- [x] **Start/launch switches**: wired onto the same Cobra chain 0 board (0x20) as the flippers
+      during the 2026-09-06 session (moved from the earlier DRAFT `2-0-17`/`2-0-18` PSOC-chain
+      placeholders). `s-launch` on `0-0-3` PASSED first try (OPEN→CLOSED→OPEN). `s-start` was
+      first wired to `0-0-8` and read stuck CLOSED regardless of press/release (suspected: that
+      channel had been reassigned to servo/PWM use on the board itself, per the user, rather than
+      a wiring fault) — moved to `0-0-27` (confirmed free/valid on that board's input card) and
+      **PASSED** (OPEN→CLOSED→OPEN). Both confirmed live via `bcp_step.py` (same BCP mechanism as
+      `tools/wiring_test.py`). Along the way, hit a real USB-serial incident: all 3 OPP boards'
+      COM ports (COM4/5/6) dropped into `Status: Unknown` in Device Manager after a mid-session
+      `ClearCommError` on COM5 (same signature as the earlier flipper-bringup USB-suspend issue,
+      but this time all 3 chains wedged, not just one — the earlier `powercfg` selective-suspend
+      fix didn't fully prevent it) — recovered only by physically unplugging/replugging the USB
+      cables at the PC end (a board-side reseat alone did not clear it; a software PnP
+      disable/enable also failed, needs admin elevation this session doesn't have). Worth
+      revisiting the USB power-management fix if this recurs.
 - [ ] **Tilt**: no tilt switch exists at all yet — needs a physical switch installed before any
       config can follow. Per `plans/OutsidePerspective.md`, MPF ships a complete built-in `tilt`
       mode — once the switch exists, the MPF-side work is `modes: [tilt]` plus tagging the
