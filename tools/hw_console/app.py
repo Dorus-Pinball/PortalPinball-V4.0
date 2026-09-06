@@ -46,7 +46,7 @@ def list_components():
     components = data.get("components", {})
     status_filter = request.args.get("status")
     if status_filter:
-        components = {k: v for k, v in components.items() if v.get("status") == status_filter}
+        components = {k: v for k, v in components.items() if v.get("status") == int(status_filter)}
     return jsonify(components)
 
 
@@ -71,36 +71,16 @@ def add_component():
     if name in components:
         return jsonify({"error": f"component '{name}' already exists"}), 409
 
-    switches = body.get("switches", [])
-    coils = body.get("coils", [])
-
-    for entry in switches + coils:
-        if not entry.get("name") or not entry.get("number"):
-            return jsonify({"error": "every switch/coil entry needs a name and number"}), 400
-
-    conflicts = []
-    for entry in switches:
-        conflict = registry.check_collision(data, "switches", entry["number"])
-        if conflict:
-            conflicts.append(conflict)
-    for entry in coils:
-        conflict = registry.check_collision(data, "coils", entry["number"])
-        if conflict:
-            conflicts.append(conflict)
-    if conflicts:
-        return jsonify({"error": "number collision", "conflicts": conflicts}), 409
-
-    for entry in switches:
-        entry.setdefault("status", "planned")
-    for entry in coils:
-        entry.setdefault("status", "planned")
+    status = body.get("status", 1)
+    if status not in registry.VALID_COMPONENT_STATUSES:
+        return jsonify({"error": f"status must be one of {registry.VALID_COMPONENT_STATUSES}"}), 400
 
     components[name] = {
         "display_name": body.get("display_name", name),
-        "status": body.get("status", "planned"),
+        "status": status,
         "mpf_devices": body.get("mpf_devices", []),
-        "switches": switches,
-        "coils": coils,
+        "switches": [],
+        "coils": [],
         "checklist": registry.checklist_template(),
         "notes": body.get("notes", ""),
     }
@@ -120,25 +100,19 @@ def update_component(name):
     body = request.get_json(force=True) or {}
 
     if "status" in body:
-        if body["status"] not in registry.VALID_COMPONENT_STATUSES:
+        status = int(body["status"])
+        if status not in registry.VALID_COMPONENT_STATUSES:
             return jsonify({"error": f"status must be one of {registry.VALID_COMPONENT_STATUSES}"}), 400
-        component["status"] = body["status"]
+        component["status"] = status
+
+    if "display_name" in body:
+        component["display_name"] = body["display_name"]
 
     if "notes" in body:
         component["notes"] = body["notes"]
 
     if "checklist" in body:
         component["checklist"] = body["checklist"]
-
-    if "switch_status" in body:
-        for entry in component.get("switches", []):
-            if entry["name"] == body["switch_status"]["name"]:
-                entry["status"] = body["switch_status"]["status"]
-
-    if "coil_status" in body:
-        for entry in component.get("coils", []):
-            if entry["name"] == body["coil_status"]["name"]:
-                entry["status"] = body["coil_status"]["status"]
 
     registry.save_registry(data)
     return jsonify(component)

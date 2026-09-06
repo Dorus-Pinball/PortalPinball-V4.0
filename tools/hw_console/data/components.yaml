@@ -4,13 +4,26 @@
 # machinefolder/config/hardware-switches.yaml and hardware-coils.yaml, unchanged by this file.
 # Edit this by hand or through the hw_console web UI (see tools/hw_console/README.md).
 #
-# Seeded 2026-08-30 from the state of hardware-*.yaml / hardware-devices.yaml / TODO.md /
-# plans/resumption-roadmap.md at that time: components without a DRAFT marker in those files are
-# seeded as `wired` (the machine logged 23 real games in Sept-Oct 2024 per the roadmap); the
-# DRAFT-marked components (flippers, ramp-diverter/subway, service-mode nav) are seeded as
-# `planned`. Board status is seeded as `scanned` (the last known state, from the hardware-scan
-# comment block in hardware-basic.yaml) since the machine has been dormant ~22 months and boards
-# are being reconnected/reverified now, not assumed still connected.
+# Each component's `status` is a 1-6 build-lifecycle stage (see registry.COMPONENT_STATUSES):
+#   1 - Idea - no hardware yet
+#   2 - Hardware - no idea yet (not renovated: old stickers, rough cables, etc.)
+#   3 - Hardware with a purpose - not renovated
+#   4 - Renovated hardware with a purpose - not wired to the playfield & controllers
+#   5 - Fully connected (on playfield) - not tested
+#   6 - Ready - fully connected & tested
+# Switch/coil pin entries (name/number/board) are read-only display here - they only change via
+# the wire-component skill editing this file directly, never through the hw_console UI.
+#
+# Seeded 2026-09-06 by migrating the original 2026-08-30 planned/wired/tested seed onto this
+# scale: components that were `wired` (no DRAFT marker; the machine logged 23 real games in
+# Sept-Oct 2024 per the roadmap) start at 6. Components that were `planned` (flippers,
+# ramp-diverter-subway, service-mode-nav - all DRAFT-marked) start at 4, since they already have
+# real (if unconfirmed) pin numbers picked, just not physically wired/verified yet. These
+# starting values are a reasonable default, not a precise audit - walk through and correct each
+# one via the Status tab as the actual state becomes clearer.
+# Board status is seeded as `scanned` (the last known state, from the hardware-scan comment block
+# in hardware-basic.yaml) since the machine has been dormant ~22 months and boards are being
+# reconnected/reverified now, not assumed still connected.
 
 checklist_template:
   - {item: "Flyback diode across coil", done: false}
@@ -74,14 +87,14 @@ boards:
 components:
   autofire-slings:
     display_name: "Slings (autofire)"
-    status: wired
+    status: 6
     mpf_devices: [ac-sling-left, ac-sling-right]
     switches:
-      - {name: s-left-sling, number: 2-0-1, board: chain2-0x20, status: wired}
-      - {name: s-right-sling, number: 2-0-0, board: chain2-0x20, status: wired}
+      - {name: s-left-sling, number: 2-0-1, board: chain2-0x20}
+      - {name: s-right-sling, number: 2-0-0, board: chain2-0x20}
     coils:
-      - {name: c-sling-left, number: 2-0-1, board: chain2-0x20, status: wired}
-      - {name: c-sling-right, number: 2-0-0, board: chain2-0x20, status: wired}
+      - {name: c-sling-left, number: 2-0-1, board: chain2-0x20}
+      - {name: c-sling-right, number: 2-0-0, board: chain2-0x20}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
@@ -91,16 +104,16 @@ components:
 
   autofire-popbumpers:
     display_name: "Pop bumpers (autofire)"
-    status: wired
+    status: 6
     mpf_devices: [ac-popbumper-1, ac-popbumper-2, ac-popbumper-3]
     switches:
-      - {name: s-popbumper-1, number: 2-0-8, board: chain2-0x20, status: wired}
-      - {name: s-popbumper-2, number: 2-0-9, board: chain2-0x20, status: wired}
-      - {name: s-popbumper-3, number: 2-0-10, board: chain2-0x20, status: wired}
+      - {name: s-popbumper-1, number: 2-0-8, board: chain2-0x20}
+      - {name: s-popbumper-2, number: 2-0-9, board: chain2-0x20}
+      - {name: s-popbumper-3, number: 2-0-10, board: chain2-0x20}
     coils:
-      - {name: c-popbumper-1, number: 2-0-4, board: chain2-0x20, status: wired}
-      - {name: c-popbumper-2, number: 2-0-5, board: chain2-0x20, status: wired}
-      - {name: c-popbumper-3, number: 2-0-6, board: chain2-0x20, status: wired}
+      - {name: c-popbumper-1, number: 2-0-4, board: chain2-0x20}
+      - {name: c-popbumper-2, number: 2-0-5, board: chain2-0x20}
+      - {name: c-popbumper-3, number: 2-0-6, board: chain2-0x20}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
@@ -110,14 +123,14 @@ components:
 
   plunger-launch:
     display_name: "Plunger lane / auto-launch"
-    status: wired
+    status: 6
     mpf_devices: [bd-plunger]
     switches:
-      - {name: s-plunger-lane, number: 2-0-16, board: chain2-0x20, status: wired}
-      - {name: s-start, number: 2-0-17, board: chain2-0x20, status: wired}
-      - {name: s-launch, number: 2-0-18, board: chain2-0x20, status: wired}
+      - {name: s-plunger-lane, number: 2-0-16, board: chain2-0x20}
+      - {name: s-start, number: 2-0-17, board: chain2-0x20}
+      - {name: s-launch, number: 2-0-18, board: chain2-0x20}
     coils:
-      - {name: c-plunger, number: 2-0-2, board: chain2-0x20, status: wired}
+      - {name: c-plunger, number: 2-0-2, board: chain2-0x20}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
@@ -127,18 +140,18 @@ components:
 
   trough:
     display_name: "Ball trough"
-    status: wired
+    status: 6
     mpf_devices: [bd-trough]
     switches:
-      - {name: s-trough1, number: 2-1-16, board: chain2-0x21, status: wired}
-      - {name: s-trough2, number: 2-1-17, board: chain2-0x21, status: wired}
-      - {name: s-trough3, number: 2-1-18, board: chain2-0x21, status: wired}
-      - {name: s-trough4, number: 2-1-19, board: chain2-0x21, status: wired}
-      - {name: s-trough5, number: 2-1-20, board: chain2-0x21, status: wired}
-      - {name: s-trough6, number: 2-1-21, board: chain2-0x21, status: wired}
-      - {name: s-trough-jam, number: 2-1-22, board: chain2-0x21, status: wired}
+      - {name: s-trough1, number: 2-1-16, board: chain2-0x21}
+      - {name: s-trough2, number: 2-1-17, board: chain2-0x21}
+      - {name: s-trough3, number: 2-1-18, board: chain2-0x21}
+      - {name: s-trough4, number: 2-1-19, board: chain2-0x21}
+      - {name: s-trough5, number: 2-1-20, board: chain2-0x21}
+      - {name: s-trough6, number: 2-1-21, board: chain2-0x21}
+      - {name: s-trough-jam, number: 2-1-22, board: chain2-0x21}
     coils:
-      - {name: c-trough-eject, number: 2-0-3, board: chain2-0x20, status: wired}
+      - {name: c-trough-eject, number: 2-0-3, board: chain2-0x20}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
@@ -149,14 +162,14 @@ components:
 
   drop-bank:
     display_name: "Drop target bank"
-    status: wired
+    status: 6
     mpf_devices: [d-drop-target1, d-drop-target2, d-drop-target3, db-dropbank]
     switches:
-      - {name: s-drop1, number: 2-1-23, board: chain2-0x21, status: wired}
-      - {name: s-drop2, number: 2-1-24, board: chain2-0x21, status: wired}
-      - {name: s-drop3, number: 2-1-25, board: chain2-0x21, status: wired}
+      - {name: s-drop1, number: 2-1-23, board: chain2-0x21}
+      - {name: s-drop2, number: 2-1-24, board: chain2-0x21}
+      - {name: s-drop3, number: 2-1-25, board: chain2-0x21}
     coils:
-      - {name: c-drop, number: 2-0-7, board: chain2-0x20, status: wired}
+      - {name: c-drop, number: 2-0-7, board: chain2-0x20}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
@@ -167,12 +180,12 @@ components:
 
   top-lanes:
     display_name: "Top lanes (3)"
-    status: wired
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-toplane1, number: 2-0-19, board: chain2-0x20, status: wired}
-      - {name: s-toplane2, number: 2-0-20, board: chain2-0x20, status: wired}
-      - {name: s-toplane3, number: 2-0-21, board: chain2-0x20, status: wired}
+      - {name: s-toplane1, number: 2-0-19, board: chain2-0x20}
+      - {name: s-toplane2, number: 2-0-20, board: chain2-0x20}
+      - {name: s-toplane3, number: 2-0-21, board: chain2-0x20}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
@@ -183,14 +196,14 @@ components:
 
   bottom-lanes:
     display_name: "Bottom lanes (5)"
-    status: wired
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-bottomlane1, number: 2-0-22, board: chain2-0x20, status: wired}
-      - {name: s-bottomlane2, number: 2-0-23, board: chain2-0x20, status: wired}
-      - {name: s-bottomlane3, number: 2-0-24, board: chain2-0x20, status: wired}
-      - {name: s-bottomlane4, number: 2-0-25, board: chain2-0x20, status: wired}
-      - {name: s-bottomlane5, number: 2-0-26, board: chain2-0x20, status: wired}
+      - {name: s-bottomlane1, number: 2-0-22, board: chain2-0x20}
+      - {name: s-bottomlane2, number: 2-0-23, board: chain2-0x20}
+      - {name: s-bottomlane3, number: 2-0-24, board: chain2-0x20}
+      - {name: s-bottomlane4, number: 2-0-25, board: chain2-0x20}
+      - {name: s-bottomlane5, number: 2-0-26, board: chain2-0x20}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
@@ -201,12 +214,12 @@ components:
 
   orbits:
     display_name: "Orbits (left/right/top)"
-    status: wired
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-orbit-l, number: 2-0-28, board: chain2-0x20, status: wired}
-      - {name: s-orbit-r, number: 2-0-27, board: chain2-0x20, status: wired}
-      - {name: s-orbit-top, number: 2-1-28, board: chain2-0x21, status: wired}
+      - {name: s-orbit-l, number: 2-0-28, board: chain2-0x20}
+      - {name: s-orbit-r, number: 2-0-27, board: chain2-0x20}
+      - {name: s-orbit-top, number: 2-1-28, board: chain2-0x21}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
@@ -217,18 +230,18 @@ components:
 
   targets:
     display_name: "Standup targets (E/R/M/L banks)"
-    status: wired
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-target-e1, number: 2-0-29, board: chain2-0x20, status: wired}
-      - {name: s-target-e2, number: 2-0-30, board: chain2-0x20, status: wired}
-      - {name: s-target-r1, number: 2-3-0, board: chain2-0x23, status: wired}
-      - {name: s-target-r2, number: 2-3-1, board: chain2-0x23, status: wired}
-      - {name: s-target-m1, number: 2-3-2, board: chain2-0x23, status: wired}
-      - {name: s-target-m2, number: 2-3-3, board: chain2-0x23, status: wired}
-      - {name: s-target-m3, number: 2-3-4, board: chain2-0x23, status: wired}
-      - {name: s-target-m4, number: 2-3-5, board: chain2-0x23, status: wired}
-      - {name: s-target-l1, number: 2-3-6, board: chain2-0x23, status: wired}
+      - {name: s-target-e1, number: 2-0-29, board: chain2-0x20}
+      - {name: s-target-e2, number: 2-0-30, board: chain2-0x20}
+      - {name: s-target-r1, number: 2-3-0, board: chain2-0x23}
+      - {name: s-target-r2, number: 2-3-1, board: chain2-0x23}
+      - {name: s-target-m1, number: 2-3-2, board: chain2-0x23}
+      - {name: s-target-m2, number: 2-3-3, board: chain2-0x23}
+      - {name: s-target-m3, number: 2-3-4, board: chain2-0x23}
+      - {name: s-target-m4, number: 2-3-5, board: chain2-0x23}
+      - {name: s-target-l1, number: 2-3-6, board: chain2-0x23}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
@@ -239,13 +252,13 @@ components:
 
   ramps:
     display_name: "Ramps (left/right, entry+exit)"
-    status: wired
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-ramp-r1, number: 2-3-7, board: chain2-0x23, status: wired}
-      - {name: s-ramp-l1, number: 2-3-8, board: chain2-0x23, status: wired}
-      - {name: s-ramp-r2, number: 2-3-9, board: chain2-0x23, status: wired}
-      - {name: s-ramp-l2, number: 2-3-10, board: chain2-0x23, status: wired}
+      - {name: s-ramp-r1, number: 2-3-7, board: chain2-0x23}
+      - {name: s-ramp-l1, number: 2-3-8, board: chain2-0x23}
+      - {name: s-ramp-r2, number: 2-3-9, board: chain2-0x23}
+      - {name: s-ramp-l2, number: 2-3-10, board: chain2-0x23}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
@@ -257,11 +270,11 @@ components:
 
   vuk:
     display_name: "VUKs (mid-field, top)"
-    status: wired
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-vukmid, number: 2-1-26, board: chain2-0x21, status: wired}
-      - {name: s-vuktop, number: 2-1-27, board: chain2-0x21, status: wired}
+      - {name: s-vukmid, number: 2-1-26, board: chain2-0x21}
+      - {name: s-vuktop, number: 2-1-27, board: chain2-0x21}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: false}
@@ -274,13 +287,13 @@ components:
 
   portal-transfer:
     display_name: "Portal ball transfer (dropper -> portal -> exit)"
-    status: wired
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-dropper, number: 2-1-30, board: chain2-0x21, status: wired}
-      - {name: s-portal-r, number: 2-1-29, board: chain2-0x21, status: wired}
-      - {name: s-portal-m, number: 2-3-12, board: chain2-0x23, status: wired}
-      - {name: s-exit-success, number: 2-1-31, board: chain2-0x21, status: wired}
+      - {name: s-dropper, number: 2-1-30, board: chain2-0x21}
+      - {name: s-portal-r, number: 2-1-29, board: chain2-0x21}
+      - {name: s-portal-m, number: 2-3-12, board: chain2-0x23}
+      - {name: s-exit-success, number: 2-1-31, board: chain2-0x21}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: false}
@@ -292,11 +305,11 @@ components:
 
   aerial-and-insinerator:
     display_name: "Aerial plate / Insinerator target"
-    status: wired
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-aerial, number: 2-3-11, board: chain2-0x23, status: wired}
-      - {name: s-insinerator, number: 2-3-13, board: chain2-0x23, status: wired}
+      - {name: s-aerial, number: 2-3-11, board: chain2-0x23}
+      - {name: s-insinerator, number: 2-3-13, board: chain2-0x23}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
@@ -308,10 +321,10 @@ components:
 
   cabinet-button:
     display_name: "Cabinet action button"
-    status: wired
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-button, number: 2-0-31, board: chain2-0x20, status: wired}
+      - {name: s-button, number: 2-0-31, board: chain2-0x20}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
@@ -322,14 +335,14 @@ components:
 
   flippers:
     display_name: "Flippers"
-    status: planned
+    status: 4
     mpf_devices: [left_flipper, right_flipper]
     switches:
-      - {name: s-left-flipper, number: 0-0-9, board: chain0-0x20, status: planned}
-      - {name: s-right-flipper, number: 0-0-10, board: chain0-0x20, status: planned}
+      - {name: s-left-flipper, number: 0-0-9, board: chain0-0x20}
+      - {name: s-right-flipper, number: 0-0-10, board: chain0-0x20}
     coils:
-      - {name: c-flipper-left, number: 0-0-8, board: chain0-0x20, status: planned}
-      - {name: c-flipper-right, number: 0-0-9, board: chain0-0x20, status: planned}
+      - {name: c-flipper-left, number: 0-0-8, board: chain0-0x20}
+      - {name: c-flipper-right, number: 0-0-9, board: chain0-0x20}
     checklist:
       - done: false
         item: Flyback diode across coil
@@ -339,22 +352,22 @@ components:
         item: Coil and its trigger switch land on the same physical OPP board
     notes: "Mechanical EOS inside coil assembly, not wired back to controller - main_coil
       only, no hold_coil/eos_switch. Moved from the PSOC chain to the Cobra board
-      (chain0-0x20) per user decision, so switch+coil share a physical STM32 board per
-      CobraPin's own same-board guidance for timing-critical devices. Coil numbers are the
-      actual pins used for real physical wiring (2026-09-06): 0-0-8/0-0-9, both Bank A
-      (HV_A, brown) - supersedes the earlier 0-0-2/0-0-3 guess read off board
-      Overviews.xlsx's pin dump. Still pending a physical continuity check (see TODO.md and
-      design/physical-checklists/wiring-guide.html)."
+      (chain0-0x20) per user decision, so switch+coil share a physical STM32 board
+      per CobraPin's own same-board guidance for timing-critical devices. Coil numbers
+      are the actual pins used for real physical wiring (2026-09-06): 0-0-8/0-0-9,
+      both Bank A (HV_A, brown) - supersedes the earlier 0-0-2/0-0-3 guess read off
+      board Overviews.xlsx's pin dump. Still pending a physical continuity check (see
+      TODO.md and design/physical-checklists/wiring-guide.html)."
 
   ramp-diverter-subway:
     display_name: "Right ramp diverter + subway"
-    status: planned
+    status: 4
     mpf_devices: [d-ramp-diverter]
     switches:
-      - {name: s-subway-entry, number: 2-3-18, board: chain2-0x23, status: planned}
-      - {name: s-subway-exit, number: 2-3-19, board: chain2-0x23, status: planned}
+      - {name: s-subway-entry, number: 2-3-18, board: chain2-0x23}
+      - {name: s-subway-exit, number: 2-3-19, board: chain2-0x23}
     coils:
-      - {name: c-ramp-diverter, number: 2-1-2, board: chain2-0x21, status: planned}
+      - {name: c-ramp-diverter, number: 2-1-2, board: chain2-0x21}
     checklist:
       - {item: "Flyback diode across coil", done: false}
       - {item: "Common ground tied to power supply ground", done: false}
@@ -366,13 +379,13 @@ components:
 
   service-mode-nav:
     display_name: "Service mode nav switches"
-    status: planned
+    status: 4
     mpf_devices: []
     switches:
-      - {name: sw_service_enter, number: 2-3-14, board: chain2-0x23, status: planned}
-      - {name: sw_service_esc, number: 2-3-15, board: chain2-0x23, status: planned}
-      - {name: sw_service_up, number: 2-3-16, board: chain2-0x23, status: planned}
-      - {name: sw_service_down, number: 2-3-17, board: chain2-0x23, status: planned}
+      - {name: sw_service_enter, number: 2-3-14, board: chain2-0x23}
+      - {name: sw_service_esc, number: 2-3-15, board: chain2-0x23}
+      - {name: sw_service_up, number: 2-3-16, board: chain2-0x23}
+      - {name: sw_service_down, number: 2-3-17, board: chain2-0x23}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: false}

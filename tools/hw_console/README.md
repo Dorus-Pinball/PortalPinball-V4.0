@@ -21,22 +21,30 @@ if either is missing, `pip install flask ruamel.yaml`.)
 
 1. **Boards tab** — as you reconnect each physical board, flip its status from `scanned` (last
    known state) to `connected` to `verified`.
-2. **Components tab** — filter by status, click a component to see its switches/coils, which
-   board they land on, and a wiring checklist (flyback diode / common ground / same-board rule,
-   per `TODO.md`'s OPP wiring checklist). Flip switch/coil/component status as you wire and test
-   each one.
-3. **Add a new component** via the "+ Add component" button. It runs a collision check against
-   both `hardware-switches.yaml`/`hardware-coils.yaml` and the rest of the registry before saving
-   — you'll get an error naming the conflict instead of a silent overwrite.
-4. **Talking to Claude**: just say the component name in chat (e.g. "I'm wiring the flippers
+2. **Status tab** — one entry per playfield element (flipper, VUK, drop bank, etc.), each tracked
+   through a 6-stage build lifecycle:
+   1. Idea — no hardware yet
+   2. Hardware — no idea yet (not renovated: old stickers, rough cables, etc.)
+   3. Hardware with a purpose — not renovated
+   4. Renovated hardware with a purpose — not wired to the playfield & controllers
+   5. Fully connected (on playfield) — not tested
+   6. Ready — fully connected & tested
+
+   Click an element to edit its display name and status inline — both PATCH straight to
+   `components.yaml`. Its switches/coils table is **read-only** here: pin numbers only change via
+   chat (the `wire-component` skill), never through this UI.
+3. **Add a new element** via the "+ Add element" button — just an internal ID, display name, and
+   starting status. New elements start with no pins; they get real switch/coil numbers later, via
+   chat, once they're actually being wired.
+4. **Talking to Claude**: just say the element name in chat (e.g. "I'm wiring the flippers
    now"). Claude reads `tools/hw_console/data/components.yaml` directly — no need to copy/paste
    anything from the UI.
 
 ## Data
 
 Everything lives in `data/components.yaml`, hand-editable if you'd rather skip the UI for a quick
-change. See the comment at the top of that file for how it was seeded and what `planned` /
-`wired` / `tested` mean.
+change. See the comment at the top of that file for how it was seeded and what the 1-6 status
+scale means (also defined in code as `registry.COMPONENT_STATUSES`).
 
 `board Overviews.xlsx` is not parsed automatically — numbers are transcribed by hand when a
 component gets planned, same as the process before this tool existed. This is deliberate: the

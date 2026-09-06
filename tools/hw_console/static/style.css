@@ -6,6 +6,12 @@
   --planned: #b8860b;
   --wired: #3a7ca5;
   --tested: #2e8b57;
+  --status-1: #a33d3d;
+  --status-2: #b5602f;
+  --status-3: #b8860b;
+  --status-4: #8a9b3e;
+  --status-5: #3a7ca5;
+  --status-6: #2e8b57;
 }
 
 body {
@@ -71,15 +77,21 @@ th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid var(--bg-al
   white-space: nowrap;
   flex-shrink: 0;
 }
-.status-badge.planned { background: var(--planned); }
-.status-badge.wired { background: var(--wired); }
-.status-badge.tested { background: var(--tested); }
+.status-badge.status-1 { background: var(--status-1); }
+.status-badge.status-2 { background: var(--status-2); }
+.status-badge.status-3 { background: var(--status-3); }
+.status-badge.status-4 { background: var(--status-4); }
+.status-badge.status-5 { background: var(--status-5); }
+.status-badge.status-6 { background: var(--status-6); }
 .status-badge.scanned { background: var(--planned); }
 .status-badge.connected { background: var(--wired); }
 .status-badge.verified { background: var(--tested); }
 
-.component-detail-pane h2 { margin-top: 0; }
+.component-detail-pane h2 { margin-top: 0; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.component-detail-pane h2 input { font-size: 1.1rem; font-weight: bold; padding: 0.2rem 0.4rem; }
 .component-detail-pane table { margin-bottom: 1rem; }
+
+.readonly-hint { font-size: 0.75rem; font-weight: normal; color: gray; }
 
 .checklist-item { display: flex; align-items: center; gap: 0.5rem; }
 
@@ -103,8 +115,3 @@ dialog {
 dialog label { display: block; margin-bottom: 0.6rem; }
 dialog input, dialog textarea, dialog select { width: 100%; box-sizing: border-box; }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
-
-.entry-row { display: flex; gap: 0.4rem; margin-bottom: 0.4rem; }
-.entry-row input { flex: 1; }
-
-.add-row-btn { margin-bottom: 0.8rem; }

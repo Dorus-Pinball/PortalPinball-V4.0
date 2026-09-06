@@ -53,8 +53,11 @@ the rulebook.
    - `machinefolder/config/hardware-switches.yaml` / `-coils.yaml` / `-leds.yaml` as applicable.
    - `machinefolder/config/hardware-devices.yaml` if a higher-level MPF device is needed
      (`autofire_coils:`, `flippers:`, `ball_devices:`, `diverters:`, `drop_targets:`, etc.).
-   - `tools/hw_console/data/components.yaml` — add/update the component entry (board, numbers,
-     status). This is what the hw_console UI and this skill both read as the live tracker.
+   - `tools/hw_console/data/components.yaml` — add/update the component entry (board, numbers).
+     Bump its `status` to the appropriate 1-6 build stage (`registry.COMPONENT_STATUSES`) —
+     typically `5` once physically wired, `6` once bench-tested. This is what the hw_console
+     Status tab and this skill both read as the live tracker; switches/coils are read-only in
+     that UI, so this file is the only place their pin numbers actually get set.
    - `design/physical-checklists/wiring-guide.html` — update the board-map free/used counts and
      the component's row/sketch in its wiring table.
    - `TODO.md` — check off or update the relevant gap bullet if this closes one.
