@@ -38,6 +38,7 @@
             <option value="6">6 - Ready (connected & tested)</option>
           </select>
           <button id="new-component-btn">+ Add element</button>
+          <button id="review-btn">Review all</button>
         </div>
         <ul id="components-list"></ul>
       </div>
@@ -72,6 +73,20 @@
       <button type="submit">Add</button>
     </div>
   </form>
+</dialog>
+
+<dialog id="review-dialog">
+  <div class="review-progress" id="review-progress"></div>
+  <h2 id="review-name"></h2>
+  <p class="review-hint" id="review-hint"></p>
+  <div id="review-options" class="review-options"></div>
+  <div class="dialog-actions review-actions">
+    <button type="button" id="review-close">Close</button>
+    <div>
+      <button type="button" id="review-prev">&larr; Previous</button>
+      <button type="button" id="review-next">Next &rarr;</button>
+    </div>
+  </div>
 </dialog>
 
 <script src="/static/app.js"></script>

@@ -199,5 +199,68 @@ $("#new-component-form").addEventListener("submit", async (e) => {
   loadComponents();
 });
 
+// ---- Review-all mode: walk every element one at a time ----
+let reviewEntries = [];
+let reviewIndex = 0;
+const reviewDialog = $("#review-dialog");
+
+$("#review-btn").addEventListener("click", async () => {
+  const components = await fetch("/api/components").then((r) => r.json());
+  reviewEntries = Object.entries(components);
+  if (!reviewEntries.length) return;
+  reviewIndex = 0;
+  renderReviewStep();
+  reviewDialog.showModal();
+});
+
+function renderReviewStep() {
+  const [name, c] = reviewEntries[reviewIndex];
+  $("#review-progress").textContent = `Element ${reviewIndex + 1} of ${reviewEntries.length}`;
+  $("#review-name").textContent = c.display_name;
+
+  const pinCount = c.switches.length + c.coils.length;
+  $("#review-hint").textContent = pinCount
+    ? `${c.switches.length} switch(es), ${c.coils.length} coil(s) assigned.`
+    : "No pins assigned yet.";
+
+  $("#review-options").innerHTML = Object.entries(STATUS_LABELS)
+    .map(
+      ([value, label]) => `<label class="review-option">
+        <input type="radio" name="review-status" value="${value}" ${Number(c.status) === Number(value) ? "checked" : ""}>
+        ${value} - ${esc(label)}
+      </label>`
+    )
+    .join("");
+
+  $all('input[name="review-status"]', reviewDialog).forEach((radio) => {
+    radio.addEventListener("change", async () => {
+      await patchComponent(name, { status: Number(radio.value) });
+      reviewEntries[reviewIndex][1].status = Number(radio.value);
+    });
+  });
+
+  $("#review-prev").disabled = reviewIndex === 0;
+  $("#review-next").textContent = reviewIndex === reviewEntries.length - 1 ? "Done" : "Next →";
+}
+
+$("#review-prev").addEventListener("click", () => {
+  if (reviewIndex > 0) {
+    reviewIndex -= 1;
+    renderReviewStep();
+  }
+});
+
+$("#review-next").addEventListener("click", () => {
+  if (reviewIndex < reviewEntries.length - 1) {
+    reviewIndex += 1;
+    renderReviewStep();
+  } else {
+    reviewDialog.close();
+  }
+});
+
+$("#review-close").addEventListener("click", () => reviewDialog.close());
+reviewDialog.addEventListener("close", () => loadComponents());
+
 loadBoards();
 loadComponents();

@@ -115,3 +115,20 @@ dialog {
 dialog label { display: block; margin-bottom: 0.6rem; }
 dialog input, dialog textarea, dialog select { width: 100%; box-sizing: border-box; }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+
+#review-dialog { width: min(480px, 90vw); }
+.review-progress { font-size: 0.8rem; color: gray; }
+.review-hint { color: gray; margin-top: -0.5rem; }
+.review-options { display: flex; flex-direction: column; gap: 0.4rem; margin: 1rem 0; }
+.review-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.review-option:has(input:checked) { border-color: var(--accent); background: var(--bg-alt); }
+.review-actions { justify-content: space-between; }
+.review-actions > div { display: flex; gap: 0.5rem; }
