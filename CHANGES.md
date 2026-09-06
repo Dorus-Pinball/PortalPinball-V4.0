@@ -100,3 +100,23 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     (OPP boards de-energize drivers on serial disconnect, COM ports release cleanly, confirmed
     via `mpf hardware scan` immediately after a hard-stop); a true graceful shutdown was
     considered and deliberately deferred, see `TODO.md`. — **Status: active**.
+11. **First real-hardware flipper bring-up: wiring confirmed, `tools/wiring_test.py` built,
+    and a live gameplay test** (2026-09-06). With the flipper switches/coils wired for real
+    (see `TODO.md`), built `tools/wiring_test.py` — a no-HV wiring check reusing MPF's own
+    service-mode BCP commands (`list_switches`/`list_coils`/`coil_pulse`) instead of talking to
+    the hardware directly, generic via `--switches`/`--coils` so it covers future components
+    (tilt, diverter, VUKs) too. See `plans/wiring-test-tool.md` for the design and findings.
+    Ran it end to end: both flipper switches PASS (open→closed→open), both coils PASS (LED
+    confirmed with 50V off, real mechanical travel confirmed with 50V on). Then went further and
+    actually played a real game — with neither the start nor launch button physically wired yet,
+    used MPF's inbound BCP `switch` command (`{"name": ..., "state": 1/0}`, the same mechanism
+    the Godot display's `[keyboard]` mapping uses) to inject those two switch presses, confirming
+    the `flippers:` device (enables on `ball_started`) holds correctly under real button
+    press/release during actual gameplay, not just isolated pulses. Three real findings along
+    the way, all logged in `TODO.md`: (1) `mpf`'s service BCP server needs `-NoBcp` to start at
+    all - without it, mpf blocks forever on a required outbound connection to a display that
+    isn't running; (2) Windows USB selective suspend caused a genuine mid-session serial
+    disconnect on an idle Cobra board, fixed via `powercfg`; (3) the flipper coils' `25ms`
+    configured default pulse is too weak for real travel with HV on (200ms worked, untuned) -
+    real tuning is still an open decision, and separately, the trough→plunger ball transfer is
+    failing/retrying in a real game - a new, unrelated gap. — **Status: active**.

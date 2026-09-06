@@ -9,7 +9,7 @@ work).
 
 ## Blocked on physical hardware work
 
-- [ ] **Flippers**: mechs are installed and functioning (dual-wound coils, mechanical EOS
+- [x] **Flippers**: mechs are installed and functioning (dual-wound coils, mechanical EOS
       interrupter, no EOS switch back to the controller). Routed via the **Cobra board** (chain
       0, board `0x20`) instead of the PSOC chain, so the flipper switch and coil share a physical
       STM32 board per CobraPin's same-board guidance for timing-critical devices —
@@ -17,10 +17,14 @@ work).
       for real physical wiring, 2026-09-06, superseding an earlier `0-0-2`/`0-0-3` guess read off
       `board Overviews.xlsx`), `s-left/right-flipper` on `0-0-1`/`0-0-2` (also the actual pins
       used for real physical wiring, 2026-09-06, superseding an earlier `0-0-9`/`0-0-10` guess).
-      See `design/physical-checklists/wiring-guide.html` for the visual reference. Still needs a
-      physical continuity check on the real board before energizing for real. Blocks real
-      playtesting. MPF config is already drafted and boot/game-flow tested
-      (`hardware-coils.yaml`/`hardware-switches.yaml`/`hardware-devices.yaml`).
+      See `design/physical-checklists/wiring-guide.html` for the visual reference. **Wiring
+      confirmed 2026-09-06** via `tools/wiring_test.py`: both switches PASS (open→closed→open),
+      both coils PASS (activation LED with 50V off, then real mechanical travel with 50V on),
+      and confirmed live in a real game (`ball_started` enables the `flippers:` device; held
+      correctly on physical button press/release). Remaining open item: `default_pulse_ms: 25`
+      in `hardware-coils.yaml` was too weak for real travel with HV on (`pulse_ms: 200` worked in
+      testing) — real tuning still needed, see the "Needs a design decision" flipper pulse entry
+      below.
 - [ ] **Tilt**: no tilt switch exists at all yet — needs a physical switch installed before any
       config can follow. Per `plans/OutsidePerspective.md`, MPF ships a complete built-in `tilt`
       mode — once the switch exists, the MPF-side work is `modes: [tilt]` plus tagging the
@@ -56,6 +60,11 @@ work).
 - [ ] **Aerial upkicker** (wishlist, not scheduled): would turn the aerial plate from a
       mode-qualifying switch into a real launch mechanism. No physical coil exists there today —
       this is a "should we add hardware" decision, not "wire up what's already there."
+- [ ] **Trough→plunger ball transfer not confirming** (found 2026-09-06 during the first live
+      real-hardware game start): `bd-trough`'s eject to `bd-plunger` pulses `c-trough-eject` and
+      then fails/retries every ~10s (`balldevice_bd-trough_ball_eject_failed`) indefinitely — the
+      plunger-lane eject-confirm switch likely isn't registering the ball's arrival. Not
+      investigated further yet; separate from the flipper work above.
 
 ## Dev tooling
 
@@ -74,9 +83,26 @@ work).
       `GenerateConsoleCtrlEvent`) to deliver a real CTRL_C to the child process. Revisit only if
       MPF's own clean-shutdown logic (e.g. flushing something mid-write) ever actually matters
       for a session.
+- [x] **`tools/wiring_test.py` added** (2026-09-06): no-HV switch continuity + LED-based coil
+      check, reusing MPF's own service-mode BCP commands. See `plans/wiring-test-tool.md`.
+- [ ] **Windows USB selective suspend caused a live serial disconnect** (found 2026-09-06): an
+      idle OPP COM port (Cobra board, USB-serial CDC) threw `ClearCommError failed ... device
+      does not recognize the command` after ~70s idle, crashing the running `mpf` session — a
+      classic USB-selective-suspend-on-idle symptom, unrelated to any coil pulse (it happened
+      well after the last one). Fixed by disabling USB selective suspend (AC + battery) on this
+      laptop's active power plan via `powercfg` (subgroup `2a737441-1930-4402-8d77-b2bebba308a3`,
+      setting `48e6b7a6-50f5-4782-a5d4-53bb8f07e226`, both set to `0`/Disabled). Not a repo-level
+      fix — would need reapplying if this laptop is reimaged or the power plan gets reset.
 
 ## Needs a design decision from the user
 
+- [ ] **Flipper coil pulse/hold tuning**: `hardware-coils.yaml`'s `c-flipper-left/right` ship
+      with `default_pulse_ms: 25`/`default_hold_power: 1.0`. Real-hardware testing (2026-09-06)
+      found 25ms produces no visible travel with 50V on; `pulse_ms: 200` (an untuned test value,
+      not a recommendation) did move the flipper correctly. Since there's no EOS switch to cut
+      power once the flipper reaches end-of-stroke, the real pulse_ms needs picking with the
+      coil's actual specs/heat tolerance in mind, not just "whatever felt fine in one manual
+      test" — a user decision, not something to guess into the committed config.
 - [ ] `board Overviews.xlsx`'s ramps notes are just "right ramp" and a bare "?" — needs a real
       design pass before the right ramp diverter's routing logic (what a diverted shot actually
       awards/does) can be built. `plans/OutsidePerspective.md` flags "flow" (shots that feed back

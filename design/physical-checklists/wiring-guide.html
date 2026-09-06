@@ -419,7 +419,7 @@ footer{
       </table>
     </div>
     <div class="callout">
-      <b>Mixing up bank power and bank driver can blow FETs, coils, and fuses</b> (CobraPin's own doc wording). Test without coil power first, and check the per-bank yellow coil LED to confirm a bank actually has power before trusting it. A bank's connector pins can also be pre-broken-out to a wall-mounted terminal block without any coil actually being wired to them yet — wires present on a bank's connector doesn't by itself mean it's in use, check the far end of the run.
+      <b>Mixing up bank power and bank driver can blow FETs, coils, and fuses</b> (CobraPin's own doc wording). Test without coil power first, and check the per-bank yellow coil LED to confirm a bank actually has power before trusting it. A bank's connector pins can also be pre-broken-out to a wall-mounted terminal block without any coil actually being wired to them yet — wires present on a bank's connector doesn't by itself mean it's in use, check the far end of the run. <code>tools/wiring_test.py</code> automates the switch-continuity + coil-LED half of this check (see the repo README) — used first for the flippers, 2026-09-06.
     </div>
   </div>
 

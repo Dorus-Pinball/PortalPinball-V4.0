@@ -60,6 +60,25 @@ where plain `mpf` and its text UI work normally.
 `project.godot`) and run it alongside a running `mpf` instance — it connects over BCP
 automatically.
 
+## Wiring test tool (no-HV switch/coil check)
+
+`tools/wiring_test.py` checks a newly-wired switch/coil pair for real — continuity for
+switches, and a driver pulse for coils so the CobraPin board's activation LED can be checked
+**without 50V present** (per this project's OPP bring-up guidance,
+`docs/opp-hardware-reference.md`: "test without coil power first"). Defaults to the flipper
+pair; pass `--switches`/`--coils` (comma-separated device names) to run it against any other
+component as it gets wired for real.
+
+```
+tools\mpf-session.ps1 -Action Start -NoBcp   # -NoBcp is required, see the script's header
+.venv\Scripts\python.exe tools\wiring_test.py
+```
+
+It reuses MPF's own service-mode BCP commands (the same ones the interactive `mpf service`
+CLI uses) rather than talking to the hardware directly. See `plans/wiring-test-tool.md` for
+the full design and real-hardware findings (the `-NoBcp` requirement, a Windows USB
+selective-suspend gotcha, and flipper coil pulse tuning).
+
 ## Hardware bring-up console
 
 `tools/hw_console/` is a small local web tool for tracking real-hardware wiring progress —
@@ -84,6 +103,7 @@ tests/              # MpfTestCase/MpfGameTestCase suite - run with `python -m un
 design/             # story -> shots -> modes workflow + schema-tracked feature design docs
 tools/hw_console/   # local web tool for tracking hardware bring-up (boards + components)
 tools/mpf-session.ps1  # start/stop mpf reliably from a non-interactive shell (see Running it)
+tools/wiring_test.py   # no-HV switch/coil wiring check (see Wiring test tool)
 install.ps1          # one-time dev environment setup (.venv + mpf + jsonschema)
 ```
 

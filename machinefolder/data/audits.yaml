@@ -1,7 +1,59 @@
 events:
   game_ended: 1
-  game_started: 23
+  game_started: 24
 missing_switches:
+  s-aerial: 1
+  s-bottomlane1: 1
+  s-bottomlane2: 1
+  s-bottomlane3: 1
+  s-bottomlane4: 1
+  s-bottomlane5: 1
+  s-button: 1
+  s-drop1: 1
+  s-drop2: 1
+  s-drop3: 1
+  s-dropper: 1
+  s-exit-success: 1
+  s-insinerator: 1
+  s-left-sling: 1
+  s-orbit-l: 1
+  s-orbit-r: 1
+  s-orbit-top: 1
+  s-plunger-lane: 1
+  s-popbumper-1: 1
+  s-popbumper-2: 1
+  s-popbumper-3: 1
+  s-portal-m: 1
+  s-portal-r: 1
+  s-ramp-l1: 1
+  s-ramp-l2: 1
+  s-ramp-r1: 1
+  s-ramp-r2: 1
+  s-right-sling: 1
+  s-start: 1
+  s-subway-entry: 1
+  s-subway-exit: 1
+  s-target-e1: 1
+  s-target-e2: 1
+  s-target-l1: 1
+  s-target-m1: 1
+  s-target-m2: 1
+  s-target-m3: 1
+  s-target-m4: 1
+  s-target-r1: 1
+  s-target-r2: 1
+  s-toplane1: 1
+  s-toplane2: 1
+  s-toplane3: 1
+  s-trough-jam: 1
+  s-trough1: 1
+  s-trough2: 1
+  s-trough3: 1
+  s-trough4: 1
+  s-trough5: 1
+  s-trough6: 1
+  s-vukmid: 1
+  s-vuktop: 1
   s_Other01: 23
   s_Other02: 23
   s_Other03: 23
@@ -37,6 +89,10 @@ missing_switches:
   s_trough_jam: 23
   s_vukmid: 23
   s_vuktop: 23
+  sw_service_down: 1
+  sw_service_enter: 1
+  sw_service_esc: 1
+  sw_service_up: 1
 player:
   score:
     average: 0
@@ -44,6 +100,61 @@ player:
     - 0
     total: 1
 switches:
+  s-aerial: 0
+  s-bottomlane1: 0
+  s-bottomlane2: 0
+  s-bottomlane3: 0
+  s-bottomlane4: 0
+  s-bottomlane5: 0
+  s-button: 0
+  s-drop1: 0
+  s-drop2: 0
+  s-drop3: 0
+  s-dropper: 0
+  s-exit-success: 0
+  s-insinerator: 0
+  s-launch: 1
+  s-left-flipper: 20
+  s-left-sling: 0
+  s-orbit-l: 0
+  s-orbit-r: 0
+  s-orbit-top: 0
+  s-plunger-lane: 0
+  s-popbumper-1: 0
+  s-popbumper-2: 0
+  s-popbumper-3: 0
+  s-portal-m: 0
+  s-portal-r: 0
+  s-ramp-l1: 0
+  s-ramp-l2: 0
+  s-ramp-r1: 0
+  s-ramp-r2: 0
+  s-right-flipper: 22
+  s-right-sling: 0
+  s-start: 0
+  s-subway-entry: 0
+  s-subway-exit: 0
+  s-target-e1: 0
+  s-target-e2: 0
+  s-target-l1: 0
+  s-target-m1: 0
+  s-target-m2: 0
+  s-target-m3: 0
+  s-target-m4: 0
+  s-target-r1: 0
+  s-target-r2: 0
+  s-toplane1: 0
+  s-toplane2: 0
+  s-toplane3: 0
+  s-trough-jam: 0
+  s-trough1: 0
+  s-trough2: 0
+  s-trough3: 0
+  s-trough4: 0
+  s-trough5: 0
+  s-trough6: 0
+  s-vukmid: 0
+  s-vuktop: 0
   s_Other01: 0
   s_Other02: 0
   s_Other03: 0
@@ -81,3 +192,7 @@ switches:
   s_trough_jam: 0
   s_vukmid: 0
   s_vuktop: 0
+  sw_service_down: 0
+  sw_service_enter: 0
+  sw_service_esc: 0
+  sw_service_up: 0
