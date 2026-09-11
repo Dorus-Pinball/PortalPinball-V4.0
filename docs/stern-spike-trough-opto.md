@@ -116,6 +116,44 @@ the read byte changes) before trusting a mapping. Don't ship a build that assume
 mapping — get it wrong and a working trough position can silently misreport, which is a bad
 failure mode for a machine that trusts the trough for ball-count logic.
 
+## A real failure mode on salvaged boards: dead U1, healthy everything else
+
+On the unit this writeup is based on, `MISO` read a constant, unchanging byte no matter what was
+blocked — bench diagnosis (see `plans/read-opto.md`'s findings for the full walkthrough) isolated
+this to **U1 itself being dead**, while everything upstream of it was proven fine:
+
+- Power, ground, and wiring continuity to the board: all good.
+- `RCK`/`SCK` reaching the board correctly, confirmed at both DC level (multimeter) and waveform
+  level (a cheap USB logic analyzer showed a clean latch pulse and a clean 8-toggle 250kHz clock
+  burst, exactly matching a correct SPI Mode 0 transaction).
+- U1's own parallel data inputs (`D0`–`D7`) carrying real, correctly-differentiated per-channel
+  data from U2's buffer — confirmed both by direct multimeter probing at U1's legs and by a logic
+  analyzer capture showing live, hand-timescale toggles while manually blocking sensors.
+- U1's `QH` (serial output) never reflecting any of that, under any test, including an
+  asynchronous-load-only test (latch pulsed, clock never toggled) that should show `QH` mirroring
+  the first data bit immediately regardless of clocking.
+
+That combination — good inputs, dead output — points squarely at the shift register chip itself,
+not the sensing chain, the buffer, or the microcontroller reading it. On a salvaged/used board,
+don't assume a non-responding `MISO` means your wiring or protocol understanding is wrong before
+ruling this out; it may simply be a dead 165.
+
+**Two ways forward if you hit this:**
+
+1. **Bypass the shift register entirely.** U1's own `D0`–`D7` parallel input pins (or U2's output
+   pins directly upstream of them) already carry a clean, per-channel, buffered 0/5V digital
+   signal — exactly what you actually want. Tap those directly into your switch matrix instead of
+   reading the serial output, and you don't need U1 working, or even present, at all. This trades
+   away the shift register's wiring-reduction benefit (one wire vs. up to 8) but needs no repair
+   and no protocol/timing work.
+2. **Replace U1.** It's a standard, cheap, widely-stocked part (well under €0.50/unit at typical
+   quantities). Order the exact same part if you can match it from the chip's own markings
+   (here: **Nexperia 74HCT165D, SOIC-16**) — but a plain, non-`T` **74HC165** in the same SOIC-16
+   package works too in a circuit like this one, where everything driving U1 is already
+   CMOS-level (a microcontroller's own GPIO, and U2's CMOS-output buffer) rather than true TTL —
+   the HC/HCT input-threshold difference only matters when a TTL-level source is involved. Verify
+   your own board's inputs are similarly CMOS-driven before assuming this substitution is safe.
+
 ## Worked example
 
 This repo (Portal Pinball V4.0) has a full reference implementation built on the above, bridging
@@ -133,6 +171,11 @@ involved:
   the bridge firmware: reads the shift register over hardware SPI, debounces, and mirrors the
   channels onto GPIO pins for the downstream switch matrix. Includes a serial-debug mode
   specifically for the per-unit bit-mapping/polarity tracing described above.
+- `tools/atmega328p-trough-bridge/diag-slow-toggle/`, `diag-hold-latch/`, `diag-multichannel-read/` —
+  small bench-only sketches used to isolate the dead-U1 fault described above: a multimeter-visible
+  slow toggle for `RCK`/`SCK`, a steady asynchronous-load hold for probing `QH` without needing to
+  catch a fast transition, and a multi-channel streamer for watching several pins at once. Useful
+  as a template if you hit a similar "signals proven correct but the chip won't respond" wall.
 
 The approach generalizes beyond ATmega328P/OPP — any microcontroller with an SPI peripheral (or
 even a bit-banged 3-wire interface) and a way to drive a few GPIOs works the same way.
