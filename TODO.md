@@ -100,6 +100,16 @@ work).
       `s-trough3` then also `s-trough5`/`s-trough6` went active — consistent with balls rolling
       across multiple sensors before settling, not itself a fault) before the damage was found;
       re-run the full empty + ball-by-ball test once the opto board wiring is fixed.
+      **Update (2026-09-11, `read-opto` branch, merged to main):** rather than re-patching the
+      same fragile per-leg taps, `plans/read-opto.md` designs a proper fix — bridge the Stern
+      opto board's own `VCC`/`RCK`/`SCK`/`MISO`/`GND` connector (it's a plain 74HC165 shift
+      register, not a proprietary Spike bus — see `docs/stern-spike-trough-opto.md`) through a
+      bare ATmega328P-PU that mirrors the 7 channels onto OPP exactly as today. Not yet built:
+      next actions are (1) flash a chip via `tools/flash-atmega328p.ps1`, (2) breadboard per
+      `design/physical-checklists/trough-opto-bridge.html`, (3) calibrate
+      `BIT_CHANNEL`/`BIT_INVERT` in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
+      against the real board (bit-to-channel mapping and polarity are unverified placeholders),
+      (4) only then wire into the cabinet and re-run the empty + ball-by-ball test above.
 
 ## Dev tooling
 
