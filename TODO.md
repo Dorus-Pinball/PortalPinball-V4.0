@@ -104,12 +104,25 @@ work).
       same fragile per-leg taps, `plans/read-opto.md` designs a proper fix — bridge the Stern
       opto board's own `VCC`/`RCK`/`SCK`/`MISO`/`GND` connector (it's a plain 74HC165 shift
       register, not a proprietary Spike bus — see `docs/stern-spike-trough-opto.md`) through a
-      bare ATmega328P-PU that mirrors the 7 channels onto OPP exactly as today. Not yet built:
-      next actions are (1) flash a chip via `tools/flash-atmega328p.ps1`, (2) breadboard per
-      `design/physical-checklists/trough-opto-bridge.html`, (3) calibrate
-      `BIT_CHANNEL`/`BIT_INVERT` in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
-      against the real board (bit-to-channel mapping and polarity are unverified placeholders),
-      (4) only then wire into the cabinet and re-run the empty + ball-by-ball test above.
+      bare ATmega328P-PU that mirrors the 7 channels onto OPP exactly as today.
+      **Update (2026-09-11, bench test):** built and bench-tested the bridge — found the board's
+      **U1 (74HCT165 shift register) is dead**, not a wiring/firmware issue (see
+      `plans/read-opto.md`'s "Bench findings" section for the full elimination process: power,
+      ground, wiring, the Uno's own SPI pipeline, and `RCK`/`SCK` reaching the board were all
+      proven correct down to waveform level with a logic analyzer; U1's inputs carry good live
+      sensor data, but its serial output never responds). Two remaining paths, either is a valid
+      next action:
+      - [ ] **Hardwire U2's/U1's buffered per-channel legs directly into OPP**, skipping the dead
+        shift register and the SPI-bridge approach entirely — no chip repair or bridge firmware
+        needed, just calibrate which physical leg is which trough position, then wire into the
+        cabinet and re-run the empty + ball-by-ball test above.
+      - [ ] **Replace U1** (exact match: Nexperia 74HCT165D, SOIC-16 — confirmed source sinuss.nl;
+        a plain non-`T` 74HC165 in the same package also works in this circuit, cheaper via
+        AliExpress) and continue the original SPI-bridge plan: flash a chip via
+        `tools/flash-atmega328p.ps1`, breadboard per
+        `design/physical-checklists/trough-opto-bridge.html`, calibrate
+        `BIT_CHANNEL`/`BIT_INVERT` in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
+        against the repaired board, then wire in and re-test.
 
 ## Dev tooling
 

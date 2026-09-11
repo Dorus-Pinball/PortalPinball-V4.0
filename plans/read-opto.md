@@ -133,6 +133,41 @@ sections). Contents: parts list (from `Component_database` inventory), the fuse-
 steps, the power/support-circuit table and DIP-28 pinout diagram, the Stern-connector link table,
 the 7 switch-mirror output table, and the firmware read-sequence steps.
 
+## Bench findings (2026-09-11): U1 is dead on this specific board
+
+Built the ATmega328P/Uno-based reader and bench-tested against the real trough board. Systematic
+elimination (multimeter continuity/DC checks, then a cheap USB logic analyzer for waveform-level
+confirmation once DC-level checks stopped being conclusive) ruled out, in order: power, ground,
+wiring continuity, the Uno's own SPI read pipeline (proven directly with a loopback jumper test),
+and `RCK`/`SCK` reaching the board correctly (confirmed as clean, correctly-timed SPI Mode 0
+signals — a proper latch pulse plus an 8-toggle 250kHz clock burst — via the logic analyzer, not
+just DC level).
+
+What's left: **U1 (the 74HCT165) itself is dead.** Its parallel data inputs (`D0`–`D7`) carry real,
+correctly-differentiated live sensor data (confirmed by both direct multimeter probing at U1's own
+legs and a logic-analyzer capture showing genuine hand-timescale toggles while blocking sensors) —
+so U2 and the opto/comparator chain upstream are all fine. But `QH` (serial out) never reflects any
+of it, under any test, including an asynchronous-load-only test that should show `QH` mirroring the
+first data bit immediately with no clocking required. Good inputs, dead output — the chip itself.
+Full general writeup of this failure mode (useful beyond this project) is in
+`docs/stern-spike-trough-opto.md`.
+
+**Two ways forward, both worth keeping in `TODO.md`:**
+
+1. **Hardwire U2's/U1's buffered per-channel legs directly into OPP**, bypassing the dead shift
+   register (and the whole SPI-bridge approach) entirely — trades away the one-wire serialization
+   this plan was built around, but needs no chip repair, no bridge firmware, no ATmega328P at all.
+   Each leg is already a clean 0/5V per-channel signal, same electrical shape OPP's switch wing
+   already expects. Needs the same "trace which physical leg is which trough position" calibration
+   work either way.
+2. **Replace U1** and keep the original SPI-bridge plan above. Confirmed correct replacement part:
+   **Nexperia 74HCT165D, SOIC-16** (exact match to the chip's own markings) — available from
+   sinuss.nl among others, ~€2.25/5 units. A plain (non-`T`) 74HC165 in the same SOIC-16 package
+   also works in this specific circuit, since everything driving U1 here is already CMOS-level
+   (the bridge microcontroller's GPIO, and U2's CMOS-output buffer) rather than true TTL, so the
+   HC/HCT input-threshold difference doesn't matter — confirmed cheaper option
+   (~€1.76/10 on AliExpress) if genuine stock isn't needed.
+
 ## Verification
 
 - Bench-test the flashed chip + support circuit on a breadboard against the opto board off the

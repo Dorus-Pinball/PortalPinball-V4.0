@@ -51,10 +51,12 @@ bool BIT_INVERT[8]     = { false, false, false, false, false, false, false, fals
 
 const unsigned long POLL_INTERVAL_MS = 10;
 const uint8_t STABLE_READS_REQUIRED = 3; // simple debounce: require N consecutive matching reads
+const unsigned long DEBUG_STREAM_INTERVAL_MS = 200; // unconditional heartbeat, see loop()
 
 uint8_t lastStableByte = 0;
 uint8_t candidateByte = 0;
 uint8_t candidateCount = 0;
+unsigned long lastDebugStreamMs = 0;
 
 uint8_t readOptoByte() {
   digitalWrite(PIN_RCK, LOW);
@@ -96,6 +98,20 @@ void setup() {
 void loop() {
   uint8_t raw = readOptoByte();
 
+#if DEBUG_SERIAL
+  // Unconditional heartbeat, independent of the debounce below — during bench calibration you
+  // need to see "nothing has changed" as a continuous stream of identical lines to distinguish
+  // it from a dead SPI link (which looks the same as silence otherwise). Rate-limited so it's
+  // readable, not gated on any state change.
+  unsigned long now = millis();
+  if (now - lastDebugStreamMs >= DEBUG_STREAM_INTERVAL_MS) {
+    lastDebugStreamMs = now;
+    Serial.print(F("raw=0b"));
+    for (int8_t b = 7; b >= 0; b--) Serial.print((raw >> b) & 1);
+    Serial.println();
+  }
+#endif
+
   // Debounce: only commit a reading once it's repeated a few polls in a row, so a single noisy
   // transition (e.g. a ball mid-roll across a sensor edge) doesn't glitch the mirrored switches.
   if (raw == candidateByte) {
@@ -108,11 +124,6 @@ void loop() {
   if (candidateCount == STABLE_READS_REQUIRED && raw != lastStableByte) {
     lastStableByte = raw;
     applyMirrors(raw);
-#if DEBUG_SERIAL
-    Serial.print(F("raw=0b"));
-    for (int8_t b = 7; b >= 0; b--) Serial.print((raw >> b) & 1);
-    Serial.println();
-#endif
   }
 
   delay(POLL_INTERVAL_MS);
