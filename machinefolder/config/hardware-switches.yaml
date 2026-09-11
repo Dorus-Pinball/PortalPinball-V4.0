@@ -142,6 +142,9 @@ switches:
   s-trough6:
     number: 2-1-21
     type: NC
+  # Active (logically closed) means a CLEAR path, not a jam - opposite of what the name
+  # suggests at a glance. Confirmed live 2026-09-11: reads active with an empty trough and no
+  # obstruction; would read inactive if a ball were actually jammed blocking the exit.
   s-trough-jam:
     number: 2-1-22
     type: NC

@@ -87,6 +87,19 @@ work).
       then fails/retries every ~10s (`balldevice_bd-trough_ball_eject_failed`) indefinitely — the
       plunger-lane eject-confirm switch likely isn't registering the ball's arrival. Not
       investigated further yet; separate from the flipper work above.
+- [ ] **Trough opto board wiring damaged** (found 2026-09-11 while re-verifying trough
+      switches on real hardware): `s-trough2/3/4` and `s-trough-jam` (all on chain2-0x21, the
+      PSOC opto board) read intermittently/incorrectly-active with the trough empty and no
+      obstruction — traced to physical wiring damage at that opto board, not a config or
+      addressing problem. **Switch numbers are confirmed correct and unchanged**
+      (`s-trough1..6` on `2-1-16..21`, `s-trough-jam` on `2-1-22`, all `type: NC`) — don't
+      renumber these when resuming, just fix the physical damage and re-run the same test.
+      Also confirmed live: **`s-trough-jam`'s active state means a CLEAR path, not a jam** —
+      opposite of what the name suggests at a glance (documented inline in
+      `hardware-switches.yaml`). Mid-repair ball test got partway through (1-2 balls placed,
+      `s-trough3` then also `s-trough5`/`s-trough6` went active — consistent with balls rolling
+      across multiple sensors before settling, not itself a fault) before the damage was found;
+      re-run the full empty + ball-by-ball test once the opto board wiring is fixed.
 
 ## Dev tooling
 
