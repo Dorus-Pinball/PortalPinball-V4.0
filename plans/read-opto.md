@@ -44,7 +44,10 @@ footprint, at the cost of a bit more build/wiring work than just using a complet
 **1. Flash one ATmega328P-PU** using the Arduino ISP Programmer Shield hosted on the Uno (or
 Duemilanove) running the standard `ArduinoISP` sketch, targeting the **"ATmega328 on a
 breadboard" / 8 MHz internal oscillator** board profile — no external crystal needed, keeping the
-standalone support circuit to just the chip itself.
+standalone support circuit to just the chip itself. Do this explicitly on every chip regardless of
+history: these are inventory spares, and a chip previously configured for an external crystal will
+sit dead with no clock and no error message if the fuses aren't rewritten first — silently waiting
+for a crystal that was never connected.
 
 **2. Minimal standalone support circuit** (small, robust — not the kind of fragile hand-tap that
 broke last time): decoupling capacitor across VCC/GND at the chip, and a pull-up resistor on

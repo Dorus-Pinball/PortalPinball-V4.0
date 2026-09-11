@@ -165,7 +165,11 @@ ol.steps code{
       <span class="section-num">1</span>
       <h2>Program the chip</h2>
     </div>
-    <p class="section-note">Do this on every chip pulled from stock — don't assume factory-default fuses.</p>
+    <p class="section-note">Do this on every chip pulled from stock — don't assume factory-default fuses. A
+    truly fresh chip defaults to its internal oscillator anyway, but these are inventory spares of
+    unknown history: if one was previously configured for an external crystal, it will sit dead
+    with no clock signal and no error message, silently waiting for a crystal that isn't there.
+    Burning the fuses explicitly avoids that failure mode regardless of a chip's past.</p>
     <ol class="steps">
       <li>Host the ArduinoISP shield on the Uno (or Duemilanove); load the <code>ArduinoISP</code> sketch onto it.</li>
       <li>In the Arduino IDE, select board <code>"ATmega328 on a breadboard (8 MHz internal clock)"</code>, with the ISP shield as programmer.</li>
