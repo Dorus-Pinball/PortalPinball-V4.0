@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trough Opto Bridge — Build Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF1F0; --surface:#FFFFFF; --ink:#1B1E20; --ink-mute:#5B6266; --line:#C9CED0;
+  --orange:#C24E19; --blue:#2C6E8E; --orange-tint:#F3E3D8; --blue-tint:#DEEAEF;
+  --green:#3C7A4B; --green-tint:#DEEEE1;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#14171A; --surface:#1D2124; --ink:#ECEEEF; --ink-mute:#9AA3A8; --line:#33393D;
+    --orange:#FF8A4C; --blue:#5FB4D8; --orange-tint:#3A2416; --blue-tint:#122A33;
+    --green:#6FCB85; --green-tint:#173222;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14171A; --surface:#1D2124; --ink:#ECEEEF; --ink-mute:#9AA3A8; --line:#33393D;
+  --orange:#FF8A4C; --blue:#5FB4D8; --orange-tint:#3A2416; --blue-tint:#122A33;
+  --green:#6FCB85; --green-tint:#173222;
+}
+@page{ size:A4; margin:14mm 13mm; }
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.sheet{ max-width:820px; margin:0 auto; padding:2rem 1.25rem 3rem; }
+
+.masthead{ border:2px solid var(--ink); padding:1.25rem 1.25rem 1rem; margin-bottom:1.75rem; position:relative; }
+.masthead::before{ content:""; position:absolute; top:5px; left:5px; right:5px; bottom:5px; border:1px solid var(--line); pointer-events:none; }
+.masthead .kicker{
+  font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:0.68rem; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--ink-mute); display:flex; justify-content:space-between; margin-bottom:0.75rem;
+}
+.masthead h1{
+  font-family:"Big Shoulders Stencil","Arial Narrow",sans-serif; font-weight:700;
+  font-size:clamp(1.7rem, 5vw, 2.3rem); line-height:1.05; margin:0 0 0.4rem;
+}
+.masthead .sub{ font-size:0.88rem; color:var(--ink-mute); max-width:74ch; line-height:1.5; }
+.masthead .fields{
+  margin-top:1rem; display:grid; grid-template-columns:1fr 1fr; gap:0.6rem 2rem;
+  font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:0.74rem;
+}
+.field-line{ display:flex; align-items:baseline; gap:0.5rem; color:var(--ink-mute); }
+.field-line .blank{ flex:1; border-bottom:1px solid var(--ink-mute); height:1.05em; }
+
+.section{ margin-bottom:1.9rem; break-inside:avoid; }
+.section-head{
+  display:flex; align-items:baseline; gap:0.75rem; border-bottom:2px solid var(--ink);
+  padding-bottom:0.4rem; margin-bottom:0.75rem;
+}
+.section-num{ font-family:"Big Shoulders Stencil","Arial Narrow",sans-serif; font-size:1.35rem; color:var(--ink-mute); line-height:1; }
+.section-head h2{
+  font-family:"Big Shoulders Stencil","Arial Narrow",sans-serif; font-weight:600; font-size:1.1rem;
+  letter-spacing:0.02em; text-transform:uppercase; margin:0; line-height:1;
+}
+.section-note{ font-size:0.82rem; color:var(--ink-mute); margin:0 0 0.85rem; line-height:1.5; max-width:74ch; }
+
+.card{ background:var(--surface); border:1px solid var(--line); border-radius:6px; overflow-x:auto; margin-bottom:0.9rem; }
+table.wtable{ width:100%; border-collapse:collapse; font-size:0.78rem; }
+table.wtable th, table.wtable td{ padding:0.4rem 0.6rem; border-bottom:1px solid var(--line); text-align:left; }
+table.wtable thead th{
+  font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:0.64rem; letter-spacing:0.05em;
+  text-transform:uppercase; color:var(--ink-mute); background:var(--paper);
+}
+table.wtable tbody tr:last-child td{ border-bottom:none; }
+table.wtable td code, table.wtable th code{
+  font-family:"IBM Plex Mono", ui-monospace, monospace; background:var(--paper);
+  padding:0.05rem 0.35rem; border-radius:3px; border:1px solid var(--line);
+}
+
+.note{ font-size:0.78rem; color:var(--ink-mute); line-height:1.5; margin:0.4rem 0 0; }
+.note.warn{ color:var(--orange); font-weight:500; }
+
+.diagram{
+  background:var(--surface); border:1px solid var(--line); border-radius:6px;
+  padding:1rem; margin-bottom:0.9rem; overflow-x:auto;
+}
+.diagram pre{
+  margin:0; font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:0.7rem;
+  line-height:1.45; white-space:pre;
+}
+
+ol.steps{ margin:0; padding-left:1.3rem; font-size:0.85rem; line-height:1.6; }
+ol.steps li{ margin-bottom:0.5rem; }
+ol.steps code{
+  font-family:"IBM Plex Mono", ui-monospace, monospace; background:var(--surface);
+  padding:0.05rem 0.35rem; border-radius:3px; border:1px solid var(--line);
+}
+
+.parts-list{ list-style:none; margin:0; padding:0; font-size:0.83rem; }
+.parts-list li{
+  display:flex; justify-content:space-between; gap:1rem; padding:0.4rem 0;
+  border-bottom:1px solid var(--line);
+}
+.parts-list li:last-child{ border-bottom:none; }
+.parts-list .qty{
+  font-family:"IBM Plex Mono", ui-monospace, monospace; color:var(--ink-mute); flex:none;
+}
+
+.footer-note{
+  margin-top:2rem; padding-top:1rem; border-top:1px dashed var(--line);
+  font-size:0.72rem; color:var(--ink-mute); line-height:1.6;
+}
+
+@media print{
+  body{ background:#fff; color:#000; }
+  :root{ --paper:#fff; --surface:#fff; --ink:#000; --ink-mute:#444; --line:#bbb; }
+  .sheet{ max-width:none; padding:0; }
+  a{ color:inherit; text-decoration:none; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="masthead">
+    <div class="kicker">
+      <span>Portal Pinball V4.0 — Hardware Bring-up</span>
+      <span>Branch: read-opto</span>
+    </div>
+    <h1>Trough Opto Bridge — ATmega328P Build Sheet</h1>
+    <p class="sub">
+      Bench build for a standalone ATmega328P-PU that reads the Stern trough opto board
+      (520-7001-00A) over its <code>VCC</code>/<code>RCK</code>/<code>SCK</code>/<code>MISO</code>/<code>GND</code>
+      connector and re-presents the 7 opto channels as clean switch signals for OPP —
+      replacing the fragile hand-soldered per-leg taps that caused the wiring damage
+      logged in commit <code>859a6b9</code>.
+    </p>
+    <div class="fields">
+      <div class="field-line"><span>Built by</span><span class="blank"></span></div>
+      <div class="field-line"><span>Date</span><span class="blank"></span></div>
+      <div class="field-line"><span>Chip serial / batch</span><span class="blank"></span></div>
+      <div class="field-line"><span>Bench-tested</span><span class="blank"></span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">0</span>
+      <h2>Parts (all from existing inventory)</h2>
+    </div>
+    <div class="card">
+      <ul class="parts-list">
+        <li><span>ATmega328P-PU (DIP-28)</span><span class="qty">1 of 5 spares</span></li>
+        <li><span>10 kΩ resistor (RESET pull-up)</span><span class="qty">×1</span></li>
+        <li><span>0.1 µF ceramic capacitor (VCC/GND decoupling)</span><span class="qty">×1</span></li>
+        <li><span>0.1 µF ceramic capacitor (AREF/GND, optional)</span><span class="qty">×1</span></li>
+        <li><span>220–330 Ω resistor + LED (bench-test indicators only)</span><span class="qty">×7</span></li>
+        <li><span>Arduino Uno/Duemilanove + ArduinoISP shield</span><span class="qty">programmer only</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">1</span>
+      <h2>Program the chip</h2>
+    </div>
+    <p class="section-note">Do this on every chip pulled from stock — don't assume factory-default fuses.</p>
+    <ol class="steps">
+      <li>Host the ArduinoISP shield on the Uno (or Duemilanove); load the <code>ArduinoISP</code> sketch onto it.</li>
+      <li>In the Arduino IDE, select board <code>"ATmega328 on a breadboard (8 MHz internal clock)"</code>, with the ISP shield as programmer.</li>
+      <li>Run <strong>Burn Bootloader</strong> — this sets the fuses to the internal RC oscillator, so no external crystal is ever needed.</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">2</span>
+      <h2>Power &amp; support circuit</h2>
+    </div>
+    <div class="diagram">
+<pre>                     ATmega328P-PU (DIP-28)
+                     ┌───────\/───────┐
+       RESET ●────1─┤PC6           PC5├─28  (unused)
+   (unused)  ●────2─┤PD0(RXD)   PC4(SDA)├─27  (unused)
+   (unused)  ●────3─┤PD1(TXD)      PC3├─26  (unused)
+   (unused)  ●────4─┤PD2           PC2├─25  (unused)
+ mirror →   PD3────5─┤PD3           PC1├─24──→ mirror: s-trough-jam
+ mirror →   PD4────6─┤PD4           PC0├─23──→ mirror: s-trough6
+        +5V ●────7─┤VCC           GND├─22──● GND
+        GND ●────8─┤GND          AREF├─21──● GND (via 0.1µF, optional)
+  (no xtal) ●────9─┤PB6(XTAL1)  AVCC├─20──● +5V
+  (no xtal) ●───10─┤PB7(XTAL2)   PB5├─19──→ Stern SCK
+ mirror →   PD5───11─┤PD5(mirror)  PB4├─18──→ Stern MISO
+ mirror →   PD6───12─┤PD6(mirror)  PB3├─17  (unused, MOSI)
+ mirror →   PD7───13─┤PD7(mirror)  PB2├─16──● +5V (forces SPI master)
+   RCK →    PB0───14─┤PB0(RCK)     PB1├─15  (unused)
+                     └────────────────┘</pre>
+    </div>
+    <div class="card">
+      <table class="wtable">
+        <thead><tr><th>Pin(s)</th><th>Signal</th><th>Connect to</th></tr></thead>
+        <tbody>
+          <tr><td>7, 20</td><td>VCC, AVCC</td><td><code>+5V</code> rail</td></tr>
+          <tr><td>8, 22</td><td>GND ×2</td><td><code>GND</code> rail</td></tr>
+          <tr><td>1</td><td>RESET</td><td><code>+5V</code> through 10 kΩ</td></tr>
+          <tr><td>7–8</td><td>—</td><td>0.1 µF cap, right at the chip</td></tr>
+          <tr><td>21</td><td>AREF</td><td>0.1 µF cap to <code>GND</code> (optional)</td></tr>
+          <tr><td>9, 10</td><td>XTAL1/2</td><td><strong>leave floating</strong> — internal oscillator</td></tr>
+          <tr><td>16</td><td>SS (PB2)</td><td><code>+5V</code> — forces SPI master mode</td></tr>
+          <tr><td>17</td><td>MOSI (PB3)</td><td>leave floating — unused</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">3</span>
+      <h2>Link to the Stern board's connector</h2>
+    </div>
+    <div class="card">
+      <table class="wtable">
+        <thead><tr><th>Stern pin</th><th>ATmega328P pin</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>GND</code></td><td>GND rail</td><td>shared ground</td></tr>
+          <tr><td><code>VCC</code></td><td>+5V rail</td><td>verify opto board current draw before backfeeding it</td></tr>
+          <tr><td><code>SCK</code></td><td>pin 19 (PB5)</td><td>hardware SPI clock</td></tr>
+          <tr><td><code>MISO</code></td><td>pin 18 (PB4)</td><td>hardware SPI data in</td></tr>
+          <tr><td><code>RCK</code></td><td>pin 14 (PB0)</td><td>plain GPIO, toggled by firmware to latch</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note warn">Build a proper mating connector for the board's existing header — no new solder joints on the Stern board itself.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">4</span>
+      <h2>Switch-mirror outputs</h2>
+    </div>
+    <p class="section-note">Bench: each through a resistor + LED to GND. Final install: same 7 pins go straight to OPP's existing switch-wing positions.</p>
+    <div class="card">
+      <table class="wtable">
+        <thead><tr><th>Pin</th><th>Mirrors</th><th>Bench test</th></tr></thead>
+        <tbody>
+          <tr><td>5 (PD3)</td><td><code>s-trough1</code></td><td>resistor → LED → GND</td></tr>
+          <tr><td>6 (PD4)</td><td><code>s-trough2</code></td><td>resistor → LED → GND</td></tr>
+          <tr><td>11 (PD5)</td><td><code>s-trough3</code></td><td>resistor → LED → GND</td></tr>
+          <tr><td>12 (PD6)</td><td><code>s-trough4</code></td><td>resistor → LED → GND</td></tr>
+          <tr><td>13 (PD7)</td><td><code>s-trough5</code></td><td>resistor → LED → GND</td></tr>
+          <tr><td>23 (PC0)</td><td><code>s-trough6</code></td><td>resistor → LED → GND</td></tr>
+          <tr><td>24 (PC1)</td><td><code>s-trough-jam</code></td><td>resistor → LED → GND</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">5</span>
+      <h2>Firmware logic</h2>
+    </div>
+    <ol class="steps">
+      <li>On boot: configure SPI as master (<code>SS</code>, <code>MOSI</code>, <code>SCK</code> as outputs per Section 2).</li>
+      <li>To read a frame: pulse <code>RCK</code> low→high to latch the 8 parallel opto bits.</li>
+      <li>Clock one byte via SPI (write <code>0x00</code> to <code>SPDR</code>, wait for <code>SPIF</code>) — result in <code>SPDR</code> has one bit per channel, MSB first.</li>
+      <li>Drive the 7 mirror pins from those bits — confirm polarity by hand (especially <code>s-trough-jam</code>, which reads active = clear path, not jammed) before trusting it.</li>
+    </ol>
+  </div>
+
+  <div class="footer-note">
+    Board identity: Stern 520-7001-00A "Trough Serial Opto Receiver" — U1 NXP 74HCT165D (8-bit
+    PISO shift register), U2 NXP 74HC540D (octal buffer). Connector silkscreened
+    VCC/RCK/SCK/MISO/GND. See <code>TODO.md</code> and commit <code>859a6b9</code> for the
+    original wiring-damage report this build replaces.
+  </div>
+
+</div>
+</body>
+</html>
