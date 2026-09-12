@@ -393,7 +393,7 @@ footer{
       <table class="wtable">
         <thead><tr><th>Board</th><th>Port</th><th>Role</th><th>Switch inputs</th><th>Coil/driver outputs</th><th>LED outputs</th></tr></thead>
         <tbody>
-          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O — <b>1st choice</b></td><td class="num">7 free / 15 total — 4 in use (flippers, start, launch), 4 reserved (0-0-8…11, servo config)</td><td class="num">14 free / 16 total — 2 in use (flippers)</td><td class="num">40 used (0-0-0…39), 216 free (up to 256/board)</td></tr>
+          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O — <b>1st choice</b></td><td class="num">6 free / 15 total — 5 in use (flippers, start, launch, plunger-lane), 4 reserved (0-0-8…11, servo config)</td><td class="num">12 free / 16 total — 4 in use (flippers, plunger, trough-eject)</td><td class="num">40 used (0-0-0…39), 216 free (up to 256/board)</td></tr>
           <tr><td>chain1-0x20 <span class="item-meta">(Cobra B)</span></td><td class="brd">COM5</td><td>LED driver + spare I/O — <b>2nd choice</b></td><td class="num">23 free</td><td class="num">8 free</td><td class="num">1 used (1-0-0, DRAFT), 255 free</td></tr>
           <tr><td>chain2-0x20 <span class="item-meta">(PSOC card 0)</span></td><td class="brd">COM6</td><td>Switches + coils — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
           <tr><td>chain2-0x21 <span class="item-meta">(PSOC card 1)</span></td><td class="brd">COM6</td><td>Switches + coils — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired (2-1-0…3 now free again)</td><td class="num">—</td></tr>
@@ -444,8 +444,8 @@ footer{
         <tbody>
           <tr><td>Slings (autofire)</td><td class="num">2-0-0, 2-0-1</td><td class="num">2-0-0, 2-0-1</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>Pop bumpers (autofire)</td><td class="num">2-0-8…10</td><td class="num">2-0-4…6</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Plunger / launch</td><td class="num">2-0-16…18</td><td class="num">2-0-2</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Ball trough</td><td class="num">2-1-16…22</td><td class="num">2-0-3</td><td class="brd">0x21 / 0x20</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td>Plunger lane</td><td class="num">0-0-26</td><td class="num">0-0-10</td><td class="brd">chain0-0x20 (Cobra)</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td>Ball trough</td><td class="num">2-1-16…22</td><td class="num">0-0-11</td><td class="brd">0x21 (PSOC) / 0x20 (Cobra)</td><td><span class="status gap">gap</span></td></tr>
           <tr><td>Drop target bank</td><td class="num">2-1-23…25</td><td class="num">2-0-7</td><td class="brd">0x21 / 0x20</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>Top lanes (3)</td><td class="num">2-0-19…21</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>Bottom lanes (5)</td><td class="num">2-0-22…26</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
@@ -615,8 +615,8 @@ footer{
       <div class="subhead" style="padding:0.6rem 0.9rem 0">Slings / pops — chain 2-0-0…10</div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-right-sling <span class="item-meta">2-0-0</span> · s-left-sling <span class="item-meta">2-0-1</span></div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-popbumper-1/2/3 <span class="item-meta">2-0-8 / 2-0-9 / 2-0-10</span></div></div></div>
-      <div class="subhead" style="padding:0 0.9rem 0">Plunger — 2-0-16 · start/launch moved to the Cobra board, see below</div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-plunger-lane <span class="item-meta">2-0-16</span></div></div></div>
+      <div class="subhead" style="padding:0 0.9rem 0">Plunger / start / launch — all moved to the Cobra board, see below</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-plunger-lane <span class="item-meta">0-0-26, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-12 (moved from 2-0-16, correctly tracks physical ball motion)</div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-launch <span class="item-meta">0-0-3, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-06</div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-start <span class="item-meta">0-0-27, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-06 (moved from 0-0-8; confirmed via the CobraPin board-config toolchain that this board's servo config reassigns inputs <b>0-0-8 through 0-0-11</b> to servo/PWM use — avoid that range for any future switch on this board)</div></div></div>
       <div class="subhead" style="padding:0 0.9rem 0">Lanes — 2-0-19…26</div>
@@ -647,9 +647,9 @@ footer{
         <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-sling-left <span class="item-meta">2-0-1, 16ms</span></div>
         <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-plunger <span class="item-meta">2-0-2, 21ms</span> — autolaunch reaches the playfield reliably, doesn't airball</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-plunger <span class="item-meta">0-0-10, chain0-0x20 (Cobra), 21ms</span> — PASS, confirmed 2026-09-12 with real 50V (twice) — autolaunch reaches the playfield reliably, doesn't airball</div>
         <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-trough-eject <span class="item-meta">2-0-3, 25ms</span> — feeds one ball to the plunger lane, no double-feed</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-trough-eject <span class="item-meta">0-0-11, chain0-0x20 (Cobra), 25ms</span> — PASS, confirmed 2026-09-12 with real 50V — feeds one ball to the plunger lane, no double-feed</div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-popbumper-1/2/3 <span class="item-meta">2-0-4/5/6, 17ms each</span></div>
         <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-drop <span class="item-meta">2-0-7, 25ms</span> — drop-bank reset raises all 3 targets fully, no partial resets</div></div></div>

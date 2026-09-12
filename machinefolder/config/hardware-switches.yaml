@@ -35,11 +35,9 @@ switches:
 
 
 # Direct Switches Launch Section
-  s-plunger-lane:
-    number: 2-0-16
-# s-start/s-launch moved to the Cobra chain 0 board (0x20) below, 2-0-17/2-0-18 now free again -
-# see the comment at the flipper switches block for why (same-board wiring done during the
-# 2026-09-06 bring-up session).
+# s-plunger-lane/s-start/s-launch moved to the Cobra chain 0 board (0x20) below, 2-0-16/17/18
+# now free again - see the comment at the flipper switches block for why (same-board wiring
+# done during the 2026-09-06/2026-09-12 bring-up sessions).
 
 
 # Lane Switches
@@ -108,15 +106,21 @@ switches:
 
 # s-start/s-launch wired onto the same Cobra chain 0 board while the user was there for the
 # flippers (2026-09-06). s-launch tested PASS on 0-0-3. s-start was first wired to 0-0-8, which
-# read stuck CLOSED regardless of press/release (suspected: that channel got reassigned to servo
-# use on the board itself) - moved to 0-0-27 to retest on an input known not to be touched by
-# that.
+# read stuck CLOSED regardless of press/release - confirmed root cause via the CobraPin
+# board-config toolchain: that board's servo config dedicates inputs 0-0-8..11 to servo/PWM (see
+# docs/opp-hardware-reference.md and registry.RESERVED_NUMBERS) - moved to 0-0-27 and PASSED.
   s-launch:
     number: 0-0-3
     tags: launch
   s-start:
     number: 0-0-27
     tags: start
+
+# s-plunger-lane moved here from the PSOC chain (was 2-0-16) during the 2026-09-12 session,
+# alongside the launch coil (c-plunger) and trough eject coil (c-trough-eject) both moving to
+# this same Cobra board's Bank A - see hardware-coils.yaml.
+  s-plunger-lane:
+    number: 0-0-26
 # Chain 2-1-0 to 2-1-3 (formerly used for the DRAFT flipper switches) now free again.
 # Autofire 2-1-4 to 2-1-7 DO NOT EXIST
 # Autofire 2-1-8 to 2-1-11 empty

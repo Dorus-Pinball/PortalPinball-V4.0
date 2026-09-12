@@ -123,6 +123,16 @@ work).
         `design/physical-checklists/trough-opto-bridge.html`, calibrate
         `BIT_CHANNEL`/`BIT_INVERT` in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
         against the repaired board, then wire in and re-test.
+- [x] **Plunger lane / launch coil / trough eject coil moved to the Cobra board** (2026-09-12):
+      `s-plunger-lane` (`2-0-16` → `0-0-26`), `c-plunger` (`2-0-2` → `0-0-10`), `c-trough-eject`
+      (`2-0-3` → `0-0-11`) — all moved from the PSOC chain to Cobra chain0-0x20 per user decision,
+      both coils on Bank A (`HV_A`, brown) alongside the flippers. Trough switches
+      (`s-trough1..6`/`s-trough-jam`) are unaffected by this and stay on `2-1-16..22` (PSOC
+      chain2-0x21) until the opto board repair above is done. **Wiring confirmed 2026-09-12**:
+      `s-plunger-lane` correctly tracks physical ball motion at `0-0-26`; both coils PASSED the
+      no-HV activation-LED check, then PASSED again with real 50V present — `c-plunger` launched
+      a ball onto the playfield correctly (twice), `c-trough-eject` fed a ball into the plunger
+      lane correctly.
 
 ## Dev tooling
 

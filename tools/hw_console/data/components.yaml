@@ -123,19 +123,24 @@ components:
 
   plunger-launch:
     display_name: "Plunger lane / auto-launch"
-    status: 4
+    status: 6
     mpf_devices: [bd-plunger]
     switches:
-      - {name: s-plunger-lane, number: 2-0-16, board: chain2-0x20}
+      - {name: s-plunger-lane, number: 0-0-26, board: chain0-0x20}
     coils:
-      - {name: c-plunger, number: 2-0-2, board: chain2-0x20}
+      - {name: c-plunger, number: 0-0-10, board: chain0-0x20}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
     notes: "s-start/s-launch used to be grouped here (2-0-17/2-0-18, DRAFT) but moved to the
-      Cobra board with the flippers, 2026-09-06 - see the start-launch-buttons component."
+      Cobra board with the flippers, 2026-09-06 - see the start-launch-buttons component.
+      s-plunger-lane and c-plunger themselves moved here too, 2026-09-12 (were 2-0-16/2-0-2,
+      PSOC) - c-plunger is on the same Bank A (HV_A) as the flippers, per user decision.
+      Confirmed 2026-09-12: s-plunger-lane correctly tracks physical ball motion at 0-0-26;
+      c-plunger PASSED the no-HV activation-LED check, then PASSED twice with real 50V present
+      (launched a ball onto the playfield correctly both times)."
 
   start-launch-buttons:
     display_name: "Start / launch cabinet buttons"
@@ -161,7 +166,7 @@ components:
 
   trough:
     display_name: "Ball trough"
-    status: 5
+    status: 4
     mpf_devices: [bd-trough]
     switches:
       - {name: s-trough1, number: 2-1-16, board: chain2-0x21}
@@ -172,14 +177,21 @@ components:
       - {name: s-trough6, number: 2-1-21, board: chain2-0x21}
       - {name: s-trough-jam, number: 2-1-22, board: chain2-0x21}
     coils:
-      - {name: c-trough-eject, number: 2-0-3, board: chain2-0x20}
+      - {name: c-trough-eject, number: 0-0-11, board: chain0-0x20}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
     notes: "Eject coil is software/event-triggered (ball_device), not a hardware autofire
-      rule - the switch/coil board split (0x21 / 0x20) is fine here."
+      rule - the switch/coil board split is fine here. Switches: numbers unchanged
+      (2-1-16..22, PSOC chain2-0x21), but blocked on repairing the chain2-0x21 opto board (dead
+      U1 shift register, see TODO.md/plans/read-opto.md) before they can be tested again. Coil:
+      moved 2026-09-12 from 2-0-3 (PSOC) to 0-0-11 (Cobra chain0-0x20, Bank A/HV_A, per user
+      decision) - confirmed 2026-09-12, PASSED the no-HV activation-LED check then PASSED with
+      real 50V present (fed a ball into the plunger lane correctly). Status stays at 4 despite
+      the coil being fully confirmed, since the switches half is still blocked on the opto
+      repair - not a per-coil regression."
 
   drop-bank:
     display_name: "Drop target bank"
