@@ -29,6 +29,13 @@ display. See `README.md` for the full stack breakdown and how to run it.
 - `board Overviews.xlsx` at the repo root is the hardware/design reference (board pinouts +
   early game-design notes) — check it before assigning new switch/coil numbers, to avoid
   colliding with something already planned there.
+- `design/physical-checklists/wiring-guide.html` and `docs/wiring-pin-map.md` are **generated**
+  by `tools/hw_console/generate_docs.py` from `components.yaml`/`hardware-*.yaml` — never
+  hand-edit either, it's overwritten on the next run (see `README.md`'s "Wiring docs generator").
+- When citing a new external doc/wiki page in any project doc, save a local copy under
+  `docs/references/raw/<slug>/content.md` and add one entry to `docs/references/index.yaml` in
+  the same pass — `docs/references/index.md` is generated from that file, so a citation doesn't
+  go dead if the live page changes or vanishes.
 - **Starting/stopping `mpf` from a session (this includes Claude Code tool calls):** use
   `tools/mpf-session.ps1 -Action Start|Stop|Status|Log`, run via a PowerShell tool/shell, not
   Bash — plain `mpf` crashes its text UI in a non-interactive shell, and a Bash-tracked PID for a

@@ -103,7 +103,9 @@ specific color without checking.
 - Board close-up photos and an HV-distribution terminal-block photo taken of this cabinet
   (2026-09-06 session).
 - [Official CobraPin doc](https://missionpinball.org/latest/hardware/opp/cobrapin/) /
-  [GitHub markdown source](https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/cobrapin/index.md).
+  [GitHub markdown source](https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/cobrapin/index.md)
+  — archived copies: `docs/references/raw/cobrapin-official-doc/content.md` /
+  `docs/references/raw/cobrapin-github-source/content.md`.
 
 ## Red boards — classic/modular OPP (chain 2, boards `0x20`-`0x23`)
 
@@ -177,7 +179,8 @@ boards for LEDs (it doesn't, per the priority policy above).
 
 ### Sources
 
-- [pinballmakers.com OPP wiki](http://pinballmakers.com/wiki/index.php/OPP)
+- [pinballmakers.com OPP wiki](http://pinballmakers.com/wiki/index.php/OPP) — archived copy:
+  `docs/references/raw/pinballmakers-opp-wiki/content.md`.
 - MPF doc sources (fetched from GitHub, since the rendered doc site only returns nav-shell content
   for these pages): [switches](https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/switches.md),
   [drivers](https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/drivers.md),
@@ -185,4 +188,6 @@ boards for LEDs (it doesn't, per the priority policy above).
   [lights](https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/lights.md),
   [connecting](https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/connecting.md),
   [config](https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/config.md),
-  [troubleshooting](https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/troubleshooting.md).
+  [troubleshooting](https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/troubleshooting.md)
+  — archived copies under `docs/references/raw/mpf-docs-opp-{switches,drivers,leds,lights,
+  connecting,config,troubleshooting}/content.md`; full index at `docs/references/index.md`.

@@ -1,0 +1,34 @@
+name: Sync wiki-sync branch from main
+
+# Wiki.js's own git storage module has a single `branch` setting used for both pull and push -
+# it can't pull from main and push to a separate branch on its own. So Wiki.js is configured to
+# sync against `wiki-sync` in both directions (its own edits land there, reviewed into main via
+# an ordinary PR when wanted - see the km-overhaul CHANGES.md entries), and this workflow is what
+# keeps wiki-sync fed with ongoing main work, so the wiki doesn't silently go stale.
+#
+# Fails loudly on conflict rather than guessing: a same-file edit on both main and a pending wiki
+# change needs a human, not an automated merge decision.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: wiki-sync
+          fetch-depth: 0
+
+      - name: Merge main into wiki-sync
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git merge origin/main --no-edit
+          git push origin wiki-sync

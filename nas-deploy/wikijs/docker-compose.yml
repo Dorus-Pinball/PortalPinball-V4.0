@@ -1,0 +1,39 @@
+services:
+  wikijs-db:
+    # Dedicated Postgres backend (not SQLite) - proper concurrent-write safety, and unlocks
+    # PostgreSQL full-text search as the search engine (needs a one-time CREATE EXTENSION
+    # pg_trgm + admin-panel config, see nas-deploy/wikijs/README.md - not automatic just from
+    # choosing this backend).
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: wikijs
+      POSTGRES_USER: wikijs
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wikijs"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  wikijs:
+    image: requarks/wiki:2
+    depends_on:
+      wikijs-db:
+        condition: service_healthy
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: wikijs-db
+      DB_PORT: 5432
+      DB_USER: wikijs
+      DB_PASS: ${POSTGRES_PASSWORD}
+      DB_NAME: wikijs
+    ports:
+      - "8095:3000"
+    volumes:
+      # Assets/content live in Postgres with this backend - this only persists the git module's
+      # local working-copy clone (avoids a full re-clone of the synced repo on every restart).
+      - ./data/wiki-repo:/wiki/data/repo
+    restart: unless-stopped

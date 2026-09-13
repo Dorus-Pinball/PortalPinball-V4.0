@@ -95,6 +95,10 @@ def mpf_coil_numbers():
     return _load_mpf_numbers(MPF_COILS_PATH)
 
 
+def mpf_led_numbers():
+    return _load_mpf_numbers(MPF_LEDS_PATH)
+
+
 def _registry_numbers(registry, kind, exclude_component=None):
     """Return {number: (component_name, entry_name)} for every switch/coil already in the registry."""
     numbers = {}
