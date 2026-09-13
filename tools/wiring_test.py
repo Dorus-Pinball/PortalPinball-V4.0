@@ -30,6 +30,19 @@ Usage:
                                                                        # the flippers: 25ms
                                                                        # default -> no visible
                                                                        # motion, 200ms worked)
+    .venv\\Scripts\\python.exe tools\\wiring_test.py --monitor        # live switch reader: prints
+                                                                       # a snapshot of every switch,
+                                                                       # then every open/close as it
+                                                                       # happens - for a freshly
+                                                                       # wired switch whose MPF name
+                                                                       # you don't know yet, just tap
+                                                                       # it and see what fires.
+                                                                       # Ctrl+C to stop. No coils are
+                                                                       # touched, so no confirmation.
+
+Confirmation prompts are a single Enter press, not typed text, and only appear when a coil will
+actually be pulsed (--monitor and switch-only runs skip them entirely - there's no HV/motion risk
+to confirm).
 """
 import argparse
 import asyncio
@@ -39,8 +52,6 @@ from mpf.core.bcp.bcp_socket_client import AsyncioBcpClientSocket
 
 DEFAULT_SWITCHES = ["s-left-flipper", "s-right-flipper"]
 DEFAULT_COILS = ["c-flipper-left", "c-flipper-right"]
-
-SAFETY_PHRASE = "HIGH VOLTAGE IS OFF"
 
 BCP_HOST = "localhost"
 BCP_PORT = 5051
@@ -137,6 +148,31 @@ async def test_coil(client, name, results, pulse_ms=None):
     results.append((name, "coil", "PASS" if answer.startswith("y") else "FAIL"))
 
 
+async def monitor_switches(client):
+    """Print every switch's current state, then live-print every change as it happens.
+
+    For a freshly-wired switch whose MPF name isn't known yet - tap it and read the name off
+    whatever line prints, instead of having to name it up front.
+    """
+    switches = await fetch_switches(client)
+    print("\n=== Current switch states ===")
+    for board, number, name, state in switches:
+        print(f"  {name:<30} board {board:<6} addr {number:<4} "
+              f"{'CLOSED' if state else 'OPEN'}")
+
+    print("\nWatching for changes - tap any switch to see it fire here. Ctrl+C to stop.")
+    client.send("monitor_start", {"category": "switches"})
+    try:
+        while True:
+            cmd, args = await client.read_message()
+            if cmd == "reset":
+                client.send("reset_complete", {})
+            elif cmd == "switch":
+                print(f"  {args['name']:<30} -> {'CLOSED' if args['state'] else 'OPEN'}")
+    finally:
+        client.send("monitor_stop", {"category": "switches"})
+
+
 def print_summary(results):
     print("\n=== Summary ===")
     if not results:
@@ -156,44 +192,46 @@ async def main():
                          help="Override pulse_ms for all coils (default: each coil's own "
                               "configured pulse_ms). Passing this means you intend a real-motion "
                               "check with HV present, not the default no-HV LED check.")
+    parser.add_argument("--monitor", action="store_true",
+                         help="Live switch reader instead of a named test: print every switch's "
+                              "current state, then every open/close as it happens. No coils are "
+                              "touched, so no confirmation prompt. Ignores --switches/--coils.")
     args = parser.parse_args()
-
-    switch_names = [s.strip() for s in args.switches.split(",") if s.strip()]
-    coil_names = [c.strip() for c in args.coils.split(",") if c.strip()]
-
-    if args.pulse_ms is None:
-        print("This test pulses real coil drivers on the machine.")
-        print("Confirm the 50V/high-voltage supply is OFF before continuing - coil driver")
-        print("LEDs work fine with HV off, that's the whole point of testing this way first.")
-        confirm = input(f"Type '{SAFETY_PHRASE}' to continue: ")
-        if confirm != SAFETY_PHRASE:
-            print("Confirmation not received - exiting without testing anything.")
-            return
-    else:
-        print(f"--pulse-ms {args.pulse_ms} means this is a REAL-MOTION check with HV present.")
-        print("Confirm: HV is ON, and the mechanism's travel path is clear (no fingers/tools).")
-        confirm = input(f"Type '{SAFETY_PHRASE.replace('OFF', 'ON')}' to continue: ")
-        if confirm != SAFETY_PHRASE.replace("OFF", "ON"):
-            print("Confirmation not received - exiting without testing anything.")
-            return
 
     client = await connect()
     client.send("service", {"subcommand": "start"})
 
-    results = []
     try:
+        if args.monitor:
+            await monitor_switches(client)
+            return
+
+        switch_names = [s.strip() for s in args.switches.split(",") if s.strip()]
+        coil_names = [c.strip() for c in args.coils.split(",") if c.strip()]
+
+        if coil_names:
+            if args.pulse_ms is None:
+                print("This test pulses real coil drivers on the machine.")
+                print("Confirm the 50V/high-voltage supply is OFF before continuing - coil driver")
+                print("LEDs work fine with HV off, that's the whole point of testing this way first.")
+                input("Press Enter to confirm HV is OFF and continue (Ctrl+C to abort)... ")
+            else:
+                print(f"--pulse-ms {args.pulse_ms} means this is a REAL-MOTION check with HV present.")
+                print("Confirm: HV is ON, and the mechanism's travel path is clear (no fingers/tools).")
+                input("Press Enter to confirm HV is ON and the path is clear (Ctrl+C to abort)... ")
+
+        results = []
         for name in switch_names:
             await test_switch(client, name, results)
         for name in coil_names:
             await test_coil(client, name, results, pulse_ms=args.pulse_ms)
+        print_summary(results)
     finally:
         client.send("service", {"subcommand": "stop"})
         try:
             await asyncio.wait_for(client.wait_for_response("service_stop"), timeout=2)
         except asyncio.TimeoutError:
             pass
-
-    print_summary(results)
 
 
 if __name__ == "__main__":
