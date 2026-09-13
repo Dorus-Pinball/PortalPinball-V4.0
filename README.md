@@ -89,6 +89,12 @@ per-board and per-component status, wiring checklists, and a collision check aga
 a separate tracking layer, not a replacement for MPF's own config. See
 `tools/hw_console/README.md` for how to run it and the intended workflow.
 
+## Online services
+
+See `docs/online-services.md` for where to browse this project's data online (parts inventory,
+and eventually a git-synced wiki) from any device — one pointer instead of scattering links
+across this file, `CLAUDE.md`, and the NAS dashboard.
+
 ## Wiring docs generator
 
 `design/physical-checklists/wiring-guide.html` and `docs/wiring-pin-map.md` are **generated**,
