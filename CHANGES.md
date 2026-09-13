@@ -168,3 +168,66 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     MPF's BCP service: down/not-saving = active/closed/pressed, up/saving = inactive/open. Added
     `docs/wiring-pin-map.md`, a single readable pin-map/status table across every component,
     cross-linked from `README.md` and `docs/opp-hardware-reference.md`. — **Status: active**.
+15. **Knowledge-management overhaul, part 1: `wiring-guide.html`/`wiring-pin-map.md` become
+    generated, not hand-transcribed** (2026-09-13). `wiring-guide.html`'s own footer had claimed
+    to be "generated from" `components.yaml` since it was written, but no generator ever existed —
+    722 lines of hand-transcribed HTML, and `TODO.md` had flagged its status-badge vocabulary as
+    drifted from `components.yaml`'s newer 1-6 scale as a result. Considered against MkDocs (a
+    full static-site toolchain — rejected: heaviest maintenance for a one-reader audience, no
+    benefit to the AI collaborator since Claude already reads the source YAML directly) and
+    against leaving it hand-maintained (rejected: the thing this decision exists to fix). Built
+    `tools/hw_console/generate_docs.py` — Jinja2 templates reusing `registry.py`'s existing
+    loaders, rendering both files from `components.yaml`/`hardware-*.yaml`, with atomic
+    all-or-nothing writes (a bad harness or missing Graphviz leaves the previously-committed files
+    untouched, verified with a deliberately broken harness reference). The "04 Known components"
+    badges (`wired`/`planned`/`gap`) are now a documented, single-source-of-truth mapping
+    (`status >= 5` → `wired`, notes containing `GAP:` → `gap`, else `planned`) instead of manual
+    per-row judgment — this alone fixed a real, already-stale badge (Pop bumpers showed `wired`
+    despite `status: 4`, unwired). Also folded in real generated wiring diagrams via
+    [WireViz](https://github.com/wireviz/WireViz): a new `tools/hw_console/data/harnesses/`
+    (native WireViz YAML) replaces the flipper coil-bank's hand-drawn SVG sketch with one rendered
+    from real, sourced data (`docs/opp-hardware-reference.md`'s per-pin bank/HV-feed/color table).
+    Wired into the existing sync points — the `PostToolUse` hook now runs the generator after
+    `check_registry.py` passes, and the `wire-component` skill's step 5 points at it instead of a
+    hand-edit. Proven for real, not just locally: merging in parallel real-hardware bring-up work
+    from `main` (entry after this one, bottom-lane wiring) produced a clean 3-way merge conflict
+    *only* in the two generated files — `components.yaml`/`hardware-switches.yaml` merged
+    automatically with zero conflicts, and regenerating from the merged data resolved the rest,
+    exactly the property this decision was chosen for. — **Status: active**.
+16. **Knowledge-management overhaul, part 2: external reference archive, CI, branch protection**
+    (2026-09-13). `docs/opp-hardware-reference.md`, `docs/stern-spike-trough-opto.md`, and
+    `plans/OutsidePerspective.md` all cited external docs (MPF doc site, CobraPin/OPP hardware
+    docs, pinballmakers.com wiki, PinWiki) by live URL only. Archived 22 already-cited sources
+    under `docs/references/raw/<slug>/content.md` in a one-time sweep; `docs/references/index.md`
+    is itself generated (via the same `generate_docs.py` from entry 15) from
+    `docs/references/index.yaml`, applying the same "generate, don't duplicate" principle to the
+    archive's own index rather than hand-maintaining a fourth table. Also added `.github/
+    workflows/ci.yml` (this repo had no `.github/` directory at all, and `TODO.md` already had an
+    open, unowned item requesting `unittest discover` on push) — runs the test suite,
+    `check_registry.py`, and a doc-freshness check (re-runs the generator, diffs against
+    committed output). The doc-freshness check needed a real fix post-launch, not just
+    config: WireViz's embedded SVG isn't byte-reproducible across Graphviz/font environments (this
+    Windows/Arial dev machine vs. the Ubuntu runner's older apt-packaged Graphviz and different
+    font substitution both shifted text-layout coordinates) — fixed by stripping
+    Graphviz-generated `<svg>` blocks from both sides before comparing, verifying the actual
+    data-driven content without false-failing on rendering-environment variance; confirmed via a
+    real push (not just reasoning about it) that this correctly still fails on a genuine
+    hand-edit. Enabled branch protection on `main` (required CI check, PR required) once CI was
+    green — deliberately `enforce_admins: false` after discussing the tradeoff: the repo owner's
+    own pushes still bypass it (confirmed via a real, immediately-reverted test push), while a
+    separately-scoped credential (a future Wiki.js deploy key, if that gets built) would not.
+    — **Status: active**.
+17. **Datasette (for `Component_database`) scoped in, then correctly walked back** (2026-09-13,
+    part of the knowledge-management overhaul). An earlier pass of this work scoped in a Datasette
+    instance on the NAS to browse the sibling `Component_database` repo's SQLite parts inventory,
+    reasoning the same NAS/Docker infrastructure being stood up for a planned wiki made a second
+    small service low-cost. Independent review found this broken two ways before anything was
+    built: that repo's `.gitignore` excludes `data/*.db` entirely, so a git-pull sync would never
+    receive the database file; and more fundamentally, `Component_database` already has its own
+    deployed FastAPI app (auth, browse/search/filter/gallery, QR labels, CSV export, a JSON API)
+    live at `192.168.1.2:8091` and `parts.famvanderlinden.nl`. Building Datasette on top would
+    have been a second, less-capable, differently-authenticated surface for data that already has
+    a purpose-built one — recorded here so this doesn't get silently re-proposed later without
+    re-discovering the same two reasons. Added `docs/online-services.md` instead, linking the
+    existing app directly. — **Status: rejected** (Datasette specifically; `docs/online-services.md`
+    itself is active, see entry 15/16 for the broader initiative it belongs to).
