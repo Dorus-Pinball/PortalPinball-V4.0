@@ -42,8 +42,21 @@ jobs:
 
       - name: Check generated docs are up to date
         run: |
+          cp design/physical-checklists/wiring-guide.html /tmp/wiring-guide-before.html
           python tools/hw_console/generate_docs.py
-          git diff --exit-code -- \
-            design/physical-checklists/wiring-guide.html \
-            docs/wiring-pin-map.md \
-            docs/references/index.md
+
+          # WireViz's embedded SVG isn't byte-reproducible across Graphviz/font environments -
+          # text-layout coordinates shift with installed fonts (confirmed: this runner's font
+          # substitution vs. a local Windows/Arial environment produced a real, otherwise-clean
+          # CI failure on SVG geometry alone, nothing else). Strip every <svg>...</svg> block
+          # (the WireViz-rendered coil-bank diagram and the static hand-drawn switch-wing sketch
+          # alike - this sed pattern doesn't distinguish them, and the hand-drawn one is static
+          # template content anyway) from both sides before comparing, so this check verifies the
+          # DATA-DRIVEN content (the tables generated from components.yaml) without false-failing
+          # on rendering-environment differences. A WireViz render failure is still caught above -
+          # generate_docs.py exits non-zero on that regardless of this diff.
+          strip_svg() { sed '/<svg /,/<\/svg>/d' "$1"; }
+          diff <(strip_svg /tmp/wiring-guide-before.html) \
+               <(strip_svg design/physical-checklists/wiring-guide.html)
+
+          git diff --exit-code -- docs/wiring-pin-map.md docs/references/index.md
