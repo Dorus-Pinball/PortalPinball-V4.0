@@ -1,3 +1,13 @@
+---
+title: PinballWiki
+description: 
+published: true
+date: 2026-09-13T20:07:33.122Z
+tags: 
+editor: markdown
+dateCreated: 2026-09-13T17:42:14.553Z
+---
+
 # Portal Pinball V4.0 — Wiki
 
 A real, physically-built Portal-themed pinball machine running **Mission Pinball Framework**
