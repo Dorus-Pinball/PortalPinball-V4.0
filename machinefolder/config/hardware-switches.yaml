@@ -37,6 +37,11 @@ switches:
 
 
 # Lane Switches
+# s-toplane1/s-toplane2 reverted to their original planned 2-0-19/2-0-20 (still DRAFT - top
+# lanes aren't physically wired yet), 2026-09-13. Real-hardware bring-up initially found the
+# bottom-lane wires there, but that was because the harness connector was seated in the wrong
+# block on the header - once the user moved it to the correct block, the real numbers turned
+# out to be 2-0-27…31 (see below). See components.yaml's bottom-lanes notes for the full story.
   s-toplane1:
     number: 2-0-19
     type: NO
@@ -47,38 +52,47 @@ switches:
     number: 2-0-21
     type: NO
 
+# s-bottomlane1-4 + rollover: CONFIRMED 2026-09-13 by pressing each switch individually (one at
+# a time, no batching) after the user moved the harness connector to its correct block on the
+# header and fixed a ground fault - see components.yaml's bottom-lanes notes for the full
+# right-to-left press-by-press history.
   s-bottomlane1:
-    number: 2-0-22
+    number: 2-0-27
     type: NO
   s-bottomlane2:
-    number: 2-0-23
+    number: 2-0-28
     type: NO
   s-bottomlane3:
-    number: 2-0-24
+    number: 2-0-31
     type: NO
   s-bottomlane4:
-    number: 2-0-25
+    number: 2-0-30
     type: NO
   s-bottomlane5:
-    number: 2-0-26
+    number: 2-0-29
     type: NO
+    # This is actually a ROLLOVER switch, not a 5th bottom lane, per the user (2026-09-13) - "4
+    # lanes & 1 rollover". Kept this name for now to avoid a wider rename across modes/lanes,
+    # hardware-leds, tests, design/features/lanes.yaml - see TODO.md for the open rename
+    # decision. Still not physically working even after the connector fix/ground-fault repair
+    # that fixed the other 4 - separate unresolved hardware fault on this one channel.
 
 
 # Other
   s-orbit-r:
-    number: 2-0-27
+    number: 2-0-22
     type: NO
   s-orbit-l:
-    number: 2-0-28
+    number: 2-0-23
     type: NO
   s-target-e1:
-    number: 2-0-29
+    number: 2-0-24
     type: NO
   s-target-e2:
-    number: 2-0-30
+    number: 2-0-25
     type: NO
   s-button:
-    number: 2-0-31
+    number: 2-0-26
     type: NO
 
 

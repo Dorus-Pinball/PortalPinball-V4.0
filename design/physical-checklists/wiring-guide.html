@@ -448,15 +448,15 @@ footer{
           <tr><td>Plunger lane</td><td class="num">0-0-26</td><td class="num">0-0-10</td><td class="brd">chain0-0x20 (Cobra)</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>Ball trough</td><td class="num">2-1-16…22</td><td class="num">0-0-11</td><td class="brd">0x21 (PSOC) / 0x20 (Cobra)</td><td><span class="status gap">gap</span></td></tr>
           <tr><td>Drop target bank</td><td class="num">2-1-23…25</td><td class="num">2-0-7</td><td class="brd">0x21 / 0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Top lanes (3)</td><td class="num">2-0-19…21</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Bottom lanes (5)</td><td class="num">2-0-22…26</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Orbits (L/R/top)</td><td class="num">2-0-27, 28, 2-1-28</td><td class="num">—</td><td class="brd">0x20 / 0x21</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Standup targets (E/R/M/L)</td><td class="num">2-0-29,30, 2-3-0…6</td><td class="num">—</td><td class="brd">0x20 / 0x23</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td>Top lanes (3)</td><td class="num">2-0-19…21 (DRAFT)</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td>Bottom lanes (4 lanes + 1 rollover)</td><td class="num">2-0-27, 28, 30, 31 (rollover: 2-0-29, faulty)</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status gap">gap</span></td></tr>
+          <tr><td>Orbits (L/R/top)</td><td class="num">2-0-22, 23 (DRAFT), 2-1-28</td><td class="num">—</td><td class="brd">0x20 / 0x21</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td>Standup targets (E/R/M/L)</td><td class="num">2-0-24,25 (DRAFT), 2-3-0…6</td><td class="num">—</td><td class="brd">0x20 / 0x23</td><td><span class="status planned">planned</span></td></tr>
           <tr><td>Ramps (L/R entry+exit)</td><td class="num">2-3-7…10</td><td class="num">—</td><td class="brd">chain2-0x23</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>VUKs (mid, top)</td><td class="num">2-1-26, 27</td><td class="num" style="color:var(--blue)">missing</td><td class="brd">chain2-0x21</td><td><span class="status gap">gap</span></td></tr>
           <tr><td>Portal transfer (dropper→portal→exit)</td><td class="num">2-1-29…31, 2-3-12</td><td class="num" style="color:var(--blue)">dropper coil missing</td><td class="brd">0x21 / 0x23</td><td><span class="status gap">gap</span></td></tr>
           <tr><td>Aerial plate / Insinerator</td><td class="num">2-3-11, 13</td><td class="num">—</td><td class="brd">chain2-0x23</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Cabinet action button</td><td class="num">2-0-31</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td>Cabinet action button</td><td class="num">2-0-26 (DRAFT)</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
           <tr><td><b>Flippers</b></td><td class="num">0-0-1, 0-0-2</td><td class="num">0-0-8, 0-0-9</td><td class="brd">chain0-0x20 (Cobra)</td><td><span class="status wired">wired</span></td></tr>
           <tr><td><b>Start / Launch</b></td><td class="num">0-0-27, 0-0-3</td><td class="num">—</td><td class="brd">chain0-0x20 (Cobra)</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>Right ramp diverter + subway</td><td class="num">2-3-18, 19</td><td class="num">2-1-2</td><td class="brd">chain2-0x21/0x23</td><td><span class="status planned">planned</span></td></tr>
@@ -622,12 +622,16 @@ footer{
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-left-sling <span class="item-meta">0-0-19, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-13. Moved from 2-0-1; swapped twice during testing (first with s-right-sling, then with s-ball-saver) before landing on the correct pin</div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-right-sling <span class="item-meta">0-0-25, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-13. Moved from 2-0-0; originally assigned 0-0-24 but swapped with s-left-sling after testing found that wire lands on the right sling</div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-ball-saver <span class="item-meta">0-0-24, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-13, senses post up/down position; swapped with s-left-sling during testing before landing on the correct pin</div></div></div>
-      <div class="subhead" style="padding:0 0.9rem 0">Lanes — 2-0-19…26</div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-toplane1/2/3 <span class="item-meta">2-0-19…21</span></div></div></div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-bottomlane1…5 <span class="item-meta">2-0-22…26</span></div></div></div>
-      <div class="subhead" style="padding:0 0.9rem 0">Orbits / targets / button — 2-0-27…31</div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-orbit-r <span class="item-meta">2-0-27</span> · s-orbit-l <span class="item-meta">2-0-28</span></div></div></div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-target-e1/e2 <span class="item-meta">2-0-29 / 2-0-30</span> · s-button <span class="item-meta">2-0-31</span></div></div></div>
+      <div class="subhead" style="padding:0 0.9rem 0">Lanes — 2-0-19…26 (top lanes, orbits, targets, button - all DRAFT/not wired)</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-toplane1 <span class="item-meta">2-0-19, DRAFT</span> · s-toplane2 <span class="item-meta">2-0-20, DRAFT</span> · s-toplane3 <span class="item-meta">2-0-21</span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-orbit-r <span class="item-meta">2-0-22, DRAFT</span> · s-orbit-l <span class="item-meta">2-0-23, DRAFT</span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-target-e1/e2 <span class="item-meta">2-0-24 / 2-0-25, DRAFT</span> · s-button <span class="item-meta">2-0-26, DRAFT</span></div></div></div>
+      <div class="subhead" style="padding:0 0.9rem 0">Bottom lanes (4) + rollover — 2-0-27…31</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-bottomlane1 <span class="item-meta">2-0-27</span> — PASS, confirmed 2026-09-13 (individually, connector re-seated + ground fault fixed)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-bottomlane2 <span class="item-meta">2-0-28</span> — PASS, confirmed 2026-09-13 (individually)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-bottomlane3 <span class="item-meta">2-0-31</span> — PASS, confirmed 2026-09-13 (individually)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-bottomlane4 <span class="item-meta">2-0-30</span> — PASS, confirmed 2026-09-13 (individually)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-bottomlane5 / rollover <span class="item-meta">2-0-29, FAULTY</span> — still zero signal even after the connector re-seat and ground-fault fix that resolved the other 4; separate unresolved hardware fault on this one channel. Also: this is really a rollover switch, not a 5th bottom lane - see TODO.md for the open rename question</div></div></div>
       <div class="subhead" style="padding:0 0.9rem 0">Trough — 2-1-16…22 (all NC — verify they read closed at rest)</div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-trough1…6 <span class="item-meta">2-1-16…21</span> · s-trough-jam <span class="item-meta">2-1-22</span></div></div></div>
       <div class="subhead" style="padding:0 0.9rem 0">Drops / VUKs / right bank — 2-1-23…31</div>

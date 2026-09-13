@@ -15,6 +15,27 @@ and the sling/ball-saver bring-up (including the pin swaps found, pulse tuning, 
 ball-saver's weak-spring root cause) are all done — see `CHANGES.md` entries 11-14 for the full
 history, or `docs/wiring-pin-map.md` for current pin numbers/status per component.
 
+- [x] **Bottom lanes 1-4 identified and confirmed**: real-hardware bring-up 2026-09-13.
+      Initial testing found `s-bottomlane1`/`s-bottomlane2` on `2-0-19`/`2-0-20`
+      (s-toplane1/2's planned pins) and zero signal for `s-bottomlane3`/`s-bottomlane4` -
+      turned out the whole 5-switch harness connector was seated in the wrong block on the
+      header. After the user moved the connector to its correct block (silkscreened 2.0-2.4) and
+      fixed a separate ground fault, pressing each switch individually confirmed:
+      `s-bottomlane1`=`2-0-27`, `s-bottomlane2`=`2-0-28`, `s-bottomlane3`=`2-0-31`,
+      `s-bottomlane4`=`2-0-30`. See `tools/hw_console/data/components.yaml`'s bottom-lanes notes
+      for the full history.
+- [ ] **s-bottomlane5/rollover still faulty**: this 5th switch in the same harness is actually a
+      ROLLOVER switch, not a bottom lane (per the user, "4 lanes & 1 rollover") - kept the name
+      `s-bottomlane5` for now to avoid a wider rename (see next item). By elimination its pin is
+      `2-0-29`, but it still produces zero signal even after the connector re-seat and
+      ground-fault fix that resolved the other 4 - a separate, unresolved hardware fault on this
+      one channel specifically. Do not trust `2-0-29` as confirmed.
+- [ ] **s-bottomlane5 naming**: this switch is a rollover, not a 5th bottom lane - consider
+      renaming it (e.g. `s-rollover`) once it's actually working. Touches
+      `modes/lanes/config/lanes.yaml`, `hardware-leds.yaml`, `tests/test_lanes.py`/
+      `test_progression.py`, `design/features/lanes.yaml`, `design/STORY.md`,
+      `machinefolder/data/audits.yaml` - a real (if small) design/rename pass, not a pure
+      renumber.
 - [ ] **Tilt**: no tilt switch exists at all yet — needs a physical switch installed before any
       config can follow. Per `plans/OutsidePerspective.md`, MPF ships a complete built-in `tilt`
       mode — once the switch exists, the MPF-side work is `modes: [tilt]` plus tagging the

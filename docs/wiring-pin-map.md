@@ -17,7 +17,7 @@ wins:
 Update this file in the same pass as those, per `.claude/skills/wire-component/SKILL.md` — it's
 a companion snapshot, not a replacement for keeping `components.yaml` as the live tracker.
 
-Last updated: 2026-09-13.
+Last updated: 2026-09-13 (bottom-lane real-hardware bring-up).
 
 ## Board map
 
@@ -48,12 +48,12 @@ not tested · 6 wired & tested.
 | Pop bumpers (autofire) | s-popbumper-1/2/3 2-0-8/9/10 | c-popbumper-1/2/3 2-0-4/5/6 | chain2-0x20 | 4 — not yet wired |
 | Ball trough | s-trough1-6 2-1-16…21, s-trough-jam 2-1-22 | c-trough-eject 0-0-11 | chain2-0x21 / chain0-0x20 (Cobra) | 4 — coil tested, switches blocked on opto repair |
 | Drop target bank | s-drop1/2/3 2-1-23…25 | c-drop 2-0-7 | chain2-0x21 / chain2-0x20 | 3 — hardware with a purpose, not renovated |
-| Top lanes (3) | s-toplane1/2/3 2-0-19…21 | — | chain2-0x20 | 4 — not yet wired |
-| Bottom lanes (5) | s-bottomlane1-5 2-0-22…26 | — | chain2-0x20 | 4 — not yet wired |
-| Cabinet action button | s-button 2-0-31 | — | chain2-0x20 | 4 — not yet wired |
+| Top lanes (3) | s-toplane1 2-0-19 (DRAFT), s-toplane2 2-0-20 (DRAFT), s-toplane3 2-0-21 | — | chain2-0x20 | 4 — not yet wired |
+| Bottom lanes (4 lanes + 1 rollover) | s-bottomlane1 2-0-27, s-bottomlane2 2-0-28, s-bottomlane3 2-0-31, s-bottomlane4 2-0-30 (all 4 confirmed individually on real hardware), s-bottomlane5/rollover 2-0-29 (still no signal - unresolved hardware fault) | — | chain2-0x20 | 4 — 4 of 5 confirmed wired & tested, rollover still faulty |
+| Orbits (left/right/top) | s-orbit-l 2-0-23 (DRAFT), s-orbit-r 2-0-22 (DRAFT), s-orbit-top 2-1-28 | — | chain2-0x20 / chain2-0x21 | 1 — idea, no hardware yet |
+| Standup targets (E/R/M/L) | s-target-e1 2-0-24 (DRAFT), s-target-e2 2-0-25 (DRAFT), s-target-r1/r2 2-3-0/1, s-target-m1-4 2-3-2…5, s-target-l1 2-3-6 | — | chain2-0x20 / chain2-0x23 | 1 — idea, no hardware yet |
+| Cabinet action button | s-button 2-0-26 (DRAFT) | — | chain2-0x20 | 4 — not yet wired |
 | Aerial plate / Insinerator | s-aerial 2-3-11, s-insinerator 2-3-13 | — | chain2-0x23 | 3 — hardware with a purpose, not renovated |
-| Orbits (left/right/top) | s-orbit-l 2-0-28, s-orbit-r 2-0-27, s-orbit-top 2-1-28 | — | chain2-0x20 / chain2-0x21 | 1 — idea, no hardware yet |
-| Standup targets (E/R/M/L) | s-target-e1/e2 2-0-29/30, s-target-r1/r2 2-3-0/1, s-target-m1-4 2-3-2…5, s-target-l1 2-3-6 | — | chain2-0x20 / chain2-0x23 | 1 — idea, no hardware yet |
 | Ramps (L/R, entry+exit) | s-ramp-r1/l1/r2/l2 2-3-7…10 | — | chain2-0x23 | 1 — idea, no hardware yet |
 | VUKs (mid-field, top) | s-vukmid 2-1-26, s-vuktop 2-1-27 | **missing** — GAP | chain2-0x21 | 1 — switches wired, no eject coil configured |
 | Portal transfer (dropper→portal→exit) | s-dropper 2-1-30, s-portal-r 2-1-29, s-portal-m 2-3-12, s-exit-success 2-1-31 | **dropper coil missing** — GAP | chain2-0x21 / chain2-0x23 | 1 — switches configured, dropper's release mechanism not wired |
