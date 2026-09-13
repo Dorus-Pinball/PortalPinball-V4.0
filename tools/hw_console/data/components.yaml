@@ -90,17 +90,39 @@ components:
     status: 4
     mpf_devices: [ac-sling-left, ac-sling-right]
     switches:
-      - {name: s-left-sling, number: 2-0-1, board: chain2-0x20}
-      - {name: s-right-sling, number: 2-0-0, board: chain2-0x20}
+      - {name: s-left-sling, number: 0-0-25, board: chain0-0x20}
+      - {name: s-right-sling, number: 0-0-24, board: chain0-0x20}
     coils:
-      - {name: c-sling-left, number: 2-0-1, board: chain2-0x20}
-      - {name: c-sling-right, number: 2-0-0, board: chain2-0x20}
+      - {name: c-sling-left, number: 0-0-0, board: chain0-0x20}
+      - {name: c-sling-right, number: 0-0-12, board: chain0-0x20}
     checklist:
-      - {item: "Flyback diode across coil", done: true}
-      - {item: "Common ground tied to power supply ground", done: true}
+      - {item: "Flyback diode across coil", done: false}
+      - {item: "Common ground tied to power supply ground", done: false}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
-    notes: ""
+    notes: "Moved from the PSOC red board (2-0-0/2-0-1) to the Cobra chain0-0x20 board, Bank A
+      (HV_A, brown), 2026-09-13, same migration pattern as flippers/plunger/trough-eject. Numbers
+      not yet physically re-wired/re-tested at the new pins - checklist reset to reflect that."
+
+  ball-saver:
+    display_name: "Ball saver post"
+    status: 4
+    mpf_devices: []
+    switches:
+      - {name: s-ball-saver, number: 0-0-19, board: chain0-0x20}
+    coils:
+      - {name: c-ball-saver, number: 0-0-13, board: chain0-0x20}
+    checklist:
+      - {item: "Flyback diode across coil", done: false}
+      - {item: "Common ground tied to power supply ground", done: false}
+      - {item: "Coil and its trigger switch land on the same physical OPP board",
+        done: true}
+    notes: "New 2026-09-13. Coil takes a short pulse (no hold power) to kick the post between its
+      two positions; switch senses which position (up/down) it's currently in - not a
+      hardware-autofire pair, coil is software/event-triggered. Cobra chain0-0x20, Bank A
+      (HV_A, brown). No game logic/mode wiring yet (no autofire_coils or other device entry in
+      hardware-devices.yaml) - what triggers the pulse and what up/down mean gameplay-wise is
+      still an open design question."
 
   autofire-popbumpers:
     display_name: "Pop bumpers (autofire)"

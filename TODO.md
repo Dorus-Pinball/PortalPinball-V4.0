@@ -47,6 +47,19 @@ work).
       cables at the PC end (a board-side reseat alone did not clear it; a software PnP
       disable/enable also failed, needs admin elevation this session doesn't have). Worth
       revisiting the USB power-management fix if this recurs.
+- [ ] **Slings moved to the Cobra board, not yet physically re-wired/tested**: `c-sling-left`/
+      `c-sling-right` and `s-left-sling`/`s-right-sling` moved from the PSOC red board
+      (`2-0-1`/`2-0-0`) to the Cobra chain 0 board (`0-0-0`/`0-0-12` coils, Bank A HV_A brown;
+      `0-0-25`/`0-0-24` switches), 2026-09-13, same migration pattern as the flippers/plunger/
+      trough. Config-only so far — needs the same physical continuity + coil-LED check
+      (`tools/wiring_test.py`) as the flipper bring-up before trusting it live.
+- [ ] **Ball saver post — new hardware, not yet wired/tested, game logic undecided**: added
+      2026-09-13 on the Cobra chain 0 board (`c-ball-saver` on `0-0-13`, Bank A HV_A brown;
+      `s-ball-saver` on `0-0-19`). Coil takes a short pulse (no hold power) to kick the post
+      between its two positions; switch reports which position (up/down) it's in. No
+      `hardware-devices.yaml` entry yet — what triggers the pulse and what up/down mean
+      gameplay-wise is still open. Needs the physical continuity + coil-LED check before real
+      power, same as the sling migration above.
 - [ ] **Tilt**: no tilt switch exists at all yet — needs a physical switch installed before any
       config can follow. Per `plans/OutsidePerspective.md`, MPF ships a complete built-in `tilt`
       mode — once the switch exists, the MPF-side work is `modes: [tilt]` plus tagging the

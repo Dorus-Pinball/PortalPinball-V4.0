@@ -30,6 +30,9 @@ autofire_coils:
     coil: c-popbumper-3
     switch: s-popbumper-3
 
+  # c-sling-left/c-sling-right and s-left-sling/s-right-sling moved to the Cobra chain 0 board
+  # (0x20), 2026-09-13 - see hardware-coils.yaml/hardware-switches.yaml. Names unchanged, so no
+  # edit needed here.
   ac-sling-left:
     coil: c-sling-left
     switch: s-left-sling

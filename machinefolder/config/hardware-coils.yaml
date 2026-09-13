@@ -4,12 +4,8 @@
 
 coils:
   # Chain PSOC 2-0-x
-  c-sling-right:
-    number: 2-0-0
-    default_pulse_ms: 15
-  c-sling-left:
-    number: 2-0-1
-    default_pulse_ms: 16
+  # c-sling-right/c-sling-left moved to the Cobra chain 0 board (0x20), Bank A, 2026-09-13 - see
+  # below. 2-0-0/2-0-1 now free again.
   # c-plunger/c-trough-eject moved to the Cobra chain 0 board (0x20), Bank A - see below.
   # 2-0-2/2-0-3 now free again.
 
@@ -69,6 +65,24 @@ coils:
     number: 0-0-11
     default_pulse_ms: 25
 
+  # c-sling-left/c-sling-right moved here from the PSOC red board (were 2-0-1/2-0-0), 2026-09-13,
+  # same migration pattern as c-plunger/c-trough-eject above. Both Bank A (HV_A, brown), same bank
+  # as the flippers/plunger/trough-eject coils already on this board.
+  c-sling-left:
+    number: 0-0-0
+    default_pulse_ms: 16
+  c-sling-right:
+    number: 0-0-12
+    default_pulse_ms: 15
+
+  # New ball-saver post coil, 2026-09-13. A short pulse (no hold power) kicks the post between
+  # its two positions - position is read back via s-ball-saver in hardware-switches.yaml, not
+  # tracked by this coil. Bank A (HV_A, brown). default_pulse_ms is a starting estimate, matching
+  # this board's other single-shot coils - tune against the real mechanism once bench-tested.
+  c-ball-saver:
+    number: 0-0-13
+    default_pulse_ms: 25
+
     # DRAFT right ramp diverter coil (CAD-confirmed real hardware - Diverter_Rod/Diverter_Base/
     # Bridge_Diverter_Cover feeding a Subway tunnel, see
     # design/research/onshape-cad-findings.md). NOT confirmed against board Overviews.xlsx or a
@@ -111,15 +125,7 @@ coils:
     #name:
     #    number: 0-0-11
     #    default_pulse_ms: 25
-    #name:
-    #    number: 0-0-0
-    #    default_pulse_ms: 25
-    #name:
-    #    number: 0-0-12
-    #    default_pulse_ms: 25
-    #name:
-    #    number: 0-0-13
-    #    default_pulse_ms: 25
+    # 0-0-0, 0-0-12, 0-0-13 now taken - see c-sling-left/c-sling-right/c-ball-saver above.
     #name:
     #    number: 0-0-14
     #    default_pulse_ms: 25
