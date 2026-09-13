@@ -264,4 +264,8 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     future wiring/debugging session identify a pin from a photo without re-deriving the mapping.
     Explicitly labeled as reflecting the sheet's *original/historical* assignments, not live
     status (several components have since moved — see entries 11-14) — `components.yaml` stays
-    the source for what's actually wired today. — **Status: active**.
+    the source for what's actually wired today. Added a generated SVG pinout diagram per red
+    board (`docs/board-photos/pinout-0x2{0,1,2,3}.svg`) alongside each table — silkscreen pin,
+    MPF number, and device name per cell, color-coded by function (switch/coil/autofire/light) —
+    for a quick visual glance at the bench, with the table kept alongside for searching/scanning.
+    — **Status: active**.
