@@ -30,6 +30,15 @@ services:
       DB_USER: wikijs
       DB_PASS: ${POSTGRES_PASSWORD}
       DB_NAME: wikijs
+      # The bind-mounted ./data/wiki-repo's ownership (as seen inside the container's user
+      # namespace) doesn't match the `node` user Wiki.js runs as, so Git's dubious-ownership
+      # protection refuses to operate on /wiki/data/repo without this - hit for real on first
+      # deploy (2026-09-13). GIT_CONFIG_* env vars are read by every git invocation (git 2.31+),
+      # so this survives container recreation, unlike running `git config --global` by hand
+      # inside a running container (which only lives in that container's ephemeral state).
+      GIT_CONFIG_COUNT: "1"
+      GIT_CONFIG_KEY_0: safe.directory
+      GIT_CONFIG_VALUE_0: /wiki/data/repo
     ports:
       - "8095:3000"
     volumes:
