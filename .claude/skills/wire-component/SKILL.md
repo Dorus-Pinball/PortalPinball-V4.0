@@ -58,12 +58,21 @@ the rulebook.
      typically `5` once physically wired, `6` once bench-tested. This is what the hw_console
      Status tab and this skill both read as the live tracker; switches/coils are read-only in
      that UI, so this file is the only place their pin numbers actually get set.
-   - `design/physical-checklists/wiring-guide.html` — update the board-map free/used counts and
-     the component's row/sketch in its wiring table.
+   - Run `python tools/hw_console/generate_docs.py` (also fires automatically via the
+     `PostToolUse` hook, same as `check_registry.py` in step 4) to regenerate
+     `design/physical-checklists/wiring-guide.html` and `docs/wiring-pin-map.md` from the data
+     above — never hand-edit either file, it's overwritten on the next run.
+   - If this component involves a new or changed physical connector/cable, add or update its
+     harness YAML under `tools/hw_console/data/harnesses/` (WireViz's own schema — see
+     `flipper-bank-a.yaml` for a worked example) in the same pass, so the generated wiring
+     diagram stays accurate too.
    - `TODO.md` — check off or update the relevant gap bullet if this closes one.
 
 6. **Verify:**
    - `python tools/hw_console/check_registry.py` again — should report no violations.
+   - `python tools/hw_console/generate_docs.py` again — should exit 0 with no changes if step 5
+     already ran it (a non-zero exit here means the harness YAML or template has a problem worth
+     fixing before moving on).
    - Run `mpf` in virtual mode (`tools/mpf-session.ps1 -Action Start -Virtual -NoBcp` from a
      PowerShell tool/shell, not Bash — see the project `CLAUDE.md`) to confirm the config still
      loads clean.

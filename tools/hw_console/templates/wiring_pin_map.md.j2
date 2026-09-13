@@ -1,0 +1,68 @@
+# Wiring pin map
+
+A single, readable reference of every component's current switch/coil pin assignments and
+bring-up status, in one place — easier to scan than `tools/hw_console/data/components.yaml`'s
+YAML or `design/physical-checklists/wiring-guide.html`'s interactive checklist.
+
+**This is a snapshot, not the source of truth.** If it and another file disagree, the other file
+wins:
+- Real MPF pin numbers: `machinefolder/config/hardware-switches.yaml` / `hardware-coils.yaml` /
+  `hardware-leds.yaml` / `hardware-devices.yaml`.
+- Bring-up status, checklists, and the full history/notes behind each number (swaps, test
+  results, root causes): `tools/hw_console/data/components.yaml`.
+- The rules for picking a number in the first place (board priority, pairing rules, HV bank
+  wiring): `docs/opp-hardware-reference.md`.
+- The step-by-step physical bring-up checklist: `design/physical-checklists/wiring-guide.html`.
+
+**Generated** by `tools/hw_console/generate_docs.py` from `components.yaml` +
+`machinefolder/config/hardware-*.yaml` — do not hand-edit this file, it will be overwritten. Runs
+automatically via the `PostToolUse` hook after those source files change, or manually:
+`python tools/hw_console/generate_docs.py`.
+
+Generated: {{ generated_at }}.
+
+## Board map
+
+Switch/coil/LED counts below are real, derived from `hardware-switches.yaml` /
+`hardware-coils.yaml` / `hardware-leds.yaml` — not a hand-typed estimate. Remaining free capacity
+per board isn't tracked as structured data anywhere in this repo (see `board Overviews.xlsx` or
+physical inspection for that); this table only shows what's confirmed in use.
+
+| Board | Port | Role | Switches in use | Coils in use | Reserved (off-limits) | LEDs in use |
+|---|---|---|---|---|---|---|
+{%- for board in boards %}
+| {{ board.display_name }} | {{ board.port }} | {{ board.role }} | {{ board.switches_used }} | {{ board.coils_used }} | {{ board.reserved }} | {{ board.leds_used }} |
+{%- endfor %}
+
+Board-priority policy and CobraPin/red-board pairing rules: `docs/opp-hardware-reference.md`.
+
+## Components
+
+Status is the 1-6 build-lifecycle stage from `components.yaml`
+(`registry.COMPONENT_STATUSES`): 1 idea · 2 hardware, no purpose · 3 hardware with a purpose,
+not renovated · 4 renovated, not wired · 5 wired, not tested · 6 wired & tested.
+
+| Component | Switches | Coils | Board(s) | Status |
+|---|---|---|---|---|
+{%- for c in components %}
+| {{ c.display_name }} | {{ c.switches_str }} | {{ c.coils_str }} | {{ c.boards | join(', ') }} | {{ c.status_text }} |
+{%- endfor %}
+
+Full history/notes (test results, swaps found during bring-up, root causes, open questions) live
+per-component in `tools/hw_console/data/components.yaml` — this table only carries the current
+numbers and a one-line status, not the story behind them.
+
+## Lights
+
+All LEDs are on Cobra chain 0 (`0-0-0`…`0-0-{{ led_count - 1 }}`, `grb`), per the project's
+board-priority policy (lights always go on CobraPin). Individual LED names/numbers aren't tracked
+in `components.yaml` — see `machinefolder/config/hardware-leds.yaml` for the full list.
+
+## Known gaps
+
+Components whose notes flag an explicit `GAP:` in `components.yaml` — see `TODO.md` for full
+detail and status:
+
+{% for c in components if c.badge == 'gap' -%}
+- **{{ c.display_name }}**
+{% endfor -%}

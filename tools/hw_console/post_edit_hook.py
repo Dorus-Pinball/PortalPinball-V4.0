@@ -1,12 +1,15 @@
 """Claude Code PostToolUse hook: after Edit/Write touches a wiring config file, run
-check_registry.py and surface any violation back to Claude immediately.
+check_registry.py and, if that passes, generate_docs.py - surfacing any failure back to Claude
+immediately.
 
 Wired up in .claude/settings.json under hooks.PostToolUse (matcher "Write|Edit"). Reads the hook
 input JSON on stdin, checks whether the edited file is one of the wiring config files this
-project cares about, and if so runs check_registry.py and reports failures as a
-{"decision": "block", "reason": ...} JSON line - on PostToolUse this feeds the reason back to
+project cares about, and if so runs check_registry.py then generate_docs.py and reports failures
+as a {"decision": "block", "reason": ...} JSON line - on PostToolUse this feeds the reason back to
 Claude without undoing the edit (the edit already happened; "block" here means "make Claude look
-at this," not "prevent it").
+at this," not "prevent it"). generate_docs.py only runs after check_registry.py passes, since
+there's no point re-rendering wiring-guide.html/wiring-pin-map.md from data that's already known
+to violate a collision/pairing rule.
 """
 import json
 import subprocess
@@ -50,8 +53,21 @@ def main():
     if result.returncode != 0:
         reason = f"Wiring config check failed after editing {path}:\n{result.stdout}{result.stderr}"
         print(json.dumps({"decision": "block", "reason": reason}))
+        return 0
+
+    gen_result = subprocess.run(
+        [sys.executable, str(tool_dir / "generate_docs.py")],
+        capture_output=True,
+        text=True,
+    )
+    if gen_result.returncode != 0:
+        reason = (
+            f"Wiring config check passed after editing {path}, but regenerating "
+            f"wiring-guide.html/wiring-pin-map.md failed:\n{gen_result.stdout}{gen_result.stderr}"
+        )
+        print(json.dumps({"decision": "block", "reason": reason}))
     else:
-        print(result.stdout.strip())
+        print((result.stdout + gen_result.stdout).strip())
     return 0
 
 

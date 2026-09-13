@@ -372,7 +372,7 @@ footer{
     <h1>Wiring &amp; Test Guide</h1>
     <div class="sub">Board map, known-component wiring tables, and connector diagrams to support wiring the cabinet by hand — followed by the bench-test procedure to run once something here is wired. Source of truth for live status stays <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span>; this page is generated from that data plus <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-*.yaml</span> by <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/generate_docs.py</span> — do not hand-edit this file, it will be overwritten.</div>
     <div class="fields">
-      <div class="field-line">Date <span class="blank">2026-09-13</span></div>
+      <div class="field-line">Date <span class="blank">{{ generated_at }}</span></div>
       <div class="field-line">MPF version <span class="blank"></span></div>
       <div class="field-line">Run by <span class="blank"></span></div>
       <div class="field-line">Build/commit <span class="blank"></span></div>
@@ -393,12 +393,9 @@ footer{
       <table class="wtable">
         <thead><tr><th>Board</th><th>Port</th><th>Role</th><th>Switches in use</th><th>Coils in use</th><th>Reserved</th><th>LEDs in use</th></tr></thead>
         <tbody>
-          <tr><td>Chain 0 / Board 0x20 (Cobra LED driver)</td><td class="brd">COM4</td><td>led-driver</td><td class="num">8</td><td class="num">7</td><td class="num">4</td><td class="num">40</td></tr>
-          <tr><td>Chain 1 / Board 0x20 (Cobra LED driver)</td><td class="brd">COM5</td><td>led-driver</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
-          <tr><td>Chain 2 / Board 0x20 (PSOC card 0)</td><td class="brd">COM6</td><td>psoc-switches-coils</td><td class="num">16</td><td class="num">4</td><td class="num">0</td><td class="num">0</td></tr>
-          <tr><td>Chain 2 / Board 0x21 (PSOC card 1)</td><td class="brd">COM6</td><td>psoc-switches-coils</td><td class="num">16</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
-          <tr><td>Chain 2 / Board 0x22 (PSOC card 2, incl. incandescent card)</td><td class="brd">COM6</td><td>psoc-switches-coils-incand</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
-          <tr><td>Chain 2 / Board 0x23 (PSOC card 3)</td><td class="brd">COM6</td><td>psoc-switches-coils</td><td class="num">20</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+{%- for board in boards %}
+          <tr><td>{{ board.display_name }}</td><td class="brd">{{ board.port }}</td><td>{{ board.role }}</td><td class="num">{{ board.switches_used }}</td><td class="num">{{ board.coils_used }}</td><td class="num">{{ board.reserved }}</td><td class="num">{{ board.leds_used }}</td></tr>
+{%- endfor %}
         </tbody>
       </table>
     </div>
@@ -442,25 +439,9 @@ footer{
       <table class="wtable">
         <thead><tr><th>Component</th><th>Switches</th><th>Coils</th><th>Board</th><th>Status</th></tr></thead>
         <tbody>
-          <tr><td>Slings (autofire)</td><td class="num">s-left-sling 0-0-19, s-right-sling 0-0-25</td><td class="num">c-sling-left 0-0-12, c-sling-right 0-0-0</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Ball saver post</td><td class="num">s-ball-saver 0-0-24</td><td class="num">c-ball-saver 0-0-13</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Pop bumpers (autofire)</td><td class="num">s-popbumper-1 2-0-8, s-popbumper-2 2-0-9, s-popbumper-3 2-0-10</td><td class="num">c-popbumper-1 2-0-4, c-popbumper-2 2-0-5, c-popbumper-3 2-0-6</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Plunger lane / auto-launch</td><td class="num">s-plunger-lane 0-0-26</td><td class="num">c-plunger 0-0-10</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Start / launch cabinet buttons</td><td class="num">s-start 0-0-27, s-launch 0-0-3</td><td class="num">—</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Ball trough</td><td class="num">s-trough1 2-1-16, s-trough2 2-1-17, s-trough3 2-1-18, s-trough4 2-1-19, s-trough5 2-1-20, s-trough6 2-1-21, s-trough-jam 2-1-22</td><td class="num">c-trough-eject 0-0-11</td><td class="brd">chain0-0x20, chain2-0x21</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Drop target bank</td><td class="num">s-drop1 2-1-23, s-drop2 2-1-24, s-drop3 2-1-25</td><td class="num">c-drop 2-0-7</td><td class="brd">chain2-0x20, chain2-0x21</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Top lanes (3)</td><td class="num">s-toplane1 2-0-19, s-toplane2 2-0-20, s-toplane3 2-0-21</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Bottom lanes (5)</td><td class="num">s-bottomlane1 2-0-22, s-bottomlane2 2-0-23, s-bottomlane3 2-0-24, s-bottomlane4 2-0-25, s-bottomlane5 2-0-26</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Orbits (left/right/top)</td><td class="num">s-orbit-l 2-0-28, s-orbit-r 2-0-27, s-orbit-top 2-1-28</td><td class="num">—</td><td class="brd">chain2-0x20, chain2-0x21</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Standup targets (E/R/M/L banks)</td><td class="num">s-target-e1 2-0-29, s-target-e2 2-0-30, s-target-r1 2-3-0, s-target-r2 2-3-1, s-target-m1 2-3-2, s-target-m2 2-3-3, s-target-m3 2-3-4, s-target-m4 2-3-5, s-target-l1 2-3-6</td><td class="num">—</td><td class="brd">chain2-0x20, chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Ramps (left/right, entry+exit)</td><td class="num">s-ramp-r1 2-3-7, s-ramp-l1 2-3-8, s-ramp-r2 2-3-9, s-ramp-l2 2-3-10</td><td class="num">—</td><td class="brd">chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>VUKs (mid-field, top)</td><td class="num">s-vukmid 2-1-26, s-vuktop 2-1-27</td><td class="num">—</td><td class="brd">chain2-0x21</td><td><span class="status gap">gap</span></td></tr>
-          <tr><td>Portal ball transfer (dropper -> portal -> exit)</td><td class="num">s-dropper 2-1-30, s-portal-r 2-1-29, s-portal-m 2-3-12, s-exit-success 2-1-31</td><td class="num">—</td><td class="brd">chain2-0x21, chain2-0x23</td><td><span class="status gap">gap</span></td></tr>
-          <tr><td>Aerial plate / Insinerator target</td><td class="num">s-aerial 2-3-11, s-insinerator 2-3-13</td><td class="num">—</td><td class="brd">chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Cabinet action button</td><td class="num">s-button 2-0-31</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Flippers</td><td class="num">s-left-flipper 0-0-1, s-right-flipper 0-0-2</td><td class="num">c-flipper-left 0-0-8, c-flipper-right 0-0-9</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Right ramp diverter + subway</td><td class="num">s-subway-entry 2-3-18, s-subway-exit 2-3-19</td><td class="num">c-ramp-diverter 2-1-2</td><td class="brd">chain2-0x21, chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Service mode nav switches</td><td class="num">sw_service_enter 2-3-14, sw_service_esc 2-3-15, sw_service_up 2-3-16, sw_service_down 2-3-17</td><td class="num">—</td><td class="brd">chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
+{%- for c in components %}
+          <tr><td>{{ c.display_name }}</td><td class="num">{{ c.switches_str }}</td><td class="num">{{ c.coils_str }}</td><td class="brd">{{ c.boards | join(', ') }}</td><td><span class="status {{ c.badge }}">{{ c.badge }}</span></td></tr>
+{%- endfor %}
         </tbody>
       </table>
     </div>
@@ -486,195 +467,12 @@ footer{
     <div class="grid-two">
       <div class="sketch">
         <h3>Coil bank A — generated from tools/hw_console/data/harnesses/flipper-bank-a.yaml</h3>
-        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 12.2.1 (20241206.2353)
- -->
-<!-- Pages: 1 -->
-<svg width="1473pt" height="310pt"
- viewBox="0.00 0.00 1473.25 309.50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 305.5)">
-<polygon fill="#ffffff" stroke="none" points="-4,4 -4,-305.5 1469.25,-305.5 1469.25,4 -4,4"/>
-<!-- HV_A -->
-<g id="node1" class="node">
-<title>HV_A</title>
-<polygon fill="#ffffff" stroke="black" points="398.5,-270.75 0,-270.75 0,-175.75 398.5,-175.75 398.5,-270.75"/>
-<polygon fill="none" stroke="black" points="0,-247 0,-270.75 398.5,-270.75 398.5,-247 0,-247"/>
-<text text-anchor="start" x="181.62" y="-253.45" font-family="arial" font-size="14.00">HV_A</text>
-<polygon fill="none" stroke="black" points="0,-223.25 0,-247 360.5,-247 360.5,-223.25 0,-223.25"/>
-<text text-anchor="start" x="4" y="-229.7" font-family="arial" font-size="14.00">CobraPin J13, Bank A fused HV feed (shared bus terminal)</text>
-<polygon fill="none" stroke="black" points="360.5,-223.25 360.5,-247 398.5,-247 398.5,-223.25 360.5,-223.25"/>
-<text text-anchor="start" x="364.5" y="-229.7" font-family="arial" font-size="14.00">2&#45;pin</text>
-<polygon fill="none" stroke="black" points="0,-199.5 0,-223.25 213.12,-223.25 213.12,-199.5 0,-199.5"/>
-<text text-anchor="start" x="88.94" y="-205.95" font-family="arial" font-size="14.00">HV_A</text>
-<polygon fill="none" stroke="black" points="213.12,-199.5 213.12,-223.25 398.5,-223.25 398.5,-199.5 213.12,-199.5"/>
-<text text-anchor="start" x="302.06" y="-205.95" font-family="arial" font-size="14.00">1</text>
-<polygon fill="none" stroke="black" points="0,-175.75 0,-199.5 213.12,-199.5 213.12,-175.75 0,-175.75"/>
-<text text-anchor="start" x="88.94" y="-182.2" font-family="arial" font-size="14.00">HV_A</text>
-<polygon fill="none" stroke="black" points="213.12,-175.75 213.12,-199.5 398.5,-199.5 398.5,-175.75 213.12,-175.75"/>
-<text text-anchor="start" x="302.06" y="-182.2" font-family="arial" font-size="14.00">2</text>
-</g>
-<!-- W&#45;HV -->
-<g id="node4" class="node">
-<title>W&#45;HV</title>
-<polygon fill="#ffffff" stroke="black" points="1043.5,-301.5 608.5,-301.5 608.5,-163 1043.5,-163 1043.5,-301.5"/>
-<polygon fill="none" stroke="black" points="608.5,-277.75 608.5,-301.5 1043.5,-301.5 1043.5,-277.75 608.5,-277.75"/>
-<text text-anchor="start" x="808" y="-284.2" font-family="arial" font-size="14.00">W&#45;HV</text>
-<polygon fill="none" stroke="black" points="608.5,-254 608.5,-277.75 961.5,-277.75 961.5,-254 608.5,-254"/>
-<text text-anchor="start" x="612.5" y="-260.45" font-family="arial" font-size="14.00">HV_A feed (brown, per docs/opp&#45;hardware&#45;reference.md)</text>
-<polygon fill="none" stroke="black" points="961.5,-254 961.5,-277.75 983.75,-277.75 983.75,-254 961.5,-254"/>
-<text text-anchor="start" x="965.5" y="-260.45" font-family="arial" font-size="14.00">2x</text>
-<polygon fill="none" stroke="black" points="983.75,-254 983.75,-277.75 1043.5,-277.75 1043.5,-254 983.75,-254"/>
-<text text-anchor="start" x="987.75" y="-260.45" font-family="arial" font-size="14.00">18 AWG</text>
-<text text-anchor="start" x="672.5" y="-238.7" font-family="arial" font-size="14.00"> </text>
-<text text-anchor="start" x="631.62" y="-218.95" font-family="arial" font-size="14.00">HV_A:1:HV_A</text>
-<text text-anchor="start" x="763.38" y="-218.95" font-family="arial" font-size="14.00"> &#160;&#160;&#160;&#160;1:BN &#160;&#160;&#160;</text>
-<text text-anchor="start" x="877.5" y="-218.95" font-family="arial" font-size="14.00">COILS:1:c&#45;flipper&#45;left +</text>
-<polygon fill="#000000" stroke="none" points="608.5,-212.5 608.5,-214.5 1043.5,-214.5 1043.5,-212.5 608.5,-212.5"/>
-<polygon fill="#895956" stroke="none" points="608.5,-210.5 608.5,-212.5 1043.5,-212.5 1043.5,-210.5 608.5,-210.5"/>
-<polygon fill="#000000" stroke="none" points="608.5,-208.5 608.5,-210.5 1043.5,-210.5 1043.5,-208.5 608.5,-208.5"/>
-<text text-anchor="start" x="631.62" y="-193.2" font-family="arial" font-size="14.00">HV_A:2:HV_A</text>
-<text text-anchor="start" x="763.38" y="-193.2" font-family="arial" font-size="14.00"> &#160;&#160;&#160;&#160;2:BN &#160;&#160;&#160;</text>
-<text text-anchor="start" x="873.38" y="-193.2" font-family="arial" font-size="14.00">COILS:3:c&#45;flipper&#45;right +</text>
-<polygon fill="#000000" stroke="none" points="608.5,-186.75 608.5,-188.75 1043.5,-188.75 1043.5,-186.75 608.5,-186.75"/>
-<polygon fill="#895956" stroke="none" points="608.5,-184.75 608.5,-186.75 1043.5,-186.75 1043.5,-184.75 608.5,-184.75"/>
-<polygon fill="#000000" stroke="none" points="608.5,-182.75 608.5,-184.75 1043.5,-184.75 1043.5,-182.75 608.5,-182.75"/>
-<text text-anchor="start" x="672.5" y="-167.45" font-family="arial" font-size="14.00"> </text>
-</g>
-<!-- HV_A&#45;&#45;W&#45;HV -->
-<g id="edge1" class="edge">
-<title>HV_A:e&#45;&#45;W&#45;HV:w</title>
-<path fill="none" stroke="#000000" stroke-width="2" d="M398.5,-209.38C491.4,-209.38 514.62,-209.5 607.5,-209.5"/>
-<path fill="none" stroke="#895956" stroke-width="2" d="M398.5,-211.38C491.39,-211.38 514.61,-211.5 607.5,-211.5"/>
-<path fill="none" stroke="#000000" stroke-width="2" d="M398.5,-213.37C491.38,-213.37 514.6,-213.5 607.5,-213.5"/>
-</g>
-<!-- HV_A&#45;&#45;W&#45;HV -->
-<g id="edge3" class="edge">
-<title>HV_A:e&#45;&#45;W&#45;HV:w</title>
-<path fill="none" stroke="#000000" stroke-width="2" d="M398.5,-185.63C491.23,-185.63 514.45,-183.76 607.5,-183.75"/>
-<path fill="none" stroke="#895956" stroke-width="2" d="M398.5,-187.62C491.39,-187.62 514.61,-185.75 607.5,-185.75"/>
-<path fill="none" stroke="#000000" stroke-width="2" d="M398.5,-189.62C491.55,-189.62 514.77,-187.74 607.5,-187.75"/>
-</g>
-<!-- COILS -->
-<g id="node2" class="node">
-<title>COILS</title>
-<polygon fill="#ffffff" stroke="black" points="1465.25,-211.5 1253.5,-211.5 1253.5,-69 1465.25,-69 1465.25,-211.5"/>
-<polygon fill="none" stroke="black" points="1253.5,-187.75 1253.5,-211.5 1465.25,-211.5 1465.25,-187.75 1253.5,-187.75"/>
-<text text-anchor="start" x="1338.75" y="-194.2" font-family="arial" font-size="14.00">COILS</text>
-<polygon fill="none" stroke="black" points="1253.5,-164 1253.5,-187.75 1427.25,-187.75 1427.25,-164 1253.5,-164"/>
-<text text-anchor="start" x="1257.5" y="-170.45" font-family="arial" font-size="14.00">Flipper coil pack (left / right)</text>
-<polygon fill="none" stroke="black" points="1427.25,-164 1427.25,-187.75 1465.25,-187.75 1465.25,-164 1427.25,-164"/>
-<text text-anchor="start" x="1431.25" y="-170.45" font-family="arial" font-size="14.00">4&#45;pin</text>
-<polygon fill="none" stroke="black" points="1253.5,-140.25 1253.5,-164 1312.5,-164 1312.5,-140.25 1253.5,-140.25"/>
-<text text-anchor="start" x="1279.25" y="-146.7" font-family="arial" font-size="14.00">1</text>
-<polygon fill="none" stroke="black" points="1312.5,-140.25 1312.5,-164 1465.25,-164 1465.25,-140.25 1312.5,-140.25"/>
-<text text-anchor="start" x="1347.62" y="-146.7" font-family="arial" font-size="14.00">c&#45;flipper&#45;left +</text>
-<polygon fill="none" stroke="black" points="1253.5,-116.5 1253.5,-140.25 1312.5,-140.25 1312.5,-116.5 1253.5,-116.5"/>
-<text text-anchor="start" x="1279.25" y="-122.95" font-family="arial" font-size="14.00">2</text>
-<polygon fill="none" stroke="black" points="1312.5,-116.5 1312.5,-140.25 1465.25,-140.25 1465.25,-116.5 1312.5,-116.5"/>
-<text text-anchor="start" x="1342.38" y="-122.95" font-family="arial" font-size="14.00">c&#45;flipper&#45;left drv</text>
-<polygon fill="none" stroke="black" points="1253.5,-92.75 1253.5,-116.5 1312.5,-116.5 1312.5,-92.75 1253.5,-92.75"/>
-<text text-anchor="start" x="1279.25" y="-99.2" font-family="arial" font-size="14.00">3</text>
-<polygon fill="none" stroke="black" points="1312.5,-92.75 1312.5,-116.5 1465.25,-116.5 1465.25,-92.75 1312.5,-92.75"/>
-<text text-anchor="start" x="1343.5" y="-99.2" font-family="arial" font-size="14.00">c&#45;flipper&#45;right +</text>
-<polygon fill="none" stroke="black" points="1253.5,-69 1253.5,-92.75 1312.5,-92.75 1312.5,-69 1253.5,-69"/>
-<text text-anchor="start" x="1279.25" y="-75.45" font-family="arial" font-size="14.00">4</text>
-<polygon fill="none" stroke="black" points="1312.5,-69 1312.5,-92.75 1465.25,-92.75 1465.25,-69 1312.5,-69"/>
-<text text-anchor="start" x="1338.25" y="-75.45" font-family="arial" font-size="14.00">c&#45;flipper&#45;right drv</text>
-</g>
-<!-- DRIVER -->
-<g id="node3" class="node">
-<title>DRIVER</title>
-<polygon fill="#ffffff" stroke="black" points="382.38,-107.75 16.12,-107.75 16.12,-12.75 382.38,-12.75 382.38,-107.75"/>
-<polygon fill="none" stroke="black" points="16.12,-84 16.12,-107.75 382.38,-107.75 382.38,-84 16.12,-84"/>
-<text text-anchor="start" x="173.75" y="-90.45" font-family="arial" font-size="14.00">DRIVER</text>
-<polygon fill="none" stroke="black" points="16.12,-60.25 16.12,-84 344.38,-84 344.38,-60.25 16.12,-60.25"/>
-<text text-anchor="start" x="20.12" y="-66.7" font-family="arial" font-size="14.00">CobraPin chain0&#45;0x20 solenoid driver header, Bank A</text>
-<polygon fill="none" stroke="black" points="344.38,-60.25 344.38,-84 382.38,-84 382.38,-60.25 344.38,-60.25"/>
-<text text-anchor="start" x="348.38" y="-66.7" font-family="arial" font-size="14.00">2&#45;pin</text>
-<polygon fill="none" stroke="black" points="16.12,-36.5 16.12,-60.25 211.25,-60.25 211.25,-36.5 16.12,-36.5"/>
-<text text-anchor="start" x="97.94" y="-42.95" font-family="arial" font-size="14.00">0&#45;0&#45;8</text>
-<polygon fill="none" stroke="black" points="211.25,-36.5 211.25,-60.25 382.38,-60.25 382.38,-36.5 211.25,-36.5"/>
-<text text-anchor="start" x="293.06" y="-42.95" font-family="arial" font-size="14.00">1</text>
-<polygon fill="none" stroke="black" points="16.12,-12.75 16.12,-36.5 211.25,-36.5 211.25,-12.75 16.12,-12.75"/>
-<text text-anchor="start" x="97.94" y="-19.2" font-family="arial" font-size="14.00">0&#45;0&#45;9</text>
-<polygon fill="none" stroke="black" points="211.25,-12.75 211.25,-36.5 382.38,-36.5 382.38,-12.75 211.25,-12.75"/>
-<text text-anchor="start" x="293.06" y="-19.2" font-family="arial" font-size="14.00">2</text>
-</g>
-<!-- W&#45;DRV -->
-<g id="node5" class="node">
-<title>W&#45;DRV</title>
-<polygon fill="#ffffff" stroke="black" points="1109.5,-138.5 542.5,-138.5 542.5,0 1109.5,0 1109.5,-138.5"/>
-<polygon fill="none" stroke="black" points="542.5,-114.75 542.5,-138.5 1109.5,-138.5 1109.5,-114.75 542.5,-114.75"/>
-<text text-anchor="start" x="803.12" y="-121.2" font-family="arial" font-size="14.00">W&#45;DRV</text>
-<polygon fill="none" stroke="black" points="542.5,-91 542.5,-114.75 1027.5,-114.75 1027.5,-91 542.5,-91"/>
-<text text-anchor="start" x="546.5" y="-97.45" font-family="arial" font-size="14.00">Driver signal (exact color not confirmed &#45; see docs/opp&#45;hardware&#45;reference.md)</text>
-<polygon fill="none" stroke="black" points="1027.5,-91 1027.5,-114.75 1049.75,-114.75 1049.75,-91 1027.5,-91"/>
-<text text-anchor="start" x="1031.5" y="-97.45" font-family="arial" font-size="14.00">2x</text>
-<polygon fill="none" stroke="black" points="1049.75,-91 1049.75,-114.75 1109.5,-114.75 1109.5,-91 1049.75,-91"/>
-<text text-anchor="start" x="1053.75" y="-97.45" font-family="arial" font-size="14.00">18 AWG</text>
-<text text-anchor="start" x="634.5" y="-75.7" font-family="arial" font-size="14.00"> </text>
-<text text-anchor="start" x="587.62" y="-55.95" font-family="arial" font-size="14.00">DRIVER:1:0&#45;0&#45;8</text>
-<text text-anchor="start" x="775.38" y="-55.95" font-family="arial" font-size="14.00"> &#160;&#160;&#160;&#160;1 &#160;&#160;&#160;</text>
-<text text-anchor="start" x="911" y="-55.95" font-family="arial" font-size="14.00">COILS:2:c&#45;flipper&#45;left drv</text>
-<polygon fill="#000000" stroke="none" points="542.5,-49.5 542.5,-51.5 1109.5,-51.5 1109.5,-49.5 542.5,-49.5"/>
-<polygon fill="#ffffff" stroke="none" points="542.5,-47.5 542.5,-49.5 1109.5,-49.5 1109.5,-47.5 542.5,-47.5"/>
-<polygon fill="#000000" stroke="none" points="542.5,-45.5 542.5,-47.5 1109.5,-47.5 1109.5,-45.5 542.5,-45.5"/>
-<text text-anchor="start" x="587.62" y="-30.2" font-family="arial" font-size="14.00">DRIVER:2:0&#45;0&#45;9</text>
-<text text-anchor="start" x="775.38" y="-30.2" font-family="arial" font-size="14.00"> &#160;&#160;&#160;&#160;2 &#160;&#160;&#160;</text>
-<text text-anchor="start" x="906.88" y="-30.2" font-family="arial" font-size="14.00">COILS:4:c&#45;flipper&#45;right drv</text>
-<polygon fill="#000000" stroke="none" points="542.5,-23.75 542.5,-25.75 1109.5,-25.75 1109.5,-23.75 542.5,-23.75"/>
-<polygon fill="#ffffff" stroke="none" points="542.5,-21.75 542.5,-23.75 1109.5,-23.75 1109.5,-21.75 542.5,-21.75"/>
-<polygon fill="#000000" stroke="none" points="542.5,-19.75 542.5,-21.75 1109.5,-21.75 1109.5,-19.75 542.5,-19.75"/>
-<text text-anchor="start" x="634.5" y="-4.45" font-family="arial" font-size="14.00"> </text>
-</g>
-<!-- DRIVER&#45;&#45;W&#45;DRV -->
-<g id="edge5" class="edge">
-<title>DRIVER:e&#45;&#45;W&#45;DRV:w</title>
-<path fill="none" stroke="#000000" stroke-width="2" d="M383.38,-46.38C454.11,-46.38 471.79,-46.5 542.5,-46.5"/>
-<path fill="none" stroke="#ffffff" stroke-width="2" d="M383.38,-48.38C454.1,-48.37 471.78,-48.5 542.5,-48.5"/>
-<path fill="none" stroke="#000000" stroke-width="2" d="M383.38,-50.37C454.08,-50.37 471.76,-50.5 542.5,-50.5"/>
-</g>
-<!-- DRIVER&#45;&#45;W&#45;DRV -->
-<g id="edge7" class="edge">
-<title>DRIVER:e&#45;&#45;W&#45;DRV:w</title>
-<path fill="none" stroke="#000000" stroke-width="2" d="M383.38,-22.63C453.89,-22.64 471.56,-20.76 542.5,-20.75"/>
-<path fill="none" stroke="#ffffff" stroke-width="2" d="M383.38,-24.62C454.1,-24.63 471.77,-22.75 542.5,-22.75"/>
-<path fill="none" stroke="#000000" stroke-width="2" d="M383.38,-26.62C454.31,-26.61 471.98,-24.74 542.5,-24.75"/>
-</g>
-<!-- W&#45;HV&#45;&#45;COILS -->
-<g id="edge2" class="edge">
-<title>W&#45;HV:e&#45;&#45;COILS:w</title>
-<path fill="none" stroke="#000000" stroke-width="2" d="M1044.5,-209.5C1139.13,-210.98 1155,-151.61 1253.5,-150.13"/>
-<path fill="none" stroke="#895956" stroke-width="2" d="M1044.5,-211.5C1141.06,-211.5 1156.94,-152.13 1253.5,-152.12"/>
-<path fill="none" stroke="#000000" stroke-width="2" d="M1044.5,-213.5C1143,-212.02 1158.87,-152.64 1253.5,-154.12"/>
-</g>
-<!-- W&#45;HV&#45;&#45;COILS -->
-<g id="edge4" class="edge">
-<title>W&#45;HV:e&#45;&#45;COILS:w</title>
-<path fill="none" stroke="#000000" stroke-width="2" d="M1044.5,-183.75C1142.16,-185.51 1151.87,-104.39 1253.5,-102.63"/>
-<path fill="none" stroke="#895956" stroke-width="2" d="M1044.5,-185.75C1144.14,-185.75 1153.86,-104.62 1253.5,-104.62"/>
-<path fill="none" stroke="#000000" stroke-width="2" d="M1044.5,-187.75C1146.13,-185.99 1155.84,-104.86 1253.5,-106.62"/>
-</g>
-<!-- W&#45;DRV&#45;&#45;COILS -->
-<g id="edge6" class="edge">
-<title>W&#45;DRV:e&#45;&#45;COILS:w</title>
-<path fill="none" stroke="#000000" stroke-width="2" d="M1109.5,-46.5C1184.69,-48.56 1182.31,-128.43 1253.5,-126.38"/>
-<path fill="none" stroke="#ffffff" stroke-width="2" d="M1109.5,-48.5C1182.69,-48.5 1180.31,-128.38 1253.5,-128.38"/>
-<path fill="none" stroke="#000000" stroke-width="2" d="M1109.5,-50.5C1180.69,-48.44 1178.31,-128.32 1253.5,-130.37"/>
-</g>
-<!-- W&#45;DRV&#45;&#45;COILS -->
-<g id="edge8" class="edge">
-<title>W&#45;DRV:e&#45;&#45;COILS:w</title>
-<path fill="none" stroke="#000000" stroke-width="2" d="M1109.5,-20.75C1180.51,-22.55 1186.47,-80.67 1253.5,-78.88"/>
-<path fill="none" stroke="#ffffff" stroke-width="2" d="M1109.5,-22.75C1178.52,-22.75 1184.48,-80.88 1253.5,-80.88"/>
-<path fill="none" stroke="#000000" stroke-width="2" d="M1109.5,-24.75C1176.53,-22.95 1182.49,-81.08 1253.5,-82.87"/>
-</g>
-</g>
-</svg>
-
+{%- if harness_svgs.get('flipper-bank-a') %}
+        {{ harness_svgs['flipper-bank-a'] | safe }}
         <div class="caption">Generated by WireViz from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/harnesses/flipper-bank-a.yaml</span> — sourced from <span style="font-family:'IBM Plex Mono',monospace">docs/opp-hardware-reference.md</span>'s per-pin bank/HV-feed/color table and this cabinet's own confirmed wiring (2026-09-06). The flyback diode across each coil isn't shown in this cable diagram (WireViz models routing, not discrete parallel components) — cathode toward HV_A, anode toward the driver pin; see the callout below.</div>
+{%- else %}
+        <div class="caption" style="color:var(--orange)">WireViz diagram not available in this build — install the <span style="font-family:'IBM Plex Mono',monospace">wireviz</span> Python package and the Graphviz <span style="font-family:'IBM Plex Mono',monospace">dot</span> binary (see README), then re-run <span style="font-family:'IBM Plex Mono',monospace">generate_docs.py</span>.</div>
+{%- endif %}
       </div>
 
       <div class="sketch">
@@ -860,7 +658,7 @@ footer{
   </div>
 
   <footer>
-    Generated 2026-09-13 by <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/generate_docs.py</span> from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-*.yaml</span> (sections 01 and 04), plus <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/harnesses/*.yaml</span> via WireViz (section 05's coil-bank diagram); the board-priority policy and CobraPin/red-board pairing rules (sections 02-03) are sourced from <span style="font-family:'IBM Plex Mono',monospace">docs/opp-hardware-reference.md</span> — that's the canonical rulebook, this page is its visual companion; the bench-test procedure (sections 05-13) is hand-authored, sourced from <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-{basic,switches,coils,devices,leds}.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. If a component's wiring status changes, update <span style="font-family:'IBM Plex Mono',monospace">components.yaml</span> (or the hw_console web UI) first, then re-run the generator to match — this file is not itself the live tracker, and hand-editing it will be silently overwritten on the next run. New component wiring should follow <span style="font-family:'IBM Plex Mono',monospace">.claude/skills/wire-component/SKILL.md</span>'s process so this page, the registry, and the config all stay in sync.
+    Generated {{ generated_at }} by <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/generate_docs.py</span> from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-*.yaml</span> (sections 01 and 04), plus <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/harnesses/*.yaml</span> via WireViz (section 05's coil-bank diagram); the board-priority policy and CobraPin/red-board pairing rules (sections 02-03) are sourced from <span style="font-family:'IBM Plex Mono',monospace">docs/opp-hardware-reference.md</span> — that's the canonical rulebook, this page is its visual companion; the bench-test procedure (sections 05-13) is hand-authored, sourced from <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-{basic,switches,coils,devices,leds}.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. If a component's wiring status changes, update <span style="font-family:'IBM Plex Mono',monospace">components.yaml</span> (or the hw_console web UI) first, then re-run the generator to match — this file is not itself the live tracker, and hand-editing it will be silently overwritten on the next run. New component wiring should follow <span style="font-family:'IBM Plex Mono',monospace">.claude/skills/wire-component/SKILL.md</span>'s process so this page, the registry, and the config all stay in sync.
   </footer>
 
 </div>

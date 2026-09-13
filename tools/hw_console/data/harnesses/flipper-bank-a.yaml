@@ -1,0 +1,48 @@
+# Flipper Bank A coil wiring - c-flipper-left (0-0-8) and c-flipper-right (0-0-9), both on
+# CobraPin chain0-0x20's solenoid Bank A. Real, sourced data - not a guess:
+#   - Bank/HV-feed/wire-color: docs/opp-hardware-reference.md's "Full per-pin bank / HV-feed /
+#     color reference" table.
+#   - Pin numbers and confirmation this is the actual wiring (not DRAFT): components.yaml's
+#     `flippers` entry, confirmed 2026-09-06 via tools/wiring_test.py continuity check and live
+#     in a real game.
+#
+# NOT modeled here: the flyback diode across each coil (WireViz models cable/connector routing,
+# not discrete parallel components - see docs/opp-hardware-reference.md and the callout in
+# wiring-guide.html's section 05 for diode orientation: cathode toward HV_A, anode toward the
+# driver pin). The exact driver-signal wire color also isn't confirmed (opp-hardware-reference.md
+# explicitly says not to assert one) - W-DRV is left uncolored rather than guessing.
+#
+# Rendered into design/physical-checklists/wiring-guide.html by tools/hw_console/generate_docs.py
+# - edit this file (and re-run the generator), never the rendered SVG/HTML by hand.
+
+connectors:
+  HV_A:
+    type: CobraPin J13, Bank A fused HV feed (shared bus terminal)
+    pinlabels: [HV_A, HV_A]
+  DRIVER:
+    type: CobraPin chain0-0x20 solenoid driver header, Bank A
+    pinlabels: ["0-0-8", "0-0-9"]
+  COILS:
+    type: Flipper coil pack (left / right)
+    pinlabels: ["c-flipper-left +", "c-flipper-left drv", "c-flipper-right +", "c-flipper-right drv"]
+
+cables:
+  W-HV:
+    wirecount: 2
+    colors: [BN, BN]
+    gauge: 18 AWG
+    type: HV_A feed (brown, per docs/opp-hardware-reference.md)
+  W-DRV:
+    wirecount: 2
+    gauge: 18 AWG
+    type: Driver signal (exact color not confirmed - see docs/opp-hardware-reference.md)
+
+connections:
+  -
+    - HV_A: [1,2]
+    - W-HV: [1,2]
+    - COILS: [1,3]
+  -
+    - DRIVER: [1,2]
+    - W-DRV: [1,2]
+    - COILS: [2,4]
