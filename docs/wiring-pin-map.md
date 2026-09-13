@@ -55,14 +55,14 @@ not renovated · 4 renovated, not wired · 5 wired, not tested · 6 wired & test
 | Ball trough | s-trough1 2-1-16, s-trough2 2-1-17, s-trough3 2-1-18, s-trough4 2-1-19, s-trough5 2-1-20, s-trough6 2-1-21, s-trough-jam 2-1-22 | c-trough-eject 0-0-11 | chain0-0x20, chain2-0x21 | 4 — renovated, not wired |
 | Drop target bank | s-drop1 2-1-23, s-drop2 2-1-24, s-drop3 2-1-25 | c-drop 2-0-7 | chain2-0x20, chain2-0x21 | 3 — hardware with a purpose, not renovated |
 | Top lanes (3) | s-toplane1 2-0-19, s-toplane2 2-0-20, s-toplane3 2-0-21 | — | chain2-0x20 | 4 — renovated, not wired |
-| Bottom lanes (5) | s-bottomlane1 2-0-22, s-bottomlane2 2-0-23, s-bottomlane3 2-0-24, s-bottomlane4 2-0-25, s-bottomlane5 2-0-26 | — | chain2-0x20 | 4 — renovated, not wired |
-| Orbits (left/right/top) | s-orbit-l 2-0-28, s-orbit-r 2-0-27, s-orbit-top 2-1-28 | — | chain2-0x20, chain2-0x21 | 1 — idea, no hardware yet |
-| Standup targets (E/R/M/L banks) | s-target-e1 2-0-29, s-target-e2 2-0-30, s-target-r1 2-3-0, s-target-r2 2-3-1, s-target-m1 2-3-2, s-target-m2 2-3-3, s-target-m3 2-3-4, s-target-m4 2-3-5, s-target-l1 2-3-6 | — | chain2-0x20, chain2-0x23 | 1 — idea, no hardware yet |
+| Bottom lanes (4 real + 1 rollover, not 5 lanes - see notes) | s-bottomlane1 2-0-27, s-bottomlane2 2-0-28, s-bottomlane3 2-0-31, s-bottomlane4 2-0-30, s-bottomlane5 2-0-29 | — | chain2-0x20 | 4 — renovated, not wired |
+| Orbits (left/right/top) | s-orbit-l 2-0-23, s-orbit-r 2-0-22, s-orbit-top 2-1-28 | — | chain2-0x20, chain2-0x21 | 1 — idea, no hardware yet |
+| Standup targets (E/R/M/L banks) | s-target-e1 2-0-24, s-target-e2 2-0-25, s-target-r1 2-3-0, s-target-r2 2-3-1, s-target-m1 2-3-2, s-target-m2 2-3-3, s-target-m3 2-3-4, s-target-m4 2-3-5, s-target-l1 2-3-6 | — | chain2-0x20, chain2-0x23 | 1 — idea, no hardware yet |
 | Ramps (left/right, entry+exit) | s-ramp-r1 2-3-7, s-ramp-l1 2-3-8, s-ramp-r2 2-3-9, s-ramp-l2 2-3-10 | — | chain2-0x23 | 1 — idea, no hardware yet |
 | VUKs (mid-field, top) | s-vukmid 2-1-26, s-vuktop 2-1-27 | — | chain2-0x21 | 1 — idea, no hardware yet |
 | Portal ball transfer (dropper -> portal -> exit) | s-dropper 2-1-30, s-portal-r 2-1-29, s-portal-m 2-3-12, s-exit-success 2-1-31 | — | chain2-0x21, chain2-0x23 | 1 — idea, no hardware yet |
 | Aerial plate / Insinerator target | s-aerial 2-3-11, s-insinerator 2-3-13 | — | chain2-0x23 | 3 — hardware with a purpose, not renovated |
-| Cabinet action button | s-button 2-0-31 | — | chain2-0x20 | 4 — renovated, not wired |
+| Cabinet action button | s-button 2-0-26 | — | chain2-0x20 | 4 — renovated, not wired |
 | Flippers | s-left-flipper 0-0-1, s-right-flipper 0-0-2 | c-flipper-left 0-0-8, c-flipper-right 0-0-9 | chain0-0x20 | 6 — wired & tested |
 | Right ramp diverter + subway | s-subway-entry 2-3-18, s-subway-exit 2-3-19 | c-ramp-diverter 2-1-2 | chain2-0x21, chain2-0x23 | 1 — idea, no hardware yet |
 | Service mode nav switches | sw_service_enter 2-3-14, sw_service_esc 2-3-15, sw_service_up 2-3-16, sw_service_down 2-3-17 | — | chain2-0x23 | 1 — idea, no hardware yet |

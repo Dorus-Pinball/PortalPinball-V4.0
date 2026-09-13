@@ -270,33 +270,61 @@ components:
       - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
-    notes: "No coils - pure switches."
+    notes: "No coils - pure switches. Reverted to original planned numbers 2026-09-13, still
+      DRAFT/not physically wired - briefly swapped with s-bottomlane1/s-bottomlane2 mid
+      bring-up (see bottom-lanes' notes) when the bottom-lane harness was found on these pins,
+      but that turned out to be because the harness connector was seated in the wrong block on
+      the header, not because these are the bottom lanes' real numbers. Reverted once the
+      connector was moved to its correct position and the real bottom-lane numbers were found."
 
   bottom-lanes:
-    display_name: "Bottom lanes (5)"
+    display_name: "Bottom lanes (4 real + 1 rollover, not 5 lanes - see notes)"
     status: 4
     mpf_devices: []
     switches:
-      - {name: s-bottomlane1, number: 2-0-22, board: chain2-0x20}
-      - {name: s-bottomlane2, number: 2-0-23, board: chain2-0x20}
-      - {name: s-bottomlane3, number: 2-0-24, board: chain2-0x20}
-      - {name: s-bottomlane4, number: 2-0-25, board: chain2-0x20}
-      - {name: s-bottomlane5, number: 2-0-26, board: chain2-0x20}
+      - {name: s-bottomlane1, number: 2-0-27, board: chain2-0x20}
+      - {name: s-bottomlane2, number: 2-0-28, board: chain2-0x20}
+      - {name: s-bottomlane3, number: 2-0-31, board: chain2-0x20}
+      - {name: s-bottomlane4, number: 2-0-30, board: chain2-0x20}
+      - {name: s-bottomlane5, number: 2-0-29, board: chain2-0x20}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
-    notes: "No coils - pure switches."
+    notes: "No coils - pure switches. Full real-hardware bring-up story, 2026-09-13:
+      Round 1 - user pressed s-bottomlane1/s-bottomlane2 (rightmost two) and found them on
+      2-0-19/2-0-20 (originally s-toplane1/s-toplane2's planned pins). s-bottomlane3/4 (3rd/4th
+      from right) showed ZERO switch activity in two separate tests, one with raw OPP-platform
+      debug logging active (which would catch a change on any raw index, configured or not).
+      Continuity was then confirmed with a multimeter (switch itself, and switch-to-board-ground
+      through the connector) - still zero signal, ruling out a simple open wire. The user then
+      clarified this is actually a 5-switch group - 4 lane switches + 1 separate ROLLOVER switch
+      (s-bottomlane5 below is really the rollover, not a 5th lane) - and identified via the
+      board's own silkscreen that the group's real header block is labeled 2.0-2.4 (indices
+      27-31), not where round 1 found the first two. The user then found and fixed a ground
+      fault, and separately moved the harness connector to its correct block on the header.
+      After both fixes, pressing each switch individually (one at a time, right-to-left,
+      rollover last - never batched, to avoid attribution mistakes) gave a clean, fully confirmed
+      mapping: s-bottomlane1=2-0-27 (was s-orbit-r's planned slot), s-bottomlane2=2-0-28 (was
+      s-orbit-l's), s-bottomlane3=2-0-31 (was s-button's), s-bottomlane4=2-0-30 (was
+      s-target-e2's). s-orbit-r/s-orbit-l/s-target-e1/s-target-e2/s-button (all DRAFT, not
+      physically wired) were moved into the now-vacated 2-0-22…26 range - see their entries
+      under hardware-switches.yaml's \"Other\" section. s-bottomlane5/rollover (2-0-29, was
+      s-target-e1's planned slot): STILL produces zero signal even after both fixes that resolved
+      the other 4 - a separate, still-unresolved hardware fault on this one channel specifically.
+      Do not trust 2-0-29 as confirmed - it's just the correct slot by elimination, not a
+      positive confirmation. See TODO.md for the open rollover-rename design question (this
+      switch is not really a \"bottom lane\")."
 
   orbits:
     display_name: "Orbits (left/right/top)"
     status: 1
     mpf_devices: []
     switches:
-      - {name: s-orbit-l, number: 2-0-28, board: chain2-0x20}
-      - {name: s-orbit-r, number: 2-0-27, board: chain2-0x20}
+      - {name: s-orbit-l, number: 2-0-23, board: chain2-0x20}
+      - {name: s-orbit-r, number: 2-0-22, board: chain2-0x20}
       - {name: s-orbit-top, number: 2-1-28, board: chain2-0x21}
     coils: []
     checklist:
@@ -304,15 +332,17 @@ components:
       - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
-    notes: "No coils - pure switches."
+    notes: "No coils - pure switches. s-orbit-l/s-orbit-r moved to 2-0-23/2-0-22 (still DRAFT,
+      not physically wired), 2026-09-13 - their old 2-0-28/2-0-27 slots turned out to be the
+      real confirmed bottom-lane1/2 pins, see bottom-lanes' notes."
 
   targets:
     display_name: "Standup targets (E/R/M/L banks)"
     status: 1
     mpf_devices: []
     switches:
-      - {name: s-target-e1, number: 2-0-29, board: chain2-0x20}
-      - {name: s-target-e2, number: 2-0-30, board: chain2-0x20}
+      - {name: s-target-e1, number: 2-0-24, board: chain2-0x20}
+      - {name: s-target-e2, number: 2-0-25, board: chain2-0x20}
       - {name: s-target-r1, number: 2-3-0, board: chain2-0x23}
       - {name: s-target-r2, number: 2-3-1, board: chain2-0x23}
       - {name: s-target-m1, number: 2-3-2, board: chain2-0x23}
@@ -326,7 +356,9 @@ components:
       - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
-    notes: "No coils - pure switches."
+    notes: "No coils - pure switches. s-target-e1/s-target-e2 moved to 2-0-24/2-0-25 (still
+      DRAFT, not physically wired), 2026-09-13 - their old 2-0-29/2-0-30 slots turned out to be
+      the real confirmed rollover/bottomlane4 pins, see bottom-lanes' notes."
 
   ramps:
     display_name: "Ramps (left/right, entry+exit)"
@@ -402,14 +434,16 @@ components:
     status: 4
     mpf_devices: []
     switches:
-      - {name: s-button, number: 2-0-31, board: chain2-0x20}
+      - {name: s-button, number: 2-0-26, board: chain2-0x20}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
-    notes: "No coil - pure switch."
+    notes: "No coil - pure switch. Moved to 2-0-26 (still DRAFT, not physically wired),
+      2026-09-13 - its old 2-0-31 slot turned out to be the real confirmed bottomlane3 pin, see
+      bottom-lanes' notes."
 
   flippers:
     display_name: "Flippers"
