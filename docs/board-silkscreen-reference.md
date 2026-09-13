@@ -146,7 +146,13 @@ name/status, since names and assignments have both drifted since this sheet was 
 
 ### PSOC4200 red-board per-pin reference
 
+Each board gets a generated visual (silkscreen pin / MPF number / device name, color-coded by
+function) followed by the same data as a table — the visual for a quick glance while looking at
+the physical board, the table for searching/scanning.
+
 #### chain2-0x20
+
+![chain2-0x20 pinout - silkscreen pin, MPF number, and device name per pin](board-photos/pinout-0x20.svg)
 
 | Physical pin | Pin index | MPF number | Function | Game-function name (historical) |
 |---|---|---|---|---|
@@ -185,6 +191,8 @@ name/status, since names and assignments have both drifted since this sheet was 
 
 #### chain2-0x21
 
+![chain2-0x21 pinout - silkscreen pin, MPF number, and device name per pin](board-photos/pinout-0x21.svg)
+
 | Physical pin | Pin index | MPF number | Function | Game-function name (historical) |
 |---|---|---|---|---|
 | 0.0 | 0 | `2-1-0` | auto fire | *(empty)* |
@@ -222,6 +230,8 @@ name/status, since names and assignments have both drifted since this sheet was 
 
 #### chain2-0x22 (also carries the incandescent wing)
 
+![chain2-0x22 pinout - silkscreen pin, MPF number, and function per pin](board-photos/pinout-0x22.svg)
+
 | Physical pin | Pin index | MPF number | Function |
 |---|---|---|---|
 | 0.0 | 0 | `2-2-0` | light |
@@ -243,6 +253,8 @@ name/status, since names and assignments have both drifted since this sheet was 
 | 3.7-2.0 | 16-31 | `2-2-16` … `2-2-31` | not used (per this historical sheet — double-check against current `components.yaml` before assuming still true) |
 
 #### chain2-0x23
+
+![chain2-0x23 pinout - silkscreen pin, MPF number, and device name per pin](board-photos/pinout-0x23.svg)
 
 | Physical pin | Pin index | MPF number | Function | Game-function name (historical) |
 |---|---|---|---|---|
