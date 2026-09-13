@@ -19,18 +19,29 @@ database.
 1. **Wiki.js's first-run setup wizard** — open `http://192.168.1.2:8095/` in a browser, create
    the admin account. Wiki.js has no headless/API bootstrap for this in the stable release.
 2. **Configure the Git storage module** (Admin → Storage → add a Git target):
-   - Repository URL: `git@github.com:Dorus-Pinball/PortalPinball-V4.0.git`
+   - Repository URL: `https://github.com/Dorus-Pinball/PortalPinball-V4.0.git` (HTTPS + PAT —
+     see the credential bullet below for why, not the SSH form).
    - Branch: `wiki-sync` (not `main` — see `CHANGES.md`/`.github/workflows/sync-wiki-branch.yml`
      for why).
    - Sync mode: two-way (push local edits back to `wiki-sync`, pull `main`'s ongoing work via the
      `sync-wiki-branch.yml` Action that keeps `wiki-sync` fed).
    - Path scope: `README.md`, `TODO.md`, `IDEAS.md`, `CHANGES.md`, `docs/`, `design/README.md`,
      `design/features/`.
-   - SSH deploy key: a dedicated keypair was generated for this
-     (`portal-pinball-wikijs-deploy`, ed25519) — **the public half still needs adding to the
-     GitHub repo as a deploy key with write access** (blocked by the permission system as a new
-     persistent credential grant, needs explicit authorization — see the session's own note to
-     Dorus). The private half needs pasting into this Git storage module's SSH key field.
+   - **Credential: a fine-grained Personal Access Token, not an SSH deploy key.** A deploy
+     keypair (`portal-pinball-wikijs-deploy`, ed25519) was generated and Dorus explicitly
+     authorized adding it, but GitHub rejected it: `Dorus-Pinball` is an **Organization**, and
+     this org has deploy keys disabled repo-wide as a deliberate security policy (`HTTP 422:
+     Deploy keys are disabled for this repository`) — not a bug, and not something to override;
+     that's a different, broader authorization than "add one deploy key." The unused keypair sits
+     in this session's scratchpad, harmless, not committed anywhere.
+     Standard alternative: a **fine-grained PAT** scoped to just this repo, `Contents:
+     Read and write` only. Creating one is itself a manual, browser-based GitHub step (Developer
+     Settings → Fine-grained tokens → Generate new token → Repository access: only
+     `PortalPinball-V4.0` → Permissions: Contents: Read and write), same category as the DSM
+     Reverse Proxy step below — not something `gh`/the API can do non-interactively. Paste the
+     resulting token into Wiki.js's Git storage module wherever it asks for a credential —
+     username can be anything non-empty (e.g. `x-access-token`), password/token field gets the
+     PAT itself.
 3. **Search Engine** (Admin → Search): select "DB - PostgreSQL", pick a dictionary language,
    Apply, then **Rebuild Index**.
 4. **DSM Reverse Proxy** (only if/when public internet access is wanted, mirroring
