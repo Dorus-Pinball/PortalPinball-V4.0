@@ -231,18 +231,21 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     re-discovering the same two reasons. Added `docs/online-services.md` instead, linking the
     existing app directly. — **Status: rejected** (Datasette specifically; `docs/online-services.md`
     itself is active, see entry 15/16 for the broader initiative it belongs to).
-18. **Wiki.js deployed to the NAS; deploy keys don't work for this repo** (2026-09-13). Deployed
-    Postgres + Wiki.js containers to `weather-reader-nas:/volume1/docker/portal-pinball-wikijs/`
-    (see `nas-deploy/wikijs/`), reachable at `192.168.1.2:8095` and indexed on `nas-dashboard`.
-    Generated an SSH deploy keypair for Wiki.js's git storage module, per the design in entry 16
-    — GitHub rejected registering it: `Dorus-Pinball` is a GitHub **Organization**, and the org
-    has deploy keys disabled repo-wide as a security policy (`HTTP 422: Deploy keys are disabled
-    for this repository`). Not a bug, not something to override — a fine-grained Personal Access
-    Token (`Contents: Read and write`, scoped to just this repo) is the correct alternative for
-    an org repo, and (like the DSM Reverse Proxy binding) has to be created by hand through
-    GitHub's web UI, no API path. Recorded here so a future session doesn't retry the SSH-deploy-
-    key path on this repo without re-discovering why it can't work. Remaining setup (Wiki.js's
-    own first-run wizard, git module config with the PAT, search engine config) is manual and
-    tracked in `nas-deploy/wikijs/README.md`'s checklist, not done in this pass.
-    — **Status: active** (deployment); the deploy-key attempt specifically is **superseded** by
-    the fine-grained-PAT approach.
+18. **Wiki.js deployed to the NAS; deploy keys needed an org-level setting change**
+    (2026-09-13). Deployed Postgres + Wiki.js containers to
+    `weather-reader-nas:/volume1/docker/portal-pinball-wikijs/` (see `nas-deploy/wikijs/`),
+    reachable at `192.168.1.2:8095` and indexed on `nas-dashboard`. Generated an SSH deploy
+    keypair for Wiki.js's git storage module, per the design in entry 16 — GitHub initially
+    rejected registering it: `Dorus-Pinball` is a GitHub **Organization**, and the org had deploy
+    keys disabled repo-wide as a default security policy (`HTTP 422: Deploy keys are disabled for
+    this repository`, i.e. `deploy_keys_enabled_for_repositories: false` org-wide). Not a bug —
+    correctly treated as a decision needing the user, not something to override unilaterally
+    (this is an org-wide policy, not scoped to just this repo). A fine-grained Personal Access
+    Token was drafted as the standard alternative, but Dorus instead chose to enable the org
+    setting directly (Organization Settings, confirmed via `deploy_keys_enabled_for_repositories:
+    true` after) — the originally-generated deploy key was then registered successfully
+    (`gh repo deploy-key add --allow-write`, confirmed via `gh repo deploy-key list`), so the PAT
+    path wasn't needed after all. Remaining setup (Wiki.js's own first-run wizard, git module
+    config with the now-registered deploy key, search engine config) is still manual — genuinely
+    can't be scripted, not a credential issue — and tracked in `nas-deploy/wikijs/README.md`'s
+    checklist. — **Status: active**.
