@@ -76,8 +76,10 @@ tools\mpf-session.ps1 -Action Start -NoBcp   # -NoBcp is required, see the scrip
 
 It reuses MPF's own service-mode BCP commands (the same ones the interactive `mpf service`
 CLI uses) rather than talking to the hardware directly. See `docs/wiring-pin-map.md` for a
-readable table of every component's current pin assignments and bring-up status, and
-`plans/wiring-test-tool.md` for the full design and real-hardware findings (the `-NoBcp`
+readable table of every component's current pin assignments and bring-up status,
+`docs/board-silkscreen-reference.md` for identifying a physical pin from a board photo (real
+board photos + a per-pin table cross-referencing every silkscreen label against its MPF number),
+and `plans/wiring-test-tool.md` for the full design and real-hardware findings (the `-NoBcp`
 requirement, a Windows USB
 selective-suspend gotcha, and flipper coil pulse tuning).
 

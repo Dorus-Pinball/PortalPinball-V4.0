@@ -249,3 +249,19 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     config with the now-registered deploy key, search engine config) is still manual — genuinely
     can't be scripted, not a credential issue — and tracked in `nas-deploy/wikijs/README.md`'s
     checklist. — **Status: active**.
+19. **Board silkscreen ↔ MPF number reference, extracted from `board Overviews.xlsx`**
+    (2026-09-13). The xlsx has always been treated as a legacy, never-auto-parsed artifact (per
+    `tools/hw_console/README.md`) — true for its role as a *live* tracker, but it turned out to
+    also contain real, never-extracted value: 7 embedded images (a real CobraPin board photo with
+    MPF numbers printed on the silkscreen, a full system wiring diagram, a screenshot of
+    CobraPin's own published STM32 connector-mapping PDF, a CY8CKIT-049-42XX chaining diagram, and
+    3 generic OPP wing wiring diagrams) and complete physical-pin-to-MPF-number tables for all
+    four red boards (`PSOC4200 - Game Function` sheet) that were never pulled into the repo's own
+    docs. Extracted the images into `docs/board-photos/` (plus a real cabinet photo of this
+    project's own red board, shared during this session) and built
+    `docs/board-silkscreen-reference.md`, cross-referencing every silkscreen-visible pin label
+    (`J1`-`J12` on CobraPin, `P0.x`-`P3.x` on the red boards) against its MPF number — lets a
+    future wiring/debugging session identify a pin from a photo without re-deriving the mapping.
+    Explicitly labeled as reflecting the sheet's *original/historical* assignments, not live
+    status (several components have since moved — see entries 11-14) — `components.yaml` stays
+    the source for what's actually wired today. — **Status: active**.
