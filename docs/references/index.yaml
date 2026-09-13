@@ -1,0 +1,144 @@
+# External reference archive manifest - the source of truth for docs/references/index.md,
+# which tools/hw_console/generate_docs.py renders from this file. Add a new entry here (and save
+# a copy under docs/references/raw/<slug>/content.md) whenever a new external source gets cited
+# in any project doc - see the project CLAUDE.md's "Key facts" for the convention.
+#
+# One-time sweep, 2026-09-13: archived the sources already cited in docs/opp-hardware-reference.md,
+# docs/stern-spike-trough-opto.md, and the highest-value prose/reference pages from
+# plans/OutsidePerspective.md - not a fresh research pass, and not every URL in that file (plain
+# GitHub repo landing pages and 403/snippet-only forum threads were skipped, low link-rot risk or
+# nothing durable to save).
+
+sources:
+  - slug: cobrapin-official-doc
+    title: "CobraPin Pinball Controller Powered by OPP (official MPF doc)"
+    url: "https://missionpinball.org/latest/hardware/opp/cobrapin/"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md"
+    note: "Official rendered CobraPin hardware doc - power/switch/solenoid/neopixel sections."
+  - slug: cobrapin-github-source
+    title: "CobraPin Pinball Controller - GitHub markdown source"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/cobrapin/index.md"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md"
+    note: "Same doc as cobrapin-official-doc, GitHub source form."
+  - slug: pinballmakers-opp-wiki
+    title: "Open Pinball Project (OPP) - pinballmakers.com wiki"
+    url: "http://pinballmakers.com/wiki/index.php/OPP"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md, plans/OutsidePerspective.md"
+    note: "Community OPP hardware wiki - wing boards, firmware flashing, chaining, wiring safety."
+  - slug: mpf-docs-opp-switches
+    title: "OPP Switches (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/switches.md"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md"
+    note: "Switch numbering scheme, worked example config."
+  - slug: mpf-docs-opp-drivers
+    title: "OPP coils / drivers (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/drivers.md"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md"
+    note: "Coil numbering, pulse time, hold power, pulse power, recycle factor."
+  - slug: mpf-docs-opp-leds
+    title: "OPP LEDs (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/leds.md"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md"
+    note: "Serial LED numbering/channel scheme (chain-card-index)."
+  - slug: mpf-docs-opp-lights
+    title: "OPP Lights (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/lights.md"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md"
+    note: "Incandescent-wing bulb numbering (not the serial LED strips)."
+  - slug: mpf-docs-opp-connecting
+    title: "Connecting OPP to your computer (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/connecting.md"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md"
+    note: "mpf hardware scan output format, Linux udev/ModemManager gotchas."
+  - slug: mpf-docs-opp-config
+    title: "Configuring your machine for OPP (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/config.md"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md"
+    note: "hardware:/opp: config sections, port naming across OS."
+  - slug: mpf-docs-opp-troubleshooting
+    title: "Troubleshooting OPP (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/hardware/opp/troubleshooting.md"
+    date_archived: "2026-09-13"
+    cited_by: "docs/opp-hardware-reference.md"
+    note: "Hardware scan, debug:true, poll_hz tuning."
+  - slug: pinwiki-stern-spike-repair
+    title: "Stern SPIKE(TM) System Repair - PinWiki"
+    url: "https://pinwiki.com/wiki/index.php/Stern_SPIKE%E2%84%A2_System_Repair"
+    date_archived: "2026-09-13"
+    cited_by: "docs/stern-spike-trough-opto.md"
+    note: "Confirms this project's trough opto board (74HC165) is NOT the genuine SPIKE node-bus."
+  - slug: mpf-docs-homebrew
+    title: "Controlling a custom homebrew machine with MPF"
+    url: "https://raw.githubusercontent.com/missionpinball/mpf-docs/main/docs/machines/homebrew.md"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md"
+    note: "Control-system/power/parts guidance for homebrew MPF machines."
+  - slug: mpf-docs-config-v6-migration
+    title: "Config Version 6 Migration Guide"
+    url: "https://missionpinball.org/latest/config/instructions/config_v6/"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md"
+    note: "Confirms this project (config_version 6) is on the current MPF config format."
+  - slug: mpf-docs-mode-config-reference
+    title: "MPF mode: config reference"
+    url: "https://missionpinball.org/latest/config/mode/"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md"
+    note: "Full mode: config option reference."
+  - slug: mpf-docs-skill-shot
+    title: "Skill Shot (MPF docs)"
+    url: "https://raw.githubusercontent.com/missionpinball/mpf-docs/main/docs/game_logic/skill_shot.md"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md"
+    note: "Official rotate-lit-lane-via-flippers skillshot recipe - this project's skillshot idiom."
+  - slug: mpf-docs-tilt
+    title: "Tilt (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/game_logic/tilt/index.md"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md, TODO.md"
+    note: "Built-in tilt mode config - relevant once TODO.md's tilt-switch gap is closed."
+  - slug: mpf-docs-achievements
+    title: "Achievements (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/game_logic/achievements/index.md"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md"
+    note: "Achievement tracking concept, real-machine examples."
+  - slug: mpf-docs-achievement-groups
+    title: "Achievement Groups (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/game_logic/achievements/achievement_groups.md"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md"
+    note: "Grouping achievements, group-level actions (select/rotate/complete)."
+  - slug: mpf-docs-multiballs
+    title: "Multiballs (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/game_logic/multiballs/index.md"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md, TODO.md"
+    note: "eject_timeouts note directly relevant to this project's multiball once wired/playtested."
+  - slug: mpf-docs-game-design-index
+    title: "How to design a game in MPF using Modes"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/game_design/index.md"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md, design/README.md"
+    note: "MPF's own top-level game-design guide - story/mode-selection/layering."
+  - slug: mpf-docs-mode-layering
+    title: "Layering Modes Example (MPF docs)"
+    url: "https://github.com/missionpinball/mpf-docs/blob/main/docs/game_design/mode_layering.md"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md, design/README.md"
+    note: "Field/Mission/Wizard mode-layering pattern this project's design workflow already uses."
+  - slug: mpf-docs-writing-machine-tests
+    title: "Writing Machine Tests (MPF docs)"
+    url: "https://raw.githubusercontent.com/missionpinball/mpf/dev/docs/testing/writing_machine_tests.rst"
+    date_archived: "2026-09-13"
+    cited_by: "plans/OutsidePerspective.md"
+    note: "Testing philosophy behind this project's own tests/ suite."

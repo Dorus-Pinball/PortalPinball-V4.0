@@ -1,0 +1,15 @@
+# External reference archive
+
+Local copies of external docs/wikis cited elsewhere in this project, saved so a citation doesn't
+go dead if the live page changes or vanishes. **Generated** by
+`tools/hw_console/generate_docs.py` from `docs/references/index.yaml` — do not hand-edit this
+file, it will be overwritten. Add a new source by adding one entry to `index.yaml` and saving its
+content under `docs/references/raw/<slug>/content.md`, then re-run the generator.
+
+Generated: {{ generated_at }}.
+
+| Source | Archived | Cited by | Note |
+|---|---|---|---|
+{%- for s in sources %}
+| [{{ s.title }}]({{ s.url }}) ([local copy](raw/{{ s.slug }}/content.md)) | {{ s.date_archived }} | {{ s.cited_by }} | {{ s.note }} |
+{%- endfor %}

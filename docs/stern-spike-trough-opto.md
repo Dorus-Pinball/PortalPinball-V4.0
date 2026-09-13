@@ -186,7 +186,8 @@ even a bit-banged 3-wire interface) and a way to drive a few GPIOs works the sam
 - [520-5344-00 — Trough Serial Opto Transmitter Board (Stern shop)](https://shop.sternpinball.com/products/520-5344-00-trough-serial-opto-transmitter-board)
 - [Trough Serial Opto Receiver Extension 520-1051-00 replaces 502-7001-00 (Nitro Pinball USA)](https://nitropinballusa.com/products/node-board-serial-opto-receiver-stern-spike-ii-1)
 - [Node Board Serial Opto Trough Receiver Assembly 520-7001-00 (Little Shop Of Games)](https://littleshopofgames.com/shop/boards/stern-boards/node-board-serial-opto-trough-receiver-assembly-for-stern-spike-ii-pinball-machine-520-7001-00-2/)
-- [Stern SPIKE™ System Repair — PinWiki](https://pinwiki.com/wiki/index.php/Stern_SPIKE%E2%84%A2_System_Repair) —
+- [Stern SPIKE™ System Repair — PinWiki](https://pinwiki.com/wiki/index.php/Stern_SPIKE%E2%84%A2_System_Repair)
+  (archived copy: `docs/references/raw/pinwiki-stern-spike-repair/content.md`) —
   confirms Stern hasn't supplied schematics/part lists for these boards, and covers the *separate*
   genuine node-bus (RS-485 over Cat5e) that this writeup explicitly is not about.
   - How to configure MPF for Stern SPIKE hardware — Mission Pinball Framework docs
