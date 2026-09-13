@@ -10,7 +10,8 @@ FET/coil/fuse at worst.
 `tools/hw_console/data/components.yaml` stays the live "what's actually wired where" tracker;
 this doc is the rulebook it and `design/physical-checklists/wiring-guide.html` both draw on, so
 the rules only need to be figured out once. See also `.claude/skills/wire-component/SKILL.md`,
-which encodes the process built on top of these rules.
+which encodes the process built on top of these rules, and `docs/wiring-pin-map.md` for a single
+readable table of every component's current pin assignments and status.
 
 ## Project board-priority policy
 
@@ -134,7 +135,9 @@ Cross-validated against this project's own already-working hardware (not just th
 
 - Board `0x20`, wing 0 (coils `2-0-0..3`, dedicated switches `2-0-0..3`): `c-sling-right`/`left` =
   `2-0-0`/`2-0-1`, paired switches `s-right-sling`/`s-left-sling` = `2-0-0`/`2-0-1` — both inside
-  wing 0's dedicated range. `c-plunger`/`c-trough-eject` (`2-0-2`/`2-0-3`) are wing 0's remaining
+  wing 0's dedicated range. (Since moved to the Cobra board, chain 0, 2026-09-13 — see
+  `hardware-coils.yaml`/`hardware-switches.yaml` — this is left as the historical example that
+  cross-validated the rule.) `c-plunger`/`c-trough-eject` (`2-0-2`/`2-0-3`) are wing 0's remaining
   2 coils but are software-triggered (`ball_device`), so no paired switch is needed for them.
 - Board `0x20`, wing 1 (coils `2-0-4..7`, dedicated switches `2-0-8..11`): `c-popbumper-1/2/3`
   (`2-0-4/5/6`) paired with `s-popbumper-1/2/3` (`2-0-8/9/10`) — the first 3 of wing 1's 4

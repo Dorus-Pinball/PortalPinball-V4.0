@@ -393,7 +393,7 @@ footer{
       <table class="wtable">
         <thead><tr><th>Board</th><th>Port</th><th>Role</th><th>Switch inputs</th><th>Coil/driver outputs</th><th>LED outputs</th></tr></thead>
         <tbody>
-          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O — <b>1st choice</b></td><td class="num">6 free / 15 total — 5 in use (flippers, start, launch, plunger-lane), 4 reserved (0-0-8…11, servo config)</td><td class="num">12 free / 16 total — 4 in use (flippers, plunger, trough-eject)</td><td class="num">40 used (0-0-0…39), 216 free (up to 256/board)</td></tr>
+          <tr><td>chain0-0x20 <span class="item-meta">(Cobra A)</span></td><td class="brd">COM4</td><td>LED driver + spare I/O — <b>1st choice</b></td><td class="num">3 free / 15 total — 8 in use (flippers, start, launch, plunger-lane, left-sling, right-sling, ball-saver), 4 reserved (0-0-8…11, servo config)</td><td class="num">9 free / 16 total — 7 in use (flippers, plunger, trough-eject, sling-left, sling-right, ball-saver)</td><td class="num">40 used (0-0-0…39), 216 free (up to 256/board)</td></tr>
           <tr><td>chain1-0x20 <span class="item-meta">(Cobra B)</span></td><td class="brd">COM5</td><td>LED driver + spare I/O — <b>2nd choice</b></td><td class="num">23 free</td><td class="num">8 free</td><td class="num">1 used (1-0-0, DRAFT), 255 free</td></tr>
           <tr><td>chain2-0x20 <span class="item-meta">(PSOC card 0)</span></td><td class="brd">COM6</td><td>Switches + coils — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired</td><td class="num">—</td></tr>
           <tr><td>chain2-0x21 <span class="item-meta">(PSOC card 1)</span></td><td class="brd">COM6</td><td>Switches + coils — <b>fallback only</b></td><td class="num">wired</td><td class="num">wired (2-1-0…3 now free again)</td><td class="num">—</td></tr>
@@ -412,7 +412,7 @@ footer{
       <table class="wtable">
         <thead><tr><th>Bank</th><th>Chain 0/1 pins</th><th>HV feed</th><th>Wire color</th></tr></thead>
         <tbody>
-          <tr><td><b>A</b></td><td class="num">0-0-0, 0-0-8…0-0-14</td><td class="num">HV_A</td><td>brown — includes flipper coils <b>0-0-8</b>/<b>0-0-9</b></td></tr>
+          <tr><td><b>A</b></td><td class="num">0-0-0, 0-0-8…0-0-14</td><td class="num">HV_A</td><td>brown — includes flipper coils <b>0-0-8</b>/<b>0-0-9</b>, slings <b>0-0-0</b>/<b>0-0-12</b>, ball saver <b>0-0-13</b></td></tr>
           <tr><td><b>B</b></td><td class="num">0-0-1…0-0-7, 0-0-15</td><td class="num">HV_B</td><td>teal</td></tr>
           <tr><td><b>C</b></td><td class="num">1-0-0…1-0-7</td><td class="num">HV_C</td><td>purple</td></tr>
         </tbody>
@@ -430,7 +430,7 @@ footer{
     <div class="card">
       <div class="item"><span class="box" style="visibility:hidden"></span><div class="item-body"><div class="item-label">Up to 4 plug-in "wings" per board (solenoid/switch/lamp, mixed freely) — not one combo PCB like CobraPin. <b>5V</b> switch logic, vs. CobraPin's 3.3V.</div></div></div>
       <div class="item"><span class="box" style="visibility:hidden"></span><div class="item-body"><div class="item-label">Numbering is wing-position-based: switches = wing×8 (<span class="item-meta">0-7, 8-15, 16-23, 24-31</span>), coils = wing×4 (<span class="item-meta">0-3, 4-7, 8-11, 12-15</span>).</div></div></div>
-      <div class="item"><span class="box" style="visibility:hidden"></span><div class="item-body"><div class="item-label"><b>Pairing rule:</b> a solenoid wing's own dedicated switch inputs are the first four switch numbers of that same wing — a coil in wing N (<span class="item-meta">4N..4N+3</span>) pairs only with a switch in <span class="item-meta">8N..8N+3</span>, not just "anywhere on the same board." Confirmed against this cabinet's own working hardware: <span class="item-meta">c-sling-right/left</span> (<span class="item-meta">2-0-0/1</span>) pair with switches <span class="item-meta">2-0-0/1</span>; <span class="item-meta">c-popbumper-1/2/3</span> (<span class="item-meta">2-0-4/5/6</span>) pair with switches <span class="item-meta">2-0-8/9/10</span> — the first 3 of wing 1's 4 dedicated slots.</div></div></div>
+      <div class="item"><span class="box" style="visibility:hidden"></span><div class="item-body"><div class="item-label"><b>Pairing rule:</b> a solenoid wing's own dedicated switch inputs are the first four switch numbers of that same wing — a coil in wing N (<span class="item-meta">4N..4N+3</span>) pairs only with a switch in <span class="item-meta">8N..8N+3</span>, not just "anywhere on the same board." Confirmed against this cabinet's own working hardware: <span class="item-meta">c-sling-right/left</span> (<span class="item-meta">2-0-0/1</span>, since moved to the Cobra board — see section 04's table) paired with switches <span class="item-meta">2-0-0/1</span>; <span class="item-meta">c-popbumper-1/2/3</span> (<span class="item-meta">2-0-4/5/6</span>) pair with switches <span class="item-meta">2-0-8/9/10</span> — the first 3 of wing 1's 4 dedicated slots.</div></div></div>
     </div>
   </div>
 
@@ -442,7 +442,8 @@ footer{
       <table class="wtable">
         <thead><tr><th>Component</th><th>Switches</th><th>Coils</th><th>Board</th><th>Status</th></tr></thead>
         <tbody>
-          <tr><td>Slings (autofire)</td><td class="num">2-0-0, 2-0-1</td><td class="num">2-0-0, 2-0-1</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td>Slings (autofire)</td><td class="num">0-0-19, 0-0-25</td><td class="num">0-0-12, 0-0-0</td><td class="brd">chain0-0x20 (Cobra)</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td>Ball saver post</td><td class="num">0-0-24</td><td class="num">0-0-13</td><td class="brd">chain0-0x20 (Cobra)</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>Pop bumpers (autofire)</td><td class="num">2-0-8…10</td><td class="num">2-0-4…6</td><td class="brd">chain2-0x20</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>Plunger lane</td><td class="num">0-0-26</td><td class="num">0-0-10</td><td class="brd">chain0-0x20 (Cobra)</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>Ball trough</td><td class="num">2-1-16…22</td><td class="num">0-0-11</td><td class="brd">0x21 (PSOC) / 0x20 (Cobra)</td><td><span class="status gap">gap</span></td></tr>
@@ -612,13 +613,15 @@ footer{
     <div class="section-head"><span class="section-num">08</span><h2>Switch test — wired &amp; confirmed</h2></div>
     <p class="section-note">Everything below is real, non-DRAFT config. Use Service Mode → Switch Test (or trip each by hand) and confirm it registers cleanly with no double-bounce. Note anything intermittent.</p>
     <div class="card">
-      <div class="subhead" style="padding:0.6rem 0.9rem 0">Slings / pops — chain 2-0-0…10</div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-right-sling <span class="item-meta">2-0-0</span> · s-left-sling <span class="item-meta">2-0-1</span></div></div></div>
+      <div class="subhead" style="padding:0.6rem 0.9rem 0">Slings / pops / ball saver — moved to the Cobra board, see below</div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-popbumper-1/2/3 <span class="item-meta">2-0-8 / 2-0-9 / 2-0-10</span></div></div></div>
-      <div class="subhead" style="padding:0 0.9rem 0">Plunger / start / launch — all moved to the Cobra board, see below</div>
+      <div class="subhead" style="padding:0 0.9rem 0">Plunger / start / launch / slings / ball saver — all on the Cobra board</div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-plunger-lane <span class="item-meta">0-0-26, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-12 (moved from 2-0-16, correctly tracks physical ball motion)</div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-launch <span class="item-meta">0-0-3, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-06</div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-start <span class="item-meta">0-0-27, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-06 (moved from 0-0-8; confirmed via the CobraPin board-config toolchain that this board's servo config reassigns inputs <b>0-0-8 through 0-0-11</b> to servo/PWM use — avoid that range for any future switch on this board)</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-left-sling <span class="item-meta">0-0-19, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-13. Moved from 2-0-1; swapped twice during testing (first with s-right-sling, then with s-ball-saver) before landing on the correct pin</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-right-sling <span class="item-meta">0-0-25, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-13. Moved from 2-0-0; originally assigned 0-0-24 but swapped with s-left-sling after testing found that wire lands on the right sling</div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-ball-saver <span class="item-meta">0-0-24, chain0-0x20 (Cobra)</span> — PASS, confirmed 2026-09-13, senses post up/down position; swapped with s-left-sling during testing before landing on the correct pin</div></div></div>
       <div class="subhead" style="padding:0 0.9rem 0">Lanes — 2-0-19…26</div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-toplane1/2/3 <span class="item-meta">2-0-19…21</span></div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">s-bottomlane1…5 <span class="item-meta">2-0-22…26</span></div></div></div>
@@ -643,9 +646,11 @@ footer{
     <div class="section-head"><span class="section-num">09</span><h2>Coil / mechanism test — wired &amp; confirmed</h2></div>
     <p class="section-note">Fire each from Service Mode → Coil Test. Watch the actual mechanism move, not just the console log — and record pulse strength if it looks over/under-powered relative to <span class="item-meta">default_pulse_ms</span>.</p>
     <div class="card">
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-sling-right <span class="item-meta">2-0-0, 15ms</span> — fires crisp, ball kicks away cleanly</div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-sling-left <span class="item-meta">0-0-12, chain0-0x20 (Cobra), Bank A, 16ms</span> — moved from 2-0-1, 2026-09-13. No-HV activation-LED check PASSED; real-50V motion PASSED (fires/moves correctly) but numbers were crossed with c-sling-right — swapped 2026-09-13 to match observed reality</div>
         <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
-      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-sling-left <span class="item-meta">2-0-1, 16ms</span></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-sling-right <span class="item-meta">0-0-0, chain0-0x20 (Cobra), Bank A, 15ms</span> — moved from 2-0-0, 2026-09-13. No-HV activation-LED check PASSED; real-50V motion PASSED (fires/moves correctly) but numbers were crossed with c-sling-left — swapped 2026-09-13 to match observed reality</div>
+        <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
+      <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-ball-saver <span class="item-meta">0-0-13, chain0-0x20 (Cobra), Bank A, 40ms</span> — new 2026-09-13, short pulse only (no hold power), kicks post between up/down positions. No-HV activation-LED check PASSED; real-50V motion PASSED — tuned 25ms→15ms→20ms (all too weak/long) up to <b>40ms, confirmed correct</b>. Needs far more than this board's other short-pulse coils because the small spring holding the mechanism against its pin (pin connects to the plunger) is too weak, leaving too much play before the coil's pull translates into motion — check that spring first if this ever needs re-tuning</div>
         <div class="item-note">felt strength: <span class="blank"></span></div></div></div>
       <div class="item"><span class="box"></span><div class="item-body"><div class="item-label">c-plunger <span class="item-meta">0-0-10, chain0-0x20 (Cobra), 21ms</span> — PASS, confirmed 2026-09-12 with real 50V (twice) — autolaunch reaches the playfield reliably, doesn't airball</div>
         <div class="item-note">felt strength: <span class="blank"></span></div></div></div>

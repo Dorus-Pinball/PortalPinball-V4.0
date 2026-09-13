@@ -3,50 +3,18 @@
 Rough items noticed while working, not necessarily in scope for the current task. Checked off
 when fixed, not deleted, so resolution history stays visible — except where a cleanup pass has
 explicitly moved that history into `CHANGES.md`/`plans/testing-strategy.md`/`design/features/*.yaml`
-instead (last done 2026-08-27; see `CHANGES.md` entries 5-8 for what closed out and why, and
-`plans/testing-strategy.md`'s Tier 2 addendum for the reusable MPF/testing findings from that
-work).
+instead (last done 2026-09-13; see `CHANGES.md` entries 5-8 for the 2026-08-27 software-gaps
+sweep, entries 11-14 for the flipper→start/launch→plunger/trough→sling/ball-saver real-hardware
+bring-up sequence, and `plans/testing-strategy.md`'s Tier 2 addendum for the reusable
+MPF/testing findings from that work).
 
 ## Blocked on physical hardware work
 
-- [x] **Flippers**: mechs are installed and functioning (dual-wound coils, mechanical EOS
-      interrupter, no EOS switch back to the controller). Routed via the **Cobra board** (chain
-      0, board `0x20`) instead of the PSOC chain, so the flipper switch and coil share a physical
-      STM32 board per CobraPin's same-board guidance for timing-critical devices —
-      `c-flipper-left/right` on `0-0-8`/`0-0-9` (both Bank A, HV_A brown — the actual pins used
-      for real physical wiring, 2026-09-06, superseding an earlier `0-0-2`/`0-0-3` guess read off
-      `board Overviews.xlsx`), `s-left/right-flipper` on `0-0-1`/`0-0-2` (also the actual pins
-      used for real physical wiring, 2026-09-06, superseding an earlier `0-0-9`/`0-0-10` guess).
-      See `design/physical-checklists/wiring-guide.html` for the visual reference. **Wiring
-      confirmed 2026-09-06** via `tools/wiring_test.py`: both switches PASS (open→closed→open),
-      both coils PASS (activation LED with 50V off, then real mechanical travel with 50V on),
-      and confirmed live in a real game (`ball_started` enables the `flippers:` device; held
-      correctly on physical button press/release). Remaining open item: `default_pulse_ms: 25`
-      in `hardware-coils.yaml` was too weak for real travel with HV on (`pulse_ms: 200` worked in
-      testing) — real tuning still needed, see the "Needs a design decision" flipper pulse entry
-      below.
-- [x] **Start/launch switches**: wired onto the same Cobra chain 0 board (0x20) as the flippers
-      during the 2026-09-06 session (moved from the earlier DRAFT `2-0-17`/`2-0-18` PSOC-chain
-      placeholders). `s-launch` on `0-0-3` PASSED first try (OPEN→CLOSED→OPEN). `s-start` was
-      first wired to `0-0-8` and read stuck CLOSED regardless of press/release — **confirmed root
-      cause** by reading the actual CobraPin board-config toolchain
-      (`C:\Users\dorus\Documents\Pinball-Code\Tools\Boardconfig files\Cobra\`):
-      `CobraPin_Board0_servos.py` vs. the plain `CobraPin_Board0.py` differ only in the input
-      config array, where indices **8, 9, 10, 11** get a special `\x96` byte instead of the
-      normal `CFG_INP_STATE` — that board's servo config variant dedicates inputs 8-11 to
-      servo/PWM use, not plain switch inputs. Moved to `0-0-27` (outside that range, confirmed
-      free/valid on that board's input card) and **PASSED** (OPEN→CLOSED→OPEN). **Inputs 0-0-8
-      through 0-0-11 on this board (chain 0, board 0x20) are off-limits for switches** unless
-      it's re-flashed back to the plain (non-servo) config. Both confirmed live via
-      `bcp_step.py` (same BCP mechanism as
-      `tools/wiring_test.py`). Along the way, hit a real USB-serial incident: all 3 OPP boards'
-      COM ports (COM4/5/6) dropped into `Status: Unknown` in Device Manager after a mid-session
-      `ClearCommError` on COM5 (same signature as the earlier flipper-bringup USB-suspend issue,
-      but this time all 3 chains wedged, not just one — the earlier `powercfg` selective-suspend
-      fix didn't fully prevent it) — recovered only by physically unplugging/replugging the USB
-      cables at the PC end (a board-side reseat alone did not clear it; a software PnP
-      disable/enable also failed, needs admin elevation this session doesn't have). Worth
-      revisiting the USB power-management fix if this recurs.
+Flippers, start/launch buttons, the plunger-lane/trough-eject coil migration to the Cobra board,
+and the sling/ball-saver bring-up (including the pin swaps found, pulse tuning, and the
+ball-saver's weak-spring root cause) are all done — see `CHANGES.md` entries 11-14 for the full
+history, or `docs/wiring-pin-map.md` for current pin numbers/status per component.
+
 - [ ] **Tilt**: no tilt switch exists at all yet — needs a physical switch installed before any
       config can follow. Per `plans/OutsidePerspective.md`, MPF ships a complete built-in `tilt`
       mode — once the switch exists, the MPF-side work is `modes: [tilt]` plus tagging the
@@ -58,12 +26,6 @@ work).
       DRAFT numbers) but not wired for real.
 - [ ] **Service mode nav switches** (`sw_service_enter/esc/up/down`): electrically drafted, not
       wired for real.
-- [ ] **Board number confirmation**: `hardware-coils.yaml` has a large commented-out block of
-      unassigned numbers on the `2-1-x` chain and the Cobra `0-0-x`/`1-0-x` chains — confirm
-      what's actually free vs. reserved against `board Overviews.xlsx` before any of the DRAFT
-      items above get wired for real, so nothing collides. Now tracked live in
-      `tools/hw_console/`'s registry (per-board/per-component status, collision check against
-      `hardware-*.yaml`) rather than only here.
 - [ ] **VUK eject coils missing**: `s-vukmid`/`s-vuktop` are wired switches, but no eject coil is
       configured anywhere for either (`bd-vukmid`/`bd-vuktop` are commented out in
       `hardware-devices.yaml` with no `eject_coil`) — a ball reaching either VUK currently has no
@@ -123,16 +85,6 @@ work).
         `design/physical-checklists/trough-opto-bridge.html`, calibrate
         `BIT_CHANNEL`/`BIT_INVERT` in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
         against the repaired board, then wire in and re-test.
-- [x] **Plunger lane / launch coil / trough eject coil moved to the Cobra board** (2026-09-12):
-      `s-plunger-lane` (`2-0-16` → `0-0-26`), `c-plunger` (`2-0-2` → `0-0-10`), `c-trough-eject`
-      (`2-0-3` → `0-0-11`) — all moved from the PSOC chain to Cobra chain0-0x20 per user decision,
-      both coils on Bank A (`HV_A`, brown) alongside the flippers. Trough switches
-      (`s-trough1..6`/`s-trough-jam`) are unaffected by this and stay on `2-1-16..22` (PSOC
-      chain2-0x21) until the opto board repair above is done. **Wiring confirmed 2026-09-12**:
-      `s-plunger-lane` correctly tracks physical ball motion at `0-0-26`; both coils PASSED the
-      no-HV activation-LED check, then PASSED again with real 50V present — `c-plunger` launched
-      a ball onto the playfield correctly (twice), `c-trough-eject` fed a ball into the plunger
-      lane correctly.
 
 ## Dev tooling
 
@@ -151,16 +103,11 @@ work).
       `GenerateConsoleCtrlEvent`) to deliver a real CTRL_C to the child process. Revisit only if
       MPF's own clean-shutdown logic (e.g. flushing something mid-write) ever actually matters
       for a session.
-- [x] **`tools/wiring_test.py` added** (2026-09-06): no-HV switch continuity + LED-based coil
-      check, reusing MPF's own service-mode BCP commands. See `plans/wiring-test-tool.md`.
-- [ ] **Windows USB selective suspend caused a live serial disconnect** (found 2026-09-06): an
-      idle OPP COM port (Cobra board, USB-serial CDC) threw `ClearCommError failed ... device
-      does not recognize the command` after ~70s idle, crashing the running `mpf` session — a
-      classic USB-selective-suspend-on-idle symptom, unrelated to any coil pulse (it happened
-      well after the last one). Fixed by disabling USB selective suspend (AC + battery) on this
-      laptop's active power plan via `powercfg` (subgroup `2a737441-1930-4402-8d77-b2bebba308a3`,
-      setting `48e6b7a6-50f5-4782-a5d4-53bb8f07e226`, both set to `0`/Disabled). Not a repo-level
-      fix — would need reapplying if this laptop is reimaged or the power plan gets reset.
+- [ ] **Windows USB selective suspend fix isn't repo-level**: idle OPP COM ports crashed a live
+      `mpf` session twice during real-hardware bring-up (2026-09-06), fixed via a `powercfg`
+      change on this laptop's power plan (see `CHANGES.md` entries 11-12 for the incident/fix
+      detail) — not something version control preserves, so it would need reapplying if this
+      laptop is reimaged or the power plan gets reset.
 
 ## Needs a design decision from the user
 
