@@ -103,18 +103,26 @@ switches:
 # s-left-sling/s-right-sling moved here from the PSOC red board (were 2-0-1/2-0-0), 2026-09-13,
 # same migration pattern as the flippers/plunger/trough - lands the switch on the same physical
 # Cobra board as its paired coil (c-sling-left/c-sling-right in hardware-coils.yaml, also chain 0).
+# Numbers swapped 2026-09-13 during real-hardware switch testing: the wire labeled/assigned to
+# 0-0-25 was found to physically land on the right sling, not the left - confirmed by the user
+# while testing with tools/wiring_test.py. Then a second swap, same session: s-left-sling and
+# s-ball-saver's numbers were also crossed - s-left-sling is now 0-0-19, s-ball-saver 0-0-24.
   s-left-sling:
-    number: 0-0-25
+    number: 0-0-19
     debounce: quick
   s-right-sling:
-    number: 0-0-24
+    number: 0-0-25
     debounce: quick
 
 # New ball-saver post position switch, 2026-09-13. Senses which of the two positions
 # (up/down) the post is currently in - see c-ball-saver in hardware-coils.yaml, a short pulse
-# with no hold power that kicks the post between the two positions.
+# with no hold power that kicks the post between the two positions. Number swapped with
+# s-left-sling 2026-09-13, see the comment above.
+# Position mapping CONFIRMED live 2026-09-13 (post physically down/not saving, queried via BCP
+# service - see tools/wiring_test.py): DOWN (not saving) = active/CLOSED/pressed. Follows that UP
+# (saving) = inactive/OPEN.
   s-ball-saver:
-    number: 0-0-19
+    number: 0-0-24
 
 # s-start/s-launch wired onto the same Cobra chain 0 board while the user was there for the
 # flippers (2026-09-06). s-launch tested PASS on 0-0-3. s-start was first wired to 0-0-8, which

@@ -67,21 +67,29 @@ coils:
 
   # c-sling-left/c-sling-right moved here from the PSOC red board (were 2-0-1/2-0-0), 2026-09-13,
   # same migration pattern as c-plunger/c-trough-eject above. Both Bank A (HV_A, brown), same bank
-  # as the flippers/plunger/trough-eject coils already on this board.
+  # as the flippers/plunger/trough-eject coils already on this board. Numbers swapped 2026-09-13
+  # after the real-50V motion check found 0-0-0 actually drives the right sling and 0-0-12 the
+  # left, not as originally assigned.
   c-sling-left:
-    number: 0-0-0
+    number: 0-0-12
     default_pulse_ms: 16
   c-sling-right:
-    number: 0-0-12
+    number: 0-0-0
     default_pulse_ms: 15
 
   # New ball-saver post coil, 2026-09-13. A short pulse (no hold power) kicks the post between
   # its two positions - position is read back via s-ball-saver in hardware-switches.yaml, not
-  # tracked by this coil. Bank A (HV_A, brown). default_pulse_ms is a starting estimate, matching
-  # this board's other single-shot coils - tune against the real mechanism once bench-tested.
+  # tracked by this coil. Bank A (HV_A, brown). Real-50V motion tuning 2026-09-13: 25ms (initial
+  # estimate) looked too long, 15ms and 20ms were both too weak - 40ms is the pulse that actually
+  # throws the mechanism cleanly, confirmed by the user. Needs considerably more than this
+  # board's other short-pulse coils (15-25ms) - KNOWN ROOT CAUSE per the user: the small spring
+  # holding the mechanism pressed against its pin (the pin connects to the plunger) is too weak,
+  # leaving too much play/deflection in the mechanism before the coil's pull actually translates
+  # into post motion. If this coil ever needs re-tuning again or starts under-throwing, check
+  # that spring/pin play first before assuming the pulse length regressed.
   c-ball-saver:
     number: 0-0-13
-    default_pulse_ms: 25
+    default_pulse_ms: 40
 
     # DRAFT right ramp diverter coil (CAD-confirmed real hardware - Diverter_Rod/Diverter_Base/
     # Bridge_Diverter_Cover feeding a Subway tunnel, see

@@ -10,7 +10,8 @@ FET/coil/fuse at worst.
 `tools/hw_console/data/components.yaml` stays the live "what's actually wired where" tracker;
 this doc is the rulebook it and `design/physical-checklists/wiring-guide.html` both draw on, so
 the rules only need to be figured out once. See also `.claude/skills/wire-component/SKILL.md`,
-which encodes the process built on top of these rules.
+which encodes the process built on top of these rules, and `docs/wiring-pin-map.md` for a single
+readable table of every component's current pin assignments and status.
 
 ## Project board-priority policy
 

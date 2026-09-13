@@ -138,3 +138,33 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     didn't fully prevent it this time. Only a physical USB unplug/replug at the PC end recovered
     it (board-side reseat and an unelevated PnP disable/enable both failed). See `TODO.md`.
     — **Status: active**.
+13. **Plunger lane and trough-eject coil moved to the Cobra board** (2026-09-12). Moved
+    `s-plunger-lane` (`2-0-16` → `0-0-26`), `c-plunger` (`2-0-2` → `0-0-10`), and `c-trough-eject`
+    (`2-0-3` → `0-0-11`) from the PSOC chain to Cobra chain0-0x20, both coils on Bank A (`HV_A`,
+    brown) alongside the flippers, per user decision. Trough switches (`s-trough1..6`/
+    `s-trough-jam`) were unaffected, staying on `2-1-16..22` (PSOC chain2-0x21) pending the opto
+    board repair (see `TODO.md`). **Wiring confirmed 2026-09-12**: `s-plunger-lane` correctly
+    tracks physical ball motion at `0-0-26`; both coils PASSED the no-HV activation-LED check,
+    then PASSED again with real 50V present — `c-plunger` launched a ball onto the playfield
+    correctly (twice), `c-trough-eject` fed a ball into the plunger lane correctly.
+    — **Status: active**.
+14. **Slings moved to the Cobra board; new ball-saver post component wired and tuned**
+    (2026-09-13). Migrated the autofire slings from the PSOC red board (`2-0-0`/`2-0-1`) to Cobra
+    chain0-0x20 Bank A, same pattern as entry 13, and added a brand-new ball-saver post component
+    (`c-ball-saver`/`s-ball-saver`) — a software-triggered short-pulse coil (no hold power) that
+    kicks a post between two positions, with a switch reporting which position it's in. Real
+    hardware testing with `tools/wiring_test.py` found two switch mislabelings in a row (the wire
+    assigned to `s-left-sling` actually landed on the right sling; then `s-left-sling` and
+    `s-ball-saver` turned out crossed too) and one coil mislabeling (`c-sling-left`/
+    `c-sling-right` were also swapped relative to their names) — all four numbers corrected to
+    match physical reality: `s-left-sling`=`0-0-19`, `s-right-sling`=`0-0-25`,
+    `s-ball-saver`=`0-0-24`, `c-sling-left`=`0-0-12`, `c-sling-right`=`0-0-0`. All switches and
+    coils PASSED their no-HV and real-50V checks after the corrections. Tuned the ball-saver's
+    pulse empirically (25ms → 15ms → 20ms, all wrong, then **40ms confirmed correct**) — it needs
+    far more than this board's other short-pulse coils (15-25ms) because the small spring holding
+    its mechanism against its pin (which connects to the plunger) is too weak, leaving too much
+    play before the coil's pull translates into motion; noted as the first thing to check if this
+    coil ever needs re-tuning again. Also confirmed the ball-saver's position mapping live via
+    MPF's BCP service: down/not-saving = active/closed/pressed, up/saving = inactive/open. Added
+    `docs/wiring-pin-map.md`, a single readable pin-map/status table across every component,
+    cross-linked from `README.md` and `docs/opp-hardware-reference.md`. — **Status: active**.

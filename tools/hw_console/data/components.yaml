@@ -87,42 +87,65 @@ boards:
 components:
   autofire-slings:
     display_name: "Slings (autofire)"
-    status: 4
+    status: 6
     mpf_devices: [ac-sling-left, ac-sling-right]
     switches:
-      - {name: s-left-sling, number: 0-0-25, board: chain0-0x20}
-      - {name: s-right-sling, number: 0-0-24, board: chain0-0x20}
+      - {name: s-left-sling, number: 0-0-19, board: chain0-0x20}
+      - {name: s-right-sling, number: 0-0-25, board: chain0-0x20}
     coils:
-      - {name: c-sling-left, number: 0-0-0, board: chain0-0x20}
-      - {name: c-sling-right, number: 0-0-12, board: chain0-0x20}
+      - {name: c-sling-left, number: 0-0-12, board: chain0-0x20}
+      - {name: c-sling-right, number: 0-0-0, board: chain0-0x20}
     checklist:
-      - {item: "Flyback diode across coil", done: false}
-      - {item: "Common ground tied to power supply ground", done: false}
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
     notes: "Moved from the PSOC red board (2-0-0/2-0-1) to the Cobra chain0-0x20 board, Bank A
-      (HV_A, brown), 2026-09-13, same migration pattern as flippers/plunger/trough-eject. Numbers
-      not yet physically re-wired/re-tested at the new pins - checklist reset to reflect that."
+      (HV_A, brown), 2026-09-13, same migration pattern as flippers/plunger/trough-eject.
+      Switch numbers swapped twice during real-hardware testing with tools/wiring_test.py,
+      2026-09-13: first, the wire originally assigned 0-0-25 (s-left-sling) was found to
+      physically land on the right sling, not the left, so s-left-sling/s-right-sling moved to
+      0-0-24/0-0-25. Then s-left-sling and s-ball-saver's numbers were found crossed too -
+      s-left-sling is now 0-0-19 (s-right-sling unchanged at 0-0-25). s-left-sling/s-right-sling
+      PASSED (OPEN->CLOSED->OPEN) after the second swap, 2026-09-13. c-sling-left/c-sling-right
+      PASSED the no-HV activation-LED check, 2026-09-13 - flyback diode/common ground confirmed
+      physically installed by the user. Real-50V motion check, 2026-09-13: both coils fired and
+      moved their mechanism correctly, but the numbers were crossed relative to the names -
+      0-0-0 actually drives the right sling, 0-0-12 the left. Swapped to match observed reality:
+      c-sling-left is now 0-0-12, c-sling-right is now 0-0-0."
 
   ball-saver:
     display_name: "Ball saver post"
-    status: 4
+    status: 6
     mpf_devices: []
     switches:
-      - {name: s-ball-saver, number: 0-0-19, board: chain0-0x20}
+      - {name: s-ball-saver, number: 0-0-24, board: chain0-0x20}
     coils:
       - {name: c-ball-saver, number: 0-0-13, board: chain0-0x20}
     checklist:
-      - {item: "Flyback diode across coil", done: false}
-      - {item: "Common ground tied to power supply ground", done: false}
+      - {item: "Flyback diode across coil", done: true}
+      - {item: "Common ground tied to power supply ground", done: true}
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
     notes: "New 2026-09-13. Coil takes a short pulse (no hold power) to kick the post between its
       two positions; switch senses which position (up/down) it's currently in - not a
       hardware-autofire pair, coil is software/event-triggered. Cobra chain0-0x20, Bank A
-      (HV_A, brown). No game logic/mode wiring yet (no autofire_coils or other device entry in
-      hardware-devices.yaml) - what triggers the pulse and what up/down mean gameplay-wise is
-      still an open design question."
+      (HV_A, brown). Switch number swapped with s-left-sling during real-hardware testing,
+      2026-09-13 - see autofire-slings' notes. s-ball-saver PASSED (OPEN->CLOSED->OPEN) after
+      the swap, 2026-09-13. c-ball-saver PASSED the no-HV activation-LED check, 2026-09-13 -
+      flyback diode/common ground confirmed physically installed by the user. Real-50V motion
+      tuning, 2026-09-13: 25ms (initial estimate) looked too long, then 15ms and 20ms both too
+      weak - 40ms is CONFIRMED by the user as the pulse that throws the mechanism cleanly. KNOWN
+      ROOT CAUSE for why this needs so much more than the board's other short-pulse coils
+      (15-25ms), per the user: the small spring holding the mechanism pressed against its pin
+      (the pin connects to the plunger) is too weak, leaving too much play/deflection before the
+      coil's pull actually translates into post motion. If this ever needs re-tuning again or
+      starts under-throwing, check that spring/pin play first before assuming the pulse length
+      regressed. Position mapping CONFIRMED live 2026-09-13 (post physically down/not saving,
+      queried via BCP service): DOWN (not saving) = active/CLOSED/pressed, UP (saving) =
+      inactive/OPEN. No game logic/mode wiring yet (no autofire_coils or other
+      device entry in hardware-devices.yaml) - what triggers the pulse and what up/down mean
+      gameplay-wise is still an open design question."
 
   autofire-popbumpers:
     display_name: "Pop bumpers (autofire)"
