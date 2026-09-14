@@ -342,3 +342,25 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     MPF number (true for every CobraPin coil bank pin, where the silkscreen prints the number
     directly) to avoid showing the same text twice. `.claude/skills/wire-component/SKILL.md`
     updated with both new conventions for future components. — **Status: active**.
+25. **Row-per-pin wiring table; CobraPin switch silkscreen correction; bottom-lanes/rollover
+    split** (2026-09-14). The user shared `example table.xlsx` specifying a new table shape -
+    one row per switch/coil pin (Component | Switches & Coils | Type | Board | Pin Silk Screen |
+    Other Pin | MPF | Status) - replacing the one-row-per-component Components table across
+    `docs/wiring-pin-map.md`, `docs/wiring-guide.md`, and `wiring-guide.html` section 04.
+    Verifying it against real hardware (photos of this cabinet's own boards, cross-checked
+    against CobraPin's official wiki) found entry #24's CobraPin switch `silkscreen` values
+    ("J1 pin 2" style) wrong - **every CobraPin pin, switches included, silkscreens the MPF
+    number directly**, not just coil banks; `docs/board-silkscreen-reference.md`'s claim to the
+    contrary was corrected, backed by a new cabinet photo and a `cobrapin-official-wiki`
+    citation. Also extracted the red-board silkscreen↔MPF formula (wing×8/wing×4, MPF's own OPP
+    convention, plus this board's specific physical-port/direction mapping) into
+    `docs/opp-hardware-reference.md`, verified by reproducing every row of the existing per-pin
+    tables before writing it down. `bottom-lanes` split into two `components.yaml` entries
+    (`bottom-lanes`, now status 6 - the 4 real lanes were already individually confirmed; a new
+    `rollover` entry, status 5, for `s-bottomlane5`'s still-unresolved hardware fault) -
+    registry-level only, not the full TODO.md rename (shot-group/scoring logic left alone, a
+    real gameplay-design decision). Silkscreen data now populated whenever a pin's board+MPF
+    number is assigned, not gated on physical-test status (a hardware-layout fact, not a
+    live-wiring one) - added for the trough switches accordingly. Verified against a real xlsx
+    demo sheet (`example table.xlsx`'s new "Claude verification" tab) before committing any of
+    it. — **Status: active**.
