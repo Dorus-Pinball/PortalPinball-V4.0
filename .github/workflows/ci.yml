@@ -2,11 +2,11 @@ name: CI
 
 # Runs the test suite, the hardware-registry collision/pairing check, and a doc-freshness check
 # on every push and PR. The doc-freshness check is the mechanical backstop for the exact failure
-# this project's KM overhaul exists to eliminate: design/physical-checklists/wiring-guide.html
-# and docs/wiring-pin-map.md/docs/references/index.md are generated files (see
-# tools/hw_console/generate_docs.py) - this job re-runs the generator and fails the build if the
-# committed output doesn't match, catching drift regardless of how it happened (a manual edit, a
-# tool other than Claude Code, a forgotten re-run before committing).
+# this project's KM overhaul exists to eliminate: design/physical-checklists/wiring-guide.html,
+# docs/wiring-guide.md, and docs/wiring-pin-map.md/docs/references/index.md are generated files
+# (see tools/hw_console/generate_docs.py) - this job re-runs the generator and fails the build if
+# the committed output doesn't match, catching drift regardless of how it happened (a manual edit,
+# a tool other than Claude Code, a forgotten re-run before committing).
 
 on:
   push:
@@ -43,6 +43,7 @@ jobs:
       - name: Check generated docs are up to date
         run: |
           cp design/physical-checklists/wiring-guide.html /tmp/wiring-guide-before.html
+          cp docs/wiring-guide.md /tmp/wiring-guide-md-before.md
           cp docs/wiring-pin-map.md /tmp/wiring-pin-map-before.md
           cp docs/references/index.md /tmp/references-index-before.md
           python tools/hw_console/generate_docs.py
@@ -78,6 +79,15 @@ jobs:
 
           diff <(strip_svg /tmp/wiring-guide-before.html | normalize_date) \
                <(strip_svg design/physical-checklists/wiring-guide.html | normalize_date)
+          # docs/wiring-guide.md references its harness diagrams as separate files
+          # (docs/wiring-diagrams/*.svg) rather than embedding them inline, so there's no SVG
+          # noise to strip here - the whole file is DATA-DRIVEN text and gets a normal diff. The
+          # SVG files themselves are intentionally not freshness-checked at all, same reasoning
+          # as the strip_svg exemption above (WireViz/Graphviz output isn't byte-reproducible
+          # across environments) - a render failure there still fails the generate_docs.py step
+          # itself, this just doesn't additionally diff the pixels.
+          diff <(normalize_date < /tmp/wiring-guide-md-before.md) \
+               <(normalize_date < docs/wiring-guide.md)
           diff <(normalize_date < /tmp/wiring-pin-map-before.md) \
                <(normalize_date < docs/wiring-pin-map.md)
           diff <(normalize_date < /tmp/references-index-before.md) \

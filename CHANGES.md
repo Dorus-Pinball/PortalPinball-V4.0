@@ -298,3 +298,21 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     then test low-voltage before high-voltage. Cross-linked from
     `docs/opp-hardware-reference.md` and `.claude/skills/wire-component/SKILL.md` so the
     human-facing and Claude-facing process descriptions don't drift apart. — **Status: active**.
+22. **`docs/wiring-guide.md` — the wiring guide, browsable in the wiki** (2026-09-14).
+    `design/physical-checklists/wiring-guide.html` is a full standalone HTML document (its own
+    `<html>`/`<head>`/`<style>`); synced into Wiki.js as a page it nests badly inside Wiki.js's
+    own page chrome. Rather than exclude it from the wiki entirely, added a second generated
+    output — same generator, a new `wiring_guide.md.j2` template — covering the parts that are
+    genuinely data-driven (board map, known-components table) plus the WireViz harness diagrams,
+    now also written to real `docs/wiring-diagrams/*.svg` files (markdown image, not inline SVG —
+    more reliable through a wiki's Markdown renderer). Deliberately does **not** duplicate
+    `wiring-guide.html`'s sections 02-03/05-13: those are hand-authored prose baked directly into
+    the HTML template (dated pass/fail notes, pulse-ms tuning history), not derived from
+    `components.yaml` — copying ~400 lines of that into a second hand-maintained file would be
+    exactly the kind of drift-prone duplication this project's generated-docs discipline exists
+    to avoid. The new page links to `opp-hardware-reference.md` for the rulebook content already
+    documented there, and points to the printable HTML checklist for the dated log rather than
+    forking a copy of it. CI's doc-freshness check (`.github/workflows/ci.yml`) extended to cover
+    the new file; the harness SVG files themselves stay unchecked there, same as the existing
+    exemption for `wiring-guide.html`'s embedded copy (WireViz/Graphviz output isn't
+    byte-reproducible across environments). — **Status: active**.

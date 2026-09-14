@@ -1,9 +1,10 @@
-"""Generate design/physical-checklists/wiring-guide.html and docs/wiring-pin-map.md from
-tools/hw_console/data/components.yaml + machinefolder/config/hardware-*.yaml.
+"""Generate design/physical-checklists/wiring-guide.html, docs/wiring-guide.md, and
+docs/wiring-pin-map.md from tools/hw_console/data/components.yaml +
+machinefolder/config/hardware-*.yaml.
 
 This is the project's single "docs generated from data" entrypoint - the natural place for any
-future derived-doc need, not just these two files (docs/references/index.md, generated from
-docs/references/index.yaml, is the next one - see that template). Never hand-edit the output
+future derived-doc need, not just these files (docs/references/index.md, generated from
+docs/references/index.yaml, is another one - see that template). Never hand-edit the output
 files below; update the source data and re-run this script instead:
 
     python tools/hw_console/generate_docs.py
@@ -36,6 +37,8 @@ REFERENCES_INDEX_YAML = REPO_ROOT / "docs" / "references" / "index.yaml"
 WIRING_GUIDE_OUT = REPO_ROOT / "design" / "physical-checklists" / "wiring-guide.html"
 PIN_MAP_OUT = REPO_ROOT / "docs" / "wiring-pin-map.md"
 REFERENCES_INDEX_OUT = REPO_ROOT / "docs" / "references" / "index.md"
+WIRING_GUIDE_MD_OUT = REPO_ROOT / "docs" / "wiring-guide.md"
+WIRING_DIAGRAMS_DIR = REPO_ROOT / "docs" / "wiring-diagrams"
 
 STATUS_TEXT = {
     1: "1 — idea, no hardware yet",
@@ -181,6 +184,13 @@ def generate_all():
         generated_at=generated_at, boards=boards, components=components,
         harness_svgs=harness_svgs,
     )
+    # Markdown diagrams reference a real .svg file (docs/wiring-diagrams/<name>.svg), not inline
+    # SVG XML - Wiki.js (and Markdown generally) serves a real image file far more reliably than
+    # raw SVG passed through a Markdown renderer's HTML sanitizer.
+    wiring_guide_md_content = env.get_template("wiring_guide.md.j2").render(
+        generated_at=generated_at, boards=boards, components=components,
+        harness_names=list(harness_svgs),
+    )
     references_index_content = None
     if REFERENCES_INDEX_YAML.exists():
         references_index_content = env.get_template("references_index.md.j2").render(
@@ -190,11 +200,15 @@ def generate_all():
     # Only now, with every render already succeeded, touch the real files.
     _atomic_write(PIN_MAP_OUT, pin_map_content)
     _atomic_write(WIRING_GUIDE_OUT, wiring_guide_content)
+    _atomic_write(WIRING_GUIDE_MD_OUT, wiring_guide_md_content)
+    for name, svg in harness_svgs.items():
+        _atomic_write(WIRING_DIAGRAMS_DIR / f"{name}.svg", svg)
     if references_index_content is not None:
         _atomic_write(REFERENCES_INDEX_OUT, references_index_content)
 
     return {
         "wiring_guide": WIRING_GUIDE_OUT,
+        "wiring_guide_md": WIRING_GUIDE_MD_OUT,
         "pin_map": PIN_MAP_OUT,
         "references_index": REFERENCES_INDEX_OUT if references_index_content is not None else None,
         "harnesses_rendered": list(harness_svgs),
@@ -205,9 +219,11 @@ if __name__ == "__main__":
     result = generate_all()
     print(f"Wrote {result['pin_map']}")
     print(f"Wrote {result['wiring_guide']}")
+    print(f"Wrote {result['wiring_guide_md']}")
     if result["references_index"]:
         print(f"Wrote {result['references_index']}")
     if result["harnesses_rendered"]:
-        print(f"Rendered harnesses: {', '.join(result['harnesses_rendered'])}")
+        print(f"Rendered harnesses: {', '.join(result['harnesses_rendered'])}"
+              f" (SVG files under {WIRING_DIAGRAMS_DIR})")
     else:
         print("No harness YAML files found under tools/hw_console/data/harnesses/")

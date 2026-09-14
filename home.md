@@ -44,8 +44,13 @@ silently re-litigated. Everything below is organized the same way.
 ## Start here
 
 - **[README](/README)** — stack overview, how to run MPF/tests/the display.
+- **[Wiring guide](/docs/wiring-guide)** — board map, every component's current switch/coil
+  numbers, and harness diagrams, in one browsable page. *(generated)* For the printable
+  bench-test checklist itself (pass/fail history, pulse-ms tuning notes), open
+  `design/physical-checklists/wiring-guide.html` directly — kept out of the wiki on purpose so
+  that fast-changing log has exactly one home.
 - **[Wiring pin map](/docs/wiring-pin-map)** — every component's current switch/coil numbers and
-  bring-up status, in one table. *(generated)*
+  bring-up status, in one plain table. *(generated)*
 - **[Wiring workflow](/docs/wiring-workflow)** — how a component actually gets wired, tested, and
   recorded, step by step.
 - **[OPP hardware reference](/docs/opp-hardware-reference)** — the CobraPin/red-board wiring
