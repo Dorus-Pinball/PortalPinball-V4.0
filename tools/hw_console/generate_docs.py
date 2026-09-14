@@ -1,6 +1,5 @@
-"""Generate design/physical-checklists/wiring-guide.html, docs/wiring-guide.md, and
-docs/wiring-pin-map.md from tools/hw_console/data/components.yaml +
-machinefolder/config/hardware-*.yaml.
+"""Generate design/physical-checklists/wiring-guide.html and docs/wiring-guide.md from
+tools/hw_console/data/components.yaml + machinefolder/config/hardware-*.yaml.
 
 This is the project's single "docs generated from data" entrypoint - the natural place for any
 future derived-doc need, not just these files (docs/references/index.md, generated from
@@ -35,7 +34,6 @@ HARNESSES_DIR = TOOL_DIR / "data" / "harnesses"
 REFERENCES_INDEX_YAML = REPO_ROOT / "docs" / "references" / "index.yaml"
 
 WIRING_GUIDE_OUT = REPO_ROOT / "design" / "physical-checklists" / "wiring-guide.html"
-PIN_MAP_OUT = REPO_ROOT / "docs" / "wiring-pin-map.md"
 REFERENCES_INDEX_OUT = REPO_ROOT / "docs" / "references" / "index.md"
 WIRING_GUIDE_MD_OUT = REPO_ROOT / "docs" / "wiring-guide.md"
 WIRING_DIAGRAMS_DIR = REPO_ROOT / "docs" / "wiring-diagrams"
@@ -84,7 +82,7 @@ def _coil_other_pin(number):
 
 def _pin_rows(components):
     """Flatten each component's switches/coils into one row per pin, for the row-per-pin wiring
-    table (docs/wiring-pin-map.md, docs/wiring-guide.md, wiring-guide.html section 04).
+    table (docs/wiring-guide.md, wiring-guide.html section 04).
 
     Switch/coil order within a component: interleaved pairwise (switch, coil, switch, coil...)
     when the counts match - a natural per-unit pairing (e.g. left/right flipper switch+coil) -
@@ -223,10 +221,6 @@ def generate_all():
     # changes (see this module's docstring on failure mode).
     harness_svgs = _render_harnesses()
 
-    pin_map_content = env.get_template("wiring_pin_map.md.j2").render(
-        generated_at=generated_at, boards=boards, components=components, pin_rows=pin_rows,
-        led_count=led_count,
-    )
     wiring_guide_content = env.get_template("wiring_guide.html.j2").render(
         generated_at=generated_at, boards=boards, pin_rows=pin_rows,
         harness_svgs=harness_svgs,
@@ -235,8 +229,8 @@ def generate_all():
     # SVG XML - Wiki.js (and Markdown generally) serves a real image file far more reliably than
     # raw SVG passed through a Markdown renderer's HTML sanitizer.
     wiring_guide_md_content = env.get_template("wiring_guide.md.j2").render(
-        generated_at=generated_at, boards=boards, pin_rows=pin_rows,
-        harness_names=list(harness_svgs),
+        generated_at=generated_at, boards=boards, components=components, pin_rows=pin_rows,
+        led_count=led_count, harness_names=list(harness_svgs),
     )
     references_index_content = None
     if REFERENCES_INDEX_YAML.exists():
@@ -245,7 +239,6 @@ def generate_all():
         )
 
     # Only now, with every render already succeeded, touch the real files.
-    _atomic_write(PIN_MAP_OUT, pin_map_content)
     _atomic_write(WIRING_GUIDE_OUT, wiring_guide_content)
     _atomic_write(WIRING_GUIDE_MD_OUT, wiring_guide_md_content)
     for name, svg in harness_svgs.items():
@@ -256,7 +249,6 @@ def generate_all():
     return {
         "wiring_guide": WIRING_GUIDE_OUT,
         "wiring_guide_md": WIRING_GUIDE_MD_OUT,
-        "pin_map": PIN_MAP_OUT,
         "references_index": REFERENCES_INDEX_OUT if references_index_content is not None else None,
         "harnesses_rendered": list(harness_svgs),
     }
@@ -264,7 +256,6 @@ def generate_all():
 
 if __name__ == "__main__":
     result = generate_all()
-    print(f"Wrote {result['pin_map']}")
     print(f"Wrote {result['wiring_guide']}")
     print(f"Wrote {result['wiring_guide_md']}")
     if result["references_index"]:

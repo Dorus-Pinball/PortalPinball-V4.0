@@ -9,7 +9,7 @@ generate_docs.py and reports failures as a {"decision": "block", "reason": ...} 
 PostToolUse this feeds the reason back to Claude without undoing the edit (the edit already
 happened; "block" here means "make Claude look at this," not "prevent it"). generate_docs.py only
 runs after check_registry.py passes, since there's no point re-rendering
-wiring-guide.html/wiring-pin-map.md/references/index.md from data that's already known to violate
+wiring-guide.html/wiring-guide.md/references/index.md from data that's already known to violate
 a collision/pairing rule - check_registry.py only checks hardware data, so it's a harmless no-op
 on a references-only edit.
 """
@@ -66,7 +66,7 @@ def main():
     if gen_result.returncode != 0:
         reason = (
             f"Wiring config check passed after editing {path}, but regenerating "
-            f"wiring-guide.html/wiring-pin-map.md failed:\n{gen_result.stdout}{gen_result.stderr}"
+            f"wiring-guide.html/wiring-guide.md failed:\n{gen_result.stdout}{gen_result.stderr}"
         )
         print(json.dumps({"decision": "block", "reason": reason}))
     else:

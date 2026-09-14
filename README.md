@@ -85,7 +85,7 @@ actually about to be pulsed — `--monitor` and switch-only runs (no `--coils`) 
 entirely, since there's no HV/motion risk to confirm.
 
 It reuses MPF's own service-mode BCP commands (the same ones the interactive `mpf service`
-CLI uses) rather than talking to the hardware directly. See `docs/wiring-pin-map.md` for a
+CLI uses) rather than talking to the hardware directly. See `docs/wiring-guide.md` for a
 readable table of every component's current pin assignments and bring-up status,
 `docs/board-silkscreen-reference.md` for identifying a physical pin from a board photo (real
 board photos + a per-pin table cross-referencing every silkscreen label against its MPF number),
@@ -109,11 +109,10 @@ across this file, `CLAUDE.md`, and the NAS dashboard.
 
 ## Wiring docs generator
 
-`design/physical-checklists/wiring-guide.html` (the printable bench-test checklist),
+`design/physical-checklists/wiring-guide.html` (the printable bench-test checklist) and
 `docs/wiring-guide.md` (the same board map/components data, browsable in the wiki, harness
-diagrams as real `docs/wiring-diagrams/*.svg` files), and `docs/wiring-pin-map.md` (a plain
-table, no diagrams) are all **generated**, not hand-edited, from
-`tools/hw_console/data/components.yaml` + `machinefolder/config/hardware-*.yaml`:
+diagrams as real `docs/wiring-diagrams/*.svg` files) are both **generated**, not hand-edited,
+from `tools/hw_console/data/components.yaml` + `machinefolder/config/hardware-*.yaml`:
 
 ```
 .venv\Scripts\python.exe tools\hw_console\generate_docs.py
@@ -145,7 +144,7 @@ machinefolder/
 tests/              # MpfTestCase/MpfGameTestCase suite - run with `python -m unittest discover tests`
 design/             # story -> shots -> modes workflow + schema-tracked feature design docs
 tools/hw_console/   # local web tool for tracking hardware bring-up (boards + components)
-tools/hw_console/generate_docs.py  # generates wiring-guide.html/.md + wiring-pin-map.md (see above)
+tools/hw_console/generate_docs.py  # generates wiring-guide.html and wiring-guide.md (see above)
 tools/hw_console/templates/        # Jinja2 templates for the generator
 tools/hw_console/data/harnesses/   # WireViz harness YAML, rendered into wiring-guide.html/.md
 tools/mpf-session.ps1  # start/stop mpf reliably from a non-interactive shell (see Running it)

@@ -74,14 +74,13 @@ not choosing it fresh.
      opposite: the silkscreen shows only the physical `P#.#` pin, genuinely different from the
      MPF number — use `docs/opp-hardware-reference.md`'s wing/position formula (or the full
      per-pin tables in `board-silkscreen-reference.md`) to derive it, e.g. `"2.4"`. This is what
-     makes the silkscreen label show up in `docs/wiring-pin-map.md`'s row-per-pin table and any
+     makes the silkscreen label show up in `docs/wiring-guide.md`'s row-per-pin table and any
      harness diagram automatically.
    - Run `python tools/hw_console/generate_docs.py` (also fires automatically via the
      `PostToolUse` hook, same as `check_registry.py` in step 4) to regenerate
-     `design/physical-checklists/wiring-guide.html` (printable bench-test checklist),
-     `docs/wiring-guide.md` (the same board map/components data, browsable in the wiki),
-     and `docs/wiring-pin-map.md` (plain table) from the data above — never hand-edit any of
-     these, they're overwritten on the next run.
+     `design/physical-checklists/wiring-guide.html` (printable bench-test checklist) and
+     `docs/wiring-guide.md` (the same board map/components data, browsable in the wiki) from
+     the data above — never hand-edit either, they're overwritten on the next run.
    - If this component involves a new or changed physical connector/cable, add or update its
      harness YAML under `tools/hw_console/data/harnesses/` (WireViz's own schema — see
      `bank-a.yaml` for a worked example) in the same pass, so the generated wiring diagram stays

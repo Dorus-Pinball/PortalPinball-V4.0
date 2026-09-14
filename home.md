@@ -11,7 +11,7 @@ and it shows up here on the next sync. Either way, there's one set of files, not
 A few different *kinds* of page live in this wiki, and knowing which kind you're looking at
 tells you how much to trust it and where to go if it's wrong:
 
-- **Generated, always current.** Pages like [Wiring pin map](/docs/wiring-pin-map) are rendered
+- **Generated, always current.** Pages like [Wiring guide](/docs/wiring-guide) are rendered
   straight from the live data (`components.yaml`, `hardware-*.yaml`) every time something
   changes — never hand-edited, so what you see here always matches reality. If it's wrong, the
   *data* is wrong, not the page.
@@ -35,12 +35,10 @@ silently re-litigated. Everything below is organized the same way.
 
 - **[README](/README)** — stack overview, how to run MPF/tests/the display.
 - **[Wiring guide](/docs/wiring-guide)** — board map, every component's current switch/coil
-  numbers, and harness diagrams, in one browsable page. *(generated)* For the printable
-  bench-test checklist itself (pass/fail history, pulse-ms tuning notes), open
-  `design/physical-checklists/wiring-guide.html` directly — kept out of the wiki on purpose so
-  that fast-changing log has exactly one home.
-- **[Wiring pin map](/docs/wiring-pin-map)** — every component's current switch/coil numbers and
-  bring-up status, in one plain table. *(generated)*
+  numbers/silkscreen labels, LEDs, known gaps, and harness diagrams, all in one browsable page.
+  *(generated)* For the printable bench-test checklist itself (pass/fail history, pulse-ms
+  tuning notes), open `design/physical-checklists/wiring-guide.html` directly — kept out of the
+  wiki on purpose so that fast-changing log has exactly one home.
 - **[Wiring workflow](/docs/wiring-workflow)** — how a component actually gets wired, tested, and
   recorded, step by step.
 - **[OPP hardware reference](/docs/opp-hardware-reference)** — the CobraPin/red-board wiring

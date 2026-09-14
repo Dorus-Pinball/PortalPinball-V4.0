@@ -9,7 +9,7 @@ see `docs/board-photos/` for the saved images this doc references.
 **This reflects `board Overviews.xlsx`'s original/historical pin assignments, not necessarily
 what's wired today.** Several components have moved since (flippers, slings, plunger, trough-eject
 → Cobra board — see `CHANGES.md` entries 11-14). For **current, live status**, always check
-`tools/hw_console/data/components.yaml` / `docs/wiring-pin-map.md` — this doc is for identifying
+`tools/hw_console/data/components.yaml` / `docs/wiring-guide.md` — this doc is for identifying
 *which physical pin* a given MPF number lands on, not for what's currently wired there.
 
 ## How to use this with a photo

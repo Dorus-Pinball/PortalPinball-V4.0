@@ -13,7 +13,7 @@ MPF/testing findings from that work).
 Flippers, start/launch buttons, the plunger-lane/trough-eject coil migration to the Cobra board,
 and the sling/ball-saver bring-up (including the pin swaps found, pulse tuning, and the
 ball-saver's weak-spring root cause) are all done — see `CHANGES.md` entries 11-14 for the full
-history, or `docs/wiring-pin-map.md` for current pin numbers/status per component.
+history, or `docs/wiring-guide.md` for current pin numbers/status per component.
 
 - [x] **Bottom lanes 1-4 identified and confirmed**: real-hardware bring-up 2026-09-13.
       Initial testing found `s-bottomlane1`/`s-bottomlane2` on `2-0-19`/`2-0-20`
