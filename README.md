@@ -67,12 +67,19 @@ switches, and a driver pulse for coils so the CobraPin board's activation LED ca
 **without 50V present** (per this project's OPP bring-up guidance,
 `docs/opp-hardware-reference.md`: "test without coil power first"). Defaults to the flipper
 pair; pass `--switches`/`--coils` (comma-separated device names) to run it against any other
-component as it gets wired for real.
+component as it gets wired for real, or `--monitor` to just watch every switch live — for a
+freshly-wired switch whose MPF name you don't know yet, tap it and read the name off whatever
+line prints, instead of naming it up front.
 
 ```
 tools\mpf-session.ps1 -Action Start -NoBcp   # -NoBcp is required, see the script's header
-.venv\Scripts\python.exe tools\wiring_test.py
+.venv\Scripts\python.exe tools\wiring_test.py --monitor   # read all switches, live
+.venv\Scripts\python.exe tools\wiring_test.py             # test the flipper pair
 ```
+
+Confirmation prompts are a single Enter press, not typed text, and only appear when a coil is
+actually about to be pulsed — `--monitor` and switch-only runs (no `--coils`) skip them
+entirely, since there's no HV/motion risk to confirm.
 
 It reuses MPF's own service-mode BCP commands (the same ones the interactive `mpf service`
 CLI uses) rather than talking to the hardware directly. See `docs/wiring-pin-map.md` for a

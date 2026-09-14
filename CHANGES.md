@@ -269,3 +269,20 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     MPF number, and device name per cell, color-coded by function (switch/coil/autofire/light) —
     for a quick visual glance at the bench, with the table kept alongside for searching/scanning.
     — **Status: active**.
+20. **Hooks/skills caught up to the KM overhaul, and `wiring_test.py` made low-friction for the
+    full rewire** (2026-09-13). Two independent gaps closed in one pass, both raised while the
+    user is mid-rewire (new pieces going to new board locations, old wiring not considered).
+    First: the KM overhaul (entries 15-19) left `docs/references/index.yaml` unwatched by the
+    `PostToolUse` hook that already auto-regenerates wiring docs from hardware config — added it
+    to `tools/hw_console/post_edit_hook.py`'s watched paths, and added a `cite-reference` skill
+    (mirroring `wire-component`'s structure) so citing a new external source and archiving it
+    under `docs/references/raw/<slug>/` happen in the same pass, same as the existing convention
+    already asked for in prose. Second: `wiring_test.py` (entry from `plans/wiring-test-tool.md`,
+    2026-09-06) required typing an exact safety phrase before any run, even switch-only ones —
+    confirmed MPF 0.80 core has no built-in coil-pulse confirmation anywhere (checked
+    `commands/service.py`, `core/bcp/bcp_interface.py`, `modes/service/code/service.py`), so the
+    phrase was entirely this project's own friction. Replaced it with a single Enter press, gated
+    only on `--coils` actually being non-empty, and added a `--monitor` mode (MPF's BCP
+    `monitor_start`/`"switches"` live push) that snapshots and then streams every switch's state
+    so a freshly-wired switch's MPF name can be read off by tapping it, instead of needing to be
+    named up front. — **Status: active**.

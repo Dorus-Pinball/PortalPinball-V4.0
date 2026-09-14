@@ -1,15 +1,17 @@
-"""Claude Code PostToolUse hook: after Edit/Write touches a wiring config file, run
-check_registry.py and, if that passes, generate_docs.py - surfacing any failure back to Claude
-immediately.
+"""Claude Code PostToolUse hook: after Edit/Write touches a wiring config file or the external
+reference manifest, run check_registry.py and, if that passes, generate_docs.py - surfacing any
+failure back to Claude immediately.
 
 Wired up in .claude/settings.json under hooks.PostToolUse (matcher "Write|Edit"). Reads the hook
-input JSON on stdin, checks whether the edited file is one of the wiring config files this
-project cares about, and if so runs check_registry.py then generate_docs.py and reports failures
-as a {"decision": "block", "reason": ...} JSON line - on PostToolUse this feeds the reason back to
-Claude without undoing the edit (the edit already happened; "block" here means "make Claude look
-at this," not "prevent it"). generate_docs.py only runs after check_registry.py passes, since
-there's no point re-rendering wiring-guide.html/wiring-pin-map.md from data that's already known
-to violate a collision/pairing rule.
+input JSON on stdin, checks whether the edited file is one of the files this project cares about
+(hardware/component config, or docs/references/index.yaml), and if so runs check_registry.py then
+generate_docs.py and reports failures as a {"decision": "block", "reason": ...} JSON line - on
+PostToolUse this feeds the reason back to Claude without undoing the edit (the edit already
+happened; "block" here means "make Claude look at this," not "prevent it"). generate_docs.py only
+runs after check_registry.py passes, since there's no point re-rendering
+wiring-guide.html/wiring-pin-map.md/references/index.md from data that's already known to violate
+a collision/pairing rule - check_registry.py only checks hardware data, so it's a harmless no-op
+on a references-only edit.
 """
 import json
 import subprocess
@@ -22,6 +24,7 @@ WATCHED_SUFFIXES = (
     "machinefolder/config/hardware-leds.yaml",
     "machinefolder/config/hardware-devices.yaml",
     "tools/hw_console/data/components.yaml",
+    "docs/references/index.yaml",
 )
 
 

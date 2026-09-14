@@ -136,3 +136,23 @@ that's the whole point of keeping the device list a CLI argument instead of hard
 ## Status: active — used first for the flipper pair (switches, coils via LED with no HV, and
 real gameplay hold behavior with HV, all confirmed working); reuse for the next component as
 it gets wired for real (see `TODO.md`'s "Blocked on physical hardware work" list).
+
+## Update 2026-09-13: low-friction mode for the full rewire
+
+The user is now doing a full rewire — new pieces going to new board locations, old wiring not
+considered. Two changes to keep the tool matched to that:
+
+- **`--monitor` mode added.** Prints a one-time snapshot of every switch's current state, then
+  streams every open/close live via MPF's BCP `monitor_start`/category `"switches"` push
+  (`core/bcp/bcp_interface.py`'s `_monitor_switches` — confirmed this exists in MPF 0.80 core,
+  no polling needed). Answers "read all switches" without naming anything up front: tap a
+  freshly-wired switch and its MPF name prints as soon as it fires. No coils are touched in
+  this mode, so no confirmation prompt at all.
+- **The typed `SAFETY_PHRASE` gate is gone.** Confirmed MPF 0.80 core has no built-in
+  confirmation for coil pulsing anywhere (`commands/service.py`, `core/bcp/bcp_interface.py`,
+  `modes/service/code/service.py` all checked) — the phrase was entirely this script's own
+  friction, not something MPF requires. Replaced with a single Enter press (`Ctrl+C` to abort)
+  before either warning message (HV-off default / HV-on `--pulse-ms`), and the prompt now only
+  appears when `--coils` is actually non-empty — switch-only and `--monitor` runs carry no
+  HV/motion risk and no longer ask for anything. This matches the "any 1 hand prompt reactions"
+  the user wants for rapid, repeated use while rewiring.
