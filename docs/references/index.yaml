@@ -22,6 +22,14 @@ sources:
     date_archived: "2026-09-13"
     cited_by: "docs/opp-hardware-reference.md"
     note: "Same doc as cobrapin-official-doc, GitHub source form."
+  - slug: cobrapin-official-wiki
+    title: "CobraPin - Pinball Makers wiki"
+    url: "https://pinballmakers.com/wiki/CobraPin"
+    date_archived: "2026-09-14"
+    cited_by: "docs/board-silkscreen-reference.md"
+    note: "Authority for silkscreen labeling on CobraPin corrected a wrong claim in this
+      project's own doc: switch-input AND coil-output headers both print the MPF-compatible
+      number directly - confirmed independently against this cabinet's own board photos."
   - slug: pinballmakers-opp-wiki
     title: "Open Pinball Project (OPP) - pinballmakers.com wiki"
     url: "http://pinballmakers.com/wiki/index.php/OPP"

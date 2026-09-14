@@ -39,9 +39,18 @@ needed.
 
 ![Full CobraPin system wiring diagram - power supplies, coils, LEDs, switches, host computer](board-photos/cobrapin-system-wiring-diagram.jpeg)
 
-For the header connectors (`J1`-`J12`, used for switch matrix/direct-switch wiring and the
-inter-board ribbon chain), the mapping isn't on the silkscreen itself — it's in CobraPin's own
-published reference:
+![CobraPin switch-input header, real close-up photo showing MPF numbers printed directly on the silkscreen](board-photos/cobrapin-switch-input-header-photo.jpg)
+
+The header connectors (`J1`-`J12`, used for switch inputs and the inter-board ribbon chain)
+silkscreen the MPF number directly too — confirmed on this cabinet's own board (the close-up
+photo above reads `0-0-1`, `0-0-2`, `0-0-3`, `GND`, `0-0-8`-`0-0-11` under a "SERVOS" bracket,
+then `0-0-27`-`0-0-24`, `GND`, `0-0-19`-`0-0-16` — exactly `J1` pins 2-9 then `J2` pins 1-9 from
+the table below, run together on one physical header) and by CobraPin's own
+documentation: *"The switch inputs are labeled in silkscreen with the MPF compatible numbers"*
+(same for coil outputs) — see `cobrapin-official-wiki` in `docs/references/`. An earlier version
+of this doc claimed the opposite for these connectors specifically; that was wrong. The table
+below (matching the silkscreen 1:1) is still useful as a compact reference and for the STM32/pin
+detail the silkscreen doesn't show:
 
 ![CobraPin STM32 connector mapping table, from pinballmakers.com](board-photos/cobrapin-stm32-connector-mapping.png)
 
