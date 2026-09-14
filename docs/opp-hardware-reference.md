@@ -9,12 +9,14 @@ FET/coil/fuse at worst.
 
 `tools/hw_console/data/components.yaml` stays the live "what's actually wired where" tracker;
 this doc is the rulebook it and `design/physical-checklists/wiring-guide.html` both draw on, so
-the rules only need to be figured out once. See also `.claude/skills/wire-component/SKILL.md`,
-which encodes the process built on top of these rules, `docs/wiring-pin-map.md` for a single
-readable table of every component's current pin assignments and status, and
-`docs/board-silkscreen-reference.md` for identifying a physical pin from a board photo — cross-
-references every silkscreen label (`J1`-`J12` on CobraPin, `P0.x`-`P3.x` on the red boards)
-against the MPF number it corresponds to, with real board photos.
+the rules only need to be figured out once. See also `docs/wiring-workflow.md` for what actually
+happens at the bench (name it, wire the coil, identify the switches together, test low-voltage
+then high-voltage) and `.claude/skills/wire-component/SKILL.md` for the bookkeeping steps built
+on top of these rules, `docs/wiring-pin-map.md` for a single readable table of every component's
+current pin assignments and status, and `docs/board-silkscreen-reference.md` for identifying a
+physical pin from a board photo — cross-references every silkscreen label (`J1`-`J12` on
+CobraPin, `P0.x`-`P3.x` on the red boards) against the MPF number it corresponds to, with real
+board photos.
 
 ## Project board-priority policy
 
