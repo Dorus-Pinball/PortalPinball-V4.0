@@ -71,8 +71,11 @@ not choosing it fresh.
      these, they're overwritten on the next run.
    - If this component involves a new or changed physical connector/cable, add or update its
      harness YAML under `tools/hw_console/data/harnesses/` (WireViz's own schema — see
-     `flipper-bank-a.yaml` for a worked example) in the same pass, so the generated wiring
-     diagram stays accurate too.
+     `bank-a.yaml` for a worked example, including how it models several independently-wired
+     coils sharing one connector's HV bus/driver header vs. a true shared connector like the
+     flipper pair) in the same pass, so the generated wiring diagram stays accurate too. Don't
+     guess at physical connector/cable grouping (shared harness vs. independent pigtail) — ask if
+     it isn't already confirmed in `components.yaml`'s notes.
    - `TODO.md` — check off or update the relevant gap bullet if this closes one.
 
 6. **Verify:**
