@@ -90,11 +90,11 @@ components:
     status: 6
     mpf_devices: [ac-sling-left, ac-sling-right]
     switches:
-      - {name: s-left-sling, number: 0-0-19, board: chain0-0x20}
-      - {name: s-right-sling, number: 0-0-25, board: chain0-0x20}
+      - {name: s-left-sling, number: 0-0-19, board: chain0-0x20, silkscreen: "J2 pin 6"}
+      - {name: s-right-sling, number: 0-0-25, board: chain0-0x20, silkscreen: "J2 pin 3"}
     coils:
-      - {name: c-sling-left, number: 0-0-12, board: chain0-0x20}
-      - {name: c-sling-right, number: 0-0-0, board: chain0-0x20}
+      - {name: c-sling-left, number: 0-0-12, board: chain0-0x20, silkscreen: "0-0-12"}
+      - {name: c-sling-right, number: 0-0-0, board: chain0-0x20, silkscreen: "0-0-0"}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
@@ -119,9 +119,9 @@ components:
     status: 6
     mpf_devices: []
     switches:
-      - {name: s-ball-saver, number: 0-0-24, board: chain0-0x20}
+      - {name: s-ball-saver, number: 0-0-24, board: chain0-0x20, silkscreen: "J2 pin 4"}
     coils:
-      - {name: c-ball-saver, number: 0-0-13, board: chain0-0x20}
+      - {name: c-ball-saver, number: 0-0-13, board: chain0-0x20, silkscreen: "0-0-13"}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
@@ -171,9 +171,9 @@ components:
     status: 6
     mpf_devices: [bd-plunger]
     switches:
-      - {name: s-plunger-lane, number: 0-0-26, board: chain0-0x20}
+      - {name: s-plunger-lane, number: 0-0-26, board: chain0-0x20, silkscreen: "J2 pin 2"}
     coils:
-      - {name: c-plunger, number: 0-0-10, board: chain0-0x20}
+      - {name: c-plunger, number: 0-0-10, board: chain0-0x20, silkscreen: "0-0-10"}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
@@ -192,8 +192,8 @@ components:
     status: 6
     mpf_devices: []
     switches:
-      - {name: s-start, number: 0-0-27, board: chain0-0x20}
-      - {name: s-launch, number: 0-0-3, board: chain0-0x20}
+      - {name: s-start, number: 0-0-27, board: chain0-0x20, silkscreen: "J2 pin 1"}
+      - {name: s-launch, number: 0-0-3, board: chain0-0x20, silkscreen: "J1 pin 4"}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
@@ -222,7 +222,7 @@ components:
       - {name: s-trough6, number: 2-1-21, board: chain2-0x21}
       - {name: s-trough-jam, number: 2-1-22, board: chain2-0x21}
     coils:
-      - {name: c-trough-eject, number: 0-0-11, board: chain0-0x20}
+      - {name: c-trough-eject, number: 0-0-11, board: chain0-0x20, silkscreen: "0-0-11"}
     checklist:
       - {item: "Flyback diode across coil", done: true}
       - {item: "Common ground tied to power supply ground", done: true}
@@ -450,11 +450,11 @@ components:
     status: 6
     mpf_devices: [left_flipper, right_flipper]
     switches:
-      - {name: s-left-flipper, number: 0-0-1, board: chain0-0x20}
-      - {name: s-right-flipper, number: 0-0-2, board: chain0-0x20}
+      - {name: s-left-flipper, number: 0-0-1, board: chain0-0x20, silkscreen: "J1 pin 2"}
+      - {name: s-right-flipper, number: 0-0-2, board: chain0-0x20, silkscreen: "J1 pin 3"}
     coils:
-      - {name: c-flipper-left, number: 0-0-8, board: chain0-0x20}
-      - {name: c-flipper-right, number: 0-0-9, board: chain0-0x20}
+      - {name: c-flipper-left, number: 0-0-8, board: chain0-0x20, silkscreen: "0-0-8"}
+      - {name: c-flipper-right, number: 0-0-9, board: chain0-0x20, silkscreen: "0-0-9"}
     checklist:
       - done: true
         item: Flyback diode across coil

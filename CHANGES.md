@@ -328,3 +328,17 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     question got asked rather than assumed. `docs/wiring-diagrams/flipper-bank-a.svg` removed
     (superseded by `bank-a.svg`); `wiring_guide.html.j2`'s section 05 and
     `wire-component/SKILL.md`'s worked-example pointer updated to match. — **Status: active**.
+24. **Wiring diagrams simplified to driver-signal-only; `silkscreen` added as a real
+    `components.yaml` field** (2026-09-14). The Bank A diagram modeled every coil's full cable
+    run including the shared `HV_A` bus and its brown 2-wire feed - already covered once, clearly,
+    by `docs/opp-hardware-reference.md`'s bank/HV-feed table and the printable checklist's
+    section 02, so repeating it per coil was noise. Per the user's explicit spec (board name,
+    silkscreen label, MPF number, connection name - nothing else), rewrote `bank-a.yaml` to model
+    only the driver-signal side: one pin per coil, no HV/ground. Added `silkscreen` as a real
+    field on switch/coil entries in `components.yaml` (populated only where status ≥5 and
+    sourced from `docs/board-silkscreen-reference.md` - never guessed) rather than typing it only
+    into the harness YAML, since the user also wanted it in `docs/wiring-pin-map.md`'s table -
+    `_pin_str()` now shows it there too, skipping the parenthetical when it's identical to the
+    MPF number (true for every CobraPin coil bank pin, where the silkscreen prints the number
+    directly) to avoid showing the same text twice. `.claude/skills/wire-component/SKILL.md`
+    updated with both new conventions for future components. — **Status: active**.
