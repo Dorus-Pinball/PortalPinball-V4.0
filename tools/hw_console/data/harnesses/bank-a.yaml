@@ -1,169 +1,123 @@
-# Bank A coil wiring - every coil currently wired to CobraPin chain0-0x20's solenoid Bank A:
-# c-flipper-left/right (0-0-8/9), c-sling-right (0-0-0), c-sling-left (0-0-12), c-ball-saver
-# (0-0-13), c-plunger (0-0-10), c-trough-eject (0-0-11). Bank A has one more free position
-# (0-0-14) not modeled here, per this project's convention of not tracking free capacity as
-# structured data (see docs/opp-hardware-reference.md/TODO.md).
+# Bank A driver-signal wiring - every coil currently wired to CobraPin chain0-0x20's solenoid
+# Bank A: c-flipper-left/right (0-0-8/9), c-sling-right (0-0-0), c-sling-left (0-0-12),
+# c-ball-saver (0-0-13), c-plunger (0-0-10), c-trough-eject (0-0-11). Bank A has one more free
+# position (0-0-14) not modeled here, per this project's convention of not tracking free capacity
+# as structured data (see docs/opp-hardware-reference.md/TODO.md).
 #
-# Supersedes the old flipper-only flipper-bank-a.yaml (2026-09-06) - kept the same connector/cable
-# split (HV_A: the shared fused-HV bus; DRIVER: the solenoid driver header; one small connector
-# per coil) now extended to the other 5 coils. Confirmed with the user (2026-09-14): the flipper
-# pair share one physical 4-pin "coil pack" connector (unchanged from the original file), but the
-# other 5 coils are each independently wired - their own 2-wire pigtail back to the shared bus/
-# header, not bundled with each other or the flippers.
+# Driver-signal side only - deliberately NOT modeled here: the shared +50V HV_A bus feed and any
+# common ground. Those are the same for every coil on this bank and already covered once, clearly,
+# by docs/opp-hardware-reference.md's per-pin bank/HV-feed/color table and
+# design/physical-checklists/wiring-guide.html's section 02 - repeating that per coil here was
+# noise, not signal (the earlier version of this file did, and got simplified down to this after
+# the user asked to see just board/silkscreen/MPF-number/connection-name per pin).
+#
+# Each DRIVER pin's label is the MPF number, which for CobraPin's coil banks IS the silkscreen
+# label too - it's printed directly on the board next to each pin (confirmed in
+# docs/board-silkscreen-reference.md) - so one label covers both rather than showing identical
+# text twice. Board name lives at the connector level (`type:` below), applies to every pin on it.
+# A future switch-header harness (silkscreen != MPF number there, e.g. "J1 pin 6" vs "0-0-8")
+# would show both explicitly since they'd actually differ - see components.yaml's own
+# `silkscreen` field on each switch/coil entry, which is the authoritative source these labels
+# are copied from (keep them in sync if a component's wiring ever changes).
 #
 # Real, sourced data - not a guess:
-#   - Bank/HV-feed/wire-color: docs/opp-hardware-reference.md's "Full per-pin bank / HV-feed /
-#     color reference" table.
-#   - Pin numbers and confirmation this is the actual wiring (not DRAFT): components.yaml's
-#     `flippers`, `autofire-slings`, `ball-saver`, `plunger-launch`, and `trough` entries -
-#     every coil here is status 6 (wired & tested), confirmed via tools/wiring_test.py continuity
-#     checks and live in a real game (see each component's own notes for its confirmation date).
+#   - components.yaml's `flippers`, `autofire-slings`, `ball-saver`, `plunger-launch`, and
+#     `trough` entries - every coil here is status 6 (wired & tested) or, for c-trough-eject,
+#     individually confirmed even though the trough component's switches aren't (see its notes).
+#   - Silkscreen labels: docs/board-silkscreen-reference.md.
 #
 # NOT modeled here: the flyback diode across each coil (WireViz models cable/connector routing,
 # not discrete parallel components - see docs/opp-hardware-reference.md and the callout in
 # wiring-guide.html's section 05 for diode orientation: cathode toward HV_A, anode toward the
 # driver pin). Driver-signal wire colors aren't confirmed for any of these coils
-# (opp-hardware-reference.md explicitly says not to assert one) - every W-DRV-* cable is left
-# uncolored rather than guessing.
+# (opp-hardware-reference.md explicitly says not to assert one) - every cable is left uncolored
+# rather than guessing.
+#
+# Confirmed with the user (2026-09-14): the flipper pair share one physical 4-pin "coil pack"
+# connector; the other 5 coils are each independently wired - their own pigtail back to the
+# shared header, not bundled with each other or the flippers.
 #
 # Rendered into design/physical-checklists/wiring-guide.html and docs/wiring-guide.md by
 # tools/hw_console/generate_docs.py - edit this file (and re-run the generator), never the
 # rendered SVG/HTML/Markdown by hand.
 
 connectors:
-  HV_A:
-    type: CobraPin J13, Bank A fused HV feed (shared bus terminal)
-    pinlabels: [HV_A, HV_A, HV_A, HV_A, HV_A, HV_A, HV_A]
   DRIVER:
     type: CobraPin chain0-0x20 solenoid driver header, Bank A
     pinlabels: ["0-0-8", "0-0-9", "0-0-0", "0-0-12", "0-0-13", "0-0-10", "0-0-11"]
   COILS_FLIPPER:
     type: Flipper coil pack (left / right)
-    pinlabels: ["c-flipper-left +", "c-flipper-left drv", "c-flipper-right +", "c-flipper-right drv"]
+    pinlabels: ["c-flipper-left drv", "c-flipper-right drv"]
   COIL_SLING_R:
     type: Right sling coil
-    pinlabels: ["c-sling-right +", "c-sling-right drv"]
+    pinlabels: ["c-sling-right drv"]
   COIL_SLING_L:
     type: Left sling coil
-    pinlabels: ["c-sling-left +", "c-sling-left drv"]
+    pinlabels: ["c-sling-left drv"]
   COIL_BALL_SAVER:
     type: Ball saver post coil
-    pinlabels: ["c-ball-saver +", "c-ball-saver drv"]
+    pinlabels: ["c-ball-saver drv"]
   COIL_PLUNGER:
     type: Auto-launch plunger coil
-    pinlabels: ["c-plunger +", "c-plunger drv"]
+    pinlabels: ["c-plunger drv"]
   COIL_TROUGH_EJECT:
     type: Trough eject coil
-    pinlabels: ["c-trough-eject +", "c-trough-eject drv"]
+    pinlabels: ["c-trough-eject drv"]
 
 cables:
-  W-HV-flipper:
-    wirecount: 2
-    colors: [BN, BN]
-    gauge: 18 AWG
-    type: HV_A feed (brown, per docs/opp-hardware-reference.md)
   W-DRV-flipper:
     wirecount: 2
     gauge: 18 AWG
     type: Driver signal (exact color not confirmed - see docs/opp-hardware-reference.md)
-  W-HV-sling-r:
-    wirecount: 1
-    color: BN
-    gauge: 18 AWG
-    type: HV_A feed (brown, per docs/opp-hardware-reference.md)
   W-DRV-sling-r:
     wirecount: 1
     gauge: 18 AWG
     type: Driver signal (exact color not confirmed - see docs/opp-hardware-reference.md)
-  W-HV-sling-l:
-    wirecount: 1
-    color: BN
-    gauge: 18 AWG
-    type: HV_A feed (brown, per docs/opp-hardware-reference.md)
   W-DRV-sling-l:
     wirecount: 1
     gauge: 18 AWG
     type: Driver signal (exact color not confirmed - see docs/opp-hardware-reference.md)
-  W-HV-ball-saver:
-    wirecount: 1
-    color: BN
-    gauge: 18 AWG
-    type: HV_A feed (brown, per docs/opp-hardware-reference.md)
   W-DRV-ball-saver:
     wirecount: 1
     gauge: 18 AWG
     type: Driver signal (exact color not confirmed - see docs/opp-hardware-reference.md)
-  W-HV-plunger:
-    wirecount: 1
-    color: BN
-    gauge: 18 AWG
-    type: HV_A feed (brown, per docs/opp-hardware-reference.md)
   W-DRV-plunger:
     wirecount: 1
     gauge: 18 AWG
     type: Driver signal (exact color not confirmed - see docs/opp-hardware-reference.md)
-  W-HV-trough-eject:
-    wirecount: 1
-    color: BN
-    gauge: 18 AWG
-    type: HV_A feed (brown, per docs/opp-hardware-reference.md)
   W-DRV-trough-eject:
     wirecount: 1
     gauge: 18 AWG
     type: Driver signal (exact color not confirmed - see docs/opp-hardware-reference.md)
 
 connections:
-  # Flippers - HV_A[1,2] / DRIVER[1,2]
-  -
-    - HV_A: [1,2]
-    - W-HV-flipper: [1,2]
-    - COILS_FLIPPER: [1,3]
+  # Flippers - DRIVER[1,2]
   -
     - DRIVER: [1,2]
     - W-DRV-flipper: [1,2]
-    - COILS_FLIPPER: [2,4]
-  # Right sling - HV_A[3] / DRIVER[3]
-  -
-    - HV_A: [3]
-    - W-HV-sling-r: [1]
-    - COIL_SLING_R: [1]
+    - COILS_FLIPPER: [1,2]
+  # Right sling - DRIVER[3]
   -
     - DRIVER: [3]
     - W-DRV-sling-r: [1]
-    - COIL_SLING_R: [2]
-  # Left sling - HV_A[4] / DRIVER[4]
-  -
-    - HV_A: [4]
-    - W-HV-sling-l: [1]
-    - COIL_SLING_L: [1]
+    - COIL_SLING_R: [1]
+  # Left sling - DRIVER[4]
   -
     - DRIVER: [4]
     - W-DRV-sling-l: [1]
-    - COIL_SLING_L: [2]
-  # Ball saver - HV_A[5] / DRIVER[5]
-  -
-    - HV_A: [5]
-    - W-HV-ball-saver: [1]
-    - COIL_BALL_SAVER: [1]
+    - COIL_SLING_L: [1]
+  # Ball saver - DRIVER[5]
   -
     - DRIVER: [5]
     - W-DRV-ball-saver: [1]
-    - COIL_BALL_SAVER: [2]
-  # Plunger - HV_A[6] / DRIVER[6]
-  -
-    - HV_A: [6]
-    - W-HV-plunger: [1]
-    - COIL_PLUNGER: [1]
+    - COIL_BALL_SAVER: [1]
+  # Plunger - DRIVER[6]
   -
     - DRIVER: [6]
     - W-DRV-plunger: [1]
-    - COIL_PLUNGER: [2]
-  # Trough eject - HV_A[7] / DRIVER[7]
-  -
-    - HV_A: [7]
-    - W-HV-trough-eject: [1]
-    - COIL_TROUGH_EJECT: [1]
+    - COIL_PLUNGER: [1]
+  # Trough eject - DRIVER[7]
   -
     - DRIVER: [7]
     - W-DRV-trough-eject: [1]
-    - COIL_TROUGH_EJECT: [2]
+    - COIL_TROUGH_EJECT: [1]

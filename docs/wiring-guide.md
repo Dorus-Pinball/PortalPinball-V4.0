@@ -40,11 +40,11 @@ not renovated · 4 renovated, not wired · 5 wired, not tested · 6 wired & test
 
 | Component | Switches | Coils | Board(s) | Status |
 |---|---|---|---|---|
-| Slings (autofire) | s-left-sling 0-0-19, s-right-sling 0-0-25 | c-sling-left 0-0-12, c-sling-right 0-0-0 | chain0-0x20 | 6 — wired & tested |
-| Ball saver post | s-ball-saver 0-0-24 | c-ball-saver 0-0-13 | chain0-0x20 | 6 — wired & tested |
+| Slings (autofire) | s-left-sling 0-0-19 (J2 pin 6), s-right-sling 0-0-25 (J2 pin 3) | c-sling-left 0-0-12, c-sling-right 0-0-0 | chain0-0x20 | 6 — wired & tested |
+| Ball saver post | s-ball-saver 0-0-24 (J2 pin 4) | c-ball-saver 0-0-13 | chain0-0x20 | 6 — wired & tested |
 | Pop bumpers (autofire) | s-popbumper-1 2-0-8, s-popbumper-2 2-0-9, s-popbumper-3 2-0-10 | c-popbumper-1 2-0-4, c-popbumper-2 2-0-5, c-popbumper-3 2-0-6 | chain2-0x20 | 4 — renovated, not wired |
-| Plunger lane / auto-launch | s-plunger-lane 0-0-26 | c-plunger 0-0-10 | chain0-0x20 | 6 — wired & tested |
-| Start / launch cabinet buttons | s-start 0-0-27, s-launch 0-0-3 | — | chain0-0x20 | 6 — wired & tested |
+| Plunger lane / auto-launch | s-plunger-lane 0-0-26 (J2 pin 2) | c-plunger 0-0-10 | chain0-0x20 | 6 — wired & tested |
+| Start / launch cabinet buttons | s-start 0-0-27 (J2 pin 1), s-launch 0-0-3 (J1 pin 4) | — | chain0-0x20 | 6 — wired & tested |
 | Ball trough | s-trough1 2-1-16, s-trough2 2-1-17, s-trough3 2-1-18, s-trough4 2-1-19, s-trough5 2-1-20, s-trough6 2-1-21, s-trough-jam 2-1-22 | c-trough-eject 0-0-11 | chain0-0x20, chain2-0x21 | 4 — renovated, not wired |
 | Drop target bank | s-drop1 2-1-23, s-drop2 2-1-24, s-drop3 2-1-25 | c-drop 2-0-7 | chain2-0x20, chain2-0x21 | 3 — hardware with a purpose, not renovated |
 | Top lanes (3) | s-toplane1 2-0-19, s-toplane2 2-0-20, s-toplane3 2-0-21 | — | chain2-0x20 | 4 — renovated, not wired |
@@ -56,7 +56,7 @@ not renovated · 4 renovated, not wired · 5 wired, not tested · 6 wired & test
 | Portal ball transfer (dropper -> portal -> exit) | s-dropper 2-1-30, s-portal-r 2-1-29, s-portal-m 2-3-12, s-exit-success 2-1-31 | — | chain2-0x21, chain2-0x23 | 1 — idea, no hardware yet |
 | Aerial plate / Insinerator target | s-aerial 2-3-11, s-insinerator 2-3-13 | — | chain2-0x23 | 3 — hardware with a purpose, not renovated |
 | Cabinet action button | s-button 2-0-26 | — | chain2-0x20 | 4 — renovated, not wired |
-| Flippers | s-left-flipper 0-0-1, s-right-flipper 0-0-2 | c-flipper-left 0-0-8, c-flipper-right 0-0-9 | chain0-0x20 | 6 — wired & tested |
+| Flippers | s-left-flipper 0-0-1 (J1 pin 2), s-right-flipper 0-0-2 (J1 pin 3) | c-flipper-left 0-0-8, c-flipper-right 0-0-9 | chain0-0x20 | 6 — wired & tested |
 | Right ramp diverter + subway | s-subway-entry 2-3-18, s-subway-exit 2-3-19 | c-ramp-diverter 2-1-2 | chain2-0x21, chain2-0x23 | 1 — idea, no hardware yet |
 | Service mode nav switches | sw_service_enter 2-3-14, sw_service_esc 2-3-15, sw_service_up 2-3-16, sw_service_down 2-3-17 | — | chain2-0x23 | 1 — idea, no hardware yet |
 

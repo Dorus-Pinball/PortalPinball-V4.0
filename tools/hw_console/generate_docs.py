@@ -66,7 +66,17 @@ def _badge(component):
 def _pin_str(entries):
     if not entries:
         return "—"
-    return ", ".join(f"{e['name']} {e['number']}" for e in entries)
+    parts = []
+    for e in entries:
+        part = f"{e['name']} {e['number']}"
+        silkscreen = e.get("silkscreen")
+        # Skip the parenthetical when it's identical to the number (true for every CobraPin coil
+        # bank pin - the silkscreen prints the MPF number directly) - showing the same text twice
+        # is clutter, not information.
+        if silkscreen and silkscreen != e["number"]:
+            part += f" ({silkscreen})"
+        parts.append(part)
+    return ", ".join(parts)
 
 
 def _board_middle_index(board):

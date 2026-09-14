@@ -62,7 +62,14 @@ not choosing it fresh.
      Bump its `status` to the appropriate 1-6 build stage (`registry.COMPONENT_STATUSES`) —
      typically `5` once physically wired, `6` once bench-tested. This is what the hw_console
      Status tab and this skill both read as the live tracker; switches/coils are read-only in
-     that UI, so this file is the only place their pin numbers actually get set.
+     that UI, so this file is the only place their pin numbers actually get set. Once status
+     reaches `5` (physically wired), also add each switch/coil's `silkscreen: "<label>"` field —
+     what's actually printed on the board next to that pin, sourced from
+     `docs/board-silkscreen-reference.md`'s tables, never guessed. For a CobraPin coil bank this
+     is identical to the MPF number (the silkscreen prints it directly); for a switch header
+     (`J1`-`J12`) it's a connector/pin position like `"J1 pin 6"`, looked up from that file's
+     STM32 connector-mapping table. This is what makes the silkscreen label show up in
+     `docs/wiring-pin-map.md`'s table and any harness diagram automatically.
    - Run `python tools/hw_console/generate_docs.py` (also fires automatically via the
      `PostToolUse` hook, same as `check_registry.py` in step 4) to regenerate
      `design/physical-checklists/wiring-guide.html` (printable bench-test checklist),
@@ -71,11 +78,18 @@ not choosing it fresh.
      these, they're overwritten on the next run.
    - If this component involves a new or changed physical connector/cable, add or update its
      harness YAML under `tools/hw_console/data/harnesses/` (WireViz's own schema — see
-     `bank-a.yaml` for a worked example, including how it models several independently-wired
-     coils sharing one connector's HV bus/driver header vs. a true shared connector like the
-     flipper pair) in the same pass, so the generated wiring diagram stays accurate too. Don't
-     guess at physical connector/cable grouping (shared harness vs. independent pigtail) — ask if
-     it isn't already confirmed in `components.yaml`'s notes.
+     `bank-a.yaml` for a worked example) in the same pass, so the generated wiring diagram stays
+     accurate too. Keep it minimal, per-pin: board name at the connector `type:` level, a pin
+     label showing silkscreen + MPF number (one label when they're identical, like a CobraPin
+     coil bank; both when they differ, like a switch header), and the coil/switch's own
+     connection name (e.g. `c-flipper-left drv`) on the far end — copied from that component's
+     `silkscreen` field in `components.yaml`, so keep the two in sync if the wiring ever changes.
+     **Don't model the shared HV/ground side** (already covered once in
+     `docs/opp-hardware-reference.md` and the printable checklist's own bank/HV-feed table —
+     repeating it per component is exactly the clutter `bank-a.yaml` got simplified away from,
+     2026-09-14). Don't guess at physical connector/cable grouping (shared harness vs.
+     independent pigtail) either — ask if it isn't already confirmed in `components.yaml`'s
+     notes.
    - `TODO.md` — check off or update the relevant gap bullet if this closes one.
 
 6. **Verify:**
