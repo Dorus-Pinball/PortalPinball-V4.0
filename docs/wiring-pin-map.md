@@ -19,7 +19,7 @@ wins:
 automatically via the `PostToolUse` hook after those source files change, or manually:
 `python tools/hw_console/generate_docs.py`.
 
-Generated: 2026-09-13.
+Generated: 2026-09-14.
 
 ## Board map
 
@@ -30,8 +30,8 @@ physical inspection for that); this table only shows what's confirmed in use.
 
 | Board | Port | Role | Switches in use | Coils in use | Reserved (off-limits) | LEDs in use |
 |---|---|---|---|---|---|---|
-| Chain 0 / Board 0x20 (Cobra LED driver) | COM4 | led-driver | 8 | 7 | 4 | 40 |
-| Chain 1 / Board 0x20 (Cobra LED driver) | COM5 | led-driver | 0 | 0 | 0 | 1 |
+| Chain 0 / Board 0x20 (CobraPin) | COM4 | cobrapin-switches-coils-leds | 8 | 7 | 4 | 40 |
+| Chain 1 / Board 0x20 (CobraPin) | COM5 | cobrapin-switches-coils-leds | 0 | 0 | 0 | 1 |
 | Chain 2 / Board 0x20 (PSOC card 0) | COM6 | psoc-switches-coils | 16 | 4 | 0 | 0 |
 | Chain 2 / Board 0x21 (PSOC card 1) | COM6 | psoc-switches-coils | 16 | 1 | 0 | 0 |
 | Chain 2 / Board 0x22 (PSOC card 2, incl. incandescent card) | COM6 | psoc-switches-coils-incand | 0 | 0 | 0 | 0 |

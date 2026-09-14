@@ -6,7 +6,7 @@ go dead if the live page changes or vanishes. **Generated** by
 file, it will be overwritten. Add a new source by adding one entry to `index.yaml` and saving its
 content under `docs/references/raw/<slug>/content.md`, then re-run the generator.
 
-Generated: 2026-09-13.
+Generated: 2026-09-14.
 
 | Source | Archived | Cited by | Note |
 |---|---|---|---|
