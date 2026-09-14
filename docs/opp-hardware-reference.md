@@ -131,6 +131,31 @@ etc.), same underlying scheme with the chain prefix added.
   (4 per wing).
 - **Lamps** (incandescent wing): same 8-per-wing pattern as switches.
 
+### Physical pin (silkscreen) ↔ wing/position
+
+Unlike CobraPin, the red board's silkscreen only prints the raw PSoC4200 pin (`P0.0`-`P3.7` —
+see `docs/board-silkscreen-reference.md`), not the MPF number. The formula above (wing×8/wing×4)
+gives the *logical* wing/position; this table adds the physical-pin side, confirmed against
+every row of `docs/board-silkscreen-reference.md`'s per-pin tables for this project's actual
+boards:
+
+| Silkscreen port | OPP wing | Function | Pin → position | MPF range (`2-<board>-…`) |
+|---|---|---|---|---|
+| `P0.0`-`P0.3` | Wing 0 | Switch (dedicated autofire input) | ascending, `pos = pin` | `0`-`3` |
+| `P0.4`-`P0.7` | Wing 0 | Coil | ascending, `pos = pin - 4` | `0`-`3` |
+| `P1.0`-`P1.3` | Wing 1 | Switch (dedicated autofire input) | ascending, `pos = pin` | `8`-`11` |
+| `P1.4`-`P1.7` | Wing 1 | Coil | ascending, `pos = pin - 4` | `4`-`7` |
+| `P3.0`-`P3.7` | Wing 2 | Switch (pure matrix wing, no coils) | **descending**, `pos = 7 - pin` | `16`-`23` |
+| `P2.0`-`P2.7` | Wing 3 | Switch (pure matrix wing, no coils) | **descending**, `pos = 7 - pin` | `24`-`31` |
+
+`<board>` is 0/1/2/3 for chain2-`0x20`/`0x21`/`0x22`/`0x23`. The one genuinely non-obvious part:
+wings 2-3 count in the **opposite direction** from wings 0-1 (`P3.7`/`P2.7` is position 0, not
+`P3.0`/`P2.0`) — confirmed empirically from the sourced tables, not something the generic MPF
+docs state, so don't assume it extends to a board family not yet checked this way. The
+wing×8/wing×4 formula itself is MPF's own documented OPP convention (`mpf-docs-opp-switches`/
+`mpf-docs-opp-drivers` in `docs/references/`), universal across OPP boards; only the
+port-to-wing and pin-direction mapping is specific to this board's physical layout.
+
 ### Pairing rule — tighter than CobraPin
 
 A solenoid wing's own dedicated direct-switch inputs (for hardware-autofire pairing) are **the
