@@ -65,8 +65,10 @@ not choosing it fresh.
      that UI, so this file is the only place their pin numbers actually get set.
    - Run `python tools/hw_console/generate_docs.py` (also fires automatically via the
      `PostToolUse` hook, same as `check_registry.py` in step 4) to regenerate
-     `design/physical-checklists/wiring-guide.html` and `docs/wiring-pin-map.md` from the data
-     above — never hand-edit either file, it's overwritten on the next run.
+     `design/physical-checklists/wiring-guide.html` (printable bench-test checklist),
+     `docs/wiring-guide.md` (the same board map/components data, browsable in the wiki),
+     and `docs/wiring-pin-map.md` (plain table) from the data above — never hand-edit any of
+     these, they're overwritten on the next run.
    - If this component involves a new or changed physical connector/cable, add or update its
      harness YAML under `tools/hw_console/data/harnesses/` (WireViz's own schema — see
      `flipper-bank-a.yaml` for a worked example) in the same pass, so the generated wiring
