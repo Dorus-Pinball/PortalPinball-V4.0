@@ -9,10 +9,13 @@ Framework (MPF)**.
   `machinefolder/` as YAML.
 - **OPP hardware platform**, `gen2` driver boards — real switches, coils, and addressable LEDs.
   Three serial chains:
-  - `COM4` (chain 0) and `COM5` (chain 1) — Cobra boards, drive the LEDs (NeoPixel chains
-    `NEO0`/`NEO1`).
-  - `COM6` (chain 2) — a 4-board PSOC chain, handles all switches and coils
-    (`2-0-x` through `2-3-x`).
+  - `COM4` (chain 0) and `COM5` (chain 1) — CobraPin boards, get switches and coils *and* drive
+    the LEDs (NeoPixel chains `NEO0`/`NEO1`) — the project's board-priority policy fills chain 0
+    first, then chain 1, for anything that fits.
+  - `COM6` (chain 2) — a 4-board PSOC/red-board chain (`2-0-x` through `2-3-x`), the fallback for
+    switches and coils only (no LEDs) when CobraPin can't fit a component.
+
+  See `docs/opp-hardware-reference.md` for the full rulebook behind this split.
 - **mpf-gmc** (`machinefolder/addons/mpf-gmc`) — the score display, built on Godot 4. It's a
   separate process that talks to MPF core over BCP (a local socket protocol). Currently stock/
   unmodified beyond the two placeholder slides in `modes/base` and `modes/attract`.
