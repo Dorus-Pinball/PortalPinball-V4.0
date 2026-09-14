@@ -52,11 +52,11 @@ confirm that board family's own convention against.
 
 | Component | Switches & Coils | Type | Board | Pin Silk Screen | Other Pin | MPF | Status |
 |---|---|---|---|---|---|---|---|
-| Slings (autofire) | s-left-sling | Switch | chain0-0x20 | J2 pin 6 | GND | 0-0-19 | 6 — wired & tested |
+| Slings (autofire) | s-left-sling | Switch | chain0-0x20 | 0-0-19 | GND | 0-0-19 | 6 — wired & tested |
 |  | c-sling-left | Coil | chain0-0x20 | 0-0-12 | HV-A | 0-0-12 |  |
-|  | s-right-sling | Switch | chain0-0x20 | J2 pin 3 | GND | 0-0-25 |  |
+|  | s-right-sling | Switch | chain0-0x20 | 0-0-25 | GND | 0-0-25 |  |
 |  | c-sling-right | Coil | chain0-0x20 | 0-0-0 | HV-A | 0-0-0 |  |
-| Ball saver post | s-ball-saver | Switch | chain0-0x20 | J2 pin 4 | GND | 0-0-24 | 6 — wired & tested |
+| Ball saver post | s-ball-saver | Switch | chain0-0x20 | 0-0-24 | GND | 0-0-24 | 6 — wired & tested |
 |  | c-ball-saver | Coil | chain0-0x20 | 0-0-13 | HV-A | 0-0-13 |  |
 | Pop bumpers (autofire) | s-popbumper-1 | Switch | chain2-0x20 |  | GND | 2-0-8 | 4 — renovated, not wired |
 |  | c-popbumper-1 | Coil | chain2-0x20 |  |  | 2-0-4 |  |
@@ -64,9 +64,9 @@ confirm that board family's own convention against.
 |  | c-popbumper-2 | Coil | chain2-0x20 |  |  | 2-0-5 |  |
 |  | s-popbumper-3 | Switch | chain2-0x20 |  | GND | 2-0-10 |  |
 |  | c-popbumper-3 | Coil | chain2-0x20 |  |  | 2-0-6 |  |
-| Plunger lane / auto-launch | s-plunger-lane | Switch | chain0-0x20 | J2 pin 2 | GND | 0-0-26 | 6 — wired & tested |
+| Plunger lane / auto-launch | s-plunger-lane | Switch | chain0-0x20 | 0-0-26 | GND | 0-0-26 | 6 — wired & tested |
 |  | c-plunger | Coil | chain0-0x20 | 0-0-10 | HV-A | 0-0-10 |  |
-| Start / launch cabinet buttons | s-start | Switch | chain0-0x20 | J2 pin 1 | GND | 0-0-27 | 6 — wired & tested |
+| Start / launch cabinet buttons | s-start | Switch | chain0-0x20 | 0-0-27 | GND | 0-0-27 | 6 — wired & tested |
 |  | s-launch | Switch | chain0-0x20 | 0-0-3 | GND | 0-0-3 |  |
 | Ball trough | s-trough1 | Switch | chain2-0x21 | 3.7 | GND | 2-1-16 | 4 — renovated, not wired |
 |  | s-trough2 | Switch | chain2-0x21 | 3.6 | GND | 2-1-17 |  |

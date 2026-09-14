@@ -90,8 +90,8 @@ components:
     status: 6
     mpf_devices: [ac-sling-left, ac-sling-right]
     switches:
-      - {name: s-left-sling, number: 0-0-19, board: chain0-0x20, silkscreen: "J2 pin 6"}
-      - {name: s-right-sling, number: 0-0-25, board: chain0-0x20, silkscreen: "J2 pin 3"}
+      - {name: s-left-sling, number: 0-0-19, board: chain0-0x20, silkscreen: "0-0-19"}
+      - {name: s-right-sling, number: 0-0-25, board: chain0-0x20, silkscreen: "0-0-25"}
     coils:
       - {name: c-sling-left, number: 0-0-12, board: chain0-0x20, silkscreen: "0-0-12"}
       - {name: c-sling-right, number: 0-0-0, board: chain0-0x20, silkscreen: "0-0-0"}
@@ -119,7 +119,7 @@ components:
     status: 6
     mpf_devices: []
     switches:
-      - {name: s-ball-saver, number: 0-0-24, board: chain0-0x20, silkscreen: "J2 pin 4"}
+      - {name: s-ball-saver, number: 0-0-24, board: chain0-0x20, silkscreen: "0-0-24"}
     coils:
       - {name: c-ball-saver, number: 0-0-13, board: chain0-0x20, silkscreen: "0-0-13"}
     checklist:
@@ -171,7 +171,7 @@ components:
     status: 6
     mpf_devices: [bd-plunger]
     switches:
-      - {name: s-plunger-lane, number: 0-0-26, board: chain0-0x20, silkscreen: "J2 pin 2"}
+      - {name: s-plunger-lane, number: 0-0-26, board: chain0-0x20, silkscreen: "0-0-26"}
     coils:
       - {name: c-plunger, number: 0-0-10, board: chain0-0x20, silkscreen: "0-0-10"}
     checklist:
@@ -192,7 +192,7 @@ components:
     status: 6
     mpf_devices: []
     switches:
-      - {name: s-start, number: 0-0-27, board: chain0-0x20, silkscreen: "J2 pin 1"}
+      - {name: s-start, number: 0-0-27, board: chain0-0x20, silkscreen: "0-0-27"}
       - {name: s-launch, number: 0-0-3, board: chain0-0x20, silkscreen: "0-0-3"}
     coils: []
     checklist:
