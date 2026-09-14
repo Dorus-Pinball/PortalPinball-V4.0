@@ -286,3 +286,15 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     `monitor_start`/`"switches"` live push) that snapshots and then streams every switch's state
     so a freshly-wired switch's MPF name can be read off by tapping it, instead of needing to be
     named up front. — **Status: active**.
+21. **Wiki home page rewritten to explain the KM concept; new `docs/wiring-workflow.md` for the
+    human-facing version of the rewire process** (2026-09-14). `home.md` linked to every doc but
+    never explained *why* the docs are organized the way they are — rewrote it to introduce the
+    KM concept up front (generated vs. hand-written vs. reference-archive vs. decision-log pages)
+    and reorganized its link groups to match, adding two pages that existed but were never linked
+    from it (`docs/board-silkscreen-reference.md`, `docs/references/index.md`). Added
+    `docs/wiring-workflow.md`, a plain-language walkthrough of how wiring actually happens now
+    that the rewire is underway: name the component, name its coil link, identify the switches
+    *together* using `wiring_test.py --monitor` (entry 20) rather than assuming names up front,
+    then test low-voltage before high-voltage. Cross-linked from
+    `docs/opp-hardware-reference.md` and `.claude/skills/wire-component/SKILL.md` so the
+    human-facing and Claude-facing process descriptions don't drift apart. — **Status: active**.

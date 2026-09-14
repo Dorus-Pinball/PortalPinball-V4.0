@@ -12,7 +12,12 @@ place propagates everywhere it needs to.
 
 The rules this encodes live in **`docs/opp-hardware-reference.md`** — read that file first if
 it's been a while, don't re-derive the rules from memory. This skill is the process; that doc is
-the rulebook.
+the rulebook. `docs/wiring-workflow.md` covers the same ground for a human reader — name it, wire
+the coil, identify the switches together via `tools/wiring_test.py --monitor`, test low-voltage
+then high-voltage — worth reading if the physical wiring already happened before this skill runs
+(common mid-rewire, since a channel often gets picked for what's physically convenient rather
+than planned ahead of time): steps 1-3 below are then about recording what was actually wired,
+not choosing it fresh.
 
 ## Steps
 
