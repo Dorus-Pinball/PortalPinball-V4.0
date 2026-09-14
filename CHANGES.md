@@ -364,3 +364,17 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     live-wiring one) - added for the trough switches accordingly. Verified against a real xlsx
     demo sheet (`example table.xlsx`'s new "Claude verification" tab) before committing any of
     it. — **Status: active**.
+26. **`docs/wiring-pin-map.md` retired, merged into `docs/wiring-guide.md`** (2026-09-14).
+    Extending both pages to the new row-per-pin table (entry #25) left them showing an
+    identical Board map + Components table side by side - the two pages had converged into
+    duplicated generated content, a real design smell the user caught. `wiring-guide.md` is a
+    strict superset (it already had harness diagrams; picked up pin-map's Lights and Known-gaps
+    sections too), so `wiring-pin-map.md` and its `wiring_pin_map.md.j2` template are removed
+    entirely rather than kept as a thin duplicate - `generate_docs.py`, the CI doc-freshness
+    check, and every cross-reference (`home.md`, `README.md`, `CLAUDE.md`, `opp-hardware-
+    reference.md`, `board-silkscreen-reference.md`, `wire-component/SKILL.md`) updated to point
+    at `wiring-guide.md` instead. Entry #15 first introduced `wiring-pin-map.md` alongside
+    `wiring-guide.html`; that entry's infrastructure decision (generated, not hand-transcribed)
+    stays active, only the separate page it produced is gone. Historical mentions in `CHANGES.md`
+    and one checked-off `TODO.md` item are left as-is, per this project's own convention of not
+    rewriting the record. — **Status: active**.
