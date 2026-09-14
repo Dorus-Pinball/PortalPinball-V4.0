@@ -67,9 +67,9 @@ Cable diagrams rendered by [WireViz](https://github.com/wireviz/WireViz) from
 [OPP hardware reference](/docs/opp-hardware-reference) for the underlying bank/HV-feed/wire-color
 rules each one is built from.
 
-### Flipper Bank A
+### Bank A
 
-![flipper-bank-a harness diagram](wiring-diagrams/flipper-bank-a.svg)
+![bank-a harness diagram](wiring-diagrams/bank-a.svg)
 
 
 ---

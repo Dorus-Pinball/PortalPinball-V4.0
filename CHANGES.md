@@ -316,3 +316,15 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     the new file; the harness SVG files themselves stay unchecked there, same as the existing
     exemption for `wiring-guide.html`'s embedded copy (WireViz/Graphviz output isn't
     byte-reproducible across environments). — **Status: active**.
+23. **`flipper-bank-a.yaml` → `bank-a.yaml`: one harness diagram per physical bank, not per
+    component** (2026-09-14). Bank A actually has 7 of its 9 pins wired & tested — flippers,
+    both slings, ball saver, plunger, and trough eject — but only the flipper pair ever got a
+    WireViz harness. Rather than add a separate small harness file per component (the same
+    physical HV bus and driver header drawn over and over), replaced `flipper-bank-a.yaml` with
+    a single `bank-a.yaml` covering the whole populated connector. Confirmed with the user first
+    that the other 5 coils are each independently wired (their own 2-wire pigtail to the shared
+    bus/header) rather than sharing a connector the way the flipper pair does — this project's
+    harness files are meant to be real, sourced data, not a guess, so that physical-topology
+    question got asked rather than assumed. `docs/wiring-diagrams/flipper-bank-a.svg` removed
+    (superseded by `bank-a.svg`); `wiring_guide.html.j2`'s section 05 and
+    `wire-component/SKILL.md`'s worked-example pointer updated to match. — **Status: active**.
