@@ -3,8 +3,8 @@ name: CI
 # Runs the test suite, the hardware-registry collision/pairing check, and a doc-freshness check
 # on every push and PR. The doc-freshness check is the mechanical backstop for the exact failure
 # this project's KM overhaul exists to eliminate: design/physical-checklists/wiring-guide.html,
-# docs/wiring-guide.md, and docs/wiring-pin-map.md/docs/references/index.md are generated files
-# (see tools/hw_console/generate_docs.py) - this job re-runs the generator and fails the build if
+# docs/wiring-guide.md, and docs/references/index.md are generated files (see
+# tools/hw_console/generate_docs.py) - this job re-runs the generator and fails the build if
 # the committed output doesn't match, catching drift regardless of how it happened (a manual edit,
 # a tool other than Claude Code, a forgotten re-run before committing).
 
@@ -44,7 +44,6 @@ jobs:
         run: |
           cp design/physical-checklists/wiring-guide.html /tmp/wiring-guide-before.html
           cp docs/wiring-guide.md /tmp/wiring-guide-md-before.md
-          cp docs/wiring-pin-map.md /tmp/wiring-pin-map-before.md
           cp docs/references/index.md /tmp/references-index-before.md
           python tools/hw_console/generate_docs.py
 
@@ -88,7 +87,5 @@ jobs:
           # itself, this just doesn't additionally diff the pixels.
           diff <(normalize_date < /tmp/wiring-guide-md-before.md) \
                <(normalize_date < docs/wiring-guide.md)
-          diff <(normalize_date < /tmp/wiring-pin-map-before.md) \
-               <(normalize_date < docs/wiring-pin-map.md)
           diff <(normalize_date < /tmp/references-index-before.md) \
                <(normalize_date < docs/references/index.md)

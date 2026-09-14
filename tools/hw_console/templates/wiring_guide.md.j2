@@ -1,13 +1,24 @@
 # Wiring guide
 
-Board map, known-component wiring tables, and harness diagrams — the browsable overview of how
-this machine is wired right now. **Generated** by `tools/hw_console/generate_docs.py` from
+A single, readable reference of every component's current switch/coil pin assignments and
+bring-up status — board map, known-component wiring tables, LEDs, known gaps, and harness
+diagrams, in one place. **Generated** by `tools/hw_console/generate_docs.py` from
 `tools/hw_console/data/components.yaml` and `machinefolder/config/hardware-*.yaml` — do not
 hand-edit this file, it will be overwritten. For the step-by-step printable bench-test checklist
 (what's been tested, when, pulse-ms tuning notes, pass/fail history), see the companion
 `design/physical-checklists/wiring-guide.html` — open that one directly in a browser or print it
 at the bench; it's kept separate on purpose so there's exactly one place that fast-changing log
 gets updated, not two drifting copies.
+
+**This is a snapshot, not the source of truth.** If it and another file disagree, the other file
+wins:
+- Real MPF pin numbers: `machinefolder/config/hardware-switches.yaml` / `hardware-coils.yaml` /
+  `hardware-leds.yaml` / `hardware-devices.yaml`.
+- Bring-up status, checklists, and the full history/notes behind each number (swaps, test
+  results, root causes): `tools/hw_console/data/components.yaml`.
+- The rules for picking a number in the first place (board priority, pairing rules, HV bank
+  wiring): [OPP hardware reference](/docs/opp-hardware-reference).
+- The step-by-step physical bring-up checklist: `design/physical-checklists/wiring-guide.html`.
 
 Generated: {{ generated_at }}.
 
@@ -44,6 +55,25 @@ none is wired yet.
 {%- for r in pin_rows %}
 | {{ r.component }} | {{ r.name }} | {{ r.type }} | {{ r.board }} | {{ r.silkscreen }} | {{ r.other_pin }} | {{ r.mpf }} | {{ r.status_text }} |
 {%- endfor %}
+
+Full history/notes (test results, swaps found during bring-up, root causes, open questions) live
+per-component in `tools/hw_console/data/components.yaml` — this table only carries the current
+numbers and a one-line status, not the story behind them.
+
+## Lights
+
+All LEDs are on Cobra chain 0 (`0-0-0`…`0-0-{{ led_count - 1 }}`, `grb`), per the project's
+board-priority policy (lights always go on CobraPin). Individual LED names/numbers aren't tracked
+in `components.yaml` — see `machinefolder/config/hardware-leds.yaml` for the full list.
+
+## Known gaps
+
+Components whose notes flag an explicit `GAP:` in `components.yaml` — see [TODO](/TODO) for full
+detail and status:
+
+{% for c in components if c.badge == 'gap' -%}
+- **{{ c.display_name }}**
+{% endfor -%}
 
 ## Harness diagrams
 

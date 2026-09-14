@@ -29,7 +29,7 @@ display. See `README.md` for the full stack breakdown and how to run it.
 - `board Overviews.xlsx` at the repo root is the hardware/design reference (board pinouts +
   early game-design notes) — check it before assigning new switch/coil numbers, to avoid
   colliding with something already planned there.
-- `design/physical-checklists/wiring-guide.html` and `docs/wiring-pin-map.md` are **generated**
+- `design/physical-checklists/wiring-guide.html` and `docs/wiring-guide.md` are **generated**
   by `tools/hw_console/generate_docs.py` from `components.yaml`/`hardware-*.yaml` — never
   hand-edit either, it's overwritten on the next run (see `README.md`'s "Wiring docs generator").
 - When citing a new external doc/wiki page in any project doc, save a local copy under
