@@ -437,30 +437,83 @@ footer{
   <!-- 04 -->
   <div class="section">
     <div class="section-head"><span class="section-num">04</span><h2>Known components — current wiring</h2></div>
-    <p class="section-note">Generated from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> — update that file first (or the hw_console web UI) if anything changes, then re-run the generator, never edit this table by hand.</p>
+    <p class="section-note">Generated from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> — update that file first (or the hw_console web UI) if anything changes, then re-run the generator, never edit this table by hand. One row per switch/coil pin; Component and Status show only on a group's first row. Pin Silk Screen is blank when not yet confirmed against a real board/photo (see <span style="font-family:'IBM Plex Mono',monospace">docs/board-silkscreen-reference.md</span>); Other Pin is <span style="font-family:'IBM Plex Mono',monospace">GND</span> for every switch, or a CobraPin coil's HV bank feed — blank for a red-board coil, since none is wired yet.</p>
     <div class="card">
       <table class="wtable">
-        <thead><tr><th>Component</th><th>Switches</th><th>Coils</th><th>Board</th><th>Status</th></tr></thead>
+        <thead><tr><th>Component</th><th>Switches &amp; Coils</th><th>Type</th><th>Board</th><th>Pin Silk Screen</th><th>Other Pin</th><th>MPF</th><th>Status</th></tr></thead>
         <tbody>
-          <tr><td>Slings (autofire)</td><td class="num">s-left-sling 0-0-19 (J2 pin 6), s-right-sling 0-0-25 (J2 pin 3)</td><td class="num">c-sling-left 0-0-12, c-sling-right 0-0-0</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Ball saver post</td><td class="num">s-ball-saver 0-0-24 (J2 pin 4)</td><td class="num">c-ball-saver 0-0-13</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Pop bumpers (autofire)</td><td class="num">s-popbumper-1 2-0-8, s-popbumper-2 2-0-9, s-popbumper-3 2-0-10</td><td class="num">c-popbumper-1 2-0-4, c-popbumper-2 2-0-5, c-popbumper-3 2-0-6</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Plunger lane / auto-launch</td><td class="num">s-plunger-lane 0-0-26 (J2 pin 2)</td><td class="num">c-plunger 0-0-10</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Start / launch cabinet buttons</td><td class="num">s-start 0-0-27 (J2 pin 1), s-launch 0-0-3 (J1 pin 4)</td><td class="num">—</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Ball trough</td><td class="num">s-trough1 2-1-16, s-trough2 2-1-17, s-trough3 2-1-18, s-trough4 2-1-19, s-trough5 2-1-20, s-trough6 2-1-21, s-trough-jam 2-1-22</td><td class="num">c-trough-eject 0-0-11</td><td class="brd">chain0-0x20, chain2-0x21</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Drop target bank</td><td class="num">s-drop1 2-1-23, s-drop2 2-1-24, s-drop3 2-1-25</td><td class="num">c-drop 2-0-7</td><td class="brd">chain2-0x20, chain2-0x21</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Top lanes (3)</td><td class="num">s-toplane1 2-0-19, s-toplane2 2-0-20, s-toplane3 2-0-21</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Bottom lanes (4 real + 1 rollover, not 5 lanes - see notes)</td><td class="num">s-bottomlane1 2-0-27, s-bottomlane2 2-0-28, s-bottomlane3 2-0-31, s-bottomlane4 2-0-30, s-bottomlane5 2-0-29</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Orbits (left/right/top)</td><td class="num">s-orbit-l 2-0-23, s-orbit-r 2-0-22, s-orbit-top 2-1-28</td><td class="num">—</td><td class="brd">chain2-0x20, chain2-0x21</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Standup targets (E/R/M/L banks)</td><td class="num">s-target-e1 2-0-24, s-target-e2 2-0-25, s-target-r1 2-3-0, s-target-r2 2-3-1, s-target-m1 2-3-2, s-target-m2 2-3-3, s-target-m3 2-3-4, s-target-m4 2-3-5, s-target-l1 2-3-6</td><td class="num">—</td><td class="brd">chain2-0x20, chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Ramps (left/right, entry+exit)</td><td class="num">s-ramp-r1 2-3-7, s-ramp-l1 2-3-8, s-ramp-r2 2-3-9, s-ramp-l2 2-3-10</td><td class="num">—</td><td class="brd">chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>VUKs (mid-field, top)</td><td class="num">s-vukmid 2-1-26, s-vuktop 2-1-27</td><td class="num">—</td><td class="brd">chain2-0x21</td><td><span class="status gap">gap</span></td></tr>
-          <tr><td>Portal ball transfer (dropper -> portal -> exit)</td><td class="num">s-dropper 2-1-30, s-portal-r 2-1-29, s-portal-m 2-3-12, s-exit-success 2-1-31</td><td class="num">—</td><td class="brd">chain2-0x21, chain2-0x23</td><td><span class="status gap">gap</span></td></tr>
-          <tr><td>Aerial plate / Insinerator target</td><td class="num">s-aerial 2-3-11, s-insinerator 2-3-13</td><td class="num">—</td><td class="brd">chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Cabinet action button</td><td class="num">s-button 2-0-26</td><td class="num">—</td><td class="brd">chain2-0x20</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Flippers</td><td class="num">s-left-flipper 0-0-1 (J1 pin 2), s-right-flipper 0-0-2 (J1 pin 3)</td><td class="num">c-flipper-left 0-0-8, c-flipper-right 0-0-9</td><td class="brd">chain0-0x20</td><td><span class="status wired">wired</span></td></tr>
-          <tr><td>Right ramp diverter + subway</td><td class="num">s-subway-entry 2-3-18, s-subway-exit 2-3-19</td><td class="num">c-ramp-diverter 2-1-2</td><td class="brd">chain2-0x21, chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td>Service mode nav switches</td><td class="num">sw_service_enter 2-3-14, sw_service_esc 2-3-15, sw_service_up 2-3-16, sw_service_down 2-3-17</td><td class="num">—</td><td class="brd">chain2-0x23</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td>Slings (autofire)</td><td>s-left-sling</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">J2 pin 6</td><td class="num">GND</td><td class="num">0-0-19</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td></td><td>c-sling-left</td><td>Coil</td><td class="brd">chain0-0x20</td><td class="num">0-0-12</td><td class="num">HV-A</td><td class="num">0-0-12</td><td></td></tr>
+          <tr><td></td><td>s-right-sling</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">J2 pin 3</td><td class="num">GND</td><td class="num">0-0-25</td><td></td></tr>
+          <tr><td></td><td>c-sling-right</td><td>Coil</td><td class="brd">chain0-0x20</td><td class="num">0-0-0</td><td class="num">HV-A</td><td class="num">0-0-0</td><td></td></tr>
+          <tr><td>Ball saver post</td><td>s-ball-saver</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">J2 pin 4</td><td class="num">GND</td><td class="num">0-0-24</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td></td><td>c-ball-saver</td><td>Coil</td><td class="brd">chain0-0x20</td><td class="num">0-0-13</td><td class="num">HV-A</td><td class="num">0-0-13</td><td></td></tr>
+          <tr><td>Pop bumpers (autofire)</td><td>s-popbumper-1</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-8</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>c-popbumper-1</td><td>Coil</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num"></td><td class="num">2-0-4</td><td></td></tr>
+          <tr><td></td><td>s-popbumper-2</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-9</td><td></td></tr>
+          <tr><td></td><td>c-popbumper-2</td><td>Coil</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num"></td><td class="num">2-0-5</td><td></td></tr>
+          <tr><td></td><td>s-popbumper-3</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-10</td><td></td></tr>
+          <tr><td></td><td>c-popbumper-3</td><td>Coil</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num"></td><td class="num">2-0-6</td><td></td></tr>
+          <tr><td>Plunger lane / auto-launch</td><td>s-plunger-lane</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">J2 pin 2</td><td class="num">GND</td><td class="num">0-0-26</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td></td><td>c-plunger</td><td>Coil</td><td class="brd">chain0-0x20</td><td class="num">0-0-10</td><td class="num">HV-A</td><td class="num">0-0-10</td><td></td></tr>
+          <tr><td>Start / launch cabinet buttons</td><td>s-start</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">J2 pin 1</td><td class="num">GND</td><td class="num">0-0-27</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td></td><td>s-launch</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">0-0-3</td><td class="num">GND</td><td class="num">0-0-3</td><td></td></tr>
+          <tr><td>Ball trough</td><td>s-trough1</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.7</td><td class="num">GND</td><td class="num">2-1-16</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>s-trough2</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.6</td><td class="num">GND</td><td class="num">2-1-17</td><td></td></tr>
+          <tr><td></td><td>s-trough3</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.5</td><td class="num">GND</td><td class="num">2-1-18</td><td></td></tr>
+          <tr><td></td><td>s-trough4</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.4</td><td class="num">GND</td><td class="num">2-1-19</td><td></td></tr>
+          <tr><td></td><td>s-trough5</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.3</td><td class="num">GND</td><td class="num">2-1-20</td><td></td></tr>
+          <tr><td></td><td>s-trough6</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.2</td><td class="num">GND</td><td class="num">2-1-21</td><td></td></tr>
+          <tr><td></td><td>s-trough-jam</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.1</td><td class="num">GND</td><td class="num">2-1-22</td><td></td></tr>
+          <tr><td></td><td>c-trough-eject</td><td>Coil</td><td class="brd">chain0-0x20</td><td class="num">0-0-11</td><td class="num">HV-A</td><td class="num">0-0-11</td><td></td></tr>
+          <tr><td>Drop target bank</td><td>s-drop1</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-23</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>s-drop2</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-24</td><td></td></tr>
+          <tr><td></td><td>s-drop3</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-25</td><td></td></tr>
+          <tr><td></td><td>c-drop</td><td>Coil</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num"></td><td class="num">2-0-7</td><td></td></tr>
+          <tr><td>Top lanes (3)</td><td>s-toplane1</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-19</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>s-toplane2</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-20</td><td></td></tr>
+          <tr><td></td><td>s-toplane3</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-21</td><td></td></tr>
+          <tr><td>Bottom lanes (4)</td><td>s-bottomlane1</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.4</td><td class="num">GND</td><td class="num">2-0-27</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td></td><td>s-bottomlane2</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.3</td><td class="num">GND</td><td class="num">2-0-28</td><td></td></tr>
+          <tr><td></td><td>s-bottomlane3</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.0</td><td class="num">GND</td><td class="num">2-0-31</td><td></td></tr>
+          <tr><td></td><td>s-bottomlane4</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.1</td><td class="num">GND</td><td class="num">2-0-30</td><td></td></tr>
+          <tr><td>Rollover (grouped as a 5th bottom lane in the original harness/wiring)</td><td>s-bottomlane5</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.2</td><td class="num">GND</td><td class="num">2-0-29</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td>Orbits (left/right/top)</td><td>s-orbit-l</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-23</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>s-orbit-r</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-22</td><td></td></tr>
+          <tr><td></td><td>s-orbit-top</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-28</td><td></td></tr>
+          <tr><td>Standup targets (E/R/M/L banks)</td><td>s-target-e1</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-24</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>s-target-e2</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-25</td><td></td></tr>
+          <tr><td></td><td>s-target-r1</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-0</td><td></td></tr>
+          <tr><td></td><td>s-target-r2</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-1</td><td></td></tr>
+          <tr><td></td><td>s-target-m1</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-2</td><td></td></tr>
+          <tr><td></td><td>s-target-m2</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-3</td><td></td></tr>
+          <tr><td></td><td>s-target-m3</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-4</td><td></td></tr>
+          <tr><td></td><td>s-target-m4</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-5</td><td></td></tr>
+          <tr><td></td><td>s-target-l1</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-6</td><td></td></tr>
+          <tr><td>Ramps (left/right, entry+exit)</td><td>s-ramp-r1</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-7</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>s-ramp-l1</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-8</td><td></td></tr>
+          <tr><td></td><td>s-ramp-r2</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-9</td><td></td></tr>
+          <tr><td></td><td>s-ramp-l2</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-10</td><td></td></tr>
+          <tr><td>VUKs (mid-field, top)</td><td>s-vukmid</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-26</td><td><span class="status gap">gap</span></td></tr>
+          <tr><td></td><td>s-vuktop</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-27</td><td></td></tr>
+          <tr><td>Portal ball transfer (dropper -> portal -> exit)</td><td>s-dropper</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-30</td><td><span class="status gap">gap</span></td></tr>
+          <tr><td></td><td>s-portal-r</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-29</td><td></td></tr>
+          <tr><td></td><td>s-portal-m</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-12</td><td></td></tr>
+          <tr><td></td><td>s-exit-success</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-31</td><td></td></tr>
+          <tr><td>Aerial plate / Insinerator target</td><td>s-aerial</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-11</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>s-insinerator</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-13</td><td></td></tr>
+          <tr><td>Cabinet action button</td><td>s-button</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-26</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td>Flippers</td><td>s-left-flipper</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">0-0-1</td><td class="num">GND</td><td class="num">0-0-1</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td></td><td>c-flipper-left</td><td>Coil</td><td class="brd">chain0-0x20</td><td class="num">0-0-8</td><td class="num">HV-A</td><td class="num">0-0-8</td><td></td></tr>
+          <tr><td></td><td>s-right-flipper</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">0-0-2</td><td class="num">GND</td><td class="num">0-0-2</td><td></td></tr>
+          <tr><td></td><td>c-flipper-right</td><td>Coil</td><td class="brd">chain0-0x20</td><td class="num">0-0-9</td><td class="num">HV-A</td><td class="num">0-0-9</td><td></td></tr>
+          <tr><td>Right ramp diverter + subway</td><td>s-subway-entry</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-18</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>s-subway-exit</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-19</td><td></td></tr>
+          <tr><td></td><td>c-ramp-diverter</td><td>Coil</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num"></td><td class="num">2-1-2</td><td></td></tr>
+          <tr><td>Service mode nav switches</td><td>sw_service_enter</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-14</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>sw_service_esc</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-15</td><td></td></tr>
+          <tr><td></td><td>sw_service_up</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-16</td><td></td></tr>
+          <tr><td></td><td>sw_service_down</td><td>Switch</td><td class="brd">chain2-0x23</td><td class="num"></td><td class="num">GND</td><td class="num">2-3-17</td><td></td></tr>
         </tbody>
       </table>
     </div>

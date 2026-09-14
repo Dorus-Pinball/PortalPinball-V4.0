@@ -63,20 +63,57 @@ def _badge(component):
     return "wired" if (component.get("status") or 1) >= 5 else "planned"
 
 
-def _pin_str(entries):
-    if not entries:
-        return "—"
-    parts = []
-    for e in entries:
-        part = f"{e['name']} {e['number']}"
-        silkscreen = e.get("silkscreen")
-        # Skip the parenthetical when it's identical to the number (true for every CobraPin coil
-        # bank pin - the silkscreen prints the MPF number directly) - showing the same text twice
-        # is clutter, not information.
-        if silkscreen and silkscreen != e["number"]:
-            part += f" ({silkscreen})"
-        parts.append(part)
-    return ", ".join(parts)
+# CobraPin HV bank feed per coil number - docs/opp-hardware-reference.md's "Full per-pin bank /
+# HV-feed / color reference" table. A coil not in any of these sets is on a red board, which has
+# no wired coil yet to confirm that board family's own HV-feed convention against - _coil_other_pin
+# returns None for those rather than guessing.
+_COBRAPIN_BANK_A = {"0-0-0", "0-0-8", "0-0-9", "0-0-10", "0-0-11", "0-0-12", "0-0-13", "0-0-14"}
+_COBRAPIN_BANK_B = {"0-0-1", "0-0-2", "0-0-3", "0-0-4", "0-0-5", "0-0-6", "0-0-7", "0-0-15"}
+_COBRAPIN_BANK_C = {"1-0-0", "1-0-1", "1-0-2", "1-0-3", "1-0-4", "1-0-5", "1-0-6", "1-0-7"}
+
+
+def _coil_other_pin(number):
+    if number in _COBRAPIN_BANK_A:
+        return "HV-A"
+    if number in _COBRAPIN_BANK_B:
+        return "HV-B"
+    if number in _COBRAPIN_BANK_C:
+        return "HV-C"
+    return None
+
+
+def _pin_rows(components):
+    """Flatten each component's switches/coils into one row per pin, for the row-per-pin wiring
+    table (docs/wiring-pin-map.md, docs/wiring-guide.md, wiring-guide.html section 04).
+
+    Switch/coil order within a component: interleaved pairwise (switch, coil, switch, coil...)
+    when the counts match - a natural per-unit pairing (e.g. left/right flipper switch+coil) -
+    else every switch then every coil, since an uneven count has no obvious positional
+    correspondence to fabricate (e.g. the trough's 7 switches vs. its 1 eject coil).
+    """
+    rows = []
+    for comp in components:
+        switches, coils = comp["switches"], comp["coils"]
+        if switches and coils and len(switches) == len(coils):
+            entries = [pair for sc in zip(switches, coils) for pair in (
+                (sc[0], "Switch"), (sc[1], "Coil"))]
+        else:
+            entries = [(e, "Switch") for e in switches] + [(e, "Coil") for e in coils]
+
+        for i, (e, kind) in enumerate(entries):
+            other_pin = "GND" if kind == "Switch" else (_coil_other_pin(e["number"]) or "")
+            rows.append({
+                "component": comp["display_name"] if i == 0 else "",
+                "name": e["name"],
+                "type": kind,
+                "board": e["board"],
+                "silkscreen": e.get("silkscreen") or "",
+                "other_pin": other_pin,
+                "mpf": e["number"],
+                "status_text": comp["status_text"] if i == 0 else "",
+                "badge": comp["badge"] if i == 0 else "",
+            })
+    return rows
 
 
 def _board_middle_index(board):
@@ -124,8 +161,6 @@ def _components_summary(reg):
             "display_name": comp["display_name"],
             "switches": switches,
             "coils": coils,
-            "switches_str": _pin_str(switches),
-            "coils_str": _pin_str(coils),
             "boards": boards,
             "status": status,
             "status_text": STATUS_TEXT.get(status, "?"),
@@ -180,6 +215,7 @@ def generate_all():
 
     boards = _board_summary(reg)
     components = _components_summary(reg)
+    pin_rows = _pin_rows(components)
     led_numbers = registry.mpf_led_numbers()
     led_count = sum(1 for n in led_numbers if n.startswith("0-0-"))
 
@@ -188,17 +224,18 @@ def generate_all():
     harness_svgs = _render_harnesses()
 
     pin_map_content = env.get_template("wiring_pin_map.md.j2").render(
-        generated_at=generated_at, boards=boards, components=components, led_count=led_count,
+        generated_at=generated_at, boards=boards, components=components, pin_rows=pin_rows,
+        led_count=led_count,
     )
     wiring_guide_content = env.get_template("wiring_guide.html.j2").render(
-        generated_at=generated_at, boards=boards, components=components,
+        generated_at=generated_at, boards=boards, pin_rows=pin_rows,
         harness_svgs=harness_svgs,
     )
     # Markdown diagrams reference a real .svg file (docs/wiring-diagrams/<name>.svg), not inline
     # SVG XML - Wiki.js (and Markdown generally) serves a real image file far more reliably than
     # raw SVG passed through a Markdown renderer's HTML sanitizer.
     wiring_guide_md_content = env.get_template("wiring_guide.md.j2").render(
-        generated_at=generated_at, boards=boards, components=components,
+        generated_at=generated_at, boards=boards, pin_rows=pin_rows,
         harness_names=list(harness_svgs),
     )
     references_index_content = None

@@ -31,14 +31,18 @@ that).
 
 ## Components
 
+One row per switch/coil pin — Component and Status are shown only on a group's first row.
 Status is the 1-6 build-lifecycle stage from `components.yaml`
 (`registry.COMPONENT_STATUSES`): 1 idea · 2 hardware, no purpose · 3 hardware with a purpose,
-not renovated · 4 renovated, not wired · 5 wired, not tested · 6 wired & tested.
+not renovated · 4 renovated, not wired · 5 wired, not tested · 6 wired & tested. Pin Silk Screen
+is blank when not yet confirmed against a real board/photo; Other Pin is `GND` for every switch,
+or a CobraPin coil's HV bank feed (`HV-A`/`HV-B`/`HV-C`) — blank for a red-board coil, since
+none is wired yet.
 
-| Component | Switches | Coils | Board(s) | Status |
-|---|---|---|---|---|
-{%- for c in components %}
-| {{ c.display_name }} | {{ c.switches_str }} | {{ c.coils_str }} | {{ c.boards | join(', ') }} | {{ c.status_text }} |
+| Component | Switches & Coils | Type | Board | Pin Silk Screen | Other Pin | MPF | Status |
+|---|---|---|---|---|---|---|---|
+{%- for r in pin_rows %}
+| {{ r.component }} | {{ r.name }} | {{ r.type }} | {{ r.board }} | {{ r.silkscreen }} | {{ r.other_pin }} | {{ r.mpf }} | {{ r.status_text }} |
 {%- endfor %}
 
 ## Harness diagrams

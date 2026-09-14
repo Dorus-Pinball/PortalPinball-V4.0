@@ -434,13 +434,13 @@ footer{
   <!-- 04 -->
   <div class="section">
     <div class="section-head"><span class="section-num">04</span><h2>Known components — current wiring</h2></div>
-    <p class="section-note">Generated from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> — update that file first (or the hw_console web UI) if anything changes, then re-run the generator, never edit this table by hand.</p>
+    <p class="section-note">Generated from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> — update that file first (or the hw_console web UI) if anything changes, then re-run the generator, never edit this table by hand. One row per switch/coil pin; Component and Status show only on a group's first row. Pin Silk Screen is blank when not yet confirmed against a real board/photo (see <span style="font-family:'IBM Plex Mono',monospace">docs/board-silkscreen-reference.md</span>); Other Pin is <span style="font-family:'IBM Plex Mono',monospace">GND</span> for every switch, or a CobraPin coil's HV bank feed — blank for a red-board coil, since none is wired yet.</p>
     <div class="card">
       <table class="wtable">
-        <thead><tr><th>Component</th><th>Switches</th><th>Coils</th><th>Board</th><th>Status</th></tr></thead>
+        <thead><tr><th>Component</th><th>Switches &amp; Coils</th><th>Type</th><th>Board</th><th>Pin Silk Screen</th><th>Other Pin</th><th>MPF</th><th>Status</th></tr></thead>
         <tbody>
-{%- for c in components %}
-          <tr><td>{{ c.display_name }}</td><td class="num">{{ c.switches_str }}</td><td class="num">{{ c.coils_str }}</td><td class="brd">{{ c.boards | join(', ') }}</td><td><span class="status {{ c.badge }}">{{ c.badge }}</span></td></tr>
+{%- for r in pin_rows %}
+          <tr><td>{{ r.component }}</td><td>{{ r.name }}</td><td>{{ r.type }}</td><td class="brd">{{ r.board }}</td><td class="num">{{ r.silkscreen }}</td><td class="num">{{ r.other_pin }}</td><td class="num">{{ r.mpf }}</td><td>{% if r.badge %}<span class="status {{ r.badge }}">{{ r.badge }}</span>{% endif %}</td></tr>
 {%- endfor %}
         </tbody>
       </table>
