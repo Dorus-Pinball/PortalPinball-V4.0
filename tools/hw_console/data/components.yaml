@@ -32,22 +32,22 @@ checklist_template:
 
 boards:
   chain0-0x20:
-    display_name: "Chain 0 / Board 0x20 (Cobra LED driver)"
+    display_name: "Chain 0 / Board 0x20 (CobraPin)"
     port: COM4
     chain: 0
     address: "0x20"
     firmware: "0x2040000"
-    role: led-driver
+    role: cobrapin-switches-coils-leds
     status: scanned
     notes: "Also has 16 unused solenoid outputs (see commented Cobra 0-0-x placeholders
       in hardware-coils.yaml)."
   chain1-0x20:
-    display_name: "Chain 1 / Board 0x20 (Cobra LED driver)"
+    display_name: "Chain 1 / Board 0x20 (CobraPin)"
     port: COM5
     chain: 1
     address: "0x20"
     firmware: "0x2040000"
-    role: led-driver
+    role: cobrapin-switches-coils-leds
     status: scanned
     notes: "Also has 8 unused solenoid outputs (see commented Cobra 1-0-x placeholders
       in hardware-coils.yaml)."
