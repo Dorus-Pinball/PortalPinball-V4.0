@@ -220,7 +220,15 @@ treated as ground truth throughout this session; the board itself is not in ques
    signal entirely) sidesteps the question. The Bus Pirate's own 3WIRE-mode "Normal" (push-pull)
    output-type menu proved un-navigable in this firmware (every setup prompt auto-defaults within
    well under a second; repeated attempts, including pre-queued multi-line input bursts, never
-   reliably landed on it) and was abandoned as a dead end.
+   reliably landed on it) and was abandoned as a dead end. **This isn't fixable on the v3.6 even if
+   that menu had worked** — its "Normal" push-pull mode is documented as `H=3.3V`, not 5V; the only
+   path to a genuine ~4.9V high on this hardware is the passive pull-up-to-`VPU` scheme, which
+   worked for `SCK`/`MOSI` but not `RCK`/`CS`. A **Bus Pirate 5** would genuinely solve this
+   natively (confirmed against its official hardware docs, docs.buspirate.com): its I/O pins use
+   74LVC1T45 level-shifting buffers powered from the board's own settable 1-5V supply, so a driven
+   "high" is a real, actively-sourced logic level up to 5V, not a pull-up reference — architecturally
+   the exact capability the v3.6 lacks. Worth acquiring if more Bus-Pirate-driven bench work on this
+   board continues; not needed for the hand-wire workaround already in use.
 
 **Everything tested, and it all came back negative — this is the important part.** With clean 5V
 signals confirmed via both a USB logic analyzer (`sigrok-cli`/`fx2lafw`) and, later, a Bus Pirate
