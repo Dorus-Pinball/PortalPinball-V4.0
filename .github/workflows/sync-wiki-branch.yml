@@ -8,6 +8,10 @@ name: Sync wiki-sync branch from main
 #
 # Fails loudly on conflict rather than guessing: a same-file edit on both main and a pending wiki
 # change needs a human, not an automated merge decision.
+#
+# Don't delete wiki-sync after merging its PR into main (it's long-lived, not a feature branch).
+# If it does get deleted anyway, this recreates it from main instead of failing on every push -
+# which is what happened after PR #20's branch was deleted on 2026-09-20.
 
 on:
   push:
@@ -22,13 +26,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: wiki-sync
           fetch-depth: 0
 
       - name: Merge main into wiki-sync
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git merge origin/main --no-edit
+          if git ls-remote --exit-code --heads origin wiki-sync > /dev/null; then
+            git checkout -B wiki-sync origin/wiki-sync
+            git merge origin/main --no-edit
+          else
+            echo "::warning::wiki-sync was missing on origin - recreating it from main"
+            git checkout -B wiki-sync origin/main
+          fi
           git push origin wiki-sync
