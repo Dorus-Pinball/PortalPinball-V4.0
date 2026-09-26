@@ -208,14 +208,19 @@ treated as ground truth throughout this session; the board itself is not in ques
 2. **Bus Pirate `RCK` never reached a valid logic-high level** — driving `RCK` through the Bus
    Pirate's `AUX` pin (or, after moving it, its `CS` pin) only produced **~3.2V** at the board's
    own `RCK` pin, not the ~4.9V the board's `SCK`/`MOSI` correctly reached via the identical
-   pull-up mechanism. Points at a real pull-down/loading effect on the board's own `RCK` input
-   overpowering a weak (~10kΩ) external pull-up — not a wrong-Bus-Pirate-pin issue (moving the
-   control from `AUX` to `CS`, same pull-up mechanism as `SCK`/`MOSI`, made no difference). Fixed
-   pragmatically by **manually hand-wiring `RCK` directly between the board's own `GND` and `+5V`
-   pins** (bypassing the Bus Pirate's I/O for that signal entirely) — the Bus Pirate's own 3WIRE-
-   mode "Normal" (push-pull) output-type menu proved un-navigable in this firmware (every setup
-   prompt auto-defaults within well under a second; repeated attempts, including pre-queued
-   multi-line input bursts, never reliably landed on it) and was abandoned as a dead end.
+   pull-up mechanism. Originally attributed to a board-side pull-down overpowering the weak
+   (~10kΩ) external pull-up; an electronics-review agent later found a more parsimonious
+   explanation worth trusting more — Dangerous Prototypes' own Bus Pirate docs describe `AUX` as a
+   fixed ~3.3V push-pull output, not routed through the pull-up-referenced mechanism at all, and
+   3.2V is suspiciously close to that rail minus a small drop. `CS`'s own output-type ("Normal"
+   push-pull vs. open-drain) was never confirmably reconfigured either (see below), so it may have
+   the same issue for a different reason. Either way, root cause on the Bus Pirate side is not
+   fully pinned down — but the fix doesn't depend on knowing which: **manually hand-wiring `RCK`
+   directly between the board's own `GND` and `+5V` pins** (bypassing the Bus Pirate's I/O for that
+   signal entirely) sidesteps the question. The Bus Pirate's own 3WIRE-mode "Normal" (push-pull)
+   output-type menu proved un-navigable in this firmware (every setup prompt auto-defaults within
+   well under a second; repeated attempts, including pre-queued multi-line input bursts, never
+   reliably landed on it) and was abandoned as a dead end.
 
 **Everything tested, and it all came back negative — this is the important part.** With clean 5V
 signals confirmed via both a USB logic analyzer (`sigrok-cli`/`fx2lafw`) and, later, a Bus Pirate
@@ -231,8 +236,12 @@ with hand-verified voltage levels:
 - **Discovered a real, previously-undocumented detail**: the output is **tri-stated (floating)
   during the register's load phase (`RCK` low) and only actively drives once `RCK` goes high**
   (confirmed via a pull-up-resistor loading test — a weak external pull-up swings the floating
-  pin, but can't budge it once `RCK` is high). This is genuinely new information, not previously
-  known for this board family.
+  pin, but can't budge it once `RCK` is high). A CMOS push-pull output's ~tens-of-ohms drive
+  impedance should dominate a 10kΩ pull-up by roughly 100:1, so this is a sound way to distinguish
+  floating from driven — caveat (flagged by an electronics-review agent) that it technically proves
+  "high output impedance," not literally infinite/floating, so it can't fully rule out a damaged
+  output with abnormally high-but-finite impedance being partly swayed without being genuinely
+  tri-stated. This is genuinely new information, not previously known for this board family.
 - Despite properly exploiting that discovery (real latch, confirmed-driven output, full 8-clock
   shift, both `SCK` idle polarities, the corrected 5V `RCK`), the shifted-out byte is **completely
   flat and unresponsive** to any of the 7 physical sensors, individually and in combination,
@@ -265,13 +274,19 @@ merely unfound.
 
 **Real pin numbers for U2 (74HCT165D)**, confirmed from Stern's own schematic for the related
 older board (industry-standard pinout, applies regardless of which board it's soldered to):
-`SH/LD`=pin 1 (`RCK`), `CLK`=pin 2 (`SCK`), `QH`=pin 7 (true serial output), `GND`=pin 8,
-`QH̄`=pin 9 (complementary output), `SER`=pin 10 (`MOSI`), `VCC`=pin 16. Pin 1 is marked by the
-small dot/notch on the chip body.
+`SH/LD`=pin 1 (`RCK`), `CLK`=pin 2 (`SCK`), `QH̄`=pin 7 (complementary output — **not** the one to
+probe), `GND`=pin 8, **`QH`=pin 9 (the true serial output — this is the one to probe)**, `SER`=pin
+10 (`MOSI`), `VCC`=pin 16. Pin 1 is marked by the small dot/notch on the chip body. (Corrected
+2026-09-26 by an electronics-review agent that cross-checked this against the datasheet — the
+first version of this note had `QH`/`QH̄` swapped.)
 
 **Where this leaves things** — next actions, roughly in priority order:
-1. Probe `U2` pin 7 (`QH`) directly at the chip while driving `RCK`/`SCK` as before, comparing
-   against the connector's `MISO` in real time. If pin 7 also stays frozen, the fault is internal
+1. Probe `U2` pin 9 (`QH`, the true output — not pin 7, that's `QH̄`) directly at the chip while
+   driving `RCK`/`SCK` as before, comparing against the connector's `MISO` in real time. Also worth
+   checking directly: whether `CN1`/`CN3`'s exact-complement values (`0` vs `1`) simply come from
+   one connector tapping `QH` and the other `QH̄` — a much simpler explanation than a hidden buffer
+   stage, and easy to rule in/out once you're probing the chip's actual pins anyway. If pin 9 also
+   stays frozen, the fault is internal
    to U2 (or its inputs); if it differs from the connector, the fault/missing signal is downstream,
    between U2 and the connector (likely in or around U3).
 2. At the same time, directly probe `U2`'s `D0`–`D7` input legs while blocking each sensor — the

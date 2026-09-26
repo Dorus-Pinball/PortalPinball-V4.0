@@ -124,10 +124,14 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       power-cycle, real-time blocking during continuous clocking), the output stays completely
       flat and unresponsive to any of the 7 sensors. Two independent multi-agent reviews (5 agents
       total) didn't find a resolution but did surface concrete gaps:
-      - [ ] **Probe `U2` (74HCT165D) pin 7 (`QH`) directly at the chip** while driving `RCK`/`SCK`
-        as before, comparing against the connector's `MISO` live — determines whether the fault is
-        internal to U2 or downstream of it (real pin numbers confirmed from Stern's own schematic:
-        `SH/LD`=1, `CLK`=2, `QH`=7, `GND`=8, `QH̄`=9, `SER`=10, `VCC`=16).
+      - [ ] **Probe `U2` (74HCT165D) pin 9 (`QH`, the true output) directly at the chip** while
+        driving `RCK`/`SCK` as before, comparing against the connector's `MISO` live — determines
+        whether the fault is internal to U2 or downstream of it (pin numbers, corrected 2026-09-26
+        against the actual datasheet after an earlier QH/QH̄ mixup: `SH/LD`=1, `CLK`=2, `QH̄`=7
+        (complementary — not this one), `GND`=8, `QH`=9, `SER`=10, `VCC`=16). Also worth checking
+        while probing: whether `CN1`/`CN3`'s exact-complement constant values simply come from
+        tapping `QH` vs `QH̄` directly — simpler than a hidden buffer stage, easy to check at the
+        same time.
       - [ ] **Directly probe `U2`'s `D0`–`D7` input legs** while blocking each sensor — never
         independently verified; the "good sensor data reaches U2" conclusion so far only rests on
         the board's own indicator LEDs, which may branch off before U2's actual input pins.
