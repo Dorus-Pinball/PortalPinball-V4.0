@@ -42,9 +42,12 @@ parts listings as:
 Stern has not published schematics or a parts list for any of these (confirmed via their own
 support/PinWiki — see Sources). The board physically examined for this writeup is silkscreened
 **520-7001-00A**, "...RD TROUGH" ("[STANDA]RD TROUGH" or similar, partially obscured by a label).
-Whether the newer 520-1051-00/520-8516-00 revisions use the same shift-register design is
-**not confirmed** — worth independently checking if you have one of those instead, rather than
-assuming this writeup transfers directly.
+Whether the newer 520-1051-00/520-8516-00 revisions use the same shift-register design was an
+open question when this section was first written — **since independently checked on a
+520-8516-00 unit**, see "A different board revision (520-8516-00)" below for what's actually
+confirmed there (a real 74HCT165 shift register is present, but with genuine differences from
+this section's assumptions - don't assume this writeup transfers directly without reading that
+section too). 520-1051-00 remains unchecked.
 
 ## What this is *not*
 

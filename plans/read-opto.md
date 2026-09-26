@@ -291,6 +291,11 @@ small dot/notch on the chip body.
 
 ## Verification
 
+*Written for the original plan, before the 520-8516-00 findings above — "the board's identity"
+below means the original `520-7001-00A` unit. The 2026-09-26 bench findings section's own "Where
+this leaves things" list is the current, superseding checklist for the new board; this section is
+kept as the record of what the original plan intended to verify once a working bridge existed.*
+
 - Bench-test the flashed chip + support circuit on a breadboard against the opto board off the
   machine first: manually block/unblock each opto channel and confirm the corresponding GPIO
   output toggles correctly, before installing in the cabinet.

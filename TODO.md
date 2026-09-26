@@ -93,8 +93,11 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       `plans/read-opto.md`'s "Bench findings" section for the full elimination process: power,
       ground, wiring, the Uno's own SPI pipeline, and `RCK`/`SCK` reaching the board were all
       proven correct down to waveform level with a logic analyzer; U1's inputs carry good live
-      sensor data, but its serial output never responds). Two remaining paths, either is a valid
-      next action:
+      sensor data, but its serial output never responds). **Note: on this old `520-7001-00A`
+      board, U1 is the 74HCT165 shift register** — the *new* `520-8516-00` board discussed in the
+      2026-09-26 update below numbers its chips differently (U2 is the shift register there). The
+      two checkboxes right below are written against this old board's numbering; if reused against
+      the new board, read "U1" as "U2." Two remaining paths, either is a valid next action:
       - [ ] **Hardwire U2's/U1's buffered per-channel legs directly into OPP**, skipping the dead
         shift register and the SPI-bridge approach entirely — no chip repair or bridge firmware
         needed, just calibrate which physical leg is which trough position, then wire into the
@@ -136,9 +139,10 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       - [ ] **When the real machine is next accessible**, capture its actual
         `RCK`/`SCK`/`MOSI`/`MISO` waveforms with the logic analyzer for a direct comparison — the
         single most conclusive test available, not possible yet.
-      Owner does not want to modify this specific board — the replace-U1/bypass paths above would
-      need a different unit or explicit sign-off first if the probing above confirms U2 itself is
-      the fault.
+      Owner does not want to modify this specific board — the replace-shift-register/bypass paths
+      above (written against the old board as "replace U1"; on this new board that's **U2**, the
+      74HCT165D) would need a different unit or explicit sign-off first if the probing above
+      confirms U2 itself is the fault.
 
 ## Dev tooling
 

@@ -5,7 +5,7 @@
 // 8 bits shifted out, but this board has proven itself correct in a real machine while reading
 // as a constant, unresponsive byte here — see plans/read-opto.md's "Bench findings" for context).
 //
-// Cycles through a handful of MOSI test bytes. For each, pulses RCK to latch, then clocks out
+// Cycles through all 256 possible MOSI test bytes. For each, pulses RCK to latch, then clocks out
 // THREE consecutive bytes (24 clocks total, not just 8) in case the real data only shows up
 // after a longer clock train, or a preceding status/ID byte. Prints what was sent and all three
 // bytes received, continuously, so you can watch for ANY change while blocking sensors.
