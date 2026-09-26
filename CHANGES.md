@@ -423,3 +423,12 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     independent of MPF). Both are written up in `plans/read-opto.md`. — **Status: active**;
     `spi_bit_bang` **rejected for now**, kept on file as the fallback if the bridge ever needs
     replacing.
+30. **`plans/read-opto.md` cut down to the build plan; its knowledge moved to
+    `docs/stern-spike-trough-opto.md`** (2026-09-26). The plan had grown to ~530 lines, mostly bench
+    history and retracted theories. It now holds only the ATmega bridge build (goal, status, parts,
+    wiring, programming, build order, verification). The doc gained a probing reference (chip
+    pinouts and measured values), the MPF `spi_bit_bang` write-up, a bench-tools section (Uno,
+    logic analyzer, Bus Pirate v3.6 limits vs. Bus Pirate 5), the Stern "node extension" finding,
+    and a condensed bench history with lessons. The full original text is preserved in git at
+    commit `21a9e8b`; entries #27–#29 above still name the old plan sections (left as-is, per this
+    log's convention). — **Status: active**.

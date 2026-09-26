@@ -6,7 +6,8 @@ large, mostly image-based PDF (diagrams/scans) — full text extraction was not 
 summary of the relevant, readable content only, not a byte-perfect copy. The full PDF is also
 saved locally at `docs/SPIKE-System-Manual.pdf` in this repo.
 
-Cited from `plans/read-opto.md`'s 2026-09-26 bench findings section, while investigating why a
+Cited from `docs/stern-spike-trough-opto.md` ("What this is *not*"; originally from the 2026-09-26
+bench findings in `plans/read-opto.md`), while investigating why a
 `520-8516-00` trough opto board's serial output couldn't be read from non-Stern electronics
 despite clean, correctly-timed signals reaching it.
 

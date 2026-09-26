@@ -91,7 +91,7 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       **Update (2026-09-11, bench test) — *most likely wrong, see the 2026-09-26 resolution
       below*:** built and bench-tested the bridge — found the board's
       **U1 (74HCT165 shift register) is dead**, not a wiring/firmware issue (see
-      `plans/read-opto.md`'s "Bench findings" section for the full elimination process: power,
+      `docs/stern-spike-trough-opto.md`'s "Bench history" for the full elimination process: power,
       ground, wiring, the Uno's own SPI pipeline, and `RCK`/`SCK` reaching the board were all
       proven correct down to waveform level with a logic analyzer; U1's inputs carry good live
       sensor data, but its serial output never responds). **Note: on this old `520-7001-00A`
@@ -112,7 +112,7 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
         `BIT_CHANNEL`/`BIT_INVERT` in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
         against the repaired board, then wire in and re-test.
       **Update (2026-09-26, brand-new `520-8516-00` board, extensive Arduino + Bus Pirate session,
-      full writeup in `plans/read-opto.md`'s "Bench findings (2026-09-26)"):** bought a genuinely
+      summarized in `docs/stern-spike-trough-opto.md`'s "Bench history"):** bought a genuinely
       new replacement board (owner has personally seen this exact unit work in a real machine) —
       turned out to be the *current* `520-8516-00` revision, not `520-7001-00A`, with real
       differences (two connectors carrying different values, a third IC, `MOSI` actually broken
@@ -149,26 +149,27 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       above (written against the old board as "replace U1"; on this new board that's **U2**, the
       74HCT165D) would need a different unit or explicit sign-off first if the probing above
       confirms U2 itself is the fault.
-      **Update (2026-09-26, resolved — the board reads correctly; full writeup in
-      `plans/read-opto.md`'s "Resolution (2026-09-26)"):** the board inverts `RCK` before the shift
+      **Update (2026-09-26, resolved — the board reads correctly; written up in
+      `docs/stern-spike-trough-opto.md`):** the board inverts `RCK` before the shift
       register (`CN1` `RCK` → 220Ω → 74HC540 pin 9 → pin 11 → 74HCT165 `SH/LD`, confirmed with a
       meter in Ω mode). Every earlier read pulsed `RCK` the wrong way and clocked the register
       while it was stuck in load mode — hence the constant all-same-bits byte. With `RCK` idling
       low and pulsed high, the Uno reads `0b01111111` with the trough clear, and each sensor
       clears exactly one bit: bit 6 = jam, bits 5→0 = positions 1→6, bit 7 unused; 1 = clear,
       0 = blocked. `BIT_CHANNEL` is set in the firmware. The "output floats during load" and
-      "hidden component" conclusions above were artifacts and are retracted there. Remaining:
+      "hidden component" conclusions above were artifacts. Remaining:
       - [x] *Decided 2026-09-26: the ATmega bridge (owner's choice; `spi_bit_bang` kept on file as
         the untested alternative).* **Pick the approach**: the ATmega bridge (the two items below), or reading the board
         straight from OPP with MPF's built-in `spi_bit_bang` platform — no microcontroller, 1 OPP
         input + 2 free OPP outputs with pull-ups, but ~0.5s per read and untested. Both are
-        written up in `plans/read-opto.md` ("Permanent build" / "Alternative: … `spi_bit_bang`").
+        written up: the bridge in `plans/read-opto.md`, `spi_bit_bang` in
+        `docs/stern-spike-trough-opto.md`.
         First check whether two OPP driver outputs are free.
       - [ ] **Set `BIT_INVERT`** in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
         against MPF's live switch states on the cabinet (switches are `type: NC`, and
         `s-trough-jam` active = clear path).
-      - [ ] **Build the permanent bridge** — bare ATmega328P-PU per
-        `design/physical-checklists/trough-opto-bridge.html`, or keep the Uno — drive `RCK` from
+      - [ ] **Build the permanent bridge** — bare ATmega328P-PU per `plans/read-opto.md` (printable:
+        `design/physical-checklists/trough-opto-bridge.html`), or keep the Uno — drive `RCK` from
         5V logic (it enters a 74HC540, which needs ~3.5V for a valid high), and wire the 7 mirror
         outputs into OPP's existing chain2-0x21 positions.
       - [ ] **Run the empty-trough + ball-by-ball test** on the real cabinet (the original repro

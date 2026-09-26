@@ -154,5 +154,11 @@ sources:
     title: "Stern SPIKE System Manual (775-7640-00, Release 2)"
     url: "https://www.sternpinball.com/wp-content/uploads/2020/11/SPIKE-System-Manual.pdf"
     date_archived: "2026-09-26"
-    cited_by: "plans/read-opto.md"
+    cited_by: "docs/stern-spike-trough-opto.md"
     note: "Confirms the trough opto board is a 'Node extension' read by a Playfield Node board's own onboard firmware, not the main Spike CPU directly - explains why the bit-level read protocol is undocumented anywhere public."
+  - slug: buspirate5-hardware-rev10
+    title: "Hardware Design (5 REV 10) - Bus Pirate 5 docs"
+    url: "https://docs.buspirate.com/docs/hardware/bp5rev10/hardware/"
+    date_archived: "2026-09-26"
+    cited_by: "docs/stern-spike-trough-opto.md"
+    note: "Bus Pirate 5 I/O goes through 74LVC1T45 level shifters on a settable 1-5V supply, so it can drive a real 5V logic high - unlike the v3.6 used on the trough opto bench."

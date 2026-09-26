@@ -5,9 +5,10 @@ homebrew machine and wants to read its opto sensors from non-Stern control hardw
 generic microcontroller, etc.) instead of Stern's own CPU/node system. Written up here because
 the "Serial Opto Receiver" name is misleading and the obvious assumption — that it needs Stern's
 proprietary node-bus protocol — is wrong for at least one confirmed board revision. If you're
-building a Portal Pinball V4.0-style machine and landed here from that project: this file is the
-general-purpose writeup; `plans/read-opto.md` in this repo is the project-specific plan built on
-top of it, and `tools/atmega328p-trough-bridge/` is a working reference implementation.
+building a Portal Pinball V4.0-style machine and landed here from that project: this file holds
+the knowledge (how the board works, how to read it, the tools and pitfalls, and the bench history
+that got there — see "Bench history" at the end); `plans/read-opto.md` is that project's build plan
+for the bridge, and `tools/atmega328p-trough-bridge/` is a working reference implementation.
 
 **Confirmed by physically examining two boards** (parts 520-7001-00A and 520-8516-00, see below;
 the read has been proven working end-to-end on the 520-8516-00). The rest of the part-number
@@ -70,6 +71,13 @@ CPU + node board and were about to go source one just to read a trough, stop —
 don't need it. The two links get conflated easily because both use the word "serial" and both are
 Stern/Spike-branded; they are unrelated protocols solving different problems (inter-board bus
 vs. local sensor serialization on one small board).
+
+In a real Stern machine the trough board isn't read by the Spike CPU at all. Stern's SPIKE System
+Manual classifies it as a **"node extension"**: it hangs off a full node board (e.g. a Playfield
+Node) over a short serial cable, and that node's own microcontroller reads it, using Stern's closed
+firmware. That's why no bit-level description of the read exists anywhere public — which turned out
+not to matter, since the board is just a shift register behind a buffer (archived copy of the
+manual's relevant pages: `docs/references/raw/stern-spike-system-manual/content.md`).
 
 ## What it actually is
 
@@ -186,9 +194,11 @@ confirmed ways:
   `CN1` also has an unlabelled 7th pin position that carries nothing, even in a real machine.
 - **Three ICs**: U1 = 74HC540D (sensor buffering plus the `RCK` inversion), U2 = 74HCT165D (the
   shift register), U3 = 74HC14D hex Schmitt-trigger inverter (role untraced; on the older board's
-  schematic the equivalent Schmitt-trigger pair conditions `MISO` only). Note the U1/U2 numbering is swapped relative to the 520-7001-00A. The `RCK` path
-  was confirmed with a meter in Ω mode: `CN1` `RCK` → 220Ω → U1 pin 9 (A8) → U1 pin 11 (Y8) → U2
-  pin 1 (`SH/LD`). The 220Ω series resistor means continuity mode won't beep — measure resistance.
+  schematic the equivalent Schmitt-trigger pair conditions `MISO` only). Note the U1/U2 numbering
+  is swapped relative to the 520-7001-00A. The `RCK` path was confirmed with a meter in Ω mode:
+  `CN1` `RCK` → 220Ω → U1 pin 9 (A8) → U1 pin 11 (Y8) → U2 pin 1 (`SH/LD`).
+- `CN2` is a small 3-pin power-only tap (`JAM`/`GND`/`VCC`). The jam sensor is *not* wired
+  separately — it goes through the shift register like the other six.
 - `MOSI` is broken out, but has no effect on the read.
 
 **Verified bit map** (blocking one sensor at a time; first bit shifted out = raw bit 7):
@@ -206,10 +216,134 @@ confirmed ways:
 
 All seven channels read **1 = clear, 0 = blocked**. With everything clear the byte is `0b01111111`.
 
-**A pitfall worth knowing if you use a pull-up to check whether a pin is driven:** during this
-investigation, enabling a Bus Pirate's pull-ups made `MISO` change and seemed to show the output
-"floating." Most likely (not separately retested) it was the pull-up also raising the undriven `SCK` line — a clock edge that
-shifted the register. If you do this test, make sure the clock line is actively held while you do.
+### Probing reference (pin numbers)
+
+Pin 1 is at the dot/bevel on each chip. SOIC pins run down one side from pin 1 and back up the
+other, so the last pin sits directly opposite pin 1.
+
+| Chip | Pins worth knowing |
+|---|---|
+| 74HCT165D (the shift register; U2 on the 520-8516-00, U1 on the 520-7001-00A), 16 pins | 1 `SH/LD` (from `RCK`, inverted) · 2 `CLK` (`SCK`) · 3–6 inputs E–H · 7 `QH̄` (complementary out) · 8 GND · **9 `QH` (serial out)** · 10 `SER` · 11–14 inputs A–D · 15 `CLK INH` · 16 VCC |
+| 74HC540D (U1 on the 520-8516-00), 20 pins | 1/19 output enables · 2–9 inputs A1–A8 (**9 = A8, fed by `RCK` through 220Ω**) · 10 GND · 11–18 outputs Y8–Y1 (**11 = Y8, drives `SH/LD`**) · 20 VCC |
+| 74HC14D (U3 on the 520-8516-00), 14 pins | inputs 1, 3, 5, 9, 11, 13 · 7 GND · 14 VCC |
+
+Measured on a 520-8516-00, power off: `CN1` `RCK` → U1 pin 9 = 219.5Ω (the series resistor), U1
+pin 11 → U2 pin 1 = 0.1Ω. Use the meter's Ω mode, not continuity mode — most meters stay silent
+through 220Ω.
+
+## Reading it from MPF without a microcontroller: `spi_bit_bang` (untested)
+
+Not used in Portal Pinball V4.0 (the ATmega bridge was chosen instead, `CHANGES.md` #29), but a
+real option for anyone running Mission Pinball Framework. MPF 0.80 ships a `spi_bit_bang` platform
+(`mpf/platforms/spi_bit_bang.py`, config spec in `mpf/config_spec.yaml`) that reads a 74HC165-style
+register by bit-banging it through *another* platform's hardware: two MPF `digital_outputs` for the
+latch and clock, and one ordinary switch input for the data line. OPP's own firmware has no
+shift-register input mode (MPF's OPP platform only knows solenoid, input, incandescent, matrix and
+neopixel wings), so on OPP this is the only no-extra-microcontroller way.
+
+**How it maps onto this board.** OPP outputs are low-side FETs, so each needs a pull-up resistor
+to 5V (roughly 1–2.2kΩ; check the Stern pin reaches ≥3.5V, since `RCK` enters a plain 74HC540).
+With pull-ups, "output enabled" = LOW and "disabled" = HIGH. That matches the board: the platform
+holds its chip-select *disabled* (HIGH = load) between reads and *enabled* (LOW = shift) while
+clocking — exactly the inverted `RCK` this board wants. The clock idles HIGH and each 1ms pulse
+ends on a rising edge, when the 74HC165 shifts. The first bit read is input H (the unused bit 7),
+MSB first, so switch numbers `"0"`–`"6"` equal raw bits 0–6. An OPP input reads active when pulled
+low, so the bits arrive inverted: a switch is active when its sensor is **blocked**.
+
+```yaml
+# Untested sketch - output/input numbers are placeholders
+digital_outputs:
+  trough_rck: {number: "<free OPP output>", type: driver}   # -> CN1 RCK, pull-up to 5V
+  trough_sck: {number: "<free OPP output>", type: driver}   # -> CN1 SCK, pull-up to 5V
+switches:
+  trough_miso: {number: "<free OPP input>"}                 # <- CN1 MISO
+  s-trough1: {number: "5", platform: spi_bit_bang}
+  s-trough2: {number: "4", platform: spi_bit_bang}
+  s-trough3: {number: "3", platform: spi_bit_bang}
+  s-trough4: {number: "2", platform: spi_bit_bang}
+  s-trough5: {number: "1", platform: spi_bit_bang}
+  s-trough6: {number: "0", platform: spi_bit_bang}
+  s-trough-jam: {number: "6", platform: spi_bit_bang}
+spi_bit_bang:
+  cs_pin: trough_rck
+  clock_pin: trough_sck
+  miso_pin: trough_miso
+  inputs: 8
+  bit_time: 50ms   # default; must exceed OPP's switch-report latency (OPP poll_hz defaults to 100)
+```
+
+**Trade-offs versus a microcontroller bridge:**
+- **For:** no microcontroller, firmware or flashing; polarity is just each switch's `type` in MPF.
+  Uses 1 OPP input instead of 7.
+- **Against:** slow — every bit is a round trip through MPF and OPP's serial link, so a full read
+  takes about 0.5s at the default `bit_time`. Fine for trough ball counting, much laggier than a
+  bridge's ~10ms. Reads only while MPF runs, and the switches can't be used in OPP hardware rules.
+- Needs 2 free OPP driver outputs plus pull-ups; those outputs must not have flyback diodes to a
+  coil rail that can be switched off (that would clamp the logic lines low when coil power is off).
+- At startup the platform reports every switch inactive until its first read completes; watch for
+  spurious ball-count events on boot.
+
+## Bench tools: what worked, and the gotchas
+
+- **Arduino Uno (5V logic)** — the tool that finally read the board. Its hardware SPI pins are
+  D13 = `SCK`, **D12 = `MISO` (input)**, D11 = `MOSI` (output). Swapping D11/D12 makes the Uno
+  drive the board's output line, and every read comes back as a stuck constant.
+- **USB logic analyzer** (Saleae-clone, `fx2lafw` driver via `sigrok-cli`) — good for proving the
+  waveforms at the connector are clean. Two limits: this clone stops after roughly 470k samples per
+  capture (about 0.47s at 1MHz, however long you ask for), so take several short captures; and a
+  clean waveform at the connector proves nothing about what the board does with it internally — it
+  couldn't have revealed the on-board `RCK` inversion.
+- **Bus Pirate v3.6** (SparkFun, firmware 5.10) — **not suitable for driving `RCK`**. Its `AUX`
+  pin (and `CS`, as it was configured) reached only ~3.2V at the board, below the ~3.5V a 74HC540
+  needs at 5V; its "Normal" push-pull output type is 3.3V-high by design. The only way to a ~4.8V
+  high is open-drain with the pull-ups referenced to 5V (jumper `VPU` to `+5V`), which worked for
+  `SCK`/`MOSI`. Its mode-setup menus auto-select defaults within a fraction of a second unless the
+  answers are already sent, which makes them hard to script. And in DIO mode, turning the pull-ups
+  on also raises any undriven line — including `CLK`, which is a clock edge. That is the most
+  likely source of this investigation's false "output floats during load" finding (not separately
+  retested). Workaround used: drive `RCK` by hand with a wire moved between the board's `GND` and
+  `+5V`.
+- **Bus Pirate 5** — would avoid those limits: its I/O pins go through 74LVC1T45 level-shifting
+  buffers powered from its own settable 1–5V supply, so a driven high is a real 5V (each I/O pin
+  has a 330Ω series resistor, plenty for logic inputs). Archived:
+  `docs/references/raw/buspirate5-hardware-rev10/content.md`.
+- **Multimeter** — `RCK`'s 220Ω series resistor keeps continuity mode silent; measure in Ω mode.
+
+## Bench history (Portal Pinball V4.0)
+
+Condensed. The full blow-by-blow (every test, including the retracted theories) is preserved in
+git: `plans/read-opto.md` as of commit `21a9e8b`; decisions are logged in `CHANGES.md` #27–#29.
+
+**2026-09-11 — old board (520-7001-00A).** The first bridge (ATmega328P/Uno) read a constant byte.
+Power, ground, wiring, the Uno's own SPI (a loopback test), clean `RCK`/`SCK` waveforms at the
+connector, and live sensor data on the 165's input legs were all verified, so the 165 was declared
+dead. Most likely a misdiagnosis — the firmware already used the inverted latch polarity. That
+board hasn't been retested with the fix.
+
+**2026-09-26 — new board (520-8516-00).** A new board, seen working in a real Stern machine,
+showed the same constant byte. A long session with a Uno, the logic analyzer and a Bus Pirate v3.6:
+- *Real bugs found:* the Uno's `MISO`/`MOSI` wires swapped; the Bus Pirate unable to drive `RCK`
+  to a valid high (see "Bench tools").
+- *Ruled out:* anything on `MOSI` (all 256 byte values, fast and each held for 24+ seconds, and
+  held low/high), power-up sequencing, both `SCK` idle polarities, `CN1`'s unlabelled 7th pin (no
+  wire even in a real machine), and `CN3` (it read a constant `1` where `CN1` read `0`; never
+  explained, and not needed).
+- *False leads:* an address/command byte on `MOSI`; the output "tri-stating during load" and a
+  "hidden component" between the register and the connector (both built on the pull-up artifact).
+  Two rounds of independent review agents sharpened the gaps but didn't find the cause.
+- *Resolution:* a fresh review went back to Stern's schematic for the older board, already in the
+  repo, and saw `RCK` routed through the 74HC540. Confirmed on the new board with a meter,
+  firmware flipped to idle `RCK` low / pulse high, and the read worked first time. The bit map
+  came from blocking one sensor at a time.
+
+**Lessons:**
+- Trace where every control line actually goes — schematic first, then a meter in Ω mode — before
+  experimenting with timing and protocol. It would have saved most of a day.
+- A 74HC165 returning all-identical bits is being clocked while held in load mode.
+- "Signals verified at the connector" is not "protocol verified": on-board logic can invert or
+  reroute them.
+- When using a pull-up to test whether a pin is driven, make sure the pull-up can't also move a
+  clock line.
 
 ## Worked example
 
@@ -217,9 +351,8 @@ This repo (Portal Pinball V4.0) has a full reference implementation built on the
 this board to an OPP-based control system with no Stern hardware and no MPF Spike platform
 involved:
 
-- [`plans/read-opto.md`](../plans/read-opto.md) — the design writeup and rationale, including why
-  the RS-485-bus assumption was wrong, the full bench history, and the "Resolution (2026-09-26)"
-  section where the inverted latch was found.
+- [`plans/read-opto.md`](../plans/read-opto.md) — the build plan for the bridge: parts, wiring,
+  programming, build order and verification.
 - [`docs/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`](520-7001-00A-TROUGH-RECEIVER-BOARD.pdf) — Stern's
   schematic for the older revision, showing the `RCK` → 74HC540 → `SH/LD` inversion.
 - [`design/physical-checklists/trough-opto-bridge.html`](../design/physical-checklists/trough-opto-bridge.html) —
@@ -254,3 +387,9 @@ even a bit-banged 3-wire interface) and a way to drive a few GPIOs works the sam
 - NXP 74HC/HCT165 datasheet (8-bit parallel-in/serial-out shift register) — any major distributor
   (Nexperia, TI, ON Semi second-source parts all interoperate to the same public spec).
 - NXP 74HC540 datasheet (octal inverting buffer/line driver).
+- [Stern SPIKE System Manual (775-7640-00)](https://www.sternpinball.com/wp-content/uploads/2020/11/SPIKE-System-Manual.pdf)
+  (archived: `docs/references/raw/stern-spike-system-manual/content.md`; full PDF:
+  `docs/SPIKE-System-Manual.pdf`) — the "node extension" classification.
+- [Hardware Design (5 REV 10) — Bus Pirate 5 docs](https://docs.buspirate.com/docs/hardware/bp5rev10/hardware/)
+  (archived: `docs/references/raw/buspirate5-hardware-rev10/content.md`) — Bus Pirate 5 I/O levels.
+- Stern's schematic for the 520-7001-00A: `docs/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`.

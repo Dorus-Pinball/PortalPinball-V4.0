@@ -3,7 +3,7 @@
 // address/command/select byte, the way a real Stern SPIKE CPU might talk to a "node" board,
 // as opposed to a bare standalone 74HC165 (which shouldn't care what's on MOSI for the first
 // 8 bits shifted out, but this board has proven itself correct in a real machine while reading
-// as a constant, unresponsive byte here — see plans/read-opto.md's "Bench findings" for context).
+// as a constant, unresponsive byte here — see docs/stern-spike-trough-opto.md's "Bench history").
 //
 // Cycles through all 256 possible MOSI test bytes. For each, pulses RCK to latch, then clocks out
 // THREE consecutive bytes (24 clocks total, not just 8) in case the real data only shows up
