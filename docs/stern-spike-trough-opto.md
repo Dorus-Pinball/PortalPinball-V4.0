@@ -9,12 +9,19 @@ building a Portal Pinball V4.0-style machine and landed here from that project: 
 general-purpose writeup; `plans/read-opto.md` in this repo is the project-specific plan built on
 top of it, and `tools/atmega328p-trough-bridge/` is a working reference implementation.
 
-**Confirmed by physically examining one board** (part 520-7001-00A, see below) — the rest of the
-part-number family is inferred from how Stern/resellers describe and price them, not independently
-opened and checked. If you have a different revision, verify before assuming it matches.
+**Confirmed by physically examining two boards** (parts 520-7001-00A and 520-8516-00, see below;
+the read has been proven working end-to-end on the 520-8516-00). The rest of the part-number
+family is inferred from how Stern/resellers describe and price them, not independently opened and
+checked. If you have a different revision, verify before assuming it matches.
 
 ## TL;DR
 
+- **The one gotcha that matters most: `RCK` is inverted on the board.** It reaches the shift
+  register's `SH/LD` through an inverting buffer, so **`RCK` HIGH = load, `RCK` LOW = shift**. Idle
+  `RCK` low, pulse it high to latch, return it low, then clock. Doing it the normal 74HC165 way
+  (pulse low) clocks the register while it's stuck in load mode, and you read the same bit 8 times
+  — every byte comes back all-0s or all-1s and never reacts to a sensor. This cost a very long bench
+  session to find; see "Connector pinout" below.
 - These boards are **not** talking Stern's proprietary Spike CPU↔node RS-485 bus by themselves.
   That's a different, unrelated link — see "What this is *not*" below.
 - The board examined here is just a public, off-the-shelf **74HC165 shift register** reading 7-8
@@ -25,7 +32,8 @@ opened and checked. If you have a different revision, verify before assuming it 
   an undocumented protocol.
 - What genuinely isn't documented anywhere (Stern included) is **which bit corresponds to which
   physical opto channel**, and each channel's active-high/low polarity — that's specific to how
-  the board was laid out and has to be traced/verified on your own unit.
+  the board was laid out and has to be traced/verified on your own unit. The verified map for a
+  520-8516-00 is in the section on that revision below.
 
 ## The board family
 
@@ -40,7 +48,9 @@ parts listings as:
 | 520-8516-00 | SPIKE 2 Trough Serial Opto Receiver (current, replaces 520-1051-00) |
 
 Stern has not published schematics or a parts list for any of these (confirmed via their own
-support/PinWiki — see Sources). The board physically examined for this writeup is silkscreened
+support/PinWiki — see Sources). A Stern schematic for the 520-7001-00A was later obtained and is in
+this repo (`docs/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`); it is what shows the inverted `RCK`
+routing. The board physically examined for this writeup is silkscreened
 **520-7001-00A**, "...RD TROUGH" ("[STANDA]RD TROUGH" or similar, partially obscured by a label).
 Whether the newer 520-1051-00/520-8516-00 revisions use the same shift-register design was an
 open question when this section was first written — **since independently checked on a
@@ -68,8 +78,9 @@ Two ICs on the board examined:
 - **U1 — NXP 74HCT165D**: a standard, publicly-datasheeted 8-bit parallel-in/serial-out shift
   register. This is the entire "serial" mechanism — decades-old, used in a huge range of
   unrelated electronics, nothing Stern-specific about it.
-- **U2 — NXP 74HC540D**: a standard octal inverting tri-state buffer, almost certainly
-  conditioning the opto comparator outputs before they reach U1's parallel inputs.
+- **U2 — NXP 74HC540D**: a standard octal inverting buffer. Seven of its eight channels condition
+  the opto sensor signals before they reach U1's parallel inputs. **The eighth channel inverts
+  `RCK`** on its way to U1's `SH/LD` — the detail that decides how the board has to be read.
 
 So "Trough Serial Opto Receiver" means: up to 8 opto sensors' states get parallel-loaded into a
 shift register and clocked out over one wire, instead of running 8 individual wires back to
@@ -86,22 +97,31 @@ guessing required:
 | `VCC` | 5V supply |
 | `GND` | ground |
 | `SCK` | shift clock — 74HC165's `CLK` |
-| `RCK` | register/latch clock — 74HC165's `SH/LD` (pulse to parallel-load the 8 sensor states) |
-| `MISO` | serial data out — 74HC165's `Q7` |
+| `RCK` | register/latch clock — reaches the 74HC165's `SH/LD` **inverted**, through a 220Ω resistor and one channel of the 74HC540. `RCK` HIGH = parallel load, LOW = shift |
+| `MISO` | serial data out — 74HC165's `QH` |
 
 This naming (`MISO`/`SCK`/`RCK`) is the standard convention hobbyists use for bare 74HC165
-breakout boards, and it maps directly onto any microcontroller's hardware SPI peripheral:
+breakout boards, and it maps onto any microcontroller's hardware SPI peripheral — **except that the
+latch polarity is the reverse of a bare 74HC165 breakout**:
 
-1. Pulse `RCK` low then high to latch the current sensor states into the shift register.
-2. Clock `SCK` 8 times (e.g. an SPI `transfer(0x00)` in master mode, SPI Mode 0, MSB first) while
-   reading `MISO` — the 74HC165 presents bit **D7 first, D0 last**, which lines up naturally with
-   SPI Mode 0's sample timing.
-3. The resulting byte has one bit per opto channel (fewer than 8 if the trough has fewer than 8
-   positions — spare bits are presumably tied to a fixed level, unconfirmed).
+1. Keep `RCK` **low** while idle (register in shift mode).
+2. Pulse `RCK` **high** for a few µs to load the current sensor states, then return it **low**.
+3. Clock `SCK` 8 times (e.g. an SPI `transfer(0x00)` in master mode, SPI Mode 0, MSB first) while
+   reading `MISO` — the 74HC165 presents input **H first, A last**.
+4. The resulting byte has one bit per opto channel. There are 7 opto channels, so one bit is a
+   spare input tied to a fixed level (confirmed on the 520-8516-00: the first bit out is always 0).
 
-`MOSI` isn't part of this connector and doesn't need to be connected to anything on the Stern
-board — the 165 has no serial-cascade input broken out here (its `DS`/`CLK INH` pins are
-presumably tied off internally; not confirmed).
+Drive `RCK` from a 5V-logic source. It enters a plain 74HC (not HCT) buffer, which at 5V needs
+about 3.5V to see a valid high — a 3.3V microcontroller or a Bus Pirate v3's `AUX` pin (which only
+reached ~3.2V at the board) isn't enough.
+
+**How the wrong polarity shows up:** if you pulse `RCK` low and clock with it high, the register
+sits in load mode, ignores the clock, and `MISO` shows input H the whole time — so every byte has all
+8 bits identical, no matter what you block. If you ever see only `0x00`/`0xFF`, suspect the latch
+polarity before suspecting the chip.
+
+On the 520-7001-00A, `MOSI` isn't part of the connector. On the 520-8516-00 it is broken out, but
+has no effect on the read.
 
 ## What's still genuinely unknown per-unit
 
@@ -114,34 +134,31 @@ they're facts about how a specific board was laid out, not about the shift-regis
 - **Each channel's active-high/low polarity** — whether "beam broken" (ball present) reads as 1
   or 0 depends on U2's buffering and isn't safe to assume from the 74HC165 datasheet alone.
 
-Trace or verify both empirically (hand-block one opto channel at a time and watch which bit of
-the read byte changes) before trusting a mapping. Don't ship a build that assumes an unverified
+For the 520-8516-00 both are now known — see its section below. For any other revision, trace or
+verify both empirically (hand-block one opto channel at a time and watch which bit of the read
+byte changes) before trusting a mapping. Don't ship a build that assumes an unverified
 mapping — get it wrong and a working trough position can silently misreport, which is a bad
 failure mode for a machine that trusts the trough for ball-count logic.
 
-## A real failure mode on salvaged boards: dead U1, healthy everything else
+## A misdiagnosis to avoid: the "dead U1" that was really an inverted latch
 
-On the unit this writeup is based on, `MISO` read a constant, unchanging byte no matter what was
-blocked — bench diagnosis (see `plans/read-opto.md`'s findings for the full walkthrough) isolated
-this to **U1 itself being dead**, while everything upstream of it was proven fine:
+On the 520-7001-00A, `MISO` read a constant byte no matter what was blocked, while power, ground,
+wiring, clean SPI waveforms at the connector, and live sensor data on U1's own input legs were all
+verified. That was diagnosed as **U1 (the 74HC165) being dead** — good inputs, dead output.
 
-- Power, ground, and wiring continuity to the board: all good.
-- `RCK`/`SCK` reaching the board correctly, confirmed at both DC level (multimeter) and waveform
-  level (a cheap USB logic analyzer showed a clean latch pulse and a clean 8-toggle 250kHz clock
-  burst, exactly matching a correct SPI Mode 0 transaction).
-- U1's own parallel data inputs (`D0`–`D7`) carrying real, correctly-differentiated per-channel
-  data from U2's buffer — confirmed both by direct multimeter probing at U1's legs and by a logic
-  analyzer capture showing live, hand-timescale toggles while manually blocking sensors.
-- U1's `QH` (serial output) never reflecting any of that, under any test, including an
-  asynchronous-load-only test (latch pulsed, clock never toggled) that should show `QH` mirroring
-  the first data bit immediately regardless of clocking.
+**That diagnosis was most likely wrong.** Every test pulsed `RCK` low and clocked with it high,
+which — because the board inverts `RCK` — held the register in load mode the whole time. In load
+mode the clock is ignored and `QH` just shows input H — confirmed to be a spare, fixed input on the
+520-8516-00, and apparently unused on the 520-7001-00A's schematic too (its 74HC540 has 7 sensor
+channels plus the `RCK` inverter). That produces exactly "good inputs, constant output," including in the
+"latch-without-clocking" test that seemed to prove the chip dead. A brand-new 520-8516-00 showed the
+identical symptom, and reading it with the corrected polarity worked immediately. The 520-7001-00A
+itself hasn't been retested yet.
 
-That combination — good inputs, dead output — points squarely at the shift register chip itself,
-not the sensing chain, the buffer, or the microcontroller reading it. On a salvaged/used board,
-don't assume a non-responding `MISO` means your wiring or protocol understanding is wrong before
-ruling this out; it may simply be a dead 165.
+So: if a board like this returns a constant byte, **check the `RCK` polarity first**. Only if the
+byte stays constant with `RCK` idling low and pulsed high is a dead 165 worth considering.
 
-**Two ways forward if you hit this:**
+**Two ways forward if the chip really is dead:**
 
 1. **Bypass the shift register entirely.** U1's own `D0`–`D7` parallel input pins (or U2's output
    pins directly upstream of them) already carry a clean, per-channel, buffered 0/5V digital
@@ -157,35 +174,42 @@ ruling this out; it may simply be a dead 165.
    the HC/HCT input-threshold difference only matters when a TTL-level source is involved. Verify
    your own board's inputs are similarly CMOS-driven before assuming this substitution is safe.
 
-## A different board revision (520-8516-00): confirmed real differences, one still-unsolved mystery
+## A different board revision (520-8516-00): confirmed differences, and a working read
 
-Everything above was confirmed on one specific unit, part `520-7001-00A`. A second project unit,
-silkscreened **`520-8516-00`** (the current SPIKE 2 part number), turned out to differ in real,
-confirmed ways — worth knowing before assuming this writeup transfers directly to your own board:
+A second project unit, silkscreened **`520-8516-00`** (the current SPIKE 2 part number), has been
+read successfully with the corrected `RCK` polarity. It differs from the 520-7001-00A in a few
+confirmed ways:
 
-- **Two connectors, not one** (`CN1`/`SERIAL IN`, `CN3`/`SERIAL OUT`), with genuinely different
-  fixed values on each (not a simple shared bus) — check which one is actually live before
-  assuming either is a safe default.
-- **Three ICs, not two** — an extra hex Schmitt-trigger inverter (`74HC14D`) conditioning
-  `RCK`/`SCK`/`MISO` between the connector and the shift register, architecturally consistent with
-  Stern's own schematic for the `520-7001-00A` (which shows the same conditioning role filled by
-  two smaller inverter gates instead of one hex package).
-- `MOSI` is a real, broken-out signal on this connector, unlike the simpler 5-pin design described
-  above — but was exhaustively proven to have zero effect on the read (all 256 byte values, and
-  both held-low/held-high for 24+ seconds, made no difference).
+- **Two connectors**: `CN1` ("SERIAL IN", pin order `VCC, RCK, SCK, MOSI, MISO, GND`) and `CN3`
+  ("SERIAL OUT", same signals in mirrored order). **`CN1` is the one to read from** — that's where
+  the working read was done. `CN3` is presumably the cascade to a further board and isn't needed.
+  `CN1` also has an unlabelled 7th pin position that carries nothing, even in a real machine.
+- **Three ICs**: U1 = 74HC540D (sensor buffering plus the `RCK` inversion), U2 = 74HCT165D (the
+  shift register), U3 = 74HC14D hex Schmitt-trigger inverter (role untraced; on the older board's
+  schematic the equivalent Schmitt-trigger pair conditions `MISO` only). Note the U1/U2 numbering is swapped relative to the 520-7001-00A. The `RCK` path
+  was confirmed with a meter in Ω mode: `CN1` `RCK` → 220Ω → U1 pin 9 (A8) → U1 pin 11 (Y8) → U2
+  pin 1 (`SH/LD`). The 220Ω series resistor means continuity mode won't beep — measure resistance.
+- `MOSI` is broken out, but has no effect on the read.
 
-**A genuinely useful diagnostic technique surfaced on this board, worth keeping for any similar
-shift-register-behind-a-connector situation**: a plain 74HC/HCT165 has **no output-enable pin** —
-its serial output is always actively driven, never tri-stated, in any mode. So if you measure a
-connector's serial-out pin and find it's **floating** (a weak external pull-up resistor can swing
-it) in one condition but **actively driven** (the same pull-up can't move it) in another, that is
-proof — not a guess — that there's a second active component between the shift register and your
-connector, even if you can't yet identify what it is or why it's gated the way it is. This board's
-serial output was found to float during the register's parallel-load phase and only drive during
-shift mode — behavior the bare chip cannot produce on its own, meaning an as-yet-unidentified
-buffer/gate stage (or a fault in one) sits between the register and the connector. See
-`plans/read-opto.md`'s 2026-09-26 bench findings for the full elimination process and where it
-currently stands unresolved.
+**Verified bit map** (blocking one sensor at a time; first bit shifted out = raw bit 7):
+
+| Raw bit | Signal |
+|---|---|
+| 7 | spare input H — always 0 |
+| 6 | jam |
+| 5 | trough position 1 |
+| 4 | trough position 2 |
+| 3 | trough position 3 |
+| 2 | trough position 4 |
+| 1 | trough position 5 |
+| 0 | trough position 6 |
+
+All seven channels read **1 = clear, 0 = blocked**. With everything clear the byte is `0b01111111`.
+
+**A pitfall worth knowing if you use a pull-up to check whether a pin is driven:** during this
+investigation, enabling a Bus Pirate's pull-ups made `MISO` change and seemed to show the output
+"floating." Most likely (not separately retested) it was the pull-up also raising the undriven `SCK` line — a clock edge that
+shifted the register. If you do this test, make sure the clock line is actively held while you do.
 
 ## Worked example
 
@@ -194,7 +218,10 @@ this board to an OPP-based control system with no Stern hardware and no MPF Spik
 involved:
 
 - [`plans/read-opto.md`](../plans/read-opto.md) — the design writeup and rationale, including why
-  the RS-485-bus assumption was wrong and how it was corrected.
+  the RS-485-bus assumption was wrong, the full bench history, and the "Resolution (2026-09-26)"
+  section where the inverted latch was found.
+- [`docs/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`](520-7001-00A-TROUGH-RECEIVER-BOARD.pdf) — Stern's
+  schematic for the older revision, showing the `RCK` → 74HC540 → `SH/LD` inversion.
 - [`design/physical-checklists/trough-opto-bridge.html`](../design/physical-checklists/trough-opto-bridge.html) —
   a printable (A4) build sheet: parts list, DIP-28 pinout diagram, breadboard wiring tables.
 - [`tools/flash-atmega328p.ps1`](../tools/flash-atmega328p.ps1) — scripts flashing a bare
@@ -204,11 +231,11 @@ involved:
   the bridge firmware: reads the shift register over hardware SPI, debounces, and mirrors the
   channels onto GPIO pins for the downstream switch matrix. Includes a serial-debug mode
   specifically for the per-unit bit-mapping/polarity tracing described above.
-- `tools/atmega328p-trough-bridge/diag-slow-toggle/`, `diag-hold-latch/`, `diag-multichannel-read/` —
-  small bench-only sketches used to isolate the dead-U1 fault described above: a multimeter-visible
-  slow toggle for `RCK`/`SCK`, a steady asynchronous-load hold for probing `QH` without needing to
-  catch a fast transition, and a multi-channel streamer for watching several pins at once. Useful
-  as a template if you hit a similar "signals proven correct but the chip won't respond" wall.
+- `tools/atmega328p-trough-bridge/diag-slow-toggle/`, `diag-hold-latch/`, `diag-multichannel-read/`,
+  `diag-mosi-patterns/` — small bench-only sketches from the investigation: a multimeter-visible
+  slow toggle for `RCK`/`SCK`, a latch-then-hold for probing `QH` (which on the 520-8516-00 only ever
+  shows the spare input, so it can't show sensor data), a multi-channel pin streamer, and a
+  `MOSI` byte sweep. Their latch polarity has been corrected to match the board.
 
 The approach generalizes beyond ATmega328P/OPP — any microcontroller with an SPI peripheral (or
 even a bit-banged 3-wire interface) and a way to drive a few GPIOs works the same way.

@@ -27,6 +27,8 @@ assumption was wrong, corrected by two things seen in the user's own photos:
 2. **The board's populated connector is silkscreened with the signal names**: `VCC`, `RCK`,
    `SCK`, `MISO`, `GND` — the standard naming for a bare 74HC165 breakout (`MISO` = serial data
    out / Q7, `SCK` = clock, `RCK` = register/latch clock i.e. SH-LD). Nothing to trace or guess.
+   *(Wrong in one crucial detail, found 2026-09-26: `RCK` reaches `SH/LD` **inverted**, through the
+   74HC540 — see "Resolution (2026-09-26)". Tracing it would have saved a very long bench session.)*
 
 Reading this board is "read a documented shift register over SPI-style signals," a well-trodden
 Arduino/AVR pattern, not blind reverse engineering.
@@ -116,7 +118,9 @@ same 7 pins go straight to OPP's existing switch-wing positions instead):
 | 24 (PC1) | `s-trough-jam` | |
 
 Firmware detail: on startup, set `SS`/`MOSI`/`SCK` per above and enable SPI master mode; to read,
-pulse `RCK` (pin 14) low-then-high to latch, then clock one byte through SPI (e.g. write `0x00`
+pulse `RCK` (pin 14) **high-then-low** to latch (the board inverts `RCK` before the shift
+register's `SH/LD` — see "Resolution (2026-09-26)" below; this line originally said low-then-high,
+which was the bug behind every failed read), then clock one byte through SPI (e.g. write `0x00`
 to `SPDR` and wait for `SPIF`) — the byte received in `SPDR` has one bit per opto channel, MSB
 first. Confirm bit-to-channel mapping and active-high/active-low polarity empirically against the
 known NC semantics already documented for these switches (`s-trough-jam` in particular reads
@@ -134,6 +138,11 @@ steps, the power/support-circuit table and DIP-28 pinout diagram, the Stern-conn
 the 7 switch-mirror output table, and the firmware read-sequence steps.
 
 ## Bench findings (2026-09-11): U1 is dead on this specific board
+
+> **Probably wrong — see "Resolution (2026-09-26)" below.** This test used the same inverted
+> latch polarity that was later found to be the real bug, which would hold the register in load
+> mode during every clock and produce exactly this "good inputs, dead output" signature. Kept as
+> the historical record; this board has not yet been retested with the corrected polarity.
 
 Built the ATmega328P/Uno-based reader and bench-tested against the real trough board. Systematic
 elimination (multimeter continuity/DC checks, then a cheap USB logic analyzer for waveform-level
@@ -169,6 +178,11 @@ Full general writeup of this failure mode (useful beyond this project) is in
    (~€1.76/10 on AliExpress) if genuine stock isn't needed.
 
 ## Bench findings (2026-09-26): new board (520-8516-00), extensive Arduino + Bus Pirate session
+
+> **Solved later the same day — see "Resolution (2026-09-26)" below.** The root cause was
+> inverted `RCK` polarity. Several conclusions in this section are retracted there (the
+> "output floats during load" discovery, the "hidden component" theory, and the next-steps list).
+> Kept as the historical record of what was tried.
 
 A brand-new replacement board was purchased instead of repairing the old salvaged unit's dead
 U1. Silkscreened **520-8516-00** — the *current* SPIKE 2 "Trough Serial Opto Receiver" part
@@ -312,12 +326,84 @@ first version of this note had `QH`/`QH̄` swapped.)
    said they do not want to modify this specific board, so a replacement/bypass would need a
    different unit or the owner's explicit sign-off first.
 
+## Resolution (2026-09-26): `RCK` is inverted on the board — the read works
+
+**Root cause.** The board does not wire `RCK` straight to the shift register's `SH/LD`. It routes
+it through a spare channel of the 74HC540 inverting buffer: `CN1` `RCK` → 220Ω series resistor →
+U1 (74HC540) pin 9 (input A8) → inverted → U1 pin 11 (output Y8) → U2 (74HCT165) pin 1 (`SH/LD`).
+Measured with the meter in Ω mode, power off: `RCK`→U1 pin 9 = 219.5Ω, U1 pin 11→U2 pin 1 = 0.1Ω.
+Stern's schematic for the older board (`docs/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`) shows the
+same routing (R15 → 540 A8 → Y8 labelled `LDIN` → `SH/LD`). It was in this repo the whole time;
+reading it for the latch path first would have found this in minutes.
+
+So `RCK` HIGH = parallel load and `RCK` LOW = shift, the opposite of a bare 74HC165. Every earlier
+read pulsed `RCK` low and then clocked with `RCK` high, i.e. with the register held in load mode,
+where the clock is ignored and `QH` just repeats input H. That is why every read ever taken had all
+8 bits identical (`0x00`/`0xFF`) and never reacted to a sensor.
+
+**Correct read sequence:** idle `RCK` LOW → pulse `RCK` HIGH (≥5µs) to load → back to LOW → clock
+8 bits (SPI Mode 0, MSB first). Implemented in `tools/atmega328p-trough-bridge/
+atmega328p-trough-bridge.ino` and verified on the bench with an Arduino Uno (5V logic): the first
+mixed byte ever read was `0b01111111`, and blocking each sensor cleared exactly one bit.
+
+**Bit map (520-8516-00, bench-verified by blocking one sensor at a time):**
+
+| Raw bit (bit7 shifted out first) | Signal |
+|---|---|
+| 7 | unused 74HC165 input H — always 0 |
+| 6 | jam |
+| 5 | trough position 1 |
+| 4 | trough position 2 |
+| 3 | trough position 3 |
+| 2 | trough position 4 |
+| 1 | trough position 5 |
+| 0 | trough position 6 |
+
+All seven channels read **1 = clear, 0 = blocked** (jam included). `BIT_CHANNEL` in the firmware
+is set to this map. `BIT_INVERT` is still unset: which output polarity OPP needs depends on its
+`type: NC` switch config and the documented "`s-trough-jam` active = clear path" quirk, and that
+should be checked against MPF's live switch states on the cabinet, not assumed.
+
+**Retracted from the sections above:**
+- *"The output floats during load and drives during shift."* Most likely an artifact (the
+  explanation fits every observation, but wasn't separately retested). In the Bus Pirate's DIO
+  mode `CLK` was an undriven input, so enabling the pull-up also raised `CLK`: a clock edge that
+  shifted the register. That's why `MISO` changed and then *stayed* changed after the pull-up was
+  removed (a floating pin wouldn't hold its level). The later `RCK`-high test "resisted" the
+  pull-up because the register was in load mode, where clock edges are ignored.
+- *"A hidden active component sits between the shift register and the connector."* Built on the
+  artifact above. No such component was needed to explain anything.
+- *The 2026-09-11 "U1 is dead" diagnosis of the old `520-7001-00A` board.* Same inverted polarity,
+  same symptom. Most likely a misdiagnosis; untested with the fix.
+- *"U3 conditions `RCK`."* `RCK` goes through U1 (the 74HC540), confirmed by measurement. U3's role
+  is still untraced (on the older board's schematic, the equivalent Schmitt-trigger pair conditions
+  `MISO` only), and doesn't matter for reading the board.
+- The earlier "Where this leaves things" list — superseded by the next steps below.
+
+**Still true and worth keeping:** the Arduino `MISO`/`MOSI` pin-swap bug; the Bus Pirate v3.6's
+`AUX`/`CS` only reaching ~3.2V. That matters here because `RCK` enters a 74HC540 (plain HC, not
+HCT), which at 5V needs about 3.5V to see a valid high — so drive `RCK` from a 5V-logic source (the
+Uno, a bare ATmega328P at 5V, or a Bus Pirate 5), not a v3.6 Bus Pirate.
+
+**Lesson worth carrying forward:** trace where every control line actually goes (schematic, or a
+meter in Ω mode — series resistors don't beep in continuity mode) before experimenting with
+timing and protocol. And "all 8 bits always identical" from a 74HC165 means the register is being
+clocked while held in load mode.
+
+**Next steps:**
+1. Set `BIT_INVERT` against MPF's live switch states on the cabinet, then wire the 7 mirror
+   outputs into OPP (same chain2-0x21 positions as today).
+2. Build the permanent bridge on a bare ATmega328P-PU per the build sheet (or keep the Uno if
+   that's simpler) — same firmware, now with the corrected polarity.
+3. Run `TODO.md`'s empty-trough + ball-by-ball test on the real cabinet.
+4. Optional: retest the old `520-7001-00A` board with the corrected firmware. It may not be dead.
+
 ## Verification
 
 *Written for the original plan, before the 520-8516-00 findings above — "the board's identity"
-below means the original `520-7001-00A` unit. The 2026-09-26 bench findings section's own "Where
-this leaves things" list is the current, superseding checklist for the new board; this section is
-kept as the record of what the original plan intended to verify once a working bridge existed.*
+below means the original `520-7001-00A` unit. For the new board, the "Resolution (2026-09-26)"
+section's next steps are the current checklist; this section is kept as the record of what the
+original plan intended to verify once a working bridge existed.*
 
 - Bench-test the flashed chip + support circuit on a breadboard against the opto board off the
   machine first: manually block/unblock each opto channel and confirm the corresponding GPIO

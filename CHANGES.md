@@ -397,5 +397,22 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     session's assumptions go unchecked — surfaced real gaps (U2's own input legs never directly
     probed; the per-channel test matrix never fully redone after the RCK fix) rather than a
     resolution. Full writeup: `plans/read-opto.md`'s "Bench findings (2026-09-26)" section; concrete
-    next steps captured in `TODO.md`. — **Status: active**, unresolved — next action is probing
-    U2's own pins directly rather than more connector-level signal experiments.
+    next steps captured in `TODO.md`. — **Status: superseded-by-28** (the root cause was found the
+    same day; this entry's "float during load / hidden component" discovery was an artifact).
+28. **Trough opto board reads correctly: `RCK` is inverted on the board** (2026-09-26, branch
+    `fix/trough-rck-polarity`). A fresh review of #27 went back to Stern's schematic for the older
+    board (already in this repo) and saw that `RCK` doesn't reach the 74HC165's `SH/LD` directly:
+    it passes through a 220Ω resistor and a spare channel of the 74HC540 inverting buffer.
+    Confirmed on the 520-8516-00 with a meter in Ω mode (219.5Ω `RCK`→540 pin 9, 0.1Ω 540 pin
+    11→165 pin 1). So `RCK` HIGH = load, LOW = shift — the reverse of what every earlier read did,
+    which clocked the register while it was held in load mode and produced a constant
+    all-same-bits byte. With the firmware changed to idle `RCK` low and pulse it high, the Uno read
+    the board correctly on the first try, and blocking each sensor in turn gave the bit map (bit 6
+    jam, bits 5→0 trough 1→6, bit 7 unused; 1 = clear), now set as `BIT_CHANNEL`. Retracted from
+    #27: the "output floats during load" finding (most likely a Bus Pirate pull-up also raising the
+    undriven clock line, shifting the register) and the "hidden component" theory built on it.
+    The old `520-7001-00A` board's "dead U1" diagnosis (2026-09-11) is most likely the same bug.
+    Docs corrected in `plans/read-opto.md`, `docs/stern-spike-trough-opto.md`, the build sheet,
+    `TODO.md`, and the diagnostic sketches. Lesson: trace where each control line actually goes
+    before experimenting with timing and protocol. — **Status: active**; remaining work (set
+    `BIT_INVERT` on the cabinet, permanent bridge, wire into OPP) tracked in `TODO.md`.

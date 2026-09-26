@@ -11,6 +11,10 @@
 // bytes received, continuously, so you can watch for ANY change while blocking sensors.
 //
 // Flash the real atmega328p-trough-bridge.ino back afterward.
+//
+// Outcome (2026-09-26): MOSI turned out to be irrelevant — the constant byte was caused by
+// inverted RCK polarity, not a missing command. RCK polarity below is corrected (idle LOW,
+// pulse HIGH to latch) so the sketch still reads correctly if reused.
 
 #include <SPI.h>
 
@@ -27,7 +31,7 @@ void printBinary(uint8_t b) {
 
 void setup() {
   pinMode(PIN_RCK, OUTPUT);
-  digitalWrite(PIN_RCK, HIGH);
+  digitalWrite(PIN_RCK, LOW);
 
   SPI.begin();
   SPI.beginTransaction(SPISettings(250000, MSBFIRST, SPI_MODE0));
@@ -41,9 +45,9 @@ void loop() {
   uint8_t testByte = patternIndex;
   patternIndex++; // wraps 255 -> 0
 
-  digitalWrite(PIN_RCK, LOW);
-  delayMicroseconds(5);
   digitalWrite(PIN_RCK, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(PIN_RCK, LOW);
   delayMicroseconds(5);
 
   uint8_t r1 = SPI.transfer(testByte);

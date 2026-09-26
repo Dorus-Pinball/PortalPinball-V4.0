@@ -6,7 +6,7 @@ go dead if the live page changes or vanishes. **Generated** by
 file, it will be overwritten. Add a new source by adding one entry to `index.yaml` and saving its
 content under `docs/references/raw/<slug>/content.md`, then re-run the generator.
 
-Generated: 2026-09-14.
+Generated: 2026-09-26.
 
 | Source | Archived | Cited by | Note |
 |---|---|---|---|
@@ -33,3 +33,4 @@ Generated: 2026-09-14.
 | [How to design a game in MPF using Modes](https://github.com/missionpinball/mpf-docs/blob/main/docs/game_design/index.md) ([local copy](raw/mpf-docs-game-design-index/content.md)) | 2026-09-13 | plans/OutsidePerspective.md, design/README.md | MPF's own top-level game-design guide - story/mode-selection/layering. |
 | [Layering Modes Example (MPF docs)](https://github.com/missionpinball/mpf-docs/blob/main/docs/game_design/mode_layering.md) ([local copy](raw/mpf-docs-mode-layering/content.md)) | 2026-09-13 | plans/OutsidePerspective.md, design/README.md | Field/Mission/Wizard mode-layering pattern this project's design workflow already uses. |
 | [Writing Machine Tests (MPF docs)](https://raw.githubusercontent.com/missionpinball/mpf/dev/docs/testing/writing_machine_tests.rst) ([local copy](raw/mpf-docs-writing-machine-tests/content.md)) | 2026-09-13 | plans/OutsidePerspective.md | Testing philosophy behind this project's own tests/ suite. |
+| [Stern SPIKE System Manual (775-7640-00, Release 2)](https://www.sternpinball.com/wp-content/uploads/2020/11/SPIKE-System-Manual.pdf) ([local copy](raw/stern-spike-system-manual/content.md)) | 2026-09-26 | plans/read-opto.md | Confirms the trough opto board is a 'Node extension' read by a Playfield Node board's own onboard firmware, not the main Spike CPU directly - explains why the bit-level read protocol is undocumented anywhere public. |

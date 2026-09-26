@@ -88,7 +88,8 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       opto board's own `VCC`/`RCK`/`SCK`/`MISO`/`GND` connector (it's a plain 74HC165 shift
       register, not a proprietary Spike bus — see `docs/stern-spike-trough-opto.md`) through a
       bare ATmega328P-PU that mirrors the 7 channels onto OPP exactly as today.
-      **Update (2026-09-11, bench test):** built and bench-tested the bridge — found the board's
+      **Update (2026-09-11, bench test) — *most likely wrong, see the 2026-09-26 resolution
+      below*:** built and bench-tested the bridge — found the board's
       **U1 (74HCT165 shift register) is dead**, not a wiring/firmware issue (see
       `plans/read-opto.md`'s "Bench findings" section for the full elimination process: power,
       ground, wiring, the Uno's own SPI pipeline, and `RCK`/`SCK` reaching the board were all
@@ -98,11 +99,12 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       2026-09-26 update below numbers its chips differently (U2 is the shift register there). The
       two checkboxes right below are written against this old board's numbering; if reused against
       the new board, read "U1" as "U2." Two remaining paths, either is a valid next action:
-      - [ ] **Hardwire U2's/U1's buffered per-channel legs directly into OPP**, skipping the dead
+      - [x] *Not needed — the "dead" diagnosis was most likely wrong (inverted `RCK` polarity, see
+        the 2026-09-26 resolution below).* **Hardwire U2's/U1's buffered per-channel legs directly into OPP**, skipping the dead
         shift register and the SPI-bridge approach entirely — no chip repair or bridge firmware
         needed, just calibrate which physical leg is which trough position, then wire into the
         cabinet and re-run the empty + ball-by-ball test above.
-      - [ ] **Replace U1** (exact match: Nexperia 74HCT165D, SOIC-16 — confirmed source sinuss.nl;
+      - [x] *Not needed — see above.* **Replace U1** (exact match: Nexperia 74HCT165D, SOIC-16 — confirmed source sinuss.nl;
         a plain non-`T` 74HC165 in the same package also works in this circuit, cheaper via
         AliExpress) and continue the original SPI-bridge plan: flash a chip via
         `tools/flash-atmega328p.ps1`, breadboard per
@@ -116,7 +118,7 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       differences (two connectors carrying different values, a third IC, `MOSI` actually broken
       out). Found and fixed two real bugs along the way (an Arduino MISO/MOSI pin swap; a Bus
       Pirate `RCK` signal that never reached a valid 5V high, fixed by hand-wiring `RCK` directly
-      to the board's own GND/+5V). Discovered a genuinely new fact — the serial output floats
+      to the board's own GND/+5V). *(Retracted in the resolution below:)* Discovered a genuinely new fact — the serial output floats
       during the register's load phase and only actively drives during shift mode, something a
       bare 74HC165 cannot do on its own, so there's a still-unidentified active component (or
       fault) between the shift register and the connector. Despite exhaustive, carefully-verified
@@ -124,7 +126,7 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       power-cycle, real-time blocking during continuous clocking), the output stays completely
       flat and unresponsive to any of the 7 sensors. Two independent multi-agent reviews (5 agents
       total) didn't find a resolution but did surface concrete gaps:
-      - [ ] **Probe `U2` (74HCT165D) pin 9 (`QH`, the true output) directly at the chip** while
+      - [x] *Not needed — root cause found (resolution below).* **Probe `U2` (74HCT165D) pin 9 (`QH`, the true output) directly at the chip** while
         driving `RCK`/`SCK` as before, comparing against the connector's `MISO` live — determines
         whether the fault is internal to U2 or downstream of it (pin numbers, corrected 2026-09-26
         against the actual datasheet after an earlier QH/QH̄ mixup: `SH/LD`=1, `CLK`=2, `QH̄`=7
@@ -132,21 +134,41 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
         while probing: whether `CN1`/`CN3`'s exact-complement constant values simply come from
         tapping `QH` vs `QH̄` directly — simpler than a hidden buffer stage, easy to check at the
         same time.
-      - [ ] **Directly probe `U2`'s `D0`–`D7` input legs** while blocking each sensor — never
+      - [x] *Not needed — every channel now reads correctly over the serial link.* **Directly probe `U2`'s `D0`–`D7` input legs** while blocking each sensor — never
         independently verified; the "good sensor data reaches U2" conclusion so far only rests on
         the board's own indicator LEDs, which may branch off before U2's actual input pins.
-      - [ ] **Re-verify `SCK`/`MOSI` reach a clean level during actual dynamic clocking**, not just
+      - [x] *Not needed — the Uno drives them at 5V and the read works.* **Re-verify `SCK`/`MOSI` reach a clean level during actual dynamic clocking**, not just
         a static DC spot-check (the only check done so far) — rule out a smaller version of the
         `RCK` loading bug.
-      - [ ] **Complete the per-channel test matrix** (positions 2, 3, 4, jam) with the corrected
+      - [x] *Done 2026-09-26 with the corrected firmware — all 7 channels mapped.* **Complete the per-channel test matrix** (positions 2, 3, 4, jam) with the corrected
         5V `RCK` — only 1, 5, and 6 were tested under fully-corrected signal conditions.
-      - [ ] **When the real machine is next accessible**, capture its actual
+      - [x] *Not needed.* **When the real machine is next accessible**, capture its actual
         `RCK`/`SCK`/`MOSI`/`MISO` waveforms with the logic analyzer for a direct comparison — the
         single most conclusive test available, not possible yet.
       Owner does not want to modify this specific board — the replace-shift-register/bypass paths
       above (written against the old board as "replace U1"; on this new board that's **U2**, the
       74HCT165D) would need a different unit or explicit sign-off first if the probing above
       confirms U2 itself is the fault.
+      **Update (2026-09-26, resolved — the board reads correctly; full writeup in
+      `plans/read-opto.md`'s "Resolution (2026-09-26)"):** the board inverts `RCK` before the shift
+      register (`CN1` `RCK` → 220Ω → 74HC540 pin 9 → pin 11 → 74HCT165 `SH/LD`, confirmed with a
+      meter in Ω mode). Every earlier read pulsed `RCK` the wrong way and clocked the register
+      while it was stuck in load mode — hence the constant all-same-bits byte. With `RCK` idling
+      low and pulsed high, the Uno reads `0b01111111` with the trough clear, and each sensor
+      clears exactly one bit: bit 6 = jam, bits 5→0 = positions 1→6, bit 7 unused; 1 = clear,
+      0 = blocked. `BIT_CHANNEL` is set in the firmware. The "output floats during load" and
+      "hidden component" conclusions above were artifacts and are retracted there. Remaining:
+      - [ ] **Set `BIT_INVERT`** in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
+        against MPF's live switch states on the cabinet (switches are `type: NC`, and
+        `s-trough-jam` active = clear path).
+      - [ ] **Build the permanent bridge** — bare ATmega328P-PU per
+        `design/physical-checklists/trough-opto-bridge.html`, or keep the Uno — drive `RCK` from
+        5V logic (it enters a 74HC540, which needs ~3.5V for a valid high), and wire the 7 mirror
+        outputs into OPP's existing chain2-0x21 positions.
+      - [ ] **Run the empty-trough + ball-by-ball test** on the real cabinet (the original repro
+        at the top of this entry) and confirm `bd-trough` stops misreading.
+      - [ ] *Optional:* retest the old `520-7001-00A` board with the corrected firmware — its
+        "dead U1" was most likely the same polarity bug.
 
 ## Dev tooling
 

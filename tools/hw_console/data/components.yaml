@@ -230,8 +230,9 @@ components:
         done: true}
     notes: "Eject coil is software/event-triggered (ball_device), not a hardware autofire
       rule - the switch/coil board split is fine here. Switches: numbers unchanged
-      (2-1-16..22, PSOC chain2-0x21), but blocked on repairing the chain2-0x21 opto board (dead
-      U1 shift register, see TODO.md/plans/read-opto.md) before they can be tested again. Coil:
+      (2-1-16..22, PSOC chain2-0x21), but blocked on the trough opto bridge (the Stern board's
+      serial read now works on the bench; bridge build + wiring into OPP still to do, see
+      TODO.md/plans/read-opto.md) before they can be tested again. Coil:
       moved 2026-09-12 from 2-0-3 (PSOC) to 0-0-11 (Cobra chain0-0x20, Bank A/HV_A, per user
       decision) - confirmed 2026-09-12, PASSED the no-HV activation-LED check then PASSED with
       real 50V present (fed a ball into the plunger lane correctly). Status stays at 4 despite

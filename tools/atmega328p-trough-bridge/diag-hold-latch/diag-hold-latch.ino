@@ -8,6 +8,10 @@
 //
 // Flash the real atmega328p-trough-bridge.ino back afterward; this sketch does not read MISO
 // itself (nothing here needs the SPI library — SCK is just held low, not driven).
+//
+// Caveats found 2026-09-26: the board inverts RCK before SH/LD, so this idles RCK LOW and pulses
+// it HIGH. And on a 520-8516-00 the first bit out (input H) is always 0 — a spare input, not a
+// sensor — so QH will sit at 0V whatever you block; this sketch can't show sensor data there.
 
 const uint8_t PIN_RCK = 8;
 const uint8_t PIN_SCK = 13;
@@ -16,7 +20,7 @@ const unsigned long LATCH_INTERVAL_MS = 3000;
 void setup() {
   pinMode(PIN_RCK, OUTPUT);
   pinMode(PIN_SCK, OUTPUT);
-  digitalWrite(PIN_RCK, HIGH); // idle
+  digitalWrite(PIN_RCK, LOW);  // idle (RCK is inverted on the board: LOW = shift/hold)
   digitalWrite(PIN_SCK, LOW);  // idle - never clocked in this sketch
   Serial.begin(9600);
   Serial.println(F("diag-hold-latch: pulsing RCK every 3s, SCK held low (no shifting) -"));
@@ -24,9 +28,9 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(PIN_RCK, LOW);
-  delayMicroseconds(5);
   digitalWrite(PIN_RCK, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(PIN_RCK, LOW);
   Serial.println(F("latched - QH should now hold D7's level until the next pulse"));
   delay(LATCH_INTERVAL_MS);
 }

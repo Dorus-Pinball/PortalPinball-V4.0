@@ -267,17 +267,20 @@ ol.steps code{
     </div>
     <ol class="steps">
       <li>On boot: configure SPI as master (<code>SS</code>, <code>MOSI</code>, <code>SCK</code> as outputs per Section 2).</li>
-      <li>To read a frame: pulse <code>RCK</code> low→high to latch the 8 parallel opto bits.</li>
-      <li>Clock one byte via SPI (write <code>0x00</code> to <code>SPDR</code>, wait for <code>SPIF</code>) — result in <code>SPDR</code> has one bit per channel, MSB first.</li>
-      <li>Drive the 7 mirror pins from those bits — confirm polarity by hand (especially <code>s-trough-jam</code>, which reads active = clear path, not jammed) before trusting it.</li>
+      <li>Idle <code>RCK</code> <strong>low</strong>. To read a frame: pulse <code>RCK</code> <strong>high→low</strong> to latch the 8 parallel opto bits. The board inverts <code>RCK</code> (through its 74HC540) before the shift register's <code>SH/LD</code>, so this is the reverse of a bare 74HC165.</li>
+      <li>Clock one byte via SPI (write <code>0x00</code> to <code>SPDR</code>, wait for <code>SPIF</code>) — result in <code>SPDR</code> has one bit per channel, MSB first. On a 520-8516-00: bit 7 = unused (always 0), bit 6 = jam, bits 5→0 = trough positions 1→6; 1 = clear, 0 = blocked.</li>
+      <li>Drive the 7 mirror pins from those bits — confirm output polarity against MPF's switch states on the cabinet (especially <code>s-trough-jam</code>, which reads active = clear path, not jammed) before trusting it.</li>
     </ol>
   </div>
 
   <div class="footer-note">
     Board identity: Stern 520-7001-00A "Trough Serial Opto Receiver" — U1 NXP 74HCT165D (8-bit
     PISO shift register), U2 NXP 74HC540D (octal buffer). Connector silkscreened
-    VCC/RCK/SCK/MISO/GND. See <code>TODO.md</code> and commit <code>859a6b9</code> for the
-    original wiring-damage report this build replaces.
+    VCC/RCK/SCK/MISO/GND. The newer 520-8516-00 has been read on the bench by this firmware on an Arduino Uno (the bare-chip build itself hasn't been built yet): use its
+    <code>CN1</code> ("SERIAL IN") connector, and note its chips are numbered the other way round
+    (U1 = 74HC540D, U2 = 74HCT165D). See <code>plans/read-opto.md</code> for the verified bit map,
+    and <code>TODO.md</code> and commit <code>859a6b9</code> for the original wiring-damage report
+    this build replaces.
   </div>
 
 </div>
