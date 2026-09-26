@@ -391,9 +391,10 @@ timing and protocol. And "all 8 bits always identical" from a 74HC165 means the 
 clocked while held in load mode.
 
 **Next steps:**
-1. Pick an approach: the ATmega bridge ("Permanent build" below), or reading the board directly
-   from OPP with MPF's `spi_bit_bang` platform (the section after that). Both are viable.
-2. Build it and wire it into the cabinet.
+1. ~~Pick an approach~~ â€” **decided 2026-09-26: the ATmega bridge** ("Permanent build" below).
+   Reading the board directly from OPP with MPF's `spi_bit_bang` (the section after that) is kept
+   on file as the untested alternative.
+2. Set `BIT_INVERT` with the Uno on the cabinet, then build the bridge and wire it into OPP.
 3. Run `TODO.md`'s empty-trough + ball-by-ball test on the real cabinet.
 4. Optional: retest the old `520-7001-00A` board with the corrected firmware. It may not be dead.
 
@@ -449,6 +450,9 @@ use the inventory's Pro Micro (ATmega32U4, 16MHz = 5V version; small, with USB â
 differ, so the firmware's pin map would need changing).
 
 ## Alternative: read the board directly from OPP with MPF's `spi_bit_bang` (untested)
+
+*Considered and not chosen (2026-09-26): the owner went with the ATmega bridge. Kept here in case
+the bridge ever needs replacing.*
 
 MPF 0.80 ships a `spi_bit_bang` platform (`mpf/platforms/spi_bit_bang.py`) made for exactly this
 kind of board: it reads a 74HC165-style register by bit-banging it through *another* platform's

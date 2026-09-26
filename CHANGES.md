@@ -416,3 +416,10 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     `TODO.md`, and the diagnostic sketches. Lesson: trace where each control line actually goes
     before experimenting with timing and protocol. — **Status: active**; remaining work (set
     `BIT_INVERT` on the cabinet, permanent bridge, wire into OPP) tracked in `TODO.md`.
+29. **Trough bridge: bare ATmega328P chosen over MPF's `spi_bit_bang`** (2026-09-26). MPF 0.80's
+    built-in `spi_bit_bang` platform could read the Stern board straight from OPP (2 outputs with
+    pull-ups + 1 input, no microcontroller or firmware), but at roughly 0.5s per read, only while
+    MPF runs, and untested. The owner chose the bench-proven ATmega bridge instead (~10ms reads,
+    independent of MPF). Both are written up in `plans/read-opto.md`. — **Status: active**;
+    `spi_bit_bang` **rejected for now**, kept on file as the fallback if the bridge ever needs
+    replacing.
