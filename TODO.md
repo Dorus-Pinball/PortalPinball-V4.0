@@ -106,6 +106,39 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
         `design/physical-checklists/trough-opto-bridge.html`, calibrate
         `BIT_CHANNEL`/`BIT_INVERT` in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
         against the repaired board, then wire in and re-test.
+      **Update (2026-09-26, brand-new `520-8516-00` board, extensive Arduino + Bus Pirate session,
+      full writeup in `plans/read-opto.md`'s "Bench findings (2026-09-26)"):** bought a genuinely
+      new replacement board (owner has personally seen this exact unit work in a real machine) —
+      turned out to be the *current* `520-8516-00` revision, not `520-7001-00A`, with real
+      differences (two connectors carrying different values, a third IC, `MOSI` actually broken
+      out). Found and fixed two real bugs along the way (an Arduino MISO/MOSI pin swap; a Bus
+      Pirate `RCK` signal that never reached a valid 5V high, fixed by hand-wiring `RCK` directly
+      to the board's own GND/+5V). Discovered a genuinely new fact — the serial output floats
+      during the register's load phase and only actively drives during shift mode, something a
+      bare 74HC165 cannot do on its own, so there's a still-unidentified active component (or
+      fault) between the shift register and the connector. Despite exhaustive, carefully-verified
+      testing (all `MOSI` values, both `SCK` polarities, a verified-clean 5V `RCK`, full
+      power-cycle, real-time blocking during continuous clocking), the output stays completely
+      flat and unresponsive to any of the 7 sensors. Two independent multi-agent reviews (5 agents
+      total) didn't find a resolution but did surface concrete gaps:
+      - [ ] **Probe `U2` (74HCT165D) pin 7 (`QH`) directly at the chip** while driving `RCK`/`SCK`
+        as before, comparing against the connector's `MISO` live — determines whether the fault is
+        internal to U2 or downstream of it (real pin numbers confirmed from Stern's own schematic:
+        `SH/LD`=1, `CLK`=2, `QH`=7, `GND`=8, `QH̄`=9, `SER`=10, `VCC`=16).
+      - [ ] **Directly probe `U2`'s `D0`–`D7` input legs** while blocking each sensor — never
+        independently verified; the "good sensor data reaches U2" conclusion so far only rests on
+        the board's own indicator LEDs, which may branch off before U2's actual input pins.
+      - [ ] **Re-verify `SCK`/`MOSI` reach a clean level during actual dynamic clocking**, not just
+        a static DC spot-check (the only check done so far) — rule out a smaller version of the
+        `RCK` loading bug.
+      - [ ] **Complete the per-channel test matrix** (positions 2, 3, 4, jam) with the corrected
+        5V `RCK` — only 1, 5, and 6 were tested under fully-corrected signal conditions.
+      - [ ] **When the real machine is next accessible**, capture its actual
+        `RCK`/`SCK`/`MOSI`/`MISO` waveforms with the logic analyzer for a direct comparison — the
+        single most conclusive test available, not possible yet.
+      Owner does not want to modify this specific board — the replace-U1/bypass paths above would
+      need a different unit or explicit sign-off first if the probing above confirms U2 itself is
+      the fault.
 
 ## Dev tooling
 

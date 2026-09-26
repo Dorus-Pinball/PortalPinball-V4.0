@@ -378,3 +378,24 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     stays active, only the separate page it produced is gone. Historical mentions in `CHANGES.md`
     and one checked-off `TODO.md` item are left as-is, per this project's own convention of not
     rewriting the record. — **Status: active**.
+27. **Trough opto bridge, new `520-8516-00` board: extensive diagnostic session, root cause still
+    unresolved** (2026-09-26, branch `bench/trough-opto-mosi-diag`). A genuinely new replacement
+    board (confirmed by the owner to work in a real Stern machine) turned out to be the current
+    `520-8516-00` revision rather than the `520-7001-00A` the original plan was built against —
+    real differences: two connectors carrying independently different fixed values (not a shared
+    bus), a third conditioning IC, and `MOSI` actually broken out (though proven to have zero
+    effect on the read). Found and fixed two real bugs (an Arduino MISO/MOSI pin swap; a Bus
+    Pirate `RCK` line that never reached a valid 5V logic-high, worked around by hand-wiring `RCK`
+    directly to the board's own power rails). Discovered a genuinely new, datasheet-confirmed fact
+    — the serial output floats during the register's load phase and only actively drives during
+    shift mode, which a bare 74HC165 cannot do unassisted, proving a second, still-unidentified
+    active component sits between the shift register and the connector. Despite that discovery
+    being properly exploited and an exhaustive signal-level test matrix (logic analyzer plus a
+    Bus Pirate, all `MOSI` values, both clock polarities, a verified-clean 5V `RCK`), the output
+    stayed completely flat and unresponsive to all 7 sensors. Used two rounds of independent
+    multi-agent review (5 agents total) to sanity-check the reasoning rather than let one long
+    session's assumptions go unchecked — surfaced real gaps (U2's own input legs never directly
+    probed; the per-channel test matrix never fully redone after the RCK fix) rather than a
+    resolution. Full writeup: `plans/read-opto.md`'s "Bench findings (2026-09-26)" section; concrete
+    next steps captured in `TODO.md`. — **Status: active**, unresolved — next action is probing
+    U2's own pins directly rather than more connector-level signal experiments.

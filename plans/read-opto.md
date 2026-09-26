@@ -168,6 +168,127 @@ Full general writeup of this failure mode (useful beyond this project) is in
    HC/HCT input-threshold difference doesn't matter — confirmed cheaper option
    (~€1.76/10 on AliExpress) if genuine stock isn't needed.
 
+## Bench findings (2026-09-26): new board (520-8516-00), extensive Arduino + Bus Pirate session
+
+A brand-new replacement board was purchased instead of repairing the old salvaged unit's dead
+U1. Silkscreened **520-8516-00** — the *current* SPIKE 2 "Trough Serial Opto Receiver" part
+number, **not** `520-7001-00A` (the revision the rest of this plan and
+`docs/stern-spike-trough-opto.md` were originally written against). The owner has personally
+observed this exact physical board unit operating correctly in a real, running Stern machine —
+treated as ground truth throughout this session; the board itself is not in question.
+
+**Board differs from the old revision in real, confirmed ways:**
+- Three ICs, not two: **U1 = 74HC540D** (octal buffer, conditions opto sensor signals into U2's
+  parallel inputs), **U2 = 74HCT165D** (the shift register — confirmed via close-up photo of the
+  chip's own printed marking), **U3 = 74HC14D** (hex Schmitt-trigger inverter, confirmed
+  unambiguously via a second close-up after an earlier misread) — U3 almost certainly conditions
+  `RCK`/`SCK`/`MISO` between the connector and U1/U2, architecturally consistent with Stern's own
+  schematic for the *older* board (`docs/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`, now in this
+  repo), which shows two small inverter gates in the same role — though those specific gates are
+  confirmed non-tri-state parts, so that schematic doesn't itself resolve the mystery below.
+- **Two 6-pin connectors, not one**: `CN1` ("SERIAL IN") and `CN3` ("SERIAL OUT"), pin orders
+  *mirrored* between them (`CN1`: `VCC, RCK, SCK, MOSI, MISO, GND`; `CN3`: `GND, MISO, MOSI, SCK,
+  RCK, VCC`). They are **not** a simple shared/bussed pass-through — `CN1` and `CN3` were found to
+  carry independently different fixed values (`CN1` read a constant `0`, `CN3` a constant `1` —
+  exact logical complements, consistent with tapping a register's true/complementary outputs, not
+  proof either way). `CN1` also has a confirmed 7th physical pin position beyond the 6 labeled
+  signals — genuinely unpopulated, no wire even in the real Stern machine's own harness, ruling it
+  out as a missing enable/select line. `CN2` is a separate small 3-pin power-only tap
+  (`JAM`/`GND`/`VCC`), sharing `VCC`/`GND` (and apparently `RCK`) with `CN3` — not an independent
+  data path, and **the jam sensor is not wired separately from the other 6 channels** (confirmed
+  by the owner; it goes through the same shift register like everything else).
+- `MOSI` is an actual connector signal here (unlike the old board, which never broke it out) — but
+  exhaustively proven irrelevant (see below).
+
+**Bugs found and fixed along the way (both real, both worth remembering for next time):**
+1. **Arduino `MISO`/`MOSI` pin swap** — `D11`/`D12` were physically wired to the wrong roles early
+   in bench testing, making the Uno drive what should have been an input. Symptom: `MISO` stuck at
+   a constant `0x00` no matter what. Fix: swap the two wires. After the fix, reads became a real,
+   non-floating constant value — proof the SPI link was alive, just still unresponsive.
+2. **Bus Pirate `RCK` never reached a valid logic-high level** — driving `RCK` through the Bus
+   Pirate's `AUX` pin (or, after moving it, its `CS` pin) only produced **~3.2V** at the board's
+   own `RCK` pin, not the ~4.9V the board's `SCK`/`MOSI` correctly reached via the identical
+   pull-up mechanism. Points at a real pull-down/loading effect on the board's own `RCK` input
+   overpowering a weak (~10kΩ) external pull-up — not a wrong-Bus-Pirate-pin issue (moving the
+   control from `AUX` to `CS`, same pull-up mechanism as `SCK`/`MOSI`, made no difference). Fixed
+   pragmatically by **manually hand-wiring `RCK` directly between the board's own `GND` and `+5V`
+   pins** (bypassing the Bus Pirate's I/O for that signal entirely) — the Bus Pirate's own 3WIRE-
+   mode "Normal" (push-pull) output-type menu proved un-navigable in this firmware (every setup
+   prompt auto-defaults within well under a second; repeated attempts, including pre-queued
+   multi-line input bursts, never reliably landed on it) and was abandoned as a dead end.
+
+**Everything tested, and it all came back negative — this is the important part.** With clean 5V
+signals confirmed via both a USB logic analyzer (`sigrok-cli`/`fx2lafw`) and, later, a Bus Pirate
+with hand-verified voltage levels:
+- `RCK`/`SCK` reaching the board: clean, correctly-timed SPI Mode 0 waveforms (logic analyzer),
+  confirmed at the board's own connector pins with a multimeter, not just at the driving tool.
+- All 256 possible `MOSI` byte values, both fast-cycled (Arduino, `tools/atmega328p-trough-bridge/
+  diag-mosi-patterns/diag-mosi-patterns.ino`) and each held for 24+ continuous seconds (Bus
+  Pirate) — zero effect. `MOSI` held continuously low vs. continuously high for 24+ seconds — zero
+  effect. (Consistent with the old board never having `MOSI` at all and reportedly working.)
+- A full power-cycle from cold start, captured from the very first line of output — no transient
+  or different behavior.
+- **Discovered a real, previously-undocumented detail**: the output is **tri-stated (floating)
+  during the register's load phase (`RCK` low) and only actively drives once `RCK` goes high**
+  (confirmed via a pull-up-resistor loading test — a weak external pull-up swings the floating
+  pin, but can't budge it once `RCK` is high). This is genuinely new information, not previously
+  known for this board family.
+- Despite properly exploiting that discovery (real latch, confirmed-driven output, full 8-clock
+  shift, both `SCK` idle polarities, the corrected 5V `RCK`), the shifted-out byte is **completely
+  flat and unresponsive** to any of the 7 physical sensors, individually and in combination,
+  confirmed via careful explicit-confirmation-at-every-step protocol after early sessions had some
+  timing mix-ups (blocking state changing at the same moment as a mode/RCK change, since discarded
+  and redone).
+- **Datasheet-confirmed dead end on one theory**: a bare 74HC/HCT165 has **no output-enable pin at
+  all** — `QH` is a plain, always-actively-driven push-pull output in every mode. That means the
+  float-during-load/drive-during-shift behavior found above **cannot come from U2 alone** — there
+  must be a second, still-unidentified active component (or a fault) sitting between U2's `QH` and
+  the `MISO` connector pin. U3 (confirmed genuine `74HC14D`, no tri-state capability either) does
+  not obviously explain it either, on its own.
+
+**Independent multi-agent review (two separate rounds, five agents total)** was used explicitly to
+get a fresh read on this reasoning, given how long the session ran. Consistent findings across
+both rounds: the "output floats vs. drives" distinction is real and important; the fault/gating
+component has genuinely never been identified; `U2`'s own `D0`–`D7` input legs have **never been
+directly probed** (every test so far instruments the `RCK`/`SCK`/`MOSI`/`MISO` side only — the
+"good sensor data reaches U2" conclusion rests on the board's own indicator LEDs, which may branch
+off before U2's actual input pins, not a direct probe of the claimed node); `SCK`/`MOSI`'s "~4.8V,
+confirmed good" reading was a single static DC spot-check, never reconfirmed during actual dynamic
+clocking, so a smaller-magnitude version of the `RCK` loading problem can't be ruled out there
+either; and the individual-channel test matrix was never fully redone with the corrected 5V `RCK`
+(only channels 1, 5, and 6 were — 2, 3, 4, and jam were not). Research (including getting past the
+earlier 403 wall on the relevant Pinside threads via a proxy) confirmed Stern's system manual
+classifies this board as a "node extension," read by a full smart Playfield Node board's own
+onboard microcontroller running Stern's closed firmware — not the main Spike CPU, and genuinely
+not documented anywhere publicly at the bit level. This is closed-source-only information, not
+merely unfound.
+
+**Real pin numbers for U2 (74HCT165D)**, confirmed from Stern's own schematic for the related
+older board (industry-standard pinout, applies regardless of which board it's soldered to):
+`SH/LD`=pin 1 (`RCK`), `CLK`=pin 2 (`SCK`), `QH`=pin 7 (true serial output), `GND`=pin 8,
+`QH̄`=pin 9 (complementary output), `SER`=pin 10 (`MOSI`), `VCC`=pin 16. Pin 1 is marked by the
+small dot/notch on the chip body.
+
+**Where this leaves things** — next actions, roughly in priority order:
+1. Probe `U2` pin 7 (`QH`) directly at the chip while driving `RCK`/`SCK` as before, comparing
+   against the connector's `MISO` in real time. If pin 7 also stays frozen, the fault is internal
+   to U2 (or its inputs); if it differs from the connector, the fault/missing signal is downstream,
+   between U2 and the connector (likely in or around U3).
+2. At the same time, directly probe `U2`'s `D0`–`D7` input legs while blocking each sensor — the
+   one link in this whole chain that has never been independently verified, only inferred from the
+   board's indicator LEDs.
+3. Re-verify `SCK`/`MOSI` reach a clean level *during actual dynamic clocking*, not just as a
+   static DC spot-check, to rule out a smaller version of the `RCK` loading problem.
+4. Complete the per-channel test matrix (2, 3, 4, jam) with the corrected 5V `RCK` — only 1, 5,
+   and 6 have been tested under the fully-corrected signal conditions.
+5. If the real machine becomes accessible again, capture its actual `RCK`/`SCK`/`MOSI`/`MISO`
+   waveforms with the logic analyzer for a direct, ground-truth comparison — still the single most
+   conclusive test available, just not possible yet.
+6. If steps 1-2 confirm U2 itself is genuinely non-responsive despite good inputs, fall back to
+   this plan's original two paths below (bypass the shift register, or replace U2) — the owner has
+   said they do not want to modify this specific board, so a replacement/bypass would need a
+   different unit or the owner's explicit sign-off first.
+
 ## Verification
 
 - Bench-test the flashed chip + support circuit on a breadboard against the opto board off the

@@ -154,6 +154,36 @@ ruling this out; it may simply be a dead 165.
    the HC/HCT input-threshold difference only matters when a TTL-level source is involved. Verify
    your own board's inputs are similarly CMOS-driven before assuming this substitution is safe.
 
+## A different board revision (520-8516-00): confirmed real differences, one still-unsolved mystery
+
+Everything above was confirmed on one specific unit, part `520-7001-00A`. A second project unit,
+silkscreened **`520-8516-00`** (the current SPIKE 2 part number), turned out to differ in real,
+confirmed ways — worth knowing before assuming this writeup transfers directly to your own board:
+
+- **Two connectors, not one** (`CN1`/`SERIAL IN`, `CN3`/`SERIAL OUT`), with genuinely different
+  fixed values on each (not a simple shared bus) — check which one is actually live before
+  assuming either is a safe default.
+- **Three ICs, not two** — an extra hex Schmitt-trigger inverter (`74HC14D`) conditioning
+  `RCK`/`SCK`/`MISO` between the connector and the shift register, architecturally consistent with
+  Stern's own schematic for the `520-7001-00A` (which shows the same conditioning role filled by
+  two smaller inverter gates instead of one hex package).
+- `MOSI` is a real, broken-out signal on this connector, unlike the simpler 5-pin design described
+  above — but was exhaustively proven to have zero effect on the read (all 256 byte values, and
+  both held-low/held-high for 24+ seconds, made no difference).
+
+**A genuinely useful diagnostic technique surfaced on this board, worth keeping for any similar
+shift-register-behind-a-connector situation**: a plain 74HC/HCT165 has **no output-enable pin** —
+its serial output is always actively driven, never tri-stated, in any mode. So if you measure a
+connector's serial-out pin and find it's **floating** (a weak external pull-up resistor can swing
+it) in one condition but **actively driven** (the same pull-up can't move it) in another, that is
+proof — not a guess — that there's a second active component between the shift register and your
+connector, even if you can't yet identify what it is or why it's gated the way it is. This board's
+serial output was found to float during the register's parallel-load phase and only drive during
+shift mode — behavior the bare chip cannot produce on its own, meaning an as-yet-unidentified
+buffer/gate stage (or a fault in one) sits between the register and the connector. See
+`plans/read-opto.md`'s 2026-09-26 bench findings for the full elimination process and where it
+currently stands unresolved.
+
 ## Worked example
 
 This repo (Portal Pinball V4.0) has a full reference implementation built on the above, bridging

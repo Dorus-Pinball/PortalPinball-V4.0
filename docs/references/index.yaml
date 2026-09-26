@@ -150,3 +150,9 @@ sources:
     date_archived: "2026-09-13"
     cited_by: "plans/OutsidePerspective.md"
     note: "Testing philosophy behind this project's own tests/ suite."
+  - slug: stern-spike-system-manual
+    title: "Stern SPIKE System Manual (775-7640-00, Release 2)"
+    url: "https://www.sternpinball.com/wp-content/uploads/2020/11/SPIKE-System-Manual.pdf"
+    date_archived: "2026-09-26"
+    cited_by: "plans/read-opto.md"
+    note: "Confirms the trough opto board is a 'Node extension' read by a Playfield Node board's own onboard firmware, not the main Spike CPU directly - explains why the bit-level read protocol is undocumented anywhere public."
