@@ -391,12 +391,122 @@ timing and protocol. And "all 8 bits always identical" from a 74HC165 means the 
 clocked while held in load mode.
 
 **Next steps:**
-1. Set `BIT_INVERT` against MPF's live switch states on the cabinet, then wire the 7 mirror
-   outputs into OPP (same chain2-0x21 positions as today).
-2. Build the permanent bridge on a bare ATmega328P-PU per the build sheet (or keep the Uno if
-   that's simpler) — same firmware, now with the corrected polarity.
+1. Pick an approach: the ATmega bridge ("Permanent build" below), or reading the board directly
+   from OPP with MPF's `spi_bit_bang` platform (the section after that). Both are viable.
+2. Build it and wire it into the cabinet.
 3. Run `TODO.md`'s empty-trough + ball-by-ball test on the real cabinet.
 4. Optional: retest the old `520-7001-00A` board with the corrected firmware. It may not be dead.
+
+## Permanent build: bare ATmega328P bridge (2026-09-26)
+
+The build sheet (`design/physical-checklists/trough-opto-bridge.html`) still holds after the
+polarity fix; this is the condensed version, updated for the 520-8516-00.
+
+**Parts** (checked against the `Component_database` inventory on 2026-09-26):
+
+| Part | In stock |
+|---|---|
+| ATmega328P-PU, DIP-28 | 5 |
+| 10kΩ resistor (reset pull-up) | 20 |
+| 0.1µF ceramic capacitor (decoupling, from the ceramic assortment) | yes |
+| Uno + ArduinoISP shield (programmer only) | yes |
+| Perfboard, DIP-28 socket, mating plug for the Stern board's `CN1` header | not in the database (may just be unrecorded) |
+
+The socket is worth it: pull the chip to reprogram it on the ISP shield instead of in-circuit.
+
+**Wiring** (DIP pin numbers):
+
+| ATmega pin | Connects to |
+|---|---|
+| 7 VCC, 20 AVCC | +5V |
+| 8, 22 GND | GND |
+| 1 RESET | +5V through 10kΩ |
+| 7–8 | 0.1µF ceramic, right at the chip |
+| 16 SS | +5V (forces SPI master) |
+| 9, 10 XTAL, 17 MOSI | not connected (internal 8MHz clock) |
+| 14 (PB0) | Stern `CN1` `RCK` |
+| 19 (PB5) | Stern `CN1` `SCK` |
+| 18 (PB4) | Stern `CN1` `MISO` |
+| 5, 6, 11, 12, 13, 23 | `s-trough1`…`s-trough6` → OPP chain2-0x21 inputs 2-1-16…21 |
+| 24 (PC1) | `s-trough-jam` → OPP 2-1-22 |
+
+Stern `CN1` `VCC`/`GND` go to the same +5V/GND; its `MOSI` stays unconnected. The ATmega's ground
+**must** be shared with the OPP board. Power from the machine's 5V logic supply — during the bench
+test a Uno on USB powered the whole opto board without trouble, so the draw is modest (not measured).
+The OPP inputs are the same positions the old soldered taps used, so no MPF config changes beyond
+the output polarity.
+
+**Programming:** flash `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino` with
+`tools/flash-atmega328p.ps1` (ArduinoISP on the Uno, MiniCore, 8MHz internal clock). No firmware
+changes needed — the SPI and serial speeds work at 8MHz.
+
+**Order:** set `BIT_INVERT` first with the *Uno* connected on the cabinet, watching MPF's live
+switch states (reflashing over USB takes seconds), then program the bare chip once with the final
+values.
+
+**Simpler alternatives:** leave the Uno in permanently (works as-is, no soldering, just bigger), or
+use the inventory's Pro Micro (ATmega32U4, 16MHz = 5V version; small, with USB — but its SPI pins
+differ, so the firmware's pin map would need changing).
+
+## Alternative: read the board directly from OPP with MPF's `spi_bit_bang` (untested)
+
+MPF 0.80 ships a `spi_bit_bang` platform (`mpf/platforms/spi_bit_bang.py`) made for exactly this
+kind of board: it reads a 74HC165-style register by bit-banging it through *another* platform's
+hardware — two MPF `digital_outputs` for the latch and clock, and one ordinary switch input for the
+data line. The OPP firmware itself has no shift-register input mode (MPF's OPP platform supports
+only solenoid, input, incandescent, matrix, and neopixel wing types), so this is the only
+no-extra-microcontroller way.
+
+**How it would map onto this board.** OPP outputs are low-side FETs, so each needs a pull-up
+resistor to 5V (roughly 1–2.2kΩ; check it reaches ≥3.5V at the Stern pin, since `RCK` enters a
+plain 74HC540). With pull-ups, "output enabled" = line LOW and "disabled" = HIGH. That happens to
+match the board: the platform holds its chip-select *disabled* (HIGH = load) between reads and
+*enabled* (LOW = shift) while clocking, which is exactly the inverted `RCK` this board wants. The
+clock idles HIGH and each 1ms pulse ends on a rising edge, which is when the 74HC165 shifts. The
+first bit read is input H (the unused bit 7), MSB first, so switch numbers `"0"`–`"6"` equal raw
+bits 0–6. Because an OPP input reads active when pulled low, the bits arrive inverted: a switch
+is active when its sensor is **blocked**.
+
+**Config sketch** (untested; output/input numbers are placeholders):
+
+```yaml
+digital_outputs:
+  trough_rck: {number: "<free OPP output>", type: driver}   # -> CN1 RCK, with pull-up to 5V
+  trough_sck: {number: "<free OPP output>", type: driver}   # -> CN1 SCK, with pull-up to 5V
+switches:
+  trough_miso: {number: "<free OPP input>"}                 # <- CN1 MISO
+  s-trough1: {number: "5", platform: spi_bit_bang}
+  s-trough2: {number: "4", platform: spi_bit_bang}
+  s-trough3: {number: "3", platform: spi_bit_bang}
+  s-trough4: {number: "2", platform: spi_bit_bang}
+  s-trough5: {number: "1", platform: spi_bit_bang}
+  s-trough6: {number: "0", platform: spi_bit_bang}
+  s-trough-jam: {number: "6", platform: spi_bit_bang}
+spi_bit_bang:
+  cs_pin: trough_rck
+  clock_pin: trough_sck
+  miso_pin: trough_miso
+  inputs: 8
+  bit_time: 50ms   # default; must exceed OPP's switch-report latency (poll_hz defaults to 100)
+```
+
+**Trade-offs versus the ATmega bridge:**
+- **For:** no microcontroller, no firmware, no flashing, no `BIT_INVERT` — polarity is just each
+  switch's `type` in MPF config. Uses 1 OPP input instead of 7 (frees 6).
+- **Against:** slow — every bit is a round trip through MPF and OPP's serial link, so a full read
+  takes about 0.5s at the default `bit_time` (tunable down, but it must stay above OPP's polling
+  latency). Fine for trough ball counting, noticeably laggier than the bridge's ~10ms.
+- Needs 2 free OPP driver outputs plus the pull-ups; the outputs must not have flyback diodes to a
+  coil rail that can be switched off (that would clamp the logic lines low when coil power is off).
+- Reads only while MPF is running, and the switches can't be used in OPP hardware rules (not needed
+  for a software-driven ball device).
+- The `s-trough-jam` "active = clear path" quirk came from the old tap wiring; here jam would read
+  active = blocked unless its `type` is flipped, so the ball device config needs a look either way.
+- At startup the platform reports every switch inactive until its first read completes; watch for
+  spurious ball-count events on boot.
+
+**Suggested order:** since it's only config plus two resistors, try `spi_bit_bang` first if two
+free OPP outputs exist. Fall back to the ATmega bridge if it proves too slow or flaky.
 
 ## Verification
 

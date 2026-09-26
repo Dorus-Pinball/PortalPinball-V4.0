@@ -158,6 +158,11 @@ history, or `docs/wiring-guide.md` for current pin numbers/status per component.
       clears exactly one bit: bit 6 = jam, bits 5→0 = positions 1→6, bit 7 unused; 1 = clear,
       0 = blocked. `BIT_CHANNEL` is set in the firmware. The "output floats during load" and
       "hidden component" conclusions above were artifacts and are retracted there. Remaining:
+      - [ ] **Pick the approach**: the ATmega bridge (the two items below), or reading the board
+        straight from OPP with MPF's built-in `spi_bit_bang` platform — no microcontroller, 1 OPP
+        input + 2 free OPP outputs with pull-ups, but ~0.5s per read and untested. Both are
+        written up in `plans/read-opto.md` ("Permanent build" / "Alternative: … `spi_bit_bang`").
+        First check whether two OPP driver outputs are free.
       - [ ] **Set `BIT_INVERT`** in `tools/atmega328p-trough-bridge/atmega328p-trough-bridge.ino`
         against MPF's live switch states on the cabinet (switches are `type: NC`, and
         `s-trough-jam` active = clear path).
