@@ -143,6 +143,7 @@ machinefolder/
   sounds/, images/  # currently placeholder assets, not final
 tests/              # MpfTestCase/MpfGameTestCase suite - run with `python -m unittest discover tests`
 design/             # story -> shots -> modes workflow + schema-tracked feature design docs
+posts/              # drafts of write-ups for outside sites (e.g. the OPP website)
 tools/hw_console/   # local web tool for tracking hardware bring-up (boards + components)
 tools/hw_console/generate_docs.py  # generates wiring-guide.html and wiring-guide.md (see above)
 tools/hw_console/templates/        # Jinja2 templates for the generator
