@@ -4,8 +4,16 @@
 
 Replace the fragile hand-soldered taps on the Stern trough opto board — the wiring damage logged in
 commit `859a6b9` — with a small bridge. A bare ATmega328P reads the board's own serial connector
-and mirrors the 7 sensors onto OPP's existing switch inputs (chain2-0x21, 2-1-16…22), so the
-MPF/OPP config stays as it is apart from the output polarity.
+and mirrors the 7 sensors onto OPP's switch inputs, so the MPF/OPP config stays as it is apart
+from the addressing/board and the output polarity.
+
+**2026-09-27 update:** actually wired into **chain2-0x20 (`2-0-16…22`)**, not chain2-0x21
+(`2-1-16…22`) as this section originally planned and as `board Overviews.xlsx`'s design sheet
+calls for (`docs/board-silkscreen-reference.md`) — confirmed live via `tools/wiring_test.py
+--monitor`. Live hardware wins over the design sheet per the user. The wiring table below is kept
+as-written for the historical build (it's still what's soldered on the ATmega board itself); only
+the OPP-side addressing changed, tracked in `hardware-switches.yaml`/`components.yaml` now instead
+of here.
 
 How the Stern board works, its bit map, the tools and pitfalls, and the bench history behind all
 this: `docs/stern-spike-trough-opto.md`. The alternative of reading the board straight from OPP
@@ -63,14 +71,16 @@ DIP pin numbers:
 | 14 (PB0) | Stern `CN1` `RCK` |
 | 19 (PB5) | Stern `CN1` `SCK` |
 | 18 (PB4) | Stern `CN1` `MISO` |
-| 5 (PD3), 6 (PD4), 11 (PD5), 12 (PD6), 13 (PD7), 23 (PC0) | `s-trough1`…`s-trough6` → OPP inputs 2-1-16…21 |
-| 24 (PC1) | `s-trough-jam` → OPP input 2-1-22 |
+| 5 (PD3), 6 (PD4), 11 (PD5), 12 (PD6), 13 (PD7), 23 (PC0) | `s-trough1`…`s-trough6` → OPP inputs 2-0-16…21 |
+| 24 (PC1) | `s-trough-jam` → OPP input 2-0-22 |
 
 - Stern `CN1` `VCC`/`GND` go to the same +5V/GND. Its `MOSI` stays unconnected.
 - The ATmega's ground **must** be shared with the OPP board.
 - Power from the machine's 5V logic supply. During the bench test a Uno on USB powered the whole
   opto board without trouble, so the draw is modest (not measured).
-- The OPP inputs are the same positions the old soldered taps used.
+- **2026-09-27:** actually landed on chain2-0x20, not chain2-0x21 as originally planned here (see
+  the note at the top of this doc) — NOT the same board the old soldered taps used, despite the
+  original plan. Table above updated to match what's actually wired.
 
 ## Programming
 
@@ -85,7 +95,7 @@ message until its fuses are rewritten.
 ## Build order
 
 1. **Calibrate `BIT_INVERT` on the Uno, at the cabinet.** Wire the Uno the same way (`CN1` →
-   D8/D13/D12; outputs D3, D4, D5, D6, D7, A0, A1 → OPP 2-1-16…22; shared GND). Watch MPF's live
+   D8/D13/D12; outputs D3, D4, D5, D6, D7, A0, A1 → OPP 2-0-16…22; shared GND). Watch MPF's live
    switch states and set `BIT_INVERT` until `s-trough1…6` read correctly with balls present, and
    `s-trough-jam` matches what the ball device config expects (today: active = clear path).
    Reflashing the Uno over USB takes seconds, which is why this happens before the bare chip.

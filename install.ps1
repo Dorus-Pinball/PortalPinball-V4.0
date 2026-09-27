@@ -28,6 +28,12 @@ $MpfVersion = "0.80.0"
 # against design/schema/feature.schema.json - see design/README.md.
 $JsonschemaVersion = "4.26.0"
 
+# jinja2: used by tools/hw_console/generate_docs.py to render wiring-guide.html/.md from
+# tools/hw_console/templates/*.j2 - added with that tool but never pinned here (found
+# 2026-09-27 when the wire-component skill's post-edit hook failed with
+# ModuleNotFoundError: No module named 'jinja2').
+$Jinja2Version = "3.1.6"
+
 $RepoRoot = $PSScriptRoot
 $VenvPath = Join-Path $RepoRoot ".venv"
 
@@ -93,6 +99,12 @@ Write-Host "Installing jsonschema==$JsonschemaVersion ..."
 & $VenvPython -m pip install "jsonschema==$JsonschemaVersion"
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Failed to install jsonschema==$JsonschemaVersion"
+}
+
+Write-Host "Installing jinja2==$Jinja2Version ..."
+& $VenvPython -m pip install "jinja2==$Jinja2Version"
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to install jinja2==$Jinja2Version"
 }
 
 # --- Verify ---

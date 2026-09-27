@@ -432,3 +432,16 @@ superseded-by-\<entry\> / rejected). Reconstructs *why* the project looks the wa
     and a condensed bench history with lessons. The full original text is preserved in git at
     commit `21a9e8b`; entries #27–#29 above still name the old plan sections (left as-is, per this
     log's convention). — **Status: active**.
+31. **Trough bridge wired into OPP on chain2-0x20, not chain2-0x21 as planned** (2026-09-27,
+    branch `feature/trough-bridge-breadboard`). `plans/read-opto.md` and `board Overviews.xlsx`'s
+    design sheet both called for chain2-0x21 (`2-1-16...22`) — the same slot the old soldered taps
+    used, and where entry #13 above left the trough switches. The bridge's 7 outputs were
+    physically landed on chain2-0x20 (`2-0-16...22`) instead, discovered when `tools/wiring_test.py
+    --monitor` showed those exact addresses firing together while sweeping a hand across all 7
+    sensors — not the chain2-0x21 addresses the plan expected, which stayed completely quiet.
+    Per the user, live hardware is authoritative over the design sheet. Renumbered
+    `s-trough1...6`/`s-trough-jam` to `2-0-16...22` in `hardware-switches.yaml`/`components.yaml`,
+    which in turn reclaimed `s-toplane1/2/3`'s and `s-orbit-r`'s DRAFT placeholder numbers
+    (`2-0-19...22`) — moved to `2-0-0/1/2/3` (still not physically wired). `s-trough6` (`2-0-21`)
+    didn't fire during the hand-sweep; flagged in `TODO.md` for the per-switch verification pass.
+    — **Status: active**; per-switch cabinet test still open, tracked in `TODO.md`.

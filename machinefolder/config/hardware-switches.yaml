@@ -6,15 +6,23 @@
 switches:
 # Autofire 2-0-0 to 2-0-3
 # s-right-sling/s-left-sling moved to the Cobra chain 0 board (0x20), 2026-09-13 - see below,
-# same migration pattern as the flippers/plunger/trough. 2-0-0/2-0-1 now free again.
-  #name:              plunger --> NO AUTOLAUNCH SWITCH
-  #    number: 2-0-2
-  #    label:
-  #    tags:
-  #name:              trough_eject --> NO AUTOLAUNCH SWITCH
-  #    number: 2-0-3
-  #    label:
-  #    tags:
+# same migration pattern as the flippers/plunger/trough. 2-0-0/2-0-1 were free again from that
+# move; 2-0-2/2-0-3 were dead "plunger"/"trough_eject" autolaunch placeholders, never real
+# switches. All 4 reused 2026-09-27 for s-toplane1/2/3 and s-orbit-r, bumped off their old
+# 2-0-19...22 slots when the trough opto bridge landed there instead - see the trough block
+# below. Still DRAFT/not physically wired.
+  s-toplane1:
+    number: 2-0-0
+    type: NO
+  s-toplane2:
+    number: 2-0-1
+    type: NO
+  s-toplane3:
+    number: 2-0-2
+    type: NO
+  s-orbit-r:
+    number: 2-0-3
+    type: NO
 # Autofire 2-0-4 to 2-0-7 DO NOT EXIST
 
 # Autofire 2-0-8 to 2-0-11
@@ -32,25 +40,44 @@ switches:
 
 # Direct Switches Launch Section
 # s-plunger-lane/s-start/s-launch moved to the Cobra chain 0 board (0x20) below, 2-0-16/17/18
-# now free again - see the comment at the flipper switches block for why (same-board wiring
-# done during the 2026-09-06/2026-09-12 bring-up sessions).
+# were free again from that move - see the comment at the flipper switches block for why
+# (same-board wiring done during the 2026-09-06/2026-09-12 bring-up sessions).
 
 
-# Lane Switches
-# s-toplane1/s-toplane2 reverted to their original planned 2-0-19/2-0-20 (still DRAFT - top
-# lanes aren't physically wired yet), 2026-09-13. Real-hardware bring-up initially found the
-# bottom-lane wires there, but that was because the harness connector was seated in the wrong
-# block on the header - once the user moved it to the correct block, the real numbers turned
-# out to be 2-0-27…31 (see below). See components.yaml's bottom-lanes notes for the full story.
-  s-toplane1:
+# Ball trough opto bridge - see plans/read-opto.md for the bare-ATmega328P bridge build that
+# replaces the fragile hand-soldered taps on the Stern trough opto board. Landed 2026-09-27 on
+# chain2-0x20 (2-0-16...22) - NOT chain2-0x21 as the build plan and board Overviews.xlsx's
+# design sheet call for (docs/board-silkscreen-reference.md), and NOT the same slot the old
+# soldered taps used. Confirmed live: tools/wiring_test.py --monitor showed exactly these 7
+# addresses firing together while sweeping a hand across all 7 sensors. Per the user, live
+# hardware is authoritative over the design sheet here. This reclaimed s-toplane1/2/3's and
+# s-orbit-r's DRAFT placeholder numbers (2-0-19/20/21/22) - moved to 2-0-0/1/2/3 above (see the
+# Autofire 2-0-0 to 2-0-3 comment), still not physically wired.
+# type: NC per the bridge firmware's BIT_INVERT=true on all channels (commit 14b9943, 2026-09-27):
+# an OPP input reads closed when pulled low, NC inverts that. Still to be confirmed on the
+# cabinet - the old "s-trough-jam active = clear path" note came from the damaged original taps
+# and is superseded by this firmware fix (active should now mean jammed, matching the name).
+  s-trough1:
+    number: 2-0-16
+    type: NC
+  s-trough2:
+    number: 2-0-17
+    type: NC
+  s-trough3:
+    number: 2-0-18
+    type: NC
+  s-trough4:
     number: 2-0-19
-    type: NO
-  s-toplane2:
+    type: NC
+  s-trough5:
     number: 2-0-20
-    type: NO
-  s-toplane3:
+    type: NC
+  s-trough6:
     number: 2-0-21
-    type: NO
+    type: NC
+  s-trough-jam:
+    number: 2-0-22
+    type: NC
 
 # s-bottomlane1-4 + rollover: CONFIRMED 2026-09-13 by pressing each switch individually (one at
 # a time, no batching) after the user moved the harness connector to its correct block on the
@@ -79,9 +106,8 @@ switches:
 
 
 # Other
-  s-orbit-r:
-    number: 2-0-22
-    type: NO
+# s-orbit-r moved to 2-0-3 (see the Autofire 2-0-0 to 2-0-3 comment above), 2026-09-27 - its
+# old 2-0-22 slot was reclaimed by s-trough-jam when the trough bridge landed on this board.
   s-orbit-l:
     number: 2-0-23
     type: NO
@@ -162,30 +188,8 @@ switches:
 
 
 # Direct Switches Trough Section
-  s-trough1:
-    number: 2-1-16
-    type: NC
-  s-trough2:
-    number: 2-1-17
-    type: NC
-  s-trough3:
-    number: 2-1-18
-    type: NC
-  s-trough4:
-    number: 2-1-19
-    type: NC
-  s-trough5:
-    number: 2-1-20
-    type: NC
-  s-trough6:
-    number: 2-1-21
-    type: NC
-  # Active (logically closed) means a CLEAR path, not a jam - opposite of what the name
-  # suggests at a glance. Confirmed live 2026-09-11: reads active with an empty trough and no
-  # obstruction; would read inactive if a ball were actually jammed blocking the exit.
-  s-trough-jam:
-    number: 2-1-22
-    type: NC
+# s-trough1...6/s-trough-jam moved to chain2-0x20 (2-0-16...22), 2026-09-27 - the trough opto
+# bridge landed there instead of here, see that block above. 2-1-16...22 now free again.
 
 
 # Orbit & Ramp switches

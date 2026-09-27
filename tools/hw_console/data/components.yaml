@@ -211,16 +211,16 @@ components:
 
   trough:
     display_name: "Ball trough"
-    status: 4
+    status: 5
     mpf_devices: [bd-trough]
     switches:
-      - {name: s-trough1, number: 2-1-16, board: chain2-0x21, silkscreen: "3.7"}
-      - {name: s-trough2, number: 2-1-17, board: chain2-0x21, silkscreen: "3.6"}
-      - {name: s-trough3, number: 2-1-18, board: chain2-0x21, silkscreen: "3.5"}
-      - {name: s-trough4, number: 2-1-19, board: chain2-0x21, silkscreen: "3.4"}
-      - {name: s-trough5, number: 2-1-20, board: chain2-0x21, silkscreen: "3.3"}
-      - {name: s-trough6, number: 2-1-21, board: chain2-0x21, silkscreen: "3.2"}
-      - {name: s-trough-jam, number: 2-1-22, board: chain2-0x21, silkscreen: "3.1"}
+      - {name: s-trough1, number: 2-0-16, board: chain2-0x20, silkscreen: "3.7"}
+      - {name: s-trough2, number: 2-0-17, board: chain2-0x20, silkscreen: "3.6"}
+      - {name: s-trough3, number: 2-0-18, board: chain2-0x20, silkscreen: "3.5"}
+      - {name: s-trough4, number: 2-0-19, board: chain2-0x20, silkscreen: "3.4"}
+      - {name: s-trough5, number: 2-0-20, board: chain2-0x20, silkscreen: "3.3"}
+      - {name: s-trough6, number: 2-0-21, board: chain2-0x20, silkscreen: "3.2"}
+      - {name: s-trough-jam, number: 2-0-22, board: chain2-0x20, silkscreen: "3.1"}
     coils:
       - {name: c-trough-eject, number: 0-0-11, board: chain0-0x20, silkscreen: "0-0-11"}
     checklist:
@@ -229,15 +229,21 @@ components:
       - {item: "Coil and its trigger switch land on the same physical OPP board",
         done: true}
     notes: "Eject coil is software/event-triggered (ball_device), not a hardware autofire
-      rule - the switch/coil board split is fine here. Switches: numbers unchanged
-      (2-1-16..22, PSOC chain2-0x21), but blocked on the trough opto bridge (the Stern board's
-      serial read now works on the bench; bridge build + wiring into OPP still to do, see
-      TODO.md/plans/read-opto.md) before they can be tested again. Coil:
-      moved 2026-09-12 from 2-0-3 (PSOC) to 0-0-11 (Cobra chain0-0x20, Bank A/HV_A, per user
-      decision) - confirmed 2026-09-12, PASSED the no-HV activation-LED check then PASSED with
-      real 50V present (fed a ball into the plunger lane correctly). Status stays at 4 despite
-      the coil being fully confirmed, since the switches half is still blocked on the opto
-      repair - not a per-coil regression."
+      rule - the switch/coil board split is fine here.
+      Switches: the bare-ATmega328P bridge (plans/read-opto.md) that replaces the fragile
+      hand-soldered taps on the Stern trough opto board landed 2026-09-27 on chain2-0x20
+      (2-0-16...22) - NOT chain2-0x21 (2-1-16...22) as the build plan and board
+      Overviews.xlsx's design sheet call for. Confirmed live: tools/wiring_test.py --monitor
+      showed exactly these 7 addresses firing together while sweeping a hand across all 7
+      sensors on the Stern board. Per the user, live hardware is authoritative over the design
+      sheet here. Status bumped to 5 (connected, not yet individually tested per-switch) -
+      the hand-sweep confirmed the group as a whole but not each sensor's identity/polarity
+      one at a time; see TODO.md for the remaining per-switch verification and s-trough6
+      (2-0-21) not firing during the sweep. This also reclaimed s-toplane1/2/3's and
+      s-orbit-r's DRAFT placeholder numbers - see the top-lanes and orbits entries below.
+      Coil: moved 2026-09-12 from 2-0-3 (PSOC) to 0-0-11 (Cobra chain0-0x20, Bank A/HV_A, per
+      user decision) - confirmed 2026-09-12, PASSED the no-HV activation-LED check then PASSED
+      with real 50V present (fed a ball into the plunger lane correctly)."
 
   drop-bank:
     display_name: "Drop target bank"
@@ -262,9 +268,9 @@ components:
     status: 4
     mpf_devices: []
     switches:
-      - {name: s-toplane1, number: 2-0-19, board: chain2-0x20}
-      - {name: s-toplane2, number: 2-0-20, board: chain2-0x20}
-      - {name: s-toplane3, number: 2-0-21, board: chain2-0x20}
+      - {name: s-toplane1, number: 2-0-0, board: chain2-0x20}
+      - {name: s-toplane2, number: 2-0-1, board: chain2-0x20}
+      - {name: s-toplane3, number: 2-0-2, board: chain2-0x20}
     coils: []
     checklist:
       - {item: "Flyback diode across coil", done: true}
@@ -276,7 +282,10 @@ components:
       bring-up (see bottom-lanes' notes) when the bottom-lane harness was found on these pins,
       but that turned out to be because the harness connector was seated in the wrong block on
       the header, not because these are the bottom lanes' real numbers. Reverted once the
-      connector was moved to its correct position and the real bottom-lane numbers were found."
+      connector was moved to its correct position and the real bottom-lane numbers were found.
+      Moved again 2026-09-27, still DRAFT/not physically wired, from 2-0-19/20/21 to
+      2-0-0/1/2 - the trough opto bridge landed on 2-0-16...22 instead of its originally
+      planned chain2-0x21, reclaiming this DRAFT block's old slots. See the trough entry."
 
   bottom-lanes:
     display_name: "Bottom lanes (4)"
@@ -347,7 +356,7 @@ components:
     mpf_devices: []
     switches:
       - {name: s-orbit-l, number: 2-0-23, board: chain2-0x20}
-      - {name: s-orbit-r, number: 2-0-22, board: chain2-0x20}
+      - {name: s-orbit-r, number: 2-0-3, board: chain2-0x20}
       - {name: s-orbit-top, number: 2-1-28, board: chain2-0x21}
     coils: []
     checklist:
@@ -357,7 +366,9 @@ components:
         done: true}
     notes: "No coils - pure switches. s-orbit-l/s-orbit-r moved to 2-0-23/2-0-22 (still DRAFT,
       not physically wired), 2026-09-13 - their old 2-0-28/2-0-27 slots turned out to be the
-      real confirmed bottom-lane1/2 pins, see bottom-lanes' notes."
+      real confirmed bottom-lane1/2 pins, see bottom-lanes' notes. s-orbit-r moved again
+      2026-09-27, still DRAFT/not physically wired, from 2-0-22 to 2-0-3 - the trough opto
+      bridge's s-trough-jam landed on 2-0-22 instead. See the trough entry."
 
   targets:
     display_name: "Standup targets (E/R/M/L banks)"
