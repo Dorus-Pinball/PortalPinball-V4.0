@@ -372,7 +372,7 @@ footer{
     <h1>Wiring &amp; Test Guide</h1>
     <div class="sub">Board map, known-component wiring tables, and connector diagrams to support wiring the cabinet by hand — followed by the bench-test procedure to run once something here is wired. Source of truth for live status stays <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span>; this page is generated from that data plus <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-*.yaml</span> by <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/generate_docs.py</span> — do not hand-edit this file, it will be overwritten.</div>
     <div class="fields">
-      <div class="field-line">Date <span class="blank">2026-09-14</span></div>
+      <div class="field-line">Date <span class="blank">2026-09-27</span></div>
       <div class="field-line">MPF version <span class="blank"></span></div>
       <div class="field-line">Run by <span class="blank"></span></div>
       <div class="field-line">Build/commit <span class="blank"></span></div>
@@ -395,8 +395,8 @@ footer{
         <tbody>
           <tr><td>Chain 0 / Board 0x20 (CobraPin)</td><td class="brd">COM4</td><td>cobrapin-switches-coils-leds</td><td class="num">8</td><td class="num">7</td><td class="num">4</td><td class="num">40</td></tr>
           <tr><td>Chain 1 / Board 0x20 (CobraPin)</td><td class="brd">COM5</td><td>cobrapin-switches-coils-leds</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
-          <tr><td>Chain 2 / Board 0x20 (PSOC card 0)</td><td class="brd">COM6</td><td>psoc-switches-coils</td><td class="num">16</td><td class="num">4</td><td class="num">0</td><td class="num">0</td></tr>
-          <tr><td>Chain 2 / Board 0x21 (PSOC card 1)</td><td class="brd">COM6</td><td>psoc-switches-coils</td><td class="num">16</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
+          <tr><td>Chain 2 / Board 0x20 (PSOC card 0)</td><td class="brd">COM6</td><td>psoc-switches-coils</td><td class="num">23</td><td class="num">4</td><td class="num">0</td><td class="num">0</td></tr>
+          <tr><td>Chain 2 / Board 0x21 (PSOC card 1)</td><td class="brd">COM6</td><td>psoc-switches-coils</td><td class="num">9</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
           <tr><td>Chain 2 / Board 0x22 (PSOC card 2, incl. incandescent card)</td><td class="brd">COM6</td><td>psoc-switches-coils-incand</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
           <tr><td>Chain 2 / Board 0x23 (PSOC card 3)</td><td class="brd">COM6</td><td>psoc-switches-coils</td><td class="num">20</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
         </tbody>
@@ -458,28 +458,28 @@ footer{
           <tr><td></td><td>c-plunger</td><td>Coil</td><td class="brd">chain0-0x20</td><td class="num">0-0-10</td><td class="num">HV-A</td><td class="num">0-0-10</td><td></td></tr>
           <tr><td>Start / launch cabinet buttons</td><td>s-start</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">0-0-27</td><td class="num">GND</td><td class="num">0-0-27</td><td><span class="status wired">wired</span></td></tr>
           <tr><td></td><td>s-launch</td><td>Switch</td><td class="brd">chain0-0x20</td><td class="num">0-0-3</td><td class="num">GND</td><td class="num">0-0-3</td><td></td></tr>
-          <tr><td>Ball trough</td><td>s-trough1</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.7</td><td class="num">GND</td><td class="num">2-1-16</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td></td><td>s-trough2</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.6</td><td class="num">GND</td><td class="num">2-1-17</td><td></td></tr>
-          <tr><td></td><td>s-trough3</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.5</td><td class="num">GND</td><td class="num">2-1-18</td><td></td></tr>
-          <tr><td></td><td>s-trough4</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.4</td><td class="num">GND</td><td class="num">2-1-19</td><td></td></tr>
-          <tr><td></td><td>s-trough5</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.3</td><td class="num">GND</td><td class="num">2-1-20</td><td></td></tr>
-          <tr><td></td><td>s-trough6</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.2</td><td class="num">GND</td><td class="num">2-1-21</td><td></td></tr>
-          <tr><td></td><td>s-trough-jam</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num">3.1</td><td class="num">GND</td><td class="num">2-1-22</td><td></td></tr>
+          <tr><td>Ball trough</td><td>s-trough1</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">3.7</td><td class="num">GND</td><td class="num">2-0-16</td><td><span class="status wired">wired</span></td></tr>
+          <tr><td></td><td>s-trough2</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">3.6</td><td class="num">GND</td><td class="num">2-0-17</td><td></td></tr>
+          <tr><td></td><td>s-trough3</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">3.5</td><td class="num">GND</td><td class="num">2-0-18</td><td></td></tr>
+          <tr><td></td><td>s-trough4</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">3.4</td><td class="num">GND</td><td class="num">2-0-19</td><td></td></tr>
+          <tr><td></td><td>s-trough5</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">3.3</td><td class="num">GND</td><td class="num">2-0-20</td><td></td></tr>
+          <tr><td></td><td>s-trough6</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">3.2</td><td class="num">GND</td><td class="num">2-0-21</td><td></td></tr>
+          <tr><td></td><td>s-trough-jam</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">3.1</td><td class="num">GND</td><td class="num">2-0-22</td><td></td></tr>
           <tr><td></td><td>c-trough-eject</td><td>Coil</td><td class="brd">chain0-0x20</td><td class="num">0-0-11</td><td class="num">HV-A</td><td class="num">0-0-11</td><td></td></tr>
           <tr><td>Drop target bank</td><td>s-drop1</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-23</td><td><span class="status planned">planned</span></td></tr>
           <tr><td></td><td>s-drop2</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-24</td><td></td></tr>
           <tr><td></td><td>s-drop3</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-25</td><td></td></tr>
           <tr><td></td><td>c-drop</td><td>Coil</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num"></td><td class="num">2-0-7</td><td></td></tr>
-          <tr><td>Top lanes (3)</td><td>s-toplane1</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-19</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td></td><td>s-toplane2</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-20</td><td></td></tr>
-          <tr><td></td><td>s-toplane3</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-21</td><td></td></tr>
+          <tr><td>Top lanes (3)</td><td>s-toplane1</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-0</td><td><span class="status planned">planned</span></td></tr>
+          <tr><td></td><td>s-toplane2</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-1</td><td></td></tr>
+          <tr><td></td><td>s-toplane3</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-2</td><td></td></tr>
           <tr><td>Bottom lanes (4)</td><td>s-bottomlane1</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.4</td><td class="num">GND</td><td class="num">2-0-27</td><td><span class="status wired">wired</span></td></tr>
           <tr><td></td><td>s-bottomlane2</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.3</td><td class="num">GND</td><td class="num">2-0-28</td><td></td></tr>
           <tr><td></td><td>s-bottomlane3</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.0</td><td class="num">GND</td><td class="num">2-0-31</td><td></td></tr>
           <tr><td></td><td>s-bottomlane4</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.1</td><td class="num">GND</td><td class="num">2-0-30</td><td></td></tr>
           <tr><td>Rollover (grouped as a 5th bottom lane in the original harness/wiring)</td><td>s-bottomlane5</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num">2.2</td><td class="num">GND</td><td class="num">2-0-29</td><td><span class="status wired">wired</span></td></tr>
           <tr><td>Orbits (left/right/top)</td><td>s-orbit-l</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-23</td><td><span class="status planned">planned</span></td></tr>
-          <tr><td></td><td>s-orbit-r</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-22</td><td></td></tr>
+          <tr><td></td><td>s-orbit-r</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-3</td><td></td></tr>
           <tr><td></td><td>s-orbit-top</td><td>Switch</td><td class="brd">chain2-0x21</td><td class="num"></td><td class="num">GND</td><td class="num">2-1-28</td><td></td></tr>
           <tr><td>Standup targets (E/R/M/L banks)</td><td>s-target-e1</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-24</td><td><span class="status planned">planned</span></td></tr>
           <tr><td></td><td>s-target-e2</td><td>Switch</td><td class="brd">chain2-0x20</td><td class="num"></td><td class="num">GND</td><td class="num">2-0-25</td><td></td></tr>
@@ -1101,7 +1101,7 @@ footer{
   </div>
 
   <footer>
-    Generated 2026-09-14 by <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/generate_docs.py</span> from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-*.yaml</span> (sections 01 and 04), plus <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/harnesses/*.yaml</span> via WireViz (section 05's coil-bank diagram); the board-priority policy and CobraPin/red-board pairing rules (sections 02-03) are sourced from <span style="font-family:'IBM Plex Mono',monospace">docs/opp-hardware-reference.md</span> — that's the canonical rulebook, this page is its visual companion; the bench-test procedure (sections 05-13) is hand-authored, sourced from <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-{basic,switches,coils,devices,leds}.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. If a component's wiring status changes, update <span style="font-family:'IBM Plex Mono',monospace">components.yaml</span> (or the hw_console web UI) first, then re-run the generator to match — this file is not itself the live tracker, and hand-editing it will be silently overwritten on the next run. New component wiring should follow <span style="font-family:'IBM Plex Mono',monospace">.claude/skills/wire-component/SKILL.md</span>'s process so this page, the registry, and the config all stay in sync.
+    Generated 2026-09-27 by <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/generate_docs.py</span> from <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/components.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-*.yaml</span> (sections 01 and 04), plus <span style="font-family:'IBM Plex Mono',monospace">tools/hw_console/data/harnesses/*.yaml</span> via WireViz (section 05's coil-bank diagram); the board-priority policy and CobraPin/red-board pairing rules (sections 02-03) are sourced from <span style="font-family:'IBM Plex Mono',monospace">docs/opp-hardware-reference.md</span> — that's the canonical rulebook, this page is its visual companion; the bench-test procedure (sections 05-13) is hand-authored, sourced from <span style="font-family:'IBM Plex Mono',monospace">machinefolder/config/hardware-{basic,switches,coils,devices,leds}.yaml</span> and <span style="font-family:'IBM Plex Mono',monospace">TODO.md</span>. If a component's wiring status changes, update <span style="font-family:'IBM Plex Mono',monospace">components.yaml</span> (or the hw_console web UI) first, then re-run the generator to match — this file is not itself the live tracker, and hand-editing it will be silently overwritten on the next run. New component wiring should follow <span style="font-family:'IBM Plex Mono',monospace">.claude/skills/wire-component/SKILL.md</span>'s process so this page, the registry, and the config all stay in sync.
   </footer>
 
 </div>

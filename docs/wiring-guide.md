@@ -20,7 +20,7 @@ wins:
   wiring): [OPP hardware reference](/docs/opp-hardware-reference).
 - The step-by-step physical bring-up checklist: `design/physical-checklists/wiring-guide.html`.
 
-Generated: 2026-09-14.
+Generated: 2026-09-27.
 
 ## Board map
 
@@ -38,8 +38,8 @@ that).
 |---|---|---|---|---|---|---|
 | Chain 0 / Board 0x20 (CobraPin) | COM4 | cobrapin-switches-coils-leds | 8 | 7 | 4 | 40 |
 | Chain 1 / Board 0x20 (CobraPin) | COM5 | cobrapin-switches-coils-leds | 0 | 0 | 0 | 1 |
-| Chain 2 / Board 0x20 (PSOC card 0) | COM6 | psoc-switches-coils | 16 | 4 | 0 | 0 |
-| Chain 2 / Board 0x21 (PSOC card 1) | COM6 | psoc-switches-coils | 16 | 1 | 0 | 0 |
+| Chain 2 / Board 0x20 (PSOC card 0) | COM6 | psoc-switches-coils | 23 | 4 | 0 | 0 |
+| Chain 2 / Board 0x21 (PSOC card 1) | COM6 | psoc-switches-coils | 9 | 1 | 0 | 0 |
 | Chain 2 / Board 0x22 (PSOC card 2, incl. incandescent card) | COM6 | psoc-switches-coils-incand | 0 | 0 | 0 | 0 |
 | Chain 2 / Board 0x23 (PSOC card 3) | COM6 | psoc-switches-coils | 20 | 0 | 0 | 0 |
 
@@ -71,28 +71,28 @@ none is wired yet.
 |  | c-plunger | Coil | chain0-0x20 | 0-0-10 | HV-A | 0-0-10 |  |
 | Start / launch cabinet buttons | s-start | Switch | chain0-0x20 | 0-0-27 | GND | 0-0-27 | 6 — wired & tested |
 |  | s-launch | Switch | chain0-0x20 | 0-0-3 | GND | 0-0-3 |  |
-| Ball trough | s-trough1 | Switch | chain2-0x21 | 3.7 | GND | 2-1-16 | 4 — renovated, not wired |
-|  | s-trough2 | Switch | chain2-0x21 | 3.6 | GND | 2-1-17 |  |
-|  | s-trough3 | Switch | chain2-0x21 | 3.5 | GND | 2-1-18 |  |
-|  | s-trough4 | Switch | chain2-0x21 | 3.4 | GND | 2-1-19 |  |
-|  | s-trough5 | Switch | chain2-0x21 | 3.3 | GND | 2-1-20 |  |
-|  | s-trough6 | Switch | chain2-0x21 | 3.2 | GND | 2-1-21 |  |
-|  | s-trough-jam | Switch | chain2-0x21 | 3.1 | GND | 2-1-22 |  |
+| Ball trough | s-trough1 | Switch | chain2-0x20 | 3.7 | GND | 2-0-16 | 5 — wired, not tested |
+|  | s-trough2 | Switch | chain2-0x20 | 3.6 | GND | 2-0-17 |  |
+|  | s-trough3 | Switch | chain2-0x20 | 3.5 | GND | 2-0-18 |  |
+|  | s-trough4 | Switch | chain2-0x20 | 3.4 | GND | 2-0-19 |  |
+|  | s-trough5 | Switch | chain2-0x20 | 3.3 | GND | 2-0-20 |  |
+|  | s-trough6 | Switch | chain2-0x20 | 3.2 | GND | 2-0-21 |  |
+|  | s-trough-jam | Switch | chain2-0x20 | 3.1 | GND | 2-0-22 |  |
 |  | c-trough-eject | Coil | chain0-0x20 | 0-0-11 | HV-A | 0-0-11 |  |
 | Drop target bank | s-drop1 | Switch | chain2-0x21 |  | GND | 2-1-23 | 3 — hardware with a purpose, not renovated |
 |  | s-drop2 | Switch | chain2-0x21 |  | GND | 2-1-24 |  |
 |  | s-drop3 | Switch | chain2-0x21 |  | GND | 2-1-25 |  |
 |  | c-drop | Coil | chain2-0x20 |  |  | 2-0-7 |  |
-| Top lanes (3) | s-toplane1 | Switch | chain2-0x20 |  | GND | 2-0-19 | 4 — renovated, not wired |
-|  | s-toplane2 | Switch | chain2-0x20 |  | GND | 2-0-20 |  |
-|  | s-toplane3 | Switch | chain2-0x20 |  | GND | 2-0-21 |  |
+| Top lanes (3) | s-toplane1 | Switch | chain2-0x20 |  | GND | 2-0-0 | 4 — renovated, not wired |
+|  | s-toplane2 | Switch | chain2-0x20 |  | GND | 2-0-1 |  |
+|  | s-toplane3 | Switch | chain2-0x20 |  | GND | 2-0-2 |  |
 | Bottom lanes (4) | s-bottomlane1 | Switch | chain2-0x20 | 2.4 | GND | 2-0-27 | 6 — wired & tested |
 |  | s-bottomlane2 | Switch | chain2-0x20 | 2.3 | GND | 2-0-28 |  |
 |  | s-bottomlane3 | Switch | chain2-0x20 | 2.0 | GND | 2-0-31 |  |
 |  | s-bottomlane4 | Switch | chain2-0x20 | 2.1 | GND | 2-0-30 |  |
 | Rollover (grouped as a 5th bottom lane in the original harness/wiring) | s-bottomlane5 | Switch | chain2-0x20 | 2.2 | GND | 2-0-29 | 5 — wired, not tested |
 | Orbits (left/right/top) | s-orbit-l | Switch | chain2-0x20 |  | GND | 2-0-23 | 1 — idea, no hardware yet |
-|  | s-orbit-r | Switch | chain2-0x20 |  | GND | 2-0-22 |  |
+|  | s-orbit-r | Switch | chain2-0x20 |  | GND | 2-0-3 |  |
 |  | s-orbit-top | Switch | chain2-0x21 |  | GND | 2-1-28 |  |
 | Standup targets (E/R/M/L banks) | s-target-e1 | Switch | chain2-0x20 |  | GND | 2-0-24 | 1 — idea, no hardware yet |
 |  | s-target-e2 | Switch | chain2-0x20 |  | GND | 2-0-25 |  |
