@@ -50,7 +50,7 @@ parts listings as:
 
 Stern has not published schematics or a parts list for any of these (confirmed via their own
 support/PinWiki — see Sources). A Stern schematic for the 520-7001-00A was later obtained and is in
-this repo (`docs/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`); it is what shows the inverted `RCK`
+this repo (`docs/opto-atmega/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`); it is what shows the inverted `RCK`
 routing. The board physically examined for this writeup is silkscreened
 **520-7001-00A**, "...RD TROUGH" ("[STANDA]RD TROUGH" or similar, partially obscured by a label).
 Whether the newer 520-1051-00/520-8516-00 revisions use the same shift-register design was an
@@ -353,7 +353,7 @@ involved:
 
 - [`plans/read-opto.md`](../plans/read-opto.md) — the build plan for the bridge: parts, wiring,
   programming, build order and verification.
-- [`docs/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`](520-7001-00A-TROUGH-RECEIVER-BOARD.pdf) — Stern's
+- [`docs/opto-atmega/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`](opto-atmega/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf) — Stern's
   schematic for the older revision, showing the `RCK` → 74HC540 → `SH/LD` inversion.
 - [`design/physical-checklists/trough-opto-bridge.html`](../design/physical-checklists/trough-opto-bridge.html) —
   a printable (A4) build sheet: parts list, DIP-28 pinout diagram, breadboard wiring tables.
@@ -392,4 +392,4 @@ even a bit-banged 3-wire interface) and a way to drive a few GPIOs works the sam
   `docs/SPIKE-System-Manual.pdf`) — the "node extension" classification.
 - [Hardware Design (5 REV 10) — Bus Pirate 5 docs](https://docs.buspirate.com/docs/hardware/bp5rev10/hardware/)
   (archived: `docs/references/raw/buspirate5-hardware-rev10/content.md`) — Bus Pirate 5 I/O levels.
-- Stern's schematic for the 520-7001-00A: `docs/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`.
+- Stern's schematic for the 520-7001-00A: `docs/opto-atmega/520-7001-00A-TROUGH-RECEIVER-BOARD.pdf`.
