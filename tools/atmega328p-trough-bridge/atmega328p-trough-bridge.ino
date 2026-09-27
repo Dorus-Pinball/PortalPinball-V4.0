@@ -36,12 +36,17 @@ const uint8_t MIRROR_PINS[7] = {
 // 1..6. Every channel reads 1 = clear, 0 = blocked. Array index 0..7 = raw bit7..bit0; values are
 // MIRROR_PINS slots (0..5 = trough1..6, 6 = jam).
 //
-// BIT_INVERT is still unset: the output polarity OPP needs (its switches are `type: NC`, and
-// s-trough-jam's active state means a CLEAR path) must be confirmed against MPF's switch states
-// on the real cabinet, not assumed here.
+// BIT_INVERT: all channels inverted, so an output goes HIGH when its sensor is BLOCKED. Derived
+// from MPF 0.80's source on 2026-09-27, still to be confirmed on the real cabinet:
+//  - an OPP input reads closed when pulled LOW (mpf/platforms/opp/opp.py), and `type: NC` on all
+//    seven switches inverts that, so a switch is active when its input is HIGH;
+//  - MPF wants every ball switch active = ball present, and its jam_switch active = ball jammed
+//    (devices/ball_device/switch_counter.py) - so jam needs the same polarity as the other six.
+// The older note that s-trough-jam's active state means a CLEAR path was recorded on the damaged
+// taps and is most likely wrong (see plans/read-opto.md).
 const uint8_t UNUSED_SLOT = 0xFF;
 uint8_t BIT_CHANNEL[8] = { UNUSED_SLOT, 6, 0, 1, 2, 3, 4, 5 }; // raw bit7..bit0 -> MIRROR_PINS index
-bool BIT_INVERT[8]     = { false, false, false, false, false, false, false, false };
+bool BIT_INVERT[8]     = { true, true, true, true, true, true, true, true };
 
 // Set to 1 while bench-testing (prints the raw byte + resolved channel states over the bare
 // chip's RX/TX pins, e.g. via the USB-serial bridge breakout already in inventory). Leave off
